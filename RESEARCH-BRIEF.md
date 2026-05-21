@@ -17,7 +17,40 @@ The deliverable is a two-device hackathon demo (iOS + Android) plus a writeup. T
 Concrete technical anchors:
 
 - **Cactus** — an on-device AI framework supporting Flutter, Swift, Kotlin, React Native, C++, Python. Claims ~120ms on-device inference latency, hybrid cloud fallback (we will NOT use the hybrid path), and zero-copy memory mapping for embeddings. Critical-path question: does Cactus give us *identical* embedding outputs across iOS and Android for the same input + model + weights?
-- **Ditto** — a peer-to-peer document database with CRDT internals and BLE+LAN mesh sync. The canonical demo data is the `cars` collection. We will store `{ id, text, embedding[], metadata }` tuples and rely on Ditto's grow-only semantics for the merge.
+- **Ditto** — a peer-to-peer document database with CRDT internals and BLE+LAN mesh sync. We will store recipe tuples and rely on Ditto's grow-only semantics for the merge.
+
+The concrete corpus CRDT shape (inlined here because the canonical example collection isn't reliably web-indexed):
+
+```
+// Mesh RAG corpus — a grow-only set of RecipeTuples synced across the mesh.
+RecipeTuple {
+  id           : UUID            // device-generated; merge is keyed by identity
+  dish         : string          // "chicken tortilla soup"
+  contributor  : string          // free-text or device id (e.g., "alyssa's phone")
+  ingredients  : list<string>    // ["1 lb chicken thighs", "6 corn tortillas", ...]
+  steps        : list<string>    // ["Sear chicken in oil...", "Simmer 20m", ...]
+  embedding    : list<float32>   // produced locally by the on-device embedding model
+  created_at   : timestamp
+}
+
+// Sync semantics (Ditto-provided):
+//   * Grow-only set keyed by id
+//   * Insert is idempotent
+//   * No deletes in Stage 0
+//   * Convergence: every device's set converges to the union of all observed inserts
+
+// Local query path:
+//   query_text -> embed locally -> cosine top-k over local set
+//              -> feed top-k tuples + query to local LLM
+//              -> LLM synthesizes a normalized merged recipe
+
+// Demo "moment of magic":
+//   Before sync: phone A has one variant of "chicken tortilla soup"; answer
+//   reflects only that variant. Airplane mode toggled live; phone B comes
+//   into BLE range; recipes sync. After sync: same query produces a merged
+//   recipe drawing on ingredients/steps from phone B's variant too.
+```
+
 - **Two-device demo:** one iOS phone + one Android phone, airplane mode toggled live on camera. The "moment of magic" is that phone A's answer to a query changes after phone B comes into BLE range and tuples sync.
 - **Holdouts** include the airplane-mode moment of magic, embedding determinism (cosine ≥ 0.999) across iOS and Android, sync idempotence, bidirectional merge observable through queries, cold-load latency under ~10s on the slowest target device, and full offline operation (only BLE/LAN, no Wi-Fi or cellular).
 
@@ -104,7 +137,7 @@ Lower-priority but useful. The primary deliverable is a working repo + a Present
 
 - **Presenterm** docs, themes, and exemplar decks for technical demos. Alternatives: **Sli.dev**, **RemarkJS**, **revealjs**, and lower-tech (Keynote + screen capture). Decks for hackathon-shaped on-device-AI demos worth studying.
 - Memorable on-device-AI demo writeups (good and bad): **Recall**, **Rewind**, **Granola**, **Apple Intelligence demos**. What makes a small on-device demo legible to a non-technical audience?
-- **Ditto's** canonical `cars`-collection demo writeups — find what they do well in framing P2P "moment of magic" moments.
+- **P2P / mesh "moment of magic" demos** more generally — any public writeup or talk where the convincing moment was "devices meet, state composes, no server in the loop." Examples to look for: AirDrop's UX framing, Bridgefy's protest-mesh demos, any local-first conference talks where the demo did this well.
 - **Audience-participation demos** worth studying: live-submission-driven demos (e.g., real-time polling, "virtual potluck"-shape conference activities) and any prior hackathon demos that pulled audience input into the on-device corpus. Particularly: how they handled the join-flow latency (people typing on phones) inside a tight demo window.
 
 ---
