@@ -1,0 +1,2380 @@
+version: 1
+entries:
+- url: https://adityakarnam.com/mlx-non-determinism-apple-silicon
+  kind: other
+  title: adityakarnam.com
+  cited_in:
+  - claude
+  status: done
+  path: inspiration/other/adityakarnam.com-mlx-non-determinism-apple-silicon
+- url: https://ai.google.dev/edge/litert/performance/delegates
+  kind: article
+  title: ai.google.dev
+  cited_in:
+  - codex
+  status: done
+  path: inspiration/articles/ai.google.dev-edge-litert-performance-delegates
+- url: https://ai.google.dev/edge/mediapipe/solutions/genai/llm_inference
+  kind: article
+  title: ai.google.dev
+  cited_in:
+  - chatgpt-deep-research
+  - codex
+  status: done
+  path: inspiration/articles/ai.google.dev-edge-mediapipe-solutions-genai-llm_inference
+- url: https://ai.google.dev/edge/mediapipe/solutions/genai/llm_inference/android
+  kind: article
+  title: ai.google.dev
+  cited_in:
+  - claude
+  status: done
+  path: inspiration/articles/ai.google.dev-edge-mediapipe-solutions-genai-llm_inference-android
+- url: https://ai.google.dev/edge/mediapipe/solutions/genai/llm_inference/ios
+  kind: article
+  title: ai.google.dev
+  cited_in:
+  - claude
+  status: done
+  path: inspiration/articles/ai.google.dev-edge-mediapipe-solutions-genai-llm_inference-ios
+- url: https://ai.google.dev/gemma/docs/core/model_card_3
+  kind: docs
+  title: ai.google.dev
+  cited_in:
+  - chatgpt-deep-research
+  status: done
+  path: inspiration/docs/ai.google.dev
+- url: https://ai.google.dev/gemma/docs/embeddinggemma/model_card
+  kind: docs
+  title: ai.google.dev
+  cited_in:
+  - claude-deep-research
+  status: done
+  path: inspiration/docs/ai.google.dev
+- url: https://ai.google.dev/gemma/terms
+  kind: article
+  title: ai.google.dev
+  cited_in:
+  - chatgpt-deep-research
+  - claude
+  - codex
+  status: done
+  path: inspiration/articles/ai.google.dev-gemma-terms
+- url: https://ai.meta.com/blog/llama-3-2-connect-2024-vision-edge-mobile-devices
+  kind: article
+  title: ai.meta.com
+  cited_in:
+  - gemini
+  status: done
+  path: inspiration/articles/ai.meta.com-blog-llama-3-2-connect-2024-vision-edge-mobile-devices
+- url: https://aihub.qualcomm.com/models/nomic_embed_text
+  kind: other
+  title: aihub.qualcomm.com
+  cited_in:
+  - claude
+  status: done
+  path: inspiration/other/aihub.qualcomm.com-models-nomic_embed_text
+- url: https://airbyte.com/data-engineering-resources/qdrant-vs-pinecone
+  kind: other
+  title: airbyte.com
+  cited_in:
+  - claude-deep-research
+  status: done
+  path: inspiration/other/airbyte.com-data-engineering-resources-qdrant-vs-pinecone
+- url: https://alexgarcia.xyz/sqlite-vec/android-ios.html
+  kind: other
+  title: alexgarcia.xyz
+  cited_in:
+  - claude
+  - gemini-deep-research
+  status: done
+  path: inspiration/other/alexgarcia.xyz-sqlite-vec-android-ios.html
+- url: https://anytype.io
+  kind: other
+  title: anytype.io
+  cited_in:
+  - claude
+  status: done
+  path: inspiration/other/anytype.io
+- url: https://app.aihub.qualcomm.com/docs/hub/quantize_examples.html
+  kind: docs
+  title: app.aihub.qualcomm.com
+  cited_in:
+  - codex
+  status: done
+  path: inspiration/docs/app.aihub.qualcomm.com
+- url: https://app.daily.dev/posts/pgvector-vs-pinecone-vs-turbopuffer-vs-qdrant-2026--m1dot7ras
+  kind: other
+  title: app.daily.dev
+  cited_in:
+  - claude-deep-research
+  status: done
+  path: inspiration/other/app.daily.dev-posts-pgvector-vs-pinecone-vs-turbopuffer-vs-qdrant-2026--m1dot7ras
+- url: https://arxiv.org/abs/1106.4374
+  kind: paper
+  title: arXiv 1106.4374
+  cited_in:
+  - gemini
+  status: failed
+  path: null
+  notes: 'download error: exit 56: curl: (56) The requested URL returned error: 404
+
+    '
+- url: https://arxiv.org/abs/1605.06424
+  kind: paper
+  title: arXiv 1605.06424
+  cited_in:
+  - claude-deep-research
+  status: done
+  path: inspiration/papers/1605.06424.pdf
+- url: https://arxiv.org/abs/1811.10737
+  kind: paper
+  title: arXiv 1811.10737
+  cited_in:
+  - chatgpt-deep-research
+  status: done
+  path: inspiration/papers/1811.10737.pdf
+- url: https://arxiv.org/abs/1908.10084
+  kind: paper
+  title: arXiv 1908.10084
+  cited_in:
+  - codex
+  status: done
+  path: inspiration/papers/1908.10084.pdf
+- url: https://arxiv.org/abs/1910.01108
+  kind: paper
+  title: arXiv 1910.01108
+  cited_in:
+  - claude
+  status: done
+  path: inspiration/papers/1910.01108.pdf
+- url: https://arxiv.org/abs/1910.03345
+  kind: paper
+  title: arXiv 1910.03345
+  cited_in:
+  - claude-deep-research
+  status: done
+  path: inspiration/papers/1910.03345.pdf
+- url: https://arxiv.org/abs/2006.02859
+  kind: paper
+  title: arXiv 2006.02859
+  cited_in:
+  - chatgpt-deep-research
+  status: done
+  path: inspiration/papers/2006.02859.pdf
+- url: https://arxiv.org/abs/2006.10494
+  kind: paper
+  title: arXiv 2006.10494
+  cited_in:
+  - claude-deep-research
+  status: done
+  path: inspiration/papers/2006.10494.pdf
+- url: https://arxiv.org/abs/2106.09685
+  kind: paper
+  title: arXiv 2106.09685
+  cited_in:
+  - codex
+  status: done
+  path: inspiration/papers/2106.09685.pdf
+- url: https://arxiv.org/abs/2208.04050
+  kind: paper
+  title: arXiv 2208.04050
+  cited_in:
+  - claude-deep-research
+  status: done
+  path: inspiration/papers/2208.04050.pdf
+- url: https://arxiv.org/abs/2301.07788
+  kind: paper
+  title: arXiv 2301.07788
+  cited_in:
+  - claude
+  status: done
+  path: inspiration/papers/2301.07788.pdf
+- url: https://arxiv.org/abs/2302.01005
+  kind: paper
+  title: arXiv 2302.01005
+  cited_in:
+  - claude-deep-research
+  status: done
+  path: inspiration/papers/2302.01005.pdf
+- url: https://arxiv.org/abs/2305.14314
+  kind: paper
+  title: arXiv 2305.14314
+  cited_in:
+  - codex
+  status: done
+  path: inspiration/papers/2305.14314.pdf
+  notes: (reset from done — file missing) arxiv PDF downloaded successfully
+- url: https://arxiv.org/abs/2308.14963
+  kind: paper
+  title: arXiv 2308.14963
+  cited_in:
+  - codex
+  status: done
+  path: inspiration/papers/2308.14963.pdf
+- url: https://arxiv.org/abs/2401.02385
+  kind: paper
+  title: arXiv 2401.02385
+  cited_in:
+  - codex
+  status: done
+  path: inspiration/papers/2401.02385.pdf
+- url: https://arxiv.org/abs/2402.00841
+  kind: paper
+  title: arXiv 2402.00841
+  cited_in:
+  - claude
+  status: done
+  path: inspiration/papers/2402.00841.pdf
+- url: https://arxiv.org/abs/2402.01613
+  kind: paper
+  title: arXiv 2402.01613
+  cited_in:
+  - claude
+  - codex
+  status: done
+  path: inspiration/papers/2402.01613.pdf
+- url: https://arxiv.org/abs/2402.04351
+  kind: paper
+  title: arXiv 2402.04351
+  cited_in:
+  - gemini
+  status: done
+  path: inspiration/papers/2402.04351.pdf
+  notes: (reset from done — file missing) arxiv PDF downloaded successfully
+- url: https://arxiv.org/abs/2402.14905
+  kind: paper
+  title: arXiv 2402.14905
+  cited_in:
+  - claude-deep-research
+  status: done
+  path: inspiration/papers/2402.14905.pdf
+- url: https://arxiv.org/abs/2403.12844
+  kind: paper
+  title: arXiv 2403.12844
+  cited_in:
+  - claude
+  status: done
+  path: inspiration/papers/2403.12844.pdf
+- url: https://arxiv.org/abs/2404.14219
+  kind: paper
+  title: arXiv 2404.14219
+  cited_in:
+  - claude
+  - claude-deep-research
+  status: done
+  path: inspiration/papers/2404.14219.pdf
+- url: https://arxiv.org/abs/2405.00732
+  kind: paper
+  title: arXiv 2405.00732
+  cited_in:
+  - claude
+  status: done
+  path: inspiration/papers/2405.00732.pdf
+- url: https://arxiv.org/abs/2406.10290
+  kind: paper
+  title: arXiv 2406.10290
+  cited_in:
+  - claude
+  - claude-deep-research
+  status: done
+  path: inspiration/papers/2406.10290.pdf
+- url: https://arxiv.org/abs/2406.10816
+  kind: paper
+  title: arXiv 2406.10816
+  cited_in:
+  - claude-deep-research
+  status: done
+  path: inspiration/papers/2406.10816.pdf
+- url: https://arxiv.org/abs/2407.07871
+  kind: paper
+  title: arXiv 2407.07871
+  cited_in:
+  - claude
+  status: done
+  path: inspiration/papers/2407.07871.pdf
+  notes: (reset from done — file missing) arxiv PDF downloaded successfully
+- url: https://arxiv.org/abs/2408.01800
+  kind: paper
+  title: arXiv 2408.01800
+  cited_in:
+  - claude-deep-research
+  status: done
+  path: inspiration/papers/2408.01800.pdf
+- url: https://arxiv.org/abs/2409.00088
+  kind: paper
+  title: arXiv 2409.00088
+  cited_in:
+  - claude
+  status: done
+  path: inspiration/papers/2409.00088.pdf
+- url: https://arxiv.org/abs/2409.15342
+  kind: paper
+  title: arXiv 2409.15342
+  cited_in:
+  - claude-deep-research
+  status: done
+  path: inspiration/papers/2409.15342.pdf
+- url: https://arxiv.org/abs/2411.09944
+  kind: paper
+  title: arXiv 2411.09944
+  cited_in:
+  - claude-deep-research
+  status: done
+  path: inspiration/papers/2411.09944.pdf
+- url: https://arxiv.org/abs/2412.04922
+  kind: paper
+  title: arXiv 2412.04922
+  cited_in:
+  - claude
+  - claude-deep-research
+  status: done
+  path: inspiration/papers/2412.04922.pdf
+- url: https://arxiv.org/abs/2412.21023
+  kind: paper
+  title: arXiv 2412.21023
+  cited_in:
+  - claude
+  status: done
+  path: inspiration/papers/2412.21023.pdf
+- url: https://arxiv.org/abs/2504.06135
+  kind: paper
+  title: arXiv 2504.06135
+  cited_in:
+  - chatgpt-deep-research
+  - claude
+  status: done
+  path: inspiration/papers/2504.06135.pdf
+- url: https://arxiv.org/abs/2505.00443
+  kind: paper
+  title: arXiv 2505.00443
+  cited_in:
+  - chatgpt-deep-research
+  - claude
+  - claude-deep-research
+  status: done
+  path: inspiration/papers/2505.00443.pdf
+  notes: (reset from done — file missing) arxiv PDF downloaded successfully
+- url: https://arxiv.org/abs/2505.06461
+  kind: paper
+  title: arXiv 2505.06461
+  cited_in:
+  - claude-deep-research
+  status: done
+  path: inspiration/papers/2505.06461.pdf
+- url: https://arxiv.org/abs/2505.09388
+  kind: paper
+  title: arXiv 2505.09388
+  cited_in:
+  - codex
+  status: done
+  path: inspiration/papers/2505.09388.pdf
+- url: https://arxiv.org/abs/2505.11783
+  kind: paper
+  title: arXiv 2505.11783
+  cited_in:
+  - codex
+  status: done
+  path: inspiration/papers/2505.11783.pdf
+- url: https://arxiv.org/abs/2505.14992
+  kind: paper
+  title: arXiv 2505.14992
+  cited_in:
+  - claude
+  status: done
+  path: inspiration/papers/2505.14992.pdf
+- url: https://arxiv.org/abs/2505.16064
+  kind: paper
+  title: arXiv 2505.16064
+  cited_in:
+  - claude-deep-research
+  status: done
+  path: inspiration/papers/2505.16064.pdf
+- url: https://arxiv.org/abs/2505.19847
+  kind: paper
+  title: arXiv 2505.19847
+  cited_in:
+  - claude-deep-research
+  status: done
+  path: inspiration/papers/2505.19847.pdf
+- url: https://arxiv.org/abs/2506.05176
+  kind: paper
+  title: arXiv 2506.05176
+  cited_in:
+  - codex
+  status: done
+  path: inspiration/papers/2506.05176.pdf
+- url: https://arxiv.org/abs/2506.09501
+  kind: paper
+  title: arXiv 2506.09501
+  cited_in:
+  - claude
+  status: done
+  path: inspiration/papers/2506.09501.pdf
+  notes: (reset from done — file missing) arxiv PDF downloaded successfully
+- url: https://arxiv.org/abs/2507.01079
+  kind: paper
+  title: arXiv 2507.01079
+  cited_in:
+  - claude
+  status: done
+  path: inspiration/papers/2507.01079.pdf
+- url: https://arxiv.org/abs/2507.17232
+  kind: paper
+  title: arXiv 2507.17232
+  cited_in:
+  - claude-deep-research
+  status: done
+  path: inspiration/papers/2507.17232.pdf
+- url: https://arxiv.org/abs/2507.17647
+  kind: paper
+  title: arXiv 2507.17647
+  cited_in:
+  - claude-deep-research
+  - codex
+  status: done
+  path: inspiration/papers/2507.17647.pdf
+- url: https://arxiv.org/abs/2508.01110
+  kind: paper
+  title: arXiv 2508.01110
+  cited_in:
+  - claude-deep-research
+  status: done
+  path: inspiration/papers/2508.01110.pdf
+- url: https://arxiv.org/abs/2509.20354
+  kind: paper
+  title: arXiv 2509.20354
+  cited_in:
+  - claude
+  status: done
+  path: inspiration/papers/2509.20354.pdf
+- url: https://arxiv.org/abs/2511.07577
+  kind: paper
+  title: arXiv 2511.07577
+  cited_in:
+  - claude-deep-research
+  status: done
+  path: inspiration/papers/2511.07577.pdf
+- url: https://arxiv.org/abs/2511.17826
+  kind: paper
+  title: arXiv 2511.17826
+  cited_in:
+  - claude-deep-research
+  status: done
+  path: inspiration/papers/2511.17826.pdf
+- url: https://arxiv.org/abs/2512.22280
+  kind: paper
+  title: arXiv 2512.22280
+  cited_in:
+  - gemini-deep-research
+  status: done
+  path: inspiration/papers/2512.22280.pdf
+- url: https://arxiv.org/abs/2602.17099
+  kind: paper
+  title: arXiv 2602.17099
+  cited_in:
+  - codex
+  status: done
+  path: inspiration/papers/2602.17099.pdf
+- url: https://arxiv.org/abs/2603.23640
+  kind: paper
+  title: arXiv 2603.23640
+  cited_in:
+  - chatgpt-deep-research
+  status: done
+  path: inspiration/papers/2603.23640.pdf
+- url: https://arxiv.org/abs/2604.15484
+  kind: paper
+  title: arXiv 2604.15484
+  cited_in:
+  - codex
+  status: failed
+  path: null
+  notes: arxiv ID 2604.15484 does not resolve — returned HTML redirect stub, not a real PDF; entry kept for record
+- url: https://arxiv.org/abs/2605.19537
+  kind: paper
+  title: arXiv 2605.19537
+  cited_in:
+  - chatgpt-deep-research
+  - gemini-deep-research
+  status: done
+  path: inspiration/papers/2605.19537.pdf
+- url: https://arxiv.org/html/2403.13187v1
+  kind: paper
+  title: arxiv.org
+  cited_in:
+  - gemini-deep-research
+  status: done
+  path: inspiration/papers/2403.13187v1.pdf
+- url: https://arxiv.org/html/2512.17108v1
+  kind: paper
+  title: arxiv.org
+  cited_in:
+  - gemini-deep-research
+  status: done
+  path: inspiration/papers/2512.17108v1.pdf
+- url: https://arxiv.org/html/2512.22280v1
+  kind: paper
+  title: arxiv.org
+  cited_in:
+  - gemini-deep-research
+  status: done
+  path: inspiration/papers/2512.22280v1.pdf
+- url: https://arxiv.org/html/2602.11089v2
+  kind: paper
+  title: arxiv.org
+  cited_in:
+  - gemini-deep-research
+  status: done
+  path: inspiration/papers/2602.11089v2.pdf
+- url: https://arxiv.org/html/2604.21026v1
+  kind: paper
+  title: arxiv.org
+  cited_in:
+  - gemini-deep-research
+  status: done
+  path: inspiration/papers/2604.21026v1.pdf
+- url: https://arxiv.org/html/2605.17653v1
+  kind: paper
+  title: arxiv.org
+  cited_in:
+  - gemini-deep-research
+  status: done
+  path: inspiration/papers/2605.17653v1.pdf
+- url: https://arxiv.org/html/2605.19537v2
+  kind: paper
+  title: arxiv.org
+  cited_in:
+  - gemini-deep-research
+  status: done
+  path: inspiration/papers/2605.19537v2.pdf
+- url: https://ascentcore.com/2026/04/01/small-llm-performance-benchmark
+  kind: other
+  title: ascentcore.com
+  cited_in:
+  - claude-deep-research
+  status: done
+  path: inspiration/other/ascentcore.com-2026-04-01-small-llm-performance-benchmark
+- url: https://automerge.org
+  kind: other
+  title: automerge.org
+  cited_in:
+  - claude
+  - codex
+  status: done
+  path: inspiration/other/automerge.org
+- url: https://blog.cloudflare.com/the-speed-of-light-on-the-internet
+  kind: article
+  title: blog.cloudflare.com
+  cited_in:
+  - codex
+  status: failed
+  path: null
+  notes: 'download error: exit 56: curl: (56) The requested URL returned error: 404
+
+    '
+- url: https://blog.swmansion.com/building-an-ai-powered-note-taking-app-in-react-native-part-3-local-rag-868ba75f818b
+  kind: article
+  title: blog.swmansion.com
+  cited_in:
+  - claude
+  status: done
+  path: inspiration/articles/blog.swmansion.com-building-an-ai-powered-note-taking-app-in-react-native-part-3-local-rag-868ba75f818b
+- url: https://blog.swmansion.com/introducing-react-native-rag-fbb62efa4991
+  kind: article
+  title: blog.swmansion.com
+  cited_in:
+  - claude
+  status: done
+  path: inspiration/articles/blog.swmansion.com-introducing-react-native-rag-fbb62efa4991
+- url: https://bridgefy.me/sdk
+  kind: docs
+  title: bridgefy.me
+  cited_in:
+  - claude
+  - codex
+  status: failed
+  path: null
+  notes: 'download error: exit 5: '
+- url: https://businessmodelcanvastemplate.com/blogs/how-it-works/ditto-how-it-works
+  kind: article
+  title: businessmodelcanvastemplate.com
+  cited_in:
+  - gemini-deep-research
+  status: done
+  path: inspiration/articles/businessmodelcanvastemplate.com-blogs-how-it-works-ditto-how-it-works
+- url: https://buttondown.com/weekly-project-news/archive/weekly-github-report-for-llamacpp-2024-10-21
+  kind: other
+  title: buttondown.com
+  cited_in:
+  - claude-deep-research
+  status: done
+  path: inspiration/other/buttondown.com-weekly-project-news-archive-weekly-github-report-for-llamacpp-2024-10-21
+- url: https://cactuscompute.com
+  kind: other
+  title: cactuscompute.com
+  cited_in:
+  - claude-deep-research
+  - gemini-deep-research
+  status: done
+  path: inspiration/other/cactuscompute.com
+- url: https://cactuscompute.com/docs/kotlin
+  kind: docs
+  title: cactuscompute.com
+  cited_in:
+  - claude-deep-research
+  status: failed
+  path: null
+  notes: 'download error: exit 8: '
+- url: https://cactuscompute.com/docs/v1.7
+  kind: docs
+  title: cactuscompute.com
+  cited_in:
+  - claude
+  - claude-deep-research
+  - codex
+  - gemini-deep-research
+  status: done
+  path: inspiration/docs/cactuscompute.com
+- url: https://cactuscompute.com/docs/v1.7/rag
+  kind: docs
+  title: cactuscompute.com
+  cited_in:
+  - codex
+  status: done
+  path: inspiration/docs/cactuscompute.com
+- url: https://cleanlab.ai/blog/structured-output-benchmark
+  kind: article
+  title: cleanlab.ai
+  cited_in:
+  - gemini-deep-research
+  status: done
+  path: inspiration/articles/cleanlab.ai-blog-structured-output-benchmark
+- url: https://deepsense.ai/blog/implementing-small-language-models-slms-with-rag-on-embedded-devices-leading-to-cost-reduction-data-privacy-and-offline-use
+  kind: article
+  title: deepsense.ai
+  cited_in:
+  - claude
+  status: done
+  path: inspiration/articles/deepsense.ai-blog-implementing-small-language-models-slms-with-rag-on-embedded-devices-leading-to-cost-reduction-data-pr
+- url: https://dev.to/biozal/transport-multiplexing-in-mobile-sync-why-multi-transport-beats-single-transport-systems-l37
+  kind: article
+  title: dev.to
+  cited_in:
+  - gemini-deep-research
+  status: done
+  path: inspiration/articles/dev.to-biozal-transport-multiplexing-in-mobile-sync-why-multi-transport-beats-single-transport-systems-l37
+- url: https://dev.to/learnwithvikzzy/conflict-free-replicated-data-types-crdts-ij6
+  kind: article
+  title: dev.to
+  cited_in:
+  - gemini-deep-research
+  status: done
+  path: inspiration/articles/dev.to-learnwithvikzzy-conflict-free-replicated-data-types-crdts-ij6
+- url: https://developer.apple.com/documentation/coreml/mlcomputeunits
+  kind: docs
+  title: developer.apple.com
+  cited_in:
+  - codex
+  status: done
+  path: inspiration/docs/developer.apple.com
+- url: https://developer.apple.com/documentation/foundationmodels
+  kind: docs
+  title: developer.apple.com
+  cited_in:
+  - codex
+  status: done
+  path: inspiration/docs/developer.apple.com
+- url: https://developer.apple.com/documentation/multipeerconnectivity
+  kind: docs
+  title: developer.apple.com
+  cited_in:
+  - claude
+  - claude-deep-research
+  - codex
+  status: done
+  path: inspiration/docs/developer.apple.com
+- url: https://developer.apple.com/videos/play/wwdc2025/248
+  kind: docs
+  title: developer.apple.com
+  cited_in:
+  - claude
+  status: done
+  path: inspiration/docs/developer.apple.com
+- url: https://developers.google.com/nearby/connections/overview
+  kind: other
+  title: developers.google.com
+  cited_in:
+  - codex
+  status: done
+  path: inspiration/other/developers.google.com-nearby-connections-overview
+- url: https://dicg-workshop.github.io/2022/papers/tschudin.pdf
+  kind: other
+  title: dicg-workshop.github.io
+  cited_in:
+  - claude-deep-research
+  status: done
+  path: inspiration/other/dicg-workshop.github.io-2022-papers-tschudin.pdf
+- url: https://direct.mit.edu/tacl/article/doi/10.1162/TACL.a.638/136339/Cooking-Up-Creativity-Enhancing-LLM-Creativity
+  kind: other
+  title: direct.mit.edu
+  cited_in:
+  - gemini-deep-research
+  status: failed
+  path: null
+  notes: 'download error: exit 56: curl: (56) The requested URL returned error: 403
+
+    '
+- url: https://discuss.huggingface.co/t/on-device-sentence-embeddings-with-all-minilm-l6-v2-in-android/94841
+  kind: other
+  title: discuss.huggingface.co
+  cited_in:
+  - claude-deep-research
+  status: done
+  path: inspiration/other/discuss.huggingface.co-t-on-device-sentence-embeddings-with-all-minilm-l6-v2-in-android-94841
+- url: https://ditto.com/blog/getting-started-with-bluetooth-file-sync
+  kind: article
+  title: ditto.com
+  cited_in:
+  - gemini-deep-research
+  status: done
+  path: inspiration/articles/ditto.com-blog-getting-started-with-bluetooth-file-sync
+- url: https://dl.acm.org/doi/abs/10.1145/3565383.3566110
+  kind: paper
+  title: dl.acm.org
+  cited_in:
+  - claude
+  status: skipped
+  path: null
+  notes: ACM paywall — manual download required
+- url: https://docs.ditto.live
+  kind: docs
+  title: docs.ditto.live
+  cited_in:
+  - claude
+  - claude-deep-research
+  - gemini
+  status: done
+  path: inspiration/docs/docs.ditto.live
+- url: https://docs.ditto.live/dql/dql
+  kind: docs
+  title: docs.ditto.live
+  cited_in:
+  - claude
+  status: done
+  path: inspiration/docs/docs.ditto.live
+- url: https://docs.ditto.live/home/about-ditto
+  kind: docs
+  title: docs.ditto.live
+  cited_in:
+  - claude
+  - codex
+  status: done
+  path: inspiration/docs/docs.ditto.live
+- url: https://docs.ditto.live/home/faq
+  kind: docs
+  title: docs.ditto.live
+  cited_in:
+  - claude-deep-research
+  status: done
+  path: inspiration/docs/docs.ditto.live
+- url: https://docs.ditto.live/home/mcp-integration
+  kind: docs
+  title: docs.ditto.live
+  cited_in:
+  - chatgpt-deep-research
+  status: done
+  path: inspiration/docs/docs.ditto.live
+- url: https://docs.ditto.live/key-concepts/mesh-networking
+  kind: docs
+  title: docs.ditto.live
+  cited_in:
+  - codex
+  status: done
+  path: inspiration/docs/docs.ditto.live
+- url: https://docs.ditto.live/key-concepts/syncing-data
+  kind: docs
+  title: docs.ditto.live
+  cited_in:
+  - chatgpt-deep-research
+  - codex
+  - gemini-deep-research
+  status: done
+  path: inspiration/docs/docs.ditto.live
+- url: https://docs.ditto.live/sdk/latest/deployment/network-deployment
+  kind: docs
+  title: docs.ditto.live
+  cited_in:
+  - claude-deep-research
+  - gemini-deep-research
+  status: done
+  path: inspiration/docs/docs.ditto.live
+- url: https://docs.ditto.live/sdk/latest/install-guides/react-native
+  kind: docs
+  title: docs.ditto.live
+  cited_in:
+  - claude-deep-research
+  status: done
+  path: inspiration/docs/docs.ditto.live
+- url: https://docs.ditto.live/sdk/latest/release-notes/java
+  kind: docs
+  title: docs.ditto.live
+  cited_in:
+  - claude-deep-research
+  status: done
+  path: inspiration/docs/docs.ditto.live
+- url: https://docs.ditto.live/sdk/latest/release-notes/kotlin
+  kind: docs
+  title: docs.ditto.live
+  cited_in:
+  - claude-deep-research
+  status: done
+  path: inspiration/docs/docs.ditto.live
+- url: https://docs.ditto.live/sdk/v4-7/basic/mesh-networking-101
+  kind: docs
+  title: docs.ditto.live
+  cited_in:
+  - claude
+  status: failed
+  path: null
+  notes: 'download error: exit 8: '
+- url: https://docs.ditto.live/sdk/v4-8/sync/concepts/transports-overview
+  kind: docs
+  title: docs.ditto.live
+  cited_in:
+  - claude
+  status: done
+  path: inspiration/docs/docs.ditto.live
+- url: https://docs.ditto.live/sdk/v5/sync/customizing-transport-configurations
+  kind: docs
+  title: docs.ditto.live
+  cited_in:
+  - claude-deep-research
+  status: done
+  path: inspiration/docs/docs.ditto.live
+- url: https://docs.ditto.live/v4-5/faq
+  kind: docs
+  title: docs.ditto.live
+  cited_in:
+  - claude-deep-research
+  status: done
+  path: inspiration/docs/docs.ditto.live
+- url: https://docs.pytorch.org/docs/2.12/notes/numerical_accuracy.html
+  kind: docs
+  title: docs.pytorch.org
+  cited_in:
+  - codex
+  status: failed
+  path: null
+  notes: 'download error: exit 8: '
+- url: https://docs.pytorch.org/docs/2.12/notes/randomness.html
+  kind: docs
+  title: docs.pytorch.org
+  cited_in:
+  - chatgpt-deep-research
+  - codex
+  status: failed
+  path: null
+  notes: 'download error: exit 8: '
+- url: https://docs.pytorch.org/executorch/stable/index.html
+  kind: docs
+  title: docs.pytorch.org
+  cited_in:
+  - chatgpt-deep-research
+  status: failed
+  path: null
+  notes: 'download error: exit 8: '
+- url: https://eprint.iacr.org/2021/214.pdf
+  kind: other
+  title: eprint.iacr.org
+  cited_in:
+  - claude-deep-research
+  status: done
+  path: inspiration/other/eprint.iacr.org-2021-214.pdf
+- url: https://evilmartians.com/chronicles/recapping-the-first-local-first-conference-in-15-minutes
+  kind: other
+  title: evilmartians.com
+  cited_in:
+  - claude-deep-research
+  status: done
+  path: inspiration/other/evilmartians.com-chronicles-recapping-the-first-local-first-conference-in-15-minutes
+- url: https://firebase.blog/posts/2026/05/google-io-2026-announcements/
+  kind: article
+  title: Google I/O 2026 announcements (Firebase blog)
+  cited_in:
+  - user
+  status: done
+  path: inspiration/articles/firebase.blog-posts-2026-05-google-io-2026-announcements
+- url: https://firebase.google.com/docs/ai-assistance/agent-skills
+  kind: docs
+  title: Firebase AI Assistance — Agent Skills
+  cited_in:
+  - user
+  status: done
+  path: inspiration/docs/firebase.google.com
+- url: https://gafferongames.com/post/floating_point_determinism
+  kind: other
+  title: gafferongames.com
+  cited_in:
+  - gemini-deep-research
+  status: done
+  path: inspiration/other/gafferongames.com-post-floating_point_determinism
+- url: https://geoffreylitt.com/2025/01/01/the-window-for-local-first-ai.html
+  kind: other
+  title: geoffreylitt.com
+  cited_in:
+  - gemini
+  status: failed
+  path: null
+  notes: 'download error: exit 56: curl: (56) The requested URL returned error: 404
+
+    '
+- url: https://gist.github.com/ostafen/a556180db7d4c41abb325b5ae5e13ca4
+  kind: other
+  title: ostafen/a556180db7d4c41abb325b5ae5e13ca4
+  cited_in:
+  - claude
+  status: done
+  path: inspiration/other/gist.github.com-ostafen-a556180db7d4c41abb325b5ae5e13ca4
+  notes: (reclassified gist→other) raw HTML fallback
+- url: https://github.com/DeveloperMindset-com/faiss-mobile
+  kind: repo
+  title: DeveloperMindset-com/faiss-mobile
+  cited_in:
+  - claude
+  status: done
+  path: inspiration/repos/DeveloperMindset-com__faiss-mobile
+  notes: git clone depth=1 successful (23M)
+- url: https://github.com/FlagOpen/FlagEmbedding
+  kind: repo
+  title: FlagOpen/FlagEmbedding
+  cited_in:
+  - codex
+  status: skipped
+  path: null
+  notes: cloned shallow repo size 89 MB exceeds 50 MB limit; deleted
+- url: https://github.com/QwenLM/Qwen3-Embedding
+  kind: repo
+  title: QwenLM/Qwen3-Embedding
+  cited_in:
+  - codex
+  status: done
+  path: inspiration/repos/QwenLM__Qwen3-Embedding
+- url: https://github.com/UKPLab/sentence-transformers
+  kind: repo
+  title: UKPLab/sentence-transformers
+  cited_in:
+  - codex
+  status: done
+  path: inspiration/repos/UKPLab__sentence-transformers
+- url: https://github.com/UNICKCHENG/logseq-ai-assistant
+  kind: repo
+  title: UNICKCHENG/logseq-ai-assistant
+  cited_in:
+  - claude
+  status: done
+  path: inspiration/repos/UNICKCHENG__logseq-ai-assistant
+- url: https://github.com/anyproto/anytype-ts
+  kind: repo
+  title: anyproto/anytype-ts
+  cited_in:
+  - codex
+  status: skipped
+  path: null
+  notes: clone exceeded 50MB limit (148M total) - deleted
+- url: https://github.com/asg017/sqlite-vec
+  kind: repo
+  title: asg017/sqlite-vec
+  cited_in:
+  - claude
+  - codex
+  - gemini-deep-research
+  status: done
+  path: inspiration/repos/asg017__sqlite-vec
+  notes: shallow clone (4.4 MB)
+- url: https://github.com/asg017/sqlite-vec/releases
+  kind: repo
+  title: asg017/sqlite-vec
+  cited_in:
+  - gemini-deep-research
+  status: done
+  path: inspiration/asg017/sqlite-vec
+- url: https://github.com/asg017/sqlite-vss
+  kind: repo
+  title: 'asg017/sqlite-vss](https:'
+  cited_in:
+  - gemini-deep-research
+  status: done
+  path: inspiration/asg017/sqlite-vss
+- url: https://github.com/brianpetro/obsidian-smart-connections
+  kind: repo
+  title: brianpetro/obsidian-smart-connections
+  cited_in:
+  - codex
+  status: skipped
+  path: null
+  notes: Repo size 57MB exceeds 50MB limit; deleted
+- url: https://github.com/cactus-compute/cactus
+  kind: repo
+  title: cactus-compute/cactus
+  cited_in:
+  - claude
+  - claude-deep-research
+  - codex
+  - gemini
+  - gemini-deep-research
+  status: skipped
+  path: null
+  notes: Repo size 53 MB exceeds 50 MB limit; deleted
+- url: https://github.com/cactus-compute/cactus-flutter
+  kind: repo
+  title: cactus-compute/cactus-flutter
+  cited_in:
+  - claude-deep-research
+  status: done
+  path: inspiration/cactus-compute/cactus-flutter
+- url: https://github.com/cactus-compute/cactus-kotlin
+  kind: repo
+  title: cactus-compute/cactus-kotlin
+  cited_in:
+  - claude
+  - claude-deep-research
+  status: skipped
+  path: null
+  notes: 209M exceeds 50MB limit
+- url: https://github.com/cactus-compute/cactus-react-native
+  kind: repo
+  title: cactus-compute/cactus-react-native
+  cited_in:
+  - claude
+  - codex
+  status: skipped
+  path: null
+  notes: clone exceeded 50MB limit (290M total) - deleted
+- url: https://github.com/cactus-compute/cactus-react-native/tree/main/example
+  kind: repo
+  title: cactus-compute/cactus-react-native
+  cited_in:
+  - codex
+  status: done
+  path: inspiration/cactus-compute/cactus-react-native
+- url: https://github.com/cactus-compute/cactus/docs/cactus_engine.md
+  kind: repo
+  title: cactus-compute/cactus
+  cited_in:
+  - gemini-deep-research
+  status: done
+  path: inspiration/cactus-compute/cactus
+- url: https://github.com/cactus-compute/cactus/tree/main/examples
+  kind: repo
+  title: cactus-compute/cactus
+  cited_in:
+  - gemini
+  status: done
+  path: inspiration/cactus-compute/cactus
+- url: https://github.com/cactus-compute/example-react-agents
+  kind: repo
+  title: cactus-compute/example-react-agents
+  cited_in:
+  - claude
+  status: failed
+  path: null
+  notes: 404 Repository not found
+- url: https://github.com/deepsense-ai/edge-slm
+  kind: repo
+  title: deepsense-ai/edge-slm
+  cited_in:
+  - claude
+  status: done
+  path: inspiration/repos/deepsense-ai__edge-slm
+- url: https://github.com/earthstar-project/earthstar
+  kind: repo
+  title: earthstar-project/earthstar
+  cited_in:
+  - codex
+  status: done
+  path: inspiration/repos/earthstar-project__earthstar
+- url: https://github.com/earthstar-project/willow-rs
+  kind: repo
+  title: earthstar-project/willow-rs
+  cited_in:
+  - claude
+  - claude-deep-research
+  status: done
+  path: inspiration/repos/earthstar-project__willow-rs
+  notes: git clone depth=1 successful (2.2M)
+- url: https://github.com/facebookresearch/faiss
+  kind: repo
+  title: facebookresearch/faiss
+  cited_in:
+  - codex
+  status: done
+  path: inspiration/repos/facebookresearch__faiss
+  notes: shallow clone (13 MB)
+- url: https://github.com/getditto
+  kind: repo
+  title: github.com
+  cited_in:
+  - claude-deep-research
+  - gemini
+  status: skipped
+  path: null
+  notes: github org URL, not a repo — nothing to clone
+- url: https://github.com/getditto/demoapp-chat
+  kind: repo
+  title: getditto/demoapp-chat
+  cited_in:
+  - chatgpt-deep-research
+  - codex
+  status: done
+  path: inspiration/repos/getditto__demoapp-chat
+- url: https://github.com/getditto/demoapp-inventory
+  kind: repo
+  title: getditto/demoapp-inventory
+  cited_in:
+  - chatgpt-deep-research
+  - codex
+  status: done
+  path: inspiration/repos/getditto__demoapp-inventory
+- url: https://github.com/getditto/demoapp-inventory/tree/main/Android
+  kind: repo
+  title: getditto/demoapp-inventory
+  cited_in:
+  - codex
+  status: done
+  path: inspiration/getditto/demoapp-inventory
+- url: https://github.com/getditto/demoapp-inventory/tree/main/iOS
+  kind: repo
+  title: getditto/demoapp-inventory
+  cited_in:
+  - codex
+  status: done
+  path: inspiration/getditto/demoapp-inventory
+- url: https://github.com/getditto/demoapp-pos-kds
+  kind: repo
+  title: getditto/demoapp-pos-kds
+  cited_in:
+  - chatgpt-deep-research
+  - codex
+  status: done
+  path: inspiration/repos/getditto__demoapp-pos-kds
+- url: https://github.com/getditto/demoapp-pos-kds/tree/main/Android
+  kind: repo
+  title: getditto/demoapp-pos-kds
+  cited_in:
+  - codex
+  status: done
+  path: inspiration/getditto/demoapp-pos-kds
+- url: https://github.com/getditto/demoapp-pos-kds/tree/main/iOS
+  kind: repo
+  title: getditto/demoapp-pos-kds
+  cited_in:
+  - codex
+  status: done
+  path: inspiration/getditto/demoapp-pos-kds
+- url: https://github.com/getditto/samples
+  kind: repo
+  title: getditto/samples
+  cited_in:
+  - gemini
+  status: done
+  path: inspiration/repos/getditto__samples
+  notes: git clone depth=1 successful (508K)
+- url: https://github.com/ggml-org/llama.cpp
+  kind: repo
+  title: ggml-org/llama.cpp
+  cited_in:
+  - codex
+  status: skipped
+  path: null
+  notes: Repo size 185MB exceeds 50MB limit; deleted
+- url: https://github.com/ggml-org/llama.cpp/discussions/2658
+  kind: repo
+  title: ggml-org/llama.cpp
+  cited_in:
+  - claude-deep-research
+  status: done
+  path: inspiration/ggml-org/llama.cpp
+- url: https://github.com/ggml-org/llama.cpp/issues/22926
+  kind: repo
+  title: ggml-org/llama.cpp
+  cited_in:
+  - claude-deep-research
+  status: done
+  path: inspiration/ggml-org/llama.cpp
+- url: https://github.com/ggml-org/llama.cpp/issues/2838
+  kind: repo
+  title: ggml-org/llama.cpp
+  cited_in:
+  - claude-deep-research
+  status: done
+  path: inspiration/ggml-org/llama.cpp
+- url: https://github.com/ggml-org/llama.cpp/issues/3625
+  kind: repo
+  title: ggml-org/llama.cpp
+  cited_in:
+  - claude-deep-research
+  status: done
+  path: inspiration/ggml-org/llama.cpp
+- url: https://github.com/ggml-org/llama.cpp/issues/7052
+  kind: repo
+  title: ggml-org/llama.cpp
+  cited_in:
+  - claude-deep-research
+  status: done
+  path: inspiration/ggml-org/llama.cpp
+- url: https://github.com/ggml-org/llama.cpp/pull/16016
+  kind: repo
+  title: ggml-org/llama.cpp
+  cited_in:
+  - claude-deep-research
+  status: done
+  path: inspiration/ggml-org/llama.cpp
+- url: https://github.com/google-ai-edge/gallery
+  kind: repo
+  title: google-ai-edge/gallery
+  cited_in:
+  - codex
+  status: done
+  path: inspiration/repos/google-ai-edge__gallery
+- url: https://github.com/google/nearby
+  kind: repo
+  title: google/nearby
+  cited_in:
+  - claude
+  status: skipped
+  path: null
+  notes: clone exceeded 50MB limit (151M total) - deleted
+- url: https://github.com/google/nearby/issues/1720
+  kind: repo
+  title: google/nearby
+  cited_in:
+  - claude
+  status: done
+  path: inspiration/google/nearby
+- url: https://github.com/hakimel/reveal.js
+  kind: repo
+  title: hakimel/reveal.js
+  cited_in:
+  - codex
+  status: done
+  path: inspiration/repos/hakimel__reveal.js
+  notes: shallow clone (19 MB)
+- url: https://github.com/khoj-ai/khoj
+  kind: repo
+  title: khoj-ai/khoj
+  cited_in:
+  - codex
+  status: skipped
+  path: null
+  notes: Repo size 163MB exceeds 50MB limit; deleted
+- url: https://github.com/libp2p/go-libp2p
+  kind: repo
+  title: libp2p/go-libp2p
+  cited_in:
+  - codex
+  status: done
+  path: inspiration/repos/libp2p__go-libp2p
+- url: https://github.com/ljwagerfield/crdt
+  kind: repo
+  title: 'ljwagerfield/crdt](https:'
+  cited_in:
+  - gemini-deep-research
+  status: done
+  path: inspiration/ljwagerfield/crdt
+- url: https://github.com/loro-dev/loro
+  kind: repo
+  title: loro-dev/loro
+  cited_in:
+  - claude
+  status: done
+  path: inspiration/repos/loro-dev__loro
+- url: https://github.com/mfontanini/presenterm
+  kind: repo
+  title: mfontanini/presenterm
+  cited_in:
+  - chatgpt-deep-research
+  - claude
+  - claude-deep-research
+  - codex
+  - gemini
+  - gemini-deep-research
+  status: done
+  path: inspiration/repos/mfontanini__presenterm
+  notes: git clone depth=1 successful (6.3M)
+- url: https://github.com/mfontanini/presenterm/tree/master/examples
+  kind: repo
+  title: mfontanini/presenterm
+  cited_in:
+  - claude-deep-research
+  - codex
+  status: done
+  path: inspiration/mfontanini/presenterm
+- url: https://github.com/microsoft/onnxruntime-genai
+  kind: repo
+  title: microsoft/onnxruntime-genai
+  cited_in:
+  - codex
+  status: skipped
+  path: null
+  notes: Repo size 133MB exceeds 50MB limit; deleted
+- url: https://github.com/mlc-ai/mlc-llm
+  kind: repo
+  title: mlc-ai/mlc-llm
+  cited_in:
+  - claude
+  - codex
+  status: done
+  path: inspiration/repos/mlc-ai__mlc-llm
+- url: https://github.com/n0-computer/iroh
+  kind: repo
+  title: n0-computer/iroh
+  cited_in:
+  - claude
+  - claude-deep-research
+  - codex
+  status: done
+  path: inspiration/repos/n0-computer__iroh
+- url: https://github.com/n0-computer/iroh-willow
+  kind: repo
+  title: n0-computer/iroh-willow
+  cited_in:
+  - claude-deep-research
+  status: done
+  path: inspiration/n0-computer/iroh-willow
+- url: https://github.com/nmslib/hnswlib/issues/330
+  kind: repo
+  title: nmslib/hnswlib
+  cited_in:
+  - claude-deep-research
+  status: done
+  path: inspiration/nmslib/hnswlib
+- url: https://github.com/nomic-ai/nomic-embed-text-v1.5
+  kind: repo
+  title: nomic-ai/nomic-embed-text-v1.5
+  cited_in:
+  - claude
+  status: skipped
+  path: null
+  notes: URL is github.com but the resource lives at huggingface.co/nomic-ai/nomic-embed-text-v1.5 — see that entry
+- url: https://github.com/orbitdb/orbitdb
+  kind: repo
+  title: orbitdb/orbitdb
+  cited_in:
+  - codex
+  status: done
+  path: inspiration/repos/orbitdb__orbitdb
+  notes: git clone depth=1 successful (1.7M)
+- url: https://github.com/ostafen/a556180db7d4c41abb325b5ae5e13ca4
+  kind: repo
+  title: ostafen/a556180db7d4c41abb325b5ae5e13ca4
+  cited_in:
+  - claude
+  status: failed
+  path: null
+  notes: 404; repository not found
+- url: https://github.com/permissionlesstech/bitchat
+  kind: repo
+  title: permissionlesstech/bitchat
+  cited_in:
+  - claude
+  status: done
+  path: inspiration/repos/permissionlesstech__bitchat
+- url: https://github.com/permissionlesstech/bitchat-android
+  kind: repo
+  title: permissionlesstech/bitchat-android
+  cited_in:
+  - claude
+  status: done
+  path: inspiration/repos/permissionlesstech__bitchat-android
+- url: https://github.com/pytorch/executorch
+  kind: repo
+  title: pytorch/executorch
+  cited_in:
+  - claude
+  - codex
+  status: skipped
+  path: null
+  notes: 240M exceeds 50MB limit
+- url: https://github.com/ramanujammv1988/edge-veda
+  kind: repo
+  title: ramanujammv1988/edge-veda
+  cited_in:
+  - claude
+  status: done
+  path: inspiration/repos/ramanujammv1988__edge-veda
+  notes: git clone depth=1 successful (42M)
+- url: https://github.com/sgl-project/sglang/issues/10278
+  kind: repo
+  title: sgl-project/sglang
+  cited_in:
+  - claude-deep-research
+  status: done
+  path: inspiration/sgl-project/sglang
+- url: https://github.com/slidevjs/slidev
+  kind: repo
+  title: slidevjs/slidev
+  cited_in:
+  - claude
+  - codex
+  status: done
+  path: inspiration/repos/slidevjs__slidev
+  notes: shallow clone (29 MB)
+- url: https://github.com/software-mansion-labs/react-native-rag
+  kind: repo
+  title: software-mansion-labs/react-native-rag
+  cited_in:
+  - claude
+  status: done
+  path: inspiration/repos/software-mansion-labs__react-native-rag
+- url: https://github.com/software-mansion/react-native-executorch
+  kind: repo
+  title: software-mansion/react-native-executorch
+  cited_in:
+  - claude
+  status: skipped
+  path: null
+  notes: Repo size 203 MB exceeds 50 MB limit; deleted
+- url: https://github.com/spotify/annoy
+  kind: repo
+  title: spotify/annoy
+  cited_in:
+  - codex
+  status: done
+  path: inspiration/repos/spotify__annoy
+- url: https://github.com/sqliteai/sqlite-vector
+  kind: repo
+  title: sqliteai/sqlite-vector
+  cited_in:
+  - gemini-deep-research
+  status: done
+  path: inspiration/sqliteai/sqlite-vector
+- url: https://github.com/thinking-machines-lab/batch_invariant_ops
+  kind: repo
+  title: thinking-machines-lab/batch_invariant_ops
+  cited_in:
+  - claude
+  status: done
+  path: inspiration/repos/thinking-machines-lab__batch_invariant_ops
+  notes: git clone depth=1 successful (176K)
+- url: https://github.com/unum-cloud/usearch
+  kind: repo
+  title: unum-cloud/usearch
+  cited_in:
+  - claude
+  - claude-deep-research
+  - codex
+  - gemini
+  status: done
+  path: inspiration/repos/unum-cloud__usearch
+  notes: shallow clone (3.1 MB)
+- url: https://github.com/unum-cloud/usearch-benchmarks
+  kind: repo
+  title: unum-cloud/usearch-benchmarks
+  cited_in:
+  - claude-deep-research
+  status: done
+  path: inspiration/unum-cloud/usearch-benchmarks
+- url: https://github.com/upb-cn/MoRAGBench
+  kind: repo
+  title: upb-cn/MoRAGBench
+  cited_in:
+  - gemini-deep-research
+  status: done
+  path: inspiration/upb-cn/MoRAGBench
+- url: https://github.com/varshith-Git/Valori-Kernel
+  kind: repo
+  title: varshith-Git/Valori-Kernel
+  cited_in:
+  - gemini-deep-research
+  status: done
+  path: inspiration/varshith-Git/Valori-Kernel
+- url: https://github.com/xuchenhao001/DRAG
+  kind: repo
+  title: xuchenhao001/DRAG
+  cited_in:
+  - claude-deep-research
+  status: done
+  path: inspiration/xuchenhao001/DRAG
+- url: https://github.com/yjs/yjs
+  kind: repo
+  title: yjs/yjs
+  cited_in:
+  - claude
+  - codex
+  status: done
+  path: inspiration/repos/yjs__yjs
+- url: https://gorilla.cs.berkeley.edu/leaderboard.html
+  kind: other
+  title: gorilla.cs.berkeley.edu
+  cited_in:
+  - claude-deep-research
+  status: done
+  path: inspiration/other/gorilla.cs.berkeley.edu-leaderboard.html
+- url: https://harrisjose.dev/notes
+  kind: other
+  title: harrisjose.dev
+  cited_in:
+  - gemini-deep-research
+  status: done
+  path: inspiration/other/harrisjose.dev-notes
+- url: https://hpbn.co/primer-on-latency-and-bandwidth
+  kind: other
+  title: hpbn.co
+  cited_in:
+  - claude
+  status: done
+  path: inspiration/other/hpbn.co-primer-on-latency-and-bandwidth
+- url: https://huggingface.co/BAAI/bge-small-en-v1.5
+  kind: other
+  title: BAAI/bge-small-en-v1.5
+  cited_in:
+  - chatgpt-deep-research
+  - claude
+  - codex
+  - gemini
+  status: done
+  path: inspiration/other/huggingface.co-BAAI-bge-small-en-v1.5
+  notes: HuggingFace model card; single-file/model-card download expected, not clone
+- url: https://huggingface.co/Cactus-Compute
+  kind: other
+  title: huggingface.co/Cactus-Compute
+  cited_in:
+  - claude
+  - claude-deep-research
+  status: done
+  path: inspiration/other/huggingface.co-Cactus-Compute
+  notes: HuggingFace model card; single-file/model-card download expected, not clone
+- url: https://huggingface.co/HuggingFaceTB/SmolLM2-1.7B
+  kind: other
+  title: HuggingFaceTB/SmolLM2-1.7B
+  cited_in:
+  - claude
+  status: done
+  path: inspiration/other/huggingface.co-HuggingFaceTB-SmolLM2-1.7B
+  notes: HuggingFace model card; single-file/model-card download expected, not clone
+- url: https://huggingface.co/HuggingFaceTB/SmolLM2-1.7B-Instruct
+  kind: other
+  title: HuggingFaceTB/SmolLM2-1.7B-Instruct
+  cited_in:
+  - chatgpt-deep-research
+  - claude
+  status: done
+  path: inspiration/other/huggingface.co-HuggingFaceTB-SmolLM2-1.7B-Instruct
+  notes: HuggingFace model card; single-file/model-card download expected, not clone
+- url: https://huggingface.co/LiquidAI
+  kind: other
+  title: huggingface.co/LiquidAI
+  cited_in:
+  - codex
+  status: done
+  path: inspiration/other/huggingface.co-LiquidAI
+  notes: HuggingFace model card; single-file/model-card download expected, not clone
+- url: https://huggingface.co/Qwen/Qwen2.5-1.5B-Instruct
+  kind: other
+  title: Qwen/Qwen2.5-1.5B-Instruct
+  cited_in:
+  - chatgpt-deep-research
+  - claude
+  - claude-deep-research
+  status: done
+  path: inspiration/other/huggingface.co-Qwen-Qwen2.5-1.5B-Instruct
+  notes: HuggingFace model card; single-file/model-card download expected, not clone
+- url: https://huggingface.co/Qwen/Qwen3-1.7B
+  kind: other
+  title: Qwen/Qwen3-1.7B
+  cited_in:
+  - codex
+  status: done
+  path: inspiration/other/huggingface.co-Qwen-Qwen3-1.7B
+  notes: HuggingFace model card; single-file/model-card download expected, not clone
+- url: https://huggingface.co/Qwen/Qwen3-Embedding-0.6B
+  kind: other
+  title: Qwen/Qwen3-Embedding-0.6B
+  cited_in:
+  - codex
+  status: done
+  path: inspiration/other/huggingface.co-Qwen-Qwen3-Embedding-0.6B
+  notes: HuggingFace model card; single-file/model-card download expected, not clone
+- url: https://huggingface.co/blog/rshemet/cactus-on-device-inference
+  kind: article
+  title: huggingface.co
+  cited_in:
+  - claude-deep-research
+  status: done
+  path: inspiration/articles/huggingface.co-blog-rshemet-cactus-on-device-inference
+- url: https://huggingface.co/google/embeddinggemma-300m
+  kind: other
+  title: google/embeddinggemma-300m
+  cited_in:
+  - claude
+  - claude-deep-research
+  status: done
+  path: inspiration/other/huggingface.co-google-embeddinggemma-300m
+  notes: HuggingFace model card; single-file/model-card download expected, not clone
+- url: https://huggingface.co/google/gemma-2-2b-it
+  kind: other
+  title: google/gemma-2-2b-it
+  cited_in:
+  - claude
+  status: done
+  path: inspiration/other/huggingface.co-google-gemma-2-2b-it
+  notes: HuggingFace model card; single-file/model-card download expected, not clone
+- url: https://huggingface.co/google/gemma-3-1b-it
+  kind: other
+  title: google/gemma-3-1b-it
+  cited_in:
+  - chatgpt-deep-research
+  - claude
+  status: done
+  path: inspiration/other/huggingface.co-google-gemma-3-1b-it
+  notes: HuggingFace model card; single-file/model-card download expected, not clone
+- url: https://huggingface.co/litert-community/Gemma2-2B-IT
+  kind: other
+  title: litert-community/Gemma2-2B-IT
+  cited_in:
+  - claude
+  status: done
+  path: inspiration/other/huggingface.co-litert-community-Gemma2-2B-IT
+  notes: HuggingFace model card; single-file/model-card download expected, not clone
+- url: https://huggingface.co/litert-community/Gemma3-1B-IT
+  kind: other
+  title: litert-community/Gemma3-1B-IT
+  cited_in:
+  - claude
+  status: done
+  path: inspiration/other/huggingface.co-litert-community-Gemma3-1B-IT
+  notes: HuggingFace model card; single-file/model-card download expected, not clone
+- url: https://huggingface.co/litert-community/embeddinggemma-300m
+  kind: other
+  title: huggingface.co
+  cited_in:
+  - claude-deep-research
+  status: done
+  path: inspiration/other/huggingface.co-litert-community-embeddinggemma-300m
+- url: https://huggingface.co/meta-llama/Llama-3.2-1B-Instruct
+  kind: other
+  title: meta-llama/Llama-3.2-1B-Instruct
+  cited_in:
+  - chatgpt-deep-research
+  - claude
+  status: done
+  path: inspiration/other/huggingface.co-meta-llama-Llama-3.2-1B-Instruct
+  notes: HuggingFace model card; single-file/model-card download expected, not clone
+- url: https://huggingface.co/meta-llama/Llama-3.2-3B-Instruct
+  kind: other
+  title: huggingface.co
+  cited_in:
+  - gemini
+  status: done
+  path: inspiration/other/huggingface.co-meta-llama-Llama-3.2-3B-Instruct
+- url: https://huggingface.co/nomic-ai/nomic-embed-text-v1.5
+  kind: other
+  title: nomic-ai/nomic-embed-text-v1.5
+  cited_in:
+  - claude
+  - codex
+  status: done
+  path: inspiration/other/huggingface.co-nomic-ai-nomic-embed-text-v1.5
+  notes: HuggingFace model card; single-file/model-card download expected, not clone
+- url: https://huggingface.co/sentence-transformers/all-MiniLM-L6-v2
+  kind: other
+  title: sentence-transformers/all-MiniLM-L6-v2
+  cited_in:
+  - chatgpt-deep-research
+  - claude
+  - claude-deep-research
+  - codex
+  status: done
+  path: inspiration/other/huggingface.co-sentence-transformers-all-MiniLM-L6-v2
+  notes: HuggingFace model card; single-file/model-card download expected, not clone
+- url: https://huggingface.co/unsloth/embeddinggemma-300m-GGUF
+  kind: other
+  title: huggingface.co
+  cited_in:
+  - claude-deep-research
+  status: done
+  path: inspiration/other/huggingface.co-unsloth-embeddinggemma-300m-GGUF
+- url: https://icml.cc/virtual/2025/poster/43950
+  kind: other
+  title: icml.cc
+  cited_in:
+  - gemini-deep-research
+  status: done
+  path: inspiration/other/icml.cc-virtual-2025-poster-43950
+- url: https://inductivee.com/blog/vector-database-performance-benchmarks-2025
+  kind: article
+  title: inductivee.com
+  cited_in:
+  - claude-deep-research
+  status: done
+  path: inspiration/articles/inductivee.com-blog-vector-database-performance-benchmarks-2025
+- url: https://jax-ml.github.io/scaling-book/inference
+  kind: other
+  title: jax-ml.github.io
+  cited_in:
+  - gemini-deep-research
+  status: done
+  path: inspiration/other/jax-ml.github.io-scaling-book-inference
+- url: https://libraries.io/cargo/peat-protocol
+  kind: other
+  title: libraries.io
+  cited_in:
+  - gemini-deep-research
+  status: done
+  path: inspiration/other/libraries.io-cargo-peat-protocol
+- url: https://llm.mlc.ai/docs
+  kind: other
+  title: llm.mlc.ai
+  cited_in:
+  - chatgpt-deep-research
+  status: done
+  path: inspiration/other/llm.mlc.ai-docs
+- url: https://llm.mlc.ai/docs/deploy/android.html
+  kind: docs
+  title: llm.mlc.ai
+  cited_in:
+  - codex
+  status: done
+  path: inspiration/docs/llm.mlc.ai
+- url: https://llm.mlc.ai/docs/deploy/ios.html
+  kind: docs
+  title: llm.mlc.ai
+  cited_in:
+  - codex
+  status: done
+  path: inspiration/docs/llm.mlc.ai
+- url: https://maggieappleton.com/home-cooked-software
+  kind: other
+  title: maggieappleton.com
+  cited_in:
+  - claude
+  status: done
+  path: inspiration/other/maggieappleton.com-home-cooked-software
+- url: https://martin.kleppmann.com/2024/02/27/local-first-meetup.html
+  kind: other
+  title: martin.kleppmann.com
+  cited_in:
+  - claude-deep-research
+  status: done
+  path: inspiration/other/martin.kleppmann.com-2024-02-27-local-first-meetup.html
+- url: https://martin.kleppmann.com/2024/05/30/local-first-conference.html
+  kind: other
+  title: martin.kleppmann.com
+  cited_in:
+  - claude
+  - claude-deep-research
+  status: done
+  path: inspiration/other/martin.kleppmann.com-2024-05-30-local-first-conference.html
+- url: https://martin.kleppmann.com/2026/02/24/local-first-meetup.html
+  kind: other
+  title: martin.kleppmann.com
+  cited_in:
+  - claude-deep-research
+  status: done
+  path: inspiration/other/martin.kleppmann.com-2026-02-24-local-first-meetup.html
+- url: https://martin.kleppmann.com/papers/local-first.pdf
+  kind: other
+  title: martin.kleppmann.com
+  cited_in:
+  - claude-deep-research
+  status: done
+  path: inspiration/other/martin.kleppmann.com-papers-local-first.pdf
+- url: https://medium.com/@gwrx2005/deterministic-decoding-in-transformer-models-challenges-and-solutions-3ede45b3d039
+  kind: article
+  title: medium.com
+  cited_in:
+  - gemini-deep-research
+  status: failed
+  path: null
+  notes: 'download error: exit 56: curl: (56) The requested URL returned error: 403
+
+    '
+- url: https://medium.com/google-developer-experts/develop-an-on-device-rag-system-powered-by-gemma-models-f7cdb7bca221
+  kind: article
+  title: medium.com
+  cited_in:
+  - claude-deep-research
+  status: failed
+  path: null
+  notes: 'download error: exit 56: curl: (56) The requested URL returned error: 403
+
+    '
+- url: https://medium.com/google-developer-experts/embedding-gemma-running-on-device-20b0c9aeac30
+  kind: article
+  title: medium.com
+  cited_in:
+  - claude-deep-research
+  status: failed
+  path: null
+  notes: 'download error: exit 56: curl: (56) The requested URL returned error: 403
+
+    '
+- url: https://mfontanini.github.io/presenterm
+  kind: other
+  title: mfontanini.github.io
+  cited_in:
+  - claude
+  status: done
+  path: inspiration/other/mfontanini.github.io-presenterm
+- url: https://neuropilot.mediatek.com
+  kind: other
+  title: neuropilot.mediatek.com
+  cited_in:
+  - codex
+  status: done
+  path: inspiration/other/neuropilot.mediatek.com
+- url: https://nlnet.nl/project/Earthstar/interview.html
+  kind: other
+  title: nlnet.nl
+  cited_in:
+  - claude-deep-research
+  status: done
+  path: inspiration/other/nlnet.nl-project-Earthstar-interview.html
+- url: https://ollama.com/library/embeddinggemma
+  kind: other
+  title: ollama.com
+  cited_in:
+  - claude-deep-research
+  status: done
+  path: inspiration/other/ollama.com-library-embeddinggemma
+- url: https://onnxruntime.ai/docs/execution-providers/NNAPI-ExecutionProvider.html
+  kind: docs
+  title: onnxruntime.ai
+  cited_in:
+  - codex
+  status: done
+  path: inspiration/docs/onnxruntime.ai
+- url: https://onnxruntime.ai/docs/genai
+  kind: docs
+  title: onnxruntime.ai
+  cited_in:
+  - chatgpt-deep-research
+  status: failed
+  path: null
+  notes: 'download error: exit 3: '
+- url: https://onnxruntime.ai/docs/performance/model-optimizations/quantization.html
+  kind: docs
+  title: onnxruntime.ai
+  cited_in:
+  - chatgpt-deep-research
+  status: done
+  path: inspiration/docs/onnxruntime.ai
+- url: https://onnxruntime.ai/docs/tutorials/mobile
+  kind: docs
+  title: onnxruntime.ai
+  cited_in:
+  - codex
+  status: failed
+  path: null
+  notes: 'download error: exit 3: '
+- url: https://opencollective.com/earthstar
+  kind: other
+  title: opencollective.com
+  cited_in:
+  - claude-deep-research
+  status: failed
+  path: null
+  notes: 'download error: exit 56: curl: (56) The requested URL returned error: 404
+
+    '
+- url: https://powersync.com/blog/ditto-vs-powersync
+  kind: article
+  title: powersync.com
+  cited_in:
+  - gemini-deep-research
+  status: done
+  path: inspiration/articles/powersync.com-blog-ditto-vs-powersync
+- url: https://powersync.com/blog/local-first-software-origins-and-evolution
+  kind: article
+  title: powersync.com
+  cited_in:
+  - claude-deep-research
+  status: done
+  path: inspiration/articles/powersync.com-blog-local-first-software-origins-and-evolution
+- url: https://pytorch.org/blog/executorch-beta
+  kind: article
+  title: pytorch.org
+  cited_in:
+  - claude
+  status: done
+  path: inspiration/articles/pytorch.org-blog-executorch-beta
+- url: https://qdrant.tech/benchmarks
+  kind: other
+  title: qdrant.tech
+  cited_in:
+  - chatgpt-deep-research
+  - claude
+  - codex
+  status: done
+  path: inspiration/other/qdrant.tech-benchmarks
+- url: https://raw.githubusercontent.com/cactus-compute/cactus/main/docs/cactus_engine.md
+  kind: other
+  title: github.com
+  cited_in:
+  - claude
+  - gemini-deep-research
+  status: done
+  path: inspiration/other/raw.githubusercontent.com-cactus-compute-cactus-main-docs-cactus_engine.md
+  notes: (reclassified repo→other; was https://github.com/cactus-compute/cactus/blob/main/docs/cactus_engine.md) — fetching raw
+- url: https://raw.githubusercontent.com/ggml-org/ggml/master/docs/gguf.md
+  kind: other
+  title: github.com
+  cited_in:
+  - codex
+  status: done
+  path: inspiration/other/raw.githubusercontent.com-ggml-org-ggml-master-docs-gguf.md
+  notes: (reclassified repo→other; was https://github.com/ggml-org/ggml/blob/master/docs/gguf.md) — fetching raw
+- url: https://raw.githubusercontent.com/ggml-org/llama.cpp/master/docs/build.md
+  kind: other
+  title: github.com
+  cited_in:
+  - claude
+  status: done
+  path: inspiration/other/raw.githubusercontent.com-ggml-org-llama.cpp-master-docs-build.md
+  notes: (reclassified repo→other; was https://github.com/ggml-org/llama.cpp/blob/master/docs/build.md) — fetching raw
+- url: https://raw.githubusercontent.com/mfontanini/presenterm/master/examples/demo.md
+  kind: other
+  title: github.com
+  cited_in:
+  - claude
+  status: done
+  path: inspiration/other/raw.githubusercontent.com-mfontanini-presenterm-master-examples-demo.md
+  notes: (reclassified repo→other; was https://github.com/mfontanini/presenterm/blob/master/examples/demo.md) — fetching raw
+- url: https://raw.githubusercontent.com/unum-cloud/usearch/main/sqlite/README.md
+  kind: other
+  title: unum-cloud/usearch
+  cited_in:
+  - claude-deep-research
+  status: done
+  path: inspiration/other/raw.githubusercontent.com-unum-cloud-usearch-main-sqlite-README.md
+  notes: (reclassified repo→other; was https://github.com/unum-cloud/usearch/blob/main/sqlite/README.md) — fetching raw
+- url: https://resources.ditto.live/developers
+  kind: other
+  title: resources.ditto.live
+  cited_in:
+  - claude-deep-research
+  - gemini-deep-research
+  status: done
+  path: inspiration/other/resources.ditto.live-developers
+- url: https://revealjs.com
+  kind: other
+  title: revealjs.com
+  cited_in:
+  - claude
+  status: done
+  path: inspiration/other/revealjs.com
+- url: https://rxdb.info/vector-search.html
+  kind: other
+  title: rxdb.info
+  cited_in:
+  - gemini
+  status: failed
+  path: null
+  notes: 'download error: exit 56: curl: (56) The requested URL returned error: 404
+
+    '
+- url: https://se-radio.net/2026/04/se-radio-716-martin-kleppmann-local-first-software
+  kind: other
+  title: se-radio.net
+  cited_in:
+  - claude-deep-research
+  status: done
+  path: inspiration/other/se-radio.net-2026-04-se-radio-716-martin-kleppmann-local-first-software
+- url: https://sli.dev/guide
+  kind: article
+  title: sli.dev
+  cited_in:
+  - claude
+  status: done
+  path: inspiration/articles/sli.dev-guide
+- url: https://speakerdeck.com/ept/the-past-present-and-future-of-local-first
+  kind: other
+  title: speakerdeck.com
+  cited_in:
+  - claude-deep-research
+  status: done
+  path: inspiration/other/speakerdeck.com-ept-the-past-present-and-future-of-local-first
+- url: https://supermemory.ai/blog/best-open-source-embedding-models-benchmarked-and-ranked
+  kind: article
+  title: supermemory.ai
+  cited_in:
+  - gemini-deep-research
+  status: done
+  path: inspiration/articles/supermemory.ai-blog-best-open-source-embedding-models-benchmarked-and-ranked
+- url: https://support.apple.com/en-us/102647
+  kind: other
+  title: support.apple.com
+  cited_in:
+  - codex
+  status: done
+  path: inspiration/other/support.apple.com-en-us-102647
+- url: https://sy6xxuj5rs5nwwun.public.blob.vercel-storage.com/images/MongoDB__Ditto_Reference_Architecture_Guide-pCdhhPzWyWDFEZjnPFB5LxrqRq0BVu.pdf
+  kind: other
+  title: sy6xxuj5rs5nwwun.public.blob.vercel-storage.com
+  cited_in:
+  - gemini-deep-research
+  status: done
+  path: inspiration/other/sy6xxuj5rs5nwwun.public.blob.vercel-storage.com-images-MongoDB__Ditto_Reference_Architecture_Guide-pCdhhPzWyWDFEZjnPFB5L
+- url: https://thinkingmachines.ai/blog/defeating-nondeterminism-in-llm-inference
+  kind: article
+  title: thinkingmachines.ai
+  cited_in:
+  - claude
+  - claude-deep-research
+  status: done
+  path: inspiration/articles/thinkingmachines.ai-blog-defeating-nondeterminism-in-llm-inference
+- url: https://tiger-ai-lab.github.io/StructEval
+  kind: other
+  title: tiger-ai-lab.github.io
+  cited_in:
+  - gemini-deep-research
+  status: done
+  path: inspiration/other/tiger-ai-lab.github.io-StructEval
+- url: https://willowprotocol.org
+  kind: other
+  title: willowprotocol.org
+  cited_in:
+  - claude-deep-research
+  status: done
+  path: inspiration/other/willowprotocol.org
+- url: https://willowprotocol.org/earthstar/spec
+  kind: other
+  title: willowprotocol.org
+  cited_in:
+  - claude
+  status: failed
+  path: null
+  notes: 'download error: exit 56: curl: (56) The requested URL returned error: 404
+
+    '
+- url: https://willowprotocol.org/more/willow_compared/index.html
+  kind: other
+  title: willowprotocol.org
+  cited_in:
+  - claude-deep-research
+  status: done
+  path: inspiration/other/willowprotocol.org-more-willow_compared-index.html
+- url: https://www.alchemistaccelerator.com/blog/bridgefy-the-offline-messaging-app-revolutionizing-crisis-communication-worldwide
+  kind: article
+  title: alchemistaccelerator.com
+  cited_in:
+  - claude-deep-research
+  status: done
+  path: inspiration/articles/www.alchemistaccelerator.com-blog-bridgefy-the-offline-messaging-app-revolutionizing-crisis-communication-worldwide
+- url: https://www.bentoml.com/blog/a-guide-to-open-source-embedding-models
+  kind: article
+  title: bentoml.com
+  cited_in:
+  - claude-deep-research
+  status: done
+  path: inspiration/articles/www.bentoml.com-blog-a-guide-to-open-source-embedding-models
+- url: https://www.ditto.com/blog/ditto-sdk-v5
+  kind: article
+  title: ditto.com
+  cited_in:
+  - gemini-deep-research
+  status: done
+  path: inspiration/articles/www.ditto.com-blog-ditto-sdk-v5
+- url: https://www.ditto.com/blog/dittos-delta-state-crdts
+  kind: article
+  title: www.ditto.com
+  cited_in:
+  - claude
+  status: done
+  path: inspiration/articles/www.ditto.com-blog-dittos-delta-state-crdts
+- url: https://www.ditto.com/blog/getting-started-with-bluetooth-file-sync
+  kind: article
+  title: ditto.com
+  cited_in:
+  - gemini-deep-research
+  status: done
+  path: inspiration/articles/www.ditto.com-blog-getting-started-with-bluetooth-file-sync
+- url: https://www.ditto.com/blog/how-to-build-robust-offline-first-apps-a-technical-guide-to-conflict-resolution-with-crdts-and-ditto
+  kind: article
+  title: ditto.com
+  cited_in:
+  - gemini-deep-research
+  status: done
+  path: inspiration/articles/www.ditto.com-blog-how-to-build-robust-offline-first-apps-a-technical-guide-to-conflict-resolution-with-crdts-and-ditto
+- url: https://www.ditto.com/demo-apps
+  kind: other
+  title: www.ditto.com
+  cited_in:
+  - codex
+  status: done
+  path: inspiration/other/www.ditto.com-demo-apps
+- url: https://www.ditto.com/platform/edge-sync
+  kind: other
+  title: ditto.com
+  cited_in:
+  - gemini-deep-research
+  status: done
+  path: inspiration/other/www.ditto.com-platform-edge-sync
+- url: https://www.ditto.com/products/edge-sdk
+  kind: other
+  title: ditto.com
+  cited_in:
+  - gemini-deep-research
+  status: done
+  path: inspiration/other/www.ditto.com-products-edge-sdk
+- url: https://www.ditto.com/solutions/conflict-resolution-powered-by-crdts
+  kind: other
+  title: ditto.com
+  cited_in:
+  - gemini-deep-research
+  status: done
+  path: inspiration/other/www.ditto.com-solutions-conflict-resolution-powered-by-crdts
+- url: https://www.ditto.com/solutions/offline-first-architecture
+  kind: other
+  title: ditto.com
+  cited_in:
+  - gemini-deep-research
+  status: done
+  path: inspiration/other/www.ditto.com-solutions-offline-first-architecture
+- url: https://www.fcc.gov/reports-research/reports/measuring-broadband-america/measuring-broadband-america-mobile-data
+  kind: other
+  title: www.fcc.gov
+  cited_in:
+  - codex
+  status: failed
+  path: null
+  notes: 'download error: exit 92: curl: (92) HTTP/2 stream 1 was not closed cleanly: INTERNAL_ERROR (err 2)
+
+    '
+- url: https://www.firecrawl.dev/blog/best-vector-databases
+  kind: article
+  title: firecrawl.dev
+  cited_in:
+  - claude-deep-research
+  status: done
+  path: inspiration/articles/www.firecrawl.dev-blog-best-vector-databases
+- url: https://www.infoq.com/news/2025/12/cactus-on-device-inference
+  kind: other
+  title: infoq.com
+  cited_in:
+  - claude-deep-research
+  - gemini-deep-research
+  status: done
+  path: inspiration/other/www.infoq.com-news-2025-12-cactus-on-device-inference
+- url: https://www.infoq.com/presentations/local-first-build-software
+  kind: other
+  title: infoq.com
+  cited_in:
+  - claude-deep-research
+  status: done
+  path: inspiration/other/www.infoq.com-presentations-local-first-build-software
+- url: https://www.ingonyama.com/post/solving-reproducibility-challenges-in-deep-learning-and-llms-our-journey
+  kind: other
+  title: www.ingonyama.com
+  cited_in:
+  - claude
+  status: done
+  path: inspiration/other/www.ingonyama.com-post-solving-reproducibility-challenges-in-deep-learning-and-llms-our-journey
+- url: https://www.inkandswitch.com/essay/local-first
+  kind: other
+  title: www.inkandswitch.com
+  cited_in:
+  - claude
+  status: done
+  path: inspiration/other/www.inkandswitch.com-essay-local-first
+- url: https://www.inkandswitch.com/local-first
+  kind: other
+  title: www.inkandswitch.com
+  cited_in:
+  - claude-deep-research
+  - codex
+  - gemini
+  status: done
+  path: inspiration/other/www.inkandswitch.com-local-first
+- url: https://www.inkandswitch.com/malleable-software
+  kind: other
+  title: www.inkandswitch.com
+  cited_in:
+  - gemini
+  status: done
+  path: inspiration/other/www.inkandswitch.com-malleable-software
+- url: https://www.iroh.computer
+  kind: other
+  title: iroh.computer
+  cited_in:
+  - claude-deep-research
+  status: done
+  path: inspiration/other/www.iroh.computer
+- url: https://www.iroh.computer/blog/comparing-iroh-and-libp2p
+  kind: article
+  title: www.iroh.computer
+  cited_in:
+  - claude
+  status: done
+  path: inspiration/articles/www.iroh.computer-blog-comparing-iroh-and-libp2p
+- url: https://www.llama.com/llama3_1/license
+  kind: other
+  title: www.llama.com
+  cited_in:
+  - claude
+  status: done
+  path: inspiration/other/www.llama.com-llama3_1-license
+- url: https://www.llama.com/llama3_2/license
+  kind: other
+  title: www.llama.com
+  cited_in:
+  - codex
+  status: done
+  path: inspiration/other/www.llama.com-llama3_2-license
+- url: https://www.lmsys.org/blog/2025-09-22-sglang-deterministic
+  kind: article
+  title: www.lmsys.org
+  cited_in:
+  - claude
+  status: done
+  path: inspiration/articles/www.lmsys.org-blog-2025-09-22-sglang-deterministic
+- url: https://www.localfirst.fm/13
+  kind: other
+  title: www.localfirst.fm
+  cited_in:
+  - claude
+  status: done
+  path: inspiration/other/www.localfirst.fm-13
+- url: https://www.localfirstconf.com/local-first-conf-2024
+  kind: other
+  title: www.localfirstconf.com
+  cited_in:
+  - claude
+  status: done
+  path: inspiration/other/www.localfirstconf.com-local-first-conf-2024
+- url: https://www.loro.dev
+  kind: other
+  title: www.loro.dev
+  cited_in:
+  - codex
+  status: failed
+  path: null
+  notes: 'download error: exit 56: curl: (56) The requested URL returned error: 403
+
+    '
+- url: https://www.pinecone.io
+  kind: other
+  title: pinecone.io
+  cited_in:
+  - chatgpt-deep-research
+  status: done
+  path: inspiration/other/www.pinecone.io
+- url: https://www.pinecone.io/product
+  kind: other
+  title: www.pinecone.io
+  cited_in:
+  - codex
+  status: done
+  path: inspiration/other/www.pinecone.io-product
+- url: https://www.promptquorum.com/power-local-llm/mobile-llm-models-phi4-gemma-smollm
+  kind: other
+  title: promptquorum.com
+  cited_in:
+  - claude-deep-research
+  status: done
+  path: inspiration/other/www.promptquorum.com-power-local-llm-mobile-llm-models-phi4-gemma-smollm
+- url: https://www.reddit.com/r/LocalLLaMA/comments/19f9z64/running_a_local_model_with_8gb_vram_is_it_even
+  kind: other
+  title: reddit.com
+  cited_in:
+  - gemini-deep-research
+  status: done
+  path: inspiration/other/www.reddit.com-r-LocalLLaMA-comments-19f9z64-running_a_local_model_with_8gb_vram_is_it_even
+- url: https://www.reddit.com/r/Python/comments/1qlx02c/generate_openai_embeddings_locally_with_minilm
+  kind: other
+  title: reddit.com
+  cited_in:
+  - gemini-deep-research
+  status: done
+  path: inspiration/other/www.reddit.com-r-Python-comments-1qlx02c-generate_openai_embeddings_locally_with_minilm
+- url: https://www.reddit.com/r/Unity3D/comments/lkxb9d/crossplatform_deterministic_physics_with_unity
+  kind: other
+  title: reddit.com
+  cited_in:
+  - gemini-deep-research
+  status: done
+  path: inspiration/other/www.reddit.com-r-Unity3D-comments-lkxb9d-crossplatform_deterministic_physics_with_unity
+- url: https://www.reddit.com/r/deeplearning/comments/1kbucat/cactus_framework_for_ondevice_ai
+  kind: other
+  title: reddit.com
+  cited_in:
+  - gemini-deep-research
+  status: done
+  path: inspiration/other/www.reddit.com-r-deeplearning-comments-1kbucat-cactus_framework_for_ondevice_ai
+- url: https://www.reddit.com/r/rust/comments/gyeaik/this_month_in_rustsim_11_april_may_2020
+  kind: other
+  title: reddit.com
+  cited_in:
+  - gemini-deep-research
+  status: done
+  path: inspiration/other/www.reddit.com-r-rust-comments-gyeaik-this_month_in_rustsim_11_april_may_2020
+- url: https://www.researchgate.net/publication/399174596_Valori_A_Deterministic_Memory_Substrate_for_AI_Systems
+  kind: other
+  title: researchgate.net
+  cited_in:
+  - gemini-deep-research
+  status: failed
+  path: null
+  notes: 'download error: exit 56: curl: (56) The requested URL returned error: 403
+
+    '
+- url: https://www.salttechno.ai/datasets/vector-database-performance-benchmark-2026
+  kind: other
+  title: www.salttechno.ai
+  cited_in:
+  - claude
+  - claude-deep-research
+  status: done
+  path: inspiration/other/www.salttechno.ai-datasets-vector-database-performance-benchmark-2026
+- url: https://www.sbir.gov/portfolio/1629457
+  kind: other
+  title: sbir.gov
+  cited_in:
+  - gemini-deep-research
+  status: failed
+  path: null
+  notes: 'download error: exit 56: curl: (56) The requested URL returned error: 403
+
+    '
+- url: https://www.stuartcheshire.org/rants/Latency.html
+  kind: other
+  title: www.stuartcheshire.org
+  cited_in:
+  - codex
+  status: done
+  path: inspiration/other/www.stuartcheshire.org-rants-Latency.html
+- url: https://www.tensorflow.org/api_docs/python/tf/config/experimental/enable_op_determinism
+  kind: other
+  title: tensorflow.org
+  cited_in:
+  - chatgpt-deep-research
+  status: done
+  path: inspiration/other/www.tensorflow.org-api_docs-python-tf-config-experimental-enable_op_determinism
+- url: https://www.thejournal.club/c/paper/938963
+  kind: other
+  title: thejournal.club
+  cited_in:
+  - gemini-deep-research
+  status: done
+  path: inspiration/other/www.thejournal.club-c-paper-938963
+- url: https://www.themoonlight.io/fr/review/the-silent-hyperparameter-quantifying-the-impact-of-inference-backends-on-llm-reproducibility
+  kind: other
+  title: themoonlight.io
+  cited_in:
+  - gemini-deep-research
+  status: done
+  path: inspiration/other/www.themoonlight.io-fr-review-the-silent-hyperparameter-quantifying-the-impact-of-inference-backends-on-llm-reproducibil
+- url: https://www.ycombinator.com/companies/cactus
+  kind: other
+  title: ycombinator.com
+  cited_in:
+  - claude-deep-research
+  status: done
+  path: inspiration/other/www.ycombinator.com-companies-cactus
+- url: https://www.youtube.com/watch?v=qo5m92-9_QI
+  kind: other
+  title: www.youtube.com
+  cited_in:
+  - claude
+  status: done
+  path: inspiration/other/www.youtube.com-watch

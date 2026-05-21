@@ -4,9 +4,6 @@
 # Most-volatile section. Add language and tooling ignores here.
 # No upstream — curated per project.
 
-# --- Researcher pipeline artifacts ---
-inspiration/
-
 # --- c4-design build output ---
 # (rebuild with: npx likec4@latest build docs/c4 -o docs/c4/dashboard)
 docs/c4/dashboard/
@@ -177,6 +174,9 @@ app.*.symbols
 .claude/**/*.log
 CLAUDE.local.md
 # .claude/
+
+# Researcher pipeline worker scratch (download buckets, index batches)
+.claude/workers/
 
 # Gemini CLI
 gemini-debug.log
