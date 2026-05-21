@@ -1,3 +1,24 @@
+# ============================================================
+# Project-specific (language, build tools, dependencies)
+# ============================================================
+# Most-volatile section. Add language and tooling ignores here.
+# No upstream — curated per project.
+
+# --- Researcher pipeline artifacts ---
+inspiration/
+
+# --- c4-design build output ---
+# (rebuild with: npx likec4@latest build docs/c4 -o docs/c4/dashboard)
+docs/c4/dashboard/
+
+
+# ============================================================
+# Flutter / Dart
+# ============================================================
+# Source:    https://github.com/flutter/flutter/blob/master/.gitignore
+# Last sync: 2026-05-22
+# Re-sync:   see AGENTS.md
+
 # Miscellaneous
 *.class
 *.lock
@@ -6,8 +27,6 @@
 *.swp
 .buildlog/
 .history
-
-
 
 # Flutter repo-specific
 /bin/cache/
@@ -39,8 +58,12 @@ analysis_benchmark.json
 **/generated_plugin_registrant.dart
 .packages
 .pub-preload-cache/
+.pub-cache/
 .pub/
 build/
+.metadata
+*.iml
+.idea/
 flutter_*.png
 linked_*.ds
 unlinked.ds
@@ -78,16 +101,16 @@ unlinked_spec.ds
 **/ios/Flutter/App.framework
 **/ios/Flutter/Flutter.framework
 **/ios/Flutter/Flutter.podspec
+**/ios/Flutter/flutter_export_environment.sh
 **/ios/Flutter/Generated.xcconfig
 **/ios/Flutter/ephemeral
 **/ios/Flutter/app.flx
 **/ios/Flutter/app.zip
 **/ios/Flutter/flutter_assets/
-**/ios/Flutter/flutter_export_environment.sh
 **/ios/ServiceDefinitions.json
 **/ios/Runner/GeneratedPluginRegistrant.*
 
-# macOS
+# macOS (Flutter)
 **/Flutter/ephemeral/
 **/Pods/
 **/macos/Flutter/GeneratedPluginRegistrant.swift
@@ -117,3 +140,196 @@ app.*.symbols
 !**/ios/**/default.perspectivev3
 !/packages/flutter_tools/test/data/dart_dependencies_test/**/.packages
 !/dev/ci/**/Gemfile.lock
+
+
+# ============================================================
+# Agents
+# ============================================================
+# Source:    https://github.com/github/gitignore/blob/main/Global/Agents.gitignore
+# Last sync: 2026-05-22
+# Re-sync:   see AGENTS.md
+
+# AI agents and assistants
+#
+# Some common agent instruction and project configuration files are listed
+# below as commented-out examples. They are often intentionally committed and
+# shared with a team, so only uncomment them if they are local-only in your
+# project.
+
+# GEMINI.md
+# WARP.md
+# CRUSH.md
+# QWEN.md
+
+# OpenAI Codex
+# AGENTS.md
+# .codex/
+
+# Aider
+.aider.input.history
+.aider.chat.history.md
+.aider.llm.history
+.aider.tags.cache.v*
+# .aiderignore
+
+# Claude Code
+.claude/*.local.json
+.claude/**/*.log
+CLAUDE.local.md
+# .claude/
+
+# Gemini CLI
+gemini-debug.log
+.gemini-clipboard/
+# .gemini/
+
+# Cursor AI
+# .cursorrules
+# .cursor/
+# .cursor.json
+# .cursor-settings.yaml
+
+# Continue
+# .continue/
+# .continuerc.json
+
+# Cline
+# .cline/
+# .clinerules
+# cline.json
+
+# Other agent/editor project config
+# .warp/
+# .crush/
+# .codeium/
+# .deepseek/
+# .amazon-codewhisperer/
+# .tabnineignore
+# .tabnine/
+
+# GitHub Copilot
+# .github/copilot-instructions.md
+
+# Windsurf Editor
+# .windsurfrules
+# .windsurf/
+
+# Replit AI Development
+# .replit
+# replit.nix
+
+
+# ============================================================
+# Agent plugins (curated)
+# ============================================================
+# Patterns for third-party agent plugins that aren't in
+# github/gitignore's Agents.gitignore upstream. Each plugin notes
+# its source URL inline. Update by hand when plugins drift.
+
+# Understand-Anything (https://github.com/Lum1104/Understand-Anything)
+.understand-anything/intermediate/
+.understand-anything/tmp/
+.understand-anything/*.json
+!.understand-anything/.understandignore
+
+
+# ============================================================
+# Shell
+# ============================================================
+# Curated. No upstream. Add shell-specific ignores here.
+
+# dotenv environment variable files
+# (Ditto license token must not be committed)
+.env
+.env.*
+!.env.example
+
+
+# ============================================================
+# Editor
+# ============================================================
+# Source:    https://github.com/github/gitignore/blob/main/Global/VisualStudioCode.gitignore
+# Last sync: 2026-05-22
+# Re-sync:   see AGENTS.md
+
+# Visual Studio Code
+.vscode/*
+!.vscode/settings.json
+!.vscode/tasks.json
+!.vscode/launch.json
+!.vscode/extensions.json
+!.vscode/*.code-snippets
+!*.code-workspace
+
+# Built Visual Studio Code Extensions
+*.vsix
+
+
+# ============================================================
+# Operating System (macOS)
+# ============================================================
+# Source:    https://github.com/github/gitignore/blob/main/Global/macOS.gitignore
+# Last sync: 2026-05-22
+# Re-sync:   see AGENTS.md
+# WARNING:   contains literal \r on the Icon and HFS+ lines — preserve via git clone, never web copy/paste
+
+# General
+.DS_Store
+.localized
+__MACOSX/
+.AppleDouble
+.LSOverride
+Icon[
+]
+
+# Resource forks
+._*
+
+# Files and directories that might appear in the root of a volume
+.DocumentRevisions-V100
+.fseventsd
+.Spotlight-V100
+.TemporaryItems
+.Trashes
+.VolumeIcon.icns
+.com.apple.timemachine.donotpresent
+.com.apple.timemachine.supported
+.PKInstallSandboxManager
+.PKInstallSandboxManager-SystemSoftware
+.hotfiles.btree
+.vol
+.file
+.disk_label*
+lost+found
+.HFS+ Private Directory Data[
+]
+
+# Directories potentially created on remote AFP share
+.AppleDB
+.AppleDesktop
+Network Trash Folder
+Temporary Items
+.apdisk
+
+# Mac OS 6 to 9
+Desktop DB
+Desktop DF
+TheFindByContentFolder
+TheVolumeSettingsFolder
+.FBCIndex
+.FBCSemaphoreFile
+.FBCLockFolder
+
+# Quota system
+.quota.group
+.quota.user
+.quota.ops.group
+.quota.ops.user
+
+# TimeMachine
+Backups.backupdb
+.MobileBackups
+.MobileBackups.trash
+MobileBackups.trash
+tmbootpicker.efi
+
