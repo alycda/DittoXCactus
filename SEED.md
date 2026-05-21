@@ -22,7 +22,17 @@ The deliverable is a blog-post-shaped artifact: a working two-device demo plus a
 
 **Secondary use case:** A live hackathon demo + writeup that frames Ditto's mesh-sync primitive as the missing infrastructure layer for edge AI, and Cactus's identical-cross-platform model packaging as the missing primitive for distributed inference. Both companies get a concrete shared story.
 
-**Future-work angle (writeup):** The hackathon ships a *generalist* small LLM because that's what fits on-device today. The natural next move — and the framing the writeup should leave the reader with — is that the mesh's right granularity is *specialized* small models, one per domain (a sous-chef model for recipes, a service-manual expert for cars, a triage model for symptoms). The CRDT story compounds: not only do corpora merge when devices meet, *expertise* composes when specialist models meet. Generalist-today is a Stage-0 simplification, not the destination.
+**Future-work angle (writeup):** The hackathon ships a *generalist* small LLM because that's what fits on-device today, and a flat grow-only set as the merge semantic. The natural next moves — and the framing the writeup should leave the reader with — are:
+
+1. **Specialist small models, not generalists.** The mesh's right granularity is *specialized* small models, one per domain (a sous-chef for recipes, a service-manual expert for cars, a triage model for symptoms). The CRDT story compounds: not only do corpora merge when devices meet, *expertise* composes when specialist models meet.
+
+2. **Preference-aware merge.** Today every contribution wins. Tomorrow, the merge respects taste — if the audience submits a chicken tortilla soup recipe with avocado but you don't like avocado, your phone's synthesized recipe quietly omits it (unless the small LLM can argue you wouldn't taste it). The contribution is still in the CRDT; the *retrieval/synthesis* is preference-weighted at query time.
+
+3. **Adversarial / mistake filtering.** Not every suggestion deserves to land. The grow-only set keeps everything; the *promotion* of a contribution into the "canonical" recipe might need consensus, reputation, or provenance signals. This is a real CRDT-extension problem.
+
+4. **Generational evolution.** Recipes drift over time even with the same people involved — taste shifts, ingredients become available, old steps get pruned. A temporal-weighting layer on retrieval ("recent contributions weigh more") or an explicit "branch when tastes diverge" semantic both feel right. Family recipes through generations is the load-bearing analogy.
+
+Generalist + flat union is Stage 0. The thesis the writeup lands on is: *the mesh's natural unit is small specialists, and the merge's natural shape is preference-aware. Family recipes — written down, passed through generations, quietly mutating along the way — are what this looks like when it works for humans.*
 
 ---
 

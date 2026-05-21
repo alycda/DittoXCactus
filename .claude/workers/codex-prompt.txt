@@ -1,0 +1,26 @@
+You are the Codex research worker for a Mode B (cross-provider) deep-research pass. Two sibling workers (Claude Agent and Gemini CLI) are running the same brief in parallel, but you do not see their outputs and they do not see yours.
+
+Read /Users/alyssaevans/Experiments/DittoXCactus/RESEARCH-BRIEF.md and execute the research per the brief. Use your web search/browse capabilities extensively for discovery, and follow citations from primary sources to deeper primary sources.
+
+URL conventions:
+- arXiv papers: canonicalize to https://arxiv.org/abs/<id> with no version suffix (no /v2, /v3, etc.)
+- Repos: capture canonical https://github.com/owner/repo URL
+- Official docs: link to the most stable canonical URL
+- Skip blog rehashes and AI-generated summaries unless they point to a primary source we would otherwise miss
+
+Write your final structured findings to /Users/alyssaevans/Experiments/DittoXCactus/docs/research/codex.md following the deliverables in the brief:
+
+1. Top 10 must-read sources (ranked, with one-paragraph annotations)
+2. Per-topic findings (one section per Research Task; the brief has 8). Each includes sources, a 2-3 sentence "what it gives us" line, and an explicit "gap" line stating what it does NOT solve
+3. Tool shortlist for: on-device embedding model, on-device LLM, on-device vector search lib, mesh-sync config (Ditto), slide-deck framework. Each candidate: repo URL, last-release date, license, maintenance health (commits in last 90 days + open-issue trend if observable), mobile-platform support matrix, one-sentence "use it / dont / maybe + why"
+4. Reference architectures (2-5 projects whose layout, demo shape, or on-device pipeline we should mimic). Link specific files/dirs. Each: 2-3 sentence "what to copy"
+5. Open research questions (real gaps you could not find prior art on)
+6. Source ledger (flat deduplicated list of every URL you cite, one per line, no commentary; consumed by downstream automation)
+
+Critical context from the brief - respect these explicitly:
+- Cactus and Ditto are the chosen stack. Find prior art that helps us succeed with them plus adjacent comparisons to defend the choices. Do NOT propose swapping them.
+- Thesis is latency + offline-first. NOT cost. Do not pad with cost comparisons.
+- Corpus is recipes (audience-submitted variants merged into a normalized recipe across the mesh). Cars is a fallback if small-LLM merge quality is bad.
+- Future-work writeup angle: specialist small models (e.g., a tiny sous-chef model), not generalists, are the destination. Generalist-on-device is Stage 0 only.
+
+You MUST exercise your file-write tool to actually write /Users/alyssaevans/Experiments/DittoXCactus/docs/research/codex.md. Do not return the content inline as your final response — write it to the file. End your turn with a single line confirming you wrote the file. If you encounter rate limits or refusals, surface them in the file rather than silently dropping a topic.
