@@ -1,0 +1,47 @@
+[
+  {
+    "id": "paper-2308.14963",
+    "kind": "paper",
+    "path": "inspiration/papers/2308.14963.pdf"
+  },
+  {
+    "id": "paper-2406.10290",
+    "kind": "paper",
+    "path": "inspiration/papers/2406.10290.pdf"
+  },
+  {
+    "id": "paper-2505.11783",
+    "kind": "paper",
+    "path": "inspiration/papers/2505.11783.pdf"
+  },
+  {
+    "id": "paper-2604.15484",
+    "kind": "paper",
+    "path": "inspiration/papers/2604.15484.pdf"
+  },
+  {
+    "id": "repo-earthstar-project-willow-rs",
+    "kind": "repo",
+    "path": "inspiration/repos/earthstar-project__willow-rs"
+  },
+  {
+    "id": "repo-hakimel-reveal-js",
+    "kind": "repo",
+    "path": "inspiration/repos/hakimel__reveal.js"
+  },
+  {
+    "id": "repo-permissionlesstech-bitchat",
+    "kind": "repo",
+    "path": "inspiration/repos/permissionlesstech__bitchat"
+  },
+  {
+    "id": "docs-bridgefy-sdk",
+    "kind": "docs",
+    "path": "inspiration/docs/bridgefy-sdk"
+  },
+  {
+    "id": "docs-docs-ditto-live",
+    "kind": "docs",
+    "path": "inspiration/docs/docs.ditto.live"
+  }
+]

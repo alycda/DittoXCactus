@@ -1,0 +1,92 @@
+[
+  {
+    "url": "https://arxiv.org/abs/2301.07788",
+    "kind": "paper",
+    "title": "arXiv 2301.07788"
+  },
+  {
+    "url": "https://arxiv.org/abs/2402.01613",
+    "kind": "paper",
+    "title": "arXiv 2402.01613"
+  },
+  {
+    "url": "https://arxiv.org/abs/2406.10290",
+    "kind": "paper",
+    "title": "arXiv 2406.10290"
+  },
+  {
+    "url": "https://arxiv.org/abs/2504.06135",
+    "kind": "paper",
+    "title": "arXiv 2504.06135"
+  },
+  {
+    "url": "https://arxiv.org/abs/2506.05176",
+    "kind": "paper",
+    "title": "arXiv 2506.05176"
+  },
+  {
+    "url": "https://arxiv.org/abs/2602.17099",
+    "kind": "paper",
+    "title": "arXiv 2602.17099"
+  },
+  {
+    "url": "https://developer.apple.com/documentation/multipeerconnectivity",
+    "kind": "docs",
+    "title": "developer.apple.com"
+  },
+  {
+    "url": "https://docs.ditto.live/key-concepts/mesh-networking",
+    "kind": "docs",
+    "title": "docs.ditto.live"
+  },
+  {
+    "url": "https://docs.pytorch.org/docs/2.12/notes/randomness.html",
+    "kind": "docs",
+    "title": "docs.pytorch.org"
+  },
+  {
+    "url": "https://github.com/UNICKCHENG/logseq-ai-assistant",
+    "kind": "repo",
+    "title": "UNICKCHENG/logseq-ai-assistant"
+  },
+  {
+    "url": "https://github.com/cactus-compute/cactus-kotlin",
+    "kind": "repo",
+    "title": "cactus-compute/cactus-kotlin"
+  },
+  {
+    "url": "https://github.com/earthstar-project/earthstar",
+    "kind": "repo",
+    "title": "earthstar-project/earthstar"
+  },
+  {
+    "url": "https://github.com/getditto/demoapp-pos-kds",
+    "kind": "repo",
+    "title": "getditto/demoapp-pos-kds"
+  },
+  {
+    "url": "https://github.com/google-ai-edge/gallery",
+    "kind": "repo",
+    "title": "google-ai-edge/gallery"
+  },
+  {
+    "url": "https://github.com/loro-dev/loro",
+    "kind": "repo",
+    "title": "loro-dev/loro"
+  },
+  {
+    "url": "https://github.com/n0-computer/iroh",
+    "kind": "repo",
+    "title": "n0-computer/iroh"
+  },
+  {
+    "url": "https://github.com/pytorch/executorch",
+    "kind": "repo",
+    "title": "pytorch/executorch"
+  },
+  {
+    "url": "https://github.com/spotify/annoy",
+    "kind": "repo",
+    "title": "spotify/annoy"
+  }
+]

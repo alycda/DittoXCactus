@@ -1,0 +1,1360 @@
+[
+  {
+    "file": "docs-bridgefy-sdk.md",
+    "id": "docs-bridgefy-sdk",
+    "kind": "docs",
+    "density": 3,
+    "title": "Bridgefy SDK \u2014 On-device AI + Mesh Networking",
+    "tags": [
+      "mesh-networking",
+      "bluetooth",
+      "wifi-direct",
+      "on-device-ai",
+      "offline-first",
+      "mobile-sdk"
+    ],
+    "elev": "Bridgefy SDK is a production mesh-networking and on-device AI platform for mobile apps, enabling offline-first communication and content distribution over Bluetooth and Wi-Fi Direct. Relevant to Mesh RAG as a mature alternative mesh layer a",
+    "xrefs": [
+      "repo-permissionlesstech-bitchat"
+    ]
+  },
+  {
+    "file": "docs-developer-apple-com.md",
+    "id": "docs-developer-apple-com",
+    "kind": "docs",
+    "density": 3,
+    "title": "Apple Developer Documentation \u2014 Foundation Models",
+    "tags": [
+      "foundation-models",
+      "on-device-inference",
+      "ios",
+      "macos",
+      "structured-output",
+      "tool-calling",
+      "privacy-first"
+    ],
+    "elev": "Apple's official documentation for on-device Foundation Models (language understanding, structured output, tool calling) integrated with iOS/macOS. As of WWDC 2025, Apple provides first-party on-device LLM APIs for structured tasks. This is",
+    "xrefs": [
+      "paper-2505.14992",
+      "repo-ramanujammv1988-edge-veda"
+    ]
+  },
+  {
+    "file": "docs-ditto-live.md",
+    "id": "docs-ditto-live",
+    "kind": "docs",
+    "density": 5,
+    "title": "Ditto Live Documentation: Syncing Data",
+    "tags": [
+      "ditto",
+      "crdt",
+      "data-sync",
+      "mesh-network",
+      "subscriptions",
+      "replication",
+      "local-first",
+      "official-docs"
+    ],
+    "elev": "Official Ditto documentation covering automatic mesh data synchronization, subscription-based query model, and device mesh fundamentals. Core reference for understanding Ditto's CRDT-based sync protocol that underpins Mesh RAG data consiste",
+    "xrefs": [
+      "paper-2506.09501",
+      "repo-getditto-demoapp-inventory"
+    ]
+  },
+  {
+    "file": "docs-docs-ditto-live-dql.md",
+    "id": "docs-docs-ditto-live-dql",
+    "kind": "docs",
+    "density": 5,
+    "title": "Ditto Query Language (DQL): Distributed Data Query and Synchronization",
+    "tags": [
+      "ditto",
+      "query-language",
+      "distributed-query",
+      "real-time-sync",
+      "peer-to-peer-database",
+      "dql",
+      "offline-first"
+    ],
+    "elev": "Ditto Query Language (DQL) is the official query and sync language for the Ditto platform, enabling real-time data operations across connected peers. DQL provides a declarative, SQL-like interface for querying and mutating distributed datas",
+    "xrefs": [
+      "repo-orbitdb-orbitdb",
+      "paper-2505.00443"
+    ]
+  },
+  {
+    "file": "docs-docs-ditto-live-transports.md",
+    "id": "docs-docs-ditto-live-transports",
+    "kind": "docs",
+    "density": 5,
+    "title": "Ditto Mesh Networking & Transports",
+    "tags": [
+      "mesh-networking",
+      "ble",
+      "lan",
+      "awdl",
+      "wifi-aware",
+      "websocket",
+      "multiplexer",
+      "presence-graph",
+      "ditto-sdk",
+      "transports"
+    ],
+    "elev": "Ditto's official Mesh Networking documentation describes the multi-transport architecture (BLE, LAN, AWDL, Wi-Fi Aware, WebSocket) with aggressive peer discovery, the Ditto Multiplexer for seamless handoff between transports, and the presen",
+    "xrefs": [
+      "repo-earthstar-project-earthstar",
+      "repo-permissionlesstech-bitchat-android"
+    ]
+  },
+  {
+    "file": "docs-docs-ditto-live.md",
+    "id": "docs-docs-ditto-live",
+    "kind": "docs",
+    "density": 5,
+    "title": "Ditto Mesh Documentation",
+    "tags": [
+      "ditto",
+      "mesh-sync",
+      "crdt",
+      "ble-transport",
+      "lan-transport",
+      "query-language",
+      "small-peer"
+    ],
+    "elev": "Official Ditto documentation covering mesh formation, BLE/LAN transport, conflict resolution, DQL (Ditto Query Language), and small-peer model. Load-bearing for Mesh RAG: Ditto is the chosen sync layer; these docs detail the concrete APIs, ",
+    "xrefs": [
+      "repo-permissionlesstech-bitchat",
+      "repo-earthstar-project-willow-rs"
+    ]
+  },
+  {
+    "file": "docs-docs-pytorch-org.md",
+    "id": "docs-docs-pytorch-org",
+    "kind": "docs",
+    "density": 2,
+    "title": "PyTorch Documentation \u2014 Reproducibility",
+    "tags": [
+      "reproducibility",
+      "determinism",
+      "deep-learning",
+      "pytorch",
+      "random-seeds",
+      "floating-point-arithmetic"
+    ],
+    "elev": "PyTorch's reference documentation on reproducibility in deep learning, including seeding, deterministic algorithms, and platform-specific behavior. For Mesh RAG, this is the canonical resource for understanding the embedding-determinism con",
+    "xrefs": [
+      "paper-2506.09501"
+    ]
+  },
+  {
+    "file": "docs-mesh-networking-101.md",
+    "id": "docs-mesh-networking-101",
+    "kind": "docs",
+    "density": 1,
+    "title": "Mesh Networking 101: Topology, Routing, and Resilience",
+    "tags": [
+      "mesh-topology",
+      "networking-fundamentals",
+      "routing-protocols",
+      "resilience",
+      "background-reading",
+      "educational"
+    ],
+    "elev": "Introductory guide to mesh-network concepts: topology types (tree, full-mesh, partial-mesh), routing protocols (flooding, gossip, distance-vector), and failure resilience. Provides foundational vocabulary and intuition for peer-discovery an",
+    "xrefs": [
+      "docs-developer-apple-com"
+    ]
+  },
+  {
+    "file": "paper-1106.4374.md",
+    "id": "paper-1106.4374",
+    "kind": "paper",
+    "density": 5,
+    "title": "Conflict-free Replicated Data Types (CRDTs)",
+    "tags": [
+      "crdt",
+      "distributed-systems",
+      "convergence",
+      "conflict-free-merge",
+      "peer-to-peer",
+      "theoretical-foundation"
+    ],
+    "elev": "Foundational CRDT theory paper establishing the mathematical framework for conflict-free replicated data types that automatically merge without central coordination. Provides the theoretical bedrock for treating a vector-index store as a gr",
+    "xrefs": [
+      "paper-2305.00583"
+    ]
+  },
+  {
+    "file": "paper-1908.10084.md",
+    "id": "paper-1908.10084",
+    "kind": "paper",
+    "density": 5,
+    "title": "Sentence-BERT: Sentence Embeddings using Siamese BERT-Networks",
+    "tags": [
+      "embeddings",
+      "semantic-search",
+      "sentence-transformers",
+      "siamese-networks",
+      "bert",
+      "dense-vectors",
+      "information-retrieval"
+    ],
+    "elev": "Introduces Sentence-BERT (SBERT), a method for computing efficient and semantic sentence embeddings using siamese BERT networks. Foundational work for semantic search and embedding-based retrieval in RAG systems. Core technique for dense ve",
+    "xrefs": [
+      "repo-ukplab-sentence-transformers"
+    ]
+  },
+  {
+    "file": "paper-1910.01108.md",
+    "id": "paper-1910.01108",
+    "kind": "paper",
+    "density": 4,
+    "title": "DistilBERT, a distilled version of BERT: smaller, faster, cheaper and lighter",
+    "tags": [
+      "model-distillation",
+      "transformer-compression",
+      "knowledge-transfer",
+      "mobile-llm",
+      "parameter-efficiency",
+      "fine-tuning"
+    ],
+    "elev": "DistilBERT demonstrates knowledge distillation as a practical method to compress transformer models to 40% of original size while retaining 97% of performance. This is the canonical reference for model compression trade-offs relevant to fit",
+    "xrefs": [
+      "paper-2405.00732",
+      "paper-2402.00841"
+    ]
+  },
+  {
+    "file": "paper-2106.09685.md",
+    "id": "paper-2106.09685",
+    "kind": "paper",
+    "density": 2,
+    "title": "LoRA: Low-Rank Adaptation of Large Language Models",
+    "tags": [
+      "parameter-efficient-finetuning",
+      "low-rank-adaptation",
+      "transformer-optimization",
+      "on-device-inference",
+      "model-compression"
+    ],
+    "elev": "LoRA proposes parameter-efficient fine-tuning by injecting trainable low-rank decomposition matrices into Transformer layers while freezing pre-trained weights. The method achieves comparable downstream task performance with 10,000x fewer t",
+    "xrefs": [
+      "repo-thinking-machines-lab-batch-invariant-ops"
+    ]
+  },
+  {
+    "file": "paper-2301.07788.md",
+    "id": "paper-2301.07788",
+    "kind": "paper",
+    "density": 5,
+    "title": "Retrieval-Augmented Generation for Knowledge-Intensive Tasks",
+    "tags": [
+      "rag",
+      "retrieval-augmented-generation",
+      "dense-retrieval",
+      "knowledge-grounding",
+      "seq2seq",
+      "information-retrieval"
+    ],
+    "elev": "This paper explores retrieval-augmented generation (RAG), combining dense passage retrieval with seq2seq models to ground LLM answers in retrieved documents. RAG is a load-bearing architecture for on-device or decentralized RAG systems, whe",
+    "xrefs": [
+      "repo-unum-cloud-usearch",
+      "repo-deepsense-ai-edge-slm"
+    ]
+  },
+  {
+    "file": "paper-2305.14314.md",
+    "id": "paper-2305.14314",
+    "kind": "paper",
+    "density": 1,
+    "title": "Arxiv Redirect Page",
+    "tags": [
+      "placeholder",
+      "redirect",
+      "metadata-artifact"
+    ],
+    "elev": "This source file contains only an HTML redirect placeholder to a paper hosted on the arxiv redirect service, not the actual paper content. It is a metadata artifact without substantive technical content and does not contribute to the Mesh R",
+    "xrefs": []
+  },
+  {
+    "file": "paper-2308.14963.md",
+    "id": "paper-2308.14963",
+    "kind": "paper",
+    "density": 2,
+    "title": "Vector Search with OpenAI Embeddings: Lucene Is All You Need",
+    "tags": [
+      "vector-search",
+      "hnsw",
+      "lucene",
+      "cost-benefit-argument",
+      "bi-encoder"
+    ],
+    "elev": "Lin, Pradeep, Teofili, and Xian (Aug 2023) argue that Lucene's HNSW index is sufficient for OpenAI-embedding vector search on MS MARCO, challenging the \"you need a dedicated vector store\" narrative. The paper is a cost-benefit argument agai",
+    "xrefs": []
+  },
+  {
+    "file": "paper-2401.02385.md",
+    "id": "paper-2401.02385",
+    "kind": "paper",
+    "density": 5,
+    "title": "The Faiss Library",
+    "tags": [
+      "faiss",
+      "similarity-search",
+      "vector-indexing",
+      "approximate-nearest-neighbor",
+      "clustering",
+      "gpu-acceleration",
+      "information-retrieval"
+    ],
+    "elev": "This is the official Faiss library paper (arXiv 2401.08281 / Douze et al., 2024), documenting efficient similarity search and clustering for dense vectors. Faiss underpins modern vector-database infrastructure at scale and is load-bearing f",
+    "xrefs": [
+      "paper-2407.07871",
+      "repo-unum-cloud-usearch",
+      "repo-facebookresearch-faiss"
+    ]
+  },
+  {
+    "file": "paper-2402.00841.md",
+    "id": "paper-2402.00841",
+    "kind": "paper",
+    "density": 5,
+    "title": "Deterministic Transformer Inference Across Hardware",
+    "tags": [
+      "determinism",
+      "transformer-inference",
+      "cross-platform",
+      "embedding-reproducibility",
+      "on-device-llm",
+      "numerical-precision"
+    ],
+    "elev": "Addresses numerical reproducibility and bit-equivalent outputs in transformer inference across CPU, GPU, and accelerator backends\u2014the exact problem blocking Mesh RAG's cross-platform embedding determinism claim. Settles whether Cactus can d",
+    "xrefs": [
+      "paper-2506.05176"
+    ]
+  },
+  {
+    "file": "paper-2402.01613.md",
+    "id": "paper-2402.01613",
+    "kind": "paper",
+    "density": 4,
+    "title": "Embeddings and Determinism in Small Language Models",
+    "tags": [
+      "embedding-determinism",
+      "quantization",
+      "reproducibility",
+      "small-models",
+      "cross-device-consistency",
+      "fixed-point-arithmetic",
+      "distributed-systems"
+    ],
+    "elev": "Addresses determinism and reproducibility of embeddings from small language models, critical for cross-device consistency in distributed RAG. Explores embedding quantization and fixed-point arithmetic for ensuring identical vectors across h",
+    "xrefs": [
+      "paper-1908.10084"
+    ]
+  },
+  {
+    "file": "paper-2402.04351.md",
+    "id": "paper-2402.04351",
+    "kind": "paper",
+    "density": 4,
+    "title": "Numerical Stability of Transformer Inference",
+    "tags": [
+      "embedding-determinism",
+      "numerical-stability",
+      "quantization",
+      "cross-platform-parity",
+      "transformer-inference",
+      "hardware-drift"
+    ],
+    "elev": "This paper documents numerical divergence in transformer inference across different hardware backends (CPU vs GPU vs specialized accelerators), showing that quantized integer paths are dramatically more reproducible than floating-point vari",
+    "xrefs": [
+      "docs-docs-ditto-live"
+    ]
+  },
+  {
+    "file": "paper-2403.12844.md",
+    "id": "paper-2403.12844",
+    "kind": "paper",
+    "density": 4,
+    "title": "MELTing point: Mobile Evaluation of Language Transformers",
+    "tags": [
+      "mobile-llm-deployment",
+      "on-device-inference",
+      "energy-profiling",
+      "cross-platform-benchmarking",
+      "privacy-preserving-ai",
+      "embedded-systems"
+    ],
+    "elev": "MELTing point presents MELT, an automated benchmarking framework for evaluating large language models on mobile devices (iOS, Android, Nvidia Jetson) with granular measurement of end-to-end performance, memory, and energy consumption. It di",
+    "xrefs": [
+      "paper-2106.09685",
+      "repo-thinking-machines-lab-batch-invariant-ops"
+    ]
+  },
+  {
+    "file": "paper-2404.14219.md",
+    "id": "paper-2404.14219",
+    "kind": "paper",
+    "density": 3,
+    "title": "Efficient Vector Search and Quantization for Edge Deployment",
+    "tags": [
+      "vector-search",
+      "quantization",
+      "hnsw",
+      "edge-computing",
+      "efficient-inference",
+      "embeddings"
+    ],
+    "elev": "This paper addresses efficient vector search on resource-constrained devices through advanced quantization and approximate nearest neighbor algorithms. It directly supports the Mesh RAG requirement to run semantic search locally on mobile/e",
+    "xrefs": [
+      "repo-unum-cloud-usearch"
+    ]
+  },
+  {
+    "file": "paper-2405.00732.md",
+    "id": "paper-2405.00732",
+    "kind": "paper",
+    "density": 4,
+    "title": "LoRA Land: 310 Fine-Tuned Large Language Models",
+    "tags": [
+      "parameter-efficiency",
+      "fine-tuning",
+      "lora",
+      "specialist-models",
+      "7b-scale",
+      "task-specific-adaptation"
+    ],
+    "elev": "LoRA Land presents 310 fine-tuned 7B-scale LoRAs that consistently rival GPT-4 performance across narrow, specialized tasks without increasing base model size. This directly supports the \"small specialist models beat large generalists\" thes",
+    "xrefs": [
+      "paper-2402.00841"
+    ]
+  },
+  {
+    "file": "paper-2406.10290.md",
+    "id": "paper-2406.10290",
+    "kind": "paper",
+    "density": 4,
+    "title": "MobileAIBench: Benchmarking LLMs and LMMs for On-Device Use Cases",
+    "tags": [
+      "on-device-llm",
+      "mobile-benchmark",
+      "quantization-impact",
+      "latency-measurement",
+      "ios-evaluation",
+      "lmm"
+    ],
+    "elev": "Murthy et al. (Salesforce AI Research, Jun 2024) introduce MobileAIBench, a benchmarking framework that evaluates mobile-optimized LLMs (and LMMs) on real iOS devices, measuring latency, resource consumption, and the impact of quantization ",
+    "xrefs": [
+      "paper-2403.12844",
+      "paper-2409.00088"
+    ]
+  },
+  {
+    "file": "paper-2407.07871.md",
+    "id": "paper-2407.07871",
+    "kind": "paper",
+    "density": 4,
+    "title": "Enhancing HNSW Index for Real-Time Updates",
+    "tags": [
+      "hnsw",
+      "vector-indexing",
+      "dynamic-indexing",
+      "approximate-nearest-neighbor",
+      "concurrent-updates",
+      "real-time-retrieval"
+    ],
+    "elev": "This paper addresses the \"unreachable points phenomenon\" in HNSW (Hierarchical Navigable Small World) when the index receives concurrent inserts and deletes. HNSW is the standard ANN method for high-dimensional similarity search, but its gr",
+    "xrefs": [
+      "paper-2401.02385",
+      "repo-unum-cloud-usearch"
+    ]
+  },
+  {
+    "file": "paper-2409.00088.md",
+    "id": "paper-2409.00088",
+    "kind": "paper",
+    "density": 3,
+    "title": "On-Device Small LLM Inference & Latency Characterization",
+    "tags": [
+      "on-device-llm",
+      "mobile-latency",
+      "small-models",
+      "inference-benchmark",
+      "cold-start",
+      "edge-ai"
+    ],
+    "elev": "Benchmarks end-to-end latency for small language models (1B\u20133B parameters) on mobile hardware, directly informing the choice of on-device LLM for Mesh RAG's synthesis stage. Provides empirical data on cold-load time, token-generation latenc",
+    "xrefs": [
+      "repo-qwenlm-qwen3-embedding"
+    ]
+  },
+  {
+    "file": "paper-2412.04922.md",
+    "id": "paper-2412.04922",
+    "kind": "paper",
+    "density": 3,
+    "title": "Approximate Nearest Neighbor Search for Distributed Vector Indices",
+    "tags": [
+      "ann-search",
+      "vector-indexing",
+      "approximate-search",
+      "scalability",
+      "distributed-retrieval",
+      "bandwidth-constrained"
+    ],
+    "elev": "Presents methods for approximate nearest neighbor (ANN) search optimized for distributed and resource-constrained environments. Addresses scalable vector search without full index synchronization across peers. Applicable to mesh RAG scenari",
+    "xrefs": [
+      "paper-2402.01613"
+    ]
+  },
+  {
+    "file": "paper-2412.21023.md",
+    "id": "paper-2412.21023",
+    "kind": "paper",
+    "density": 5,
+    "title": "EdgeRAG: Edge-Device Retrieval-Augmented Generation",
+    "tags": [
+      "on-device-rag",
+      "vector-search",
+      "edge-acceleration",
+      "embedding-latency",
+      "retrieval-optimization",
+      "mobile-inference"
+    ],
+    "elev": "EdgeRAG demonstrates end-to-end on-device RAG with 131% retrieval-latency improvement vs CPU baseline at large vector indexes, showing that accelerated (EdgeTPU/NPU) embedding+search is practical and measurable on real devices. This is dire",
+    "xrefs": [
+      "repo-mlc-ai__mlc-llm",
+      "paper-2507.01079"
+    ]
+  },
+  {
+    "file": "paper-2504.06135.md",
+    "id": "paper-2504.06135",
+    "kind": "paper",
+    "density": 5,
+    "title": "Decentralizing AI Memory: SHIMI, a Semantic Hierarchical Memory Index for Scalable Agent Reasoning",
+    "tags": [
+      "crdt",
+      "semantic-memory",
+      "hierarchical-indexing",
+      "decentralized-rag",
+      "merkle-dag",
+      "conflict-resolution",
+      "agent-reasoning"
+    ],
+    "elev": "SHIMI proposes a decentralized semantic memory architecture where agents maintain local hierarchical concept trees and synchronize asynchronously using CRDT-style conflict resolution and Merkle-DAG summaries. The system models knowledge ret",
+    "xrefs": [
+      "repo-asg017-sqlite-vec",
+      "repo-n0-computer-iroh"
+    ]
+  },
+  {
+    "file": "paper-2505.00443.md",
+    "id": "paper-2505.00443",
+    "kind": "paper",
+    "density": 3,
+    "title": "Local-First Computing and Offline-Capable Systems",
+    "tags": [
+      "local-first",
+      "offline-first",
+      "crdt",
+      "decentralized-sync",
+      "conflict-free-replication",
+      "device-local"
+    ],
+    "elev": "This paper explores principles for local-first computing where computation and data remain on the user device and sync opportunistically. It aligns with Mesh RAG's goal of enabling semantically-aware offline-first collaboration \u2014 peers can ",
+    "xrefs": [
+      "repo-orbitdb-orbitdb"
+    ]
+  },
+  {
+    "file": "paper-2505.09388.md",
+    "id": "paper-2505.09388",
+    "kind": "paper",
+    "density": 5,
+    "title": "EmbeddingGemma: Powerful and Lightweight Text Representations",
+    "tags": [
+      "embedding-model",
+      "mobile-inference",
+      "matryoshka-dimensions",
+      "multilingual",
+      "mteb-benchmark",
+      "on-device-deployment",
+      "parameter-efficiency"
+    ],
+    "elev": "EmbeddingGemma is a 308M-parameter multilingual embedding model optimized for mobile deployment, achieving sub-22ms inference on EdgeTPU and sub-200MB quantized footprint while ranking top on MTEB among models under 500M parameters. It is t",
+    "xrefs": [
+      "paper-2509.20354",
+      "paper-2402.01613"
+    ]
+  },
+  {
+    "file": "paper-2505.11783.md",
+    "id": "paper-2505.11783",
+    "kind": "paper",
+    "density": 1,
+    "title": "Efficient Vector Search on Disaggregated Memory with d-HNSW",
+    "tags": [
+      "hnsw",
+      "disaggregated-memory",
+      "rdma",
+      "server-class",
+      "large-scale-vector-search",
+      "off-topic"
+    ],
+    "elev": "Liu, Fang, and Qian (May 2025) introduce d-HNSW, a disaggregated HNSW design for RDMA-based remote memory systems that handles vector datasets too large for a single machine. The contribution is server-class: representative-index caching, R",
+    "xrefs": []
+  },
+  {
+    "file": "paper-2505.14992.md",
+    "id": "paper-2505.14992",
+    "kind": "paper",
+    "density": 3,
+    "title": "Schema-aware Information Extraction Using On-Device Large Language Models",
+    "tags": [
+      "llm-inference",
+      "on-device-language-models",
+      "structured-extraction",
+      "grammar-constrained-generation",
+      "schema-awareness",
+      "json-output"
+    ],
+    "elev": "This paper demonstrates structured information extraction (e.g., recipe merging, entity normalization) on-device using small LLMs with schema constraints. For Mesh RAG Stage 0, the test case is whether a 1.5B\u20133B model can coherently merge i",
+    "xrefs": [
+      "paper-2402.00841",
+      "paper-2412.04922"
+    ]
+  },
+  {
+    "file": "paper-2506.05176.md",
+    "id": "paper-2506.05176",
+    "kind": "paper",
+    "density": 5,
+    "title": "Qwen3 Embedding: Multilingual, Deterministic Embeddings for On-Device & Mobile",
+    "tags": [
+      "embedding-model",
+      "multilingual",
+      "on-device",
+      "determinism",
+      "mteb-ranked",
+      "matryoshka-representations"
+    ],
+    "elev": "Official academic paper for Qwen3 Embedding models (0.6B, 4B, 8B), the top-ranked embedding model on the MTEB multilingual leaderboard. Directly relevant as a pre-qualified candidate for Mesh RAG's on-device embedding stage, with published ",
+    "xrefs": [
+      "repo-qwenlm-qwen3-embedding"
+    ]
+  },
+  {
+    "file": "paper-2506.09501.md",
+    "id": "paper-2506.09501",
+    "kind": "paper",
+    "density": 3,
+    "title": "Conflict-Free Vector Indices for Collaborative Mesh Systems",
+    "tags": [
+      "crdt",
+      "conflict-free",
+      "eventual-consistency",
+      "distributed-indices",
+      "peer-to-peer",
+      "mesh-replication"
+    ],
+    "elev": "Explores CRDT-based approaches to maintaining consistent vector indices across multiple peers without centralized coordination. Combines conflict-free replicated data types with vector search structures for peer-to-peer RAG. Addresses the f",
+    "xrefs": [
+      "paper-2412.04922"
+    ]
+  },
+  {
+    "file": "paper-2507.01079.md",
+    "id": "paper-2507.01079",
+    "kind": "paper",
+    "density": 5,
+    "title": "MobileRAG: A Fast, Memory-Efficient, and Energy-Efficient Method for On-Device RAG",
+    "tags": [
+      "on-device-rag",
+      "mobile-latency",
+      "memory-efficiency",
+      "energy-efficiency",
+      "vector-search",
+      "anaphoric-search"
+    ],
+    "elev": "MobileRAG measures end-to-end on-device RAG (EcoVector ANN + SCR selective reduction) on real phones, demonstrating 1.72\u20138.89x retrieval-latency speedup and 10.7\u201354.5% memory reduction over baselines. This is the single most load-bearing so",
+    "xrefs": [
+      "repo-mlc-ai__mlc-llm",
+      "paper-2412.21023"
+    ]
+  },
+  {
+    "file": "paper-2507.17647.md",
+    "id": "paper-2507.17647",
+    "kind": "paper",
+    "density": 3,
+    "title": "SHINE: A Scalable HNSW Index in Disaggregated Memory",
+    "tags": [
+      "approximate-nearest-neighbor",
+      "hnsw",
+      "distributed-indexing",
+      "graph-partitioning",
+      "vector-search",
+      "disaggregated-systems"
+    ],
+    "elev": "SHINE extends Hierarchical Navigable Small World (HNSW) graphs to disaggregated memory environments, maintaining accuracy equivalent to single-machine indexes while distributing the index across multiple nodes. The graph-preserving approach",
+    "xrefs": [
+      "repo-asg017-sqlite-vec",
+      "paper-2504.06135"
+    ]
+  },
+  {
+    "file": "paper-2509.20354.md",
+    "id": "paper-2509.20354",
+    "kind": "paper",
+    "density": 4,
+    "title": "Deterministic Embeddings and Reproducible Semantic Search",
+    "tags": [
+      "embedding-determinism",
+      "reproducibility",
+      "semantic-consistency",
+      "quantization-stability",
+      "model-versioning"
+    ],
+    "elev": "This paper investigates determinism in embedding generation across devices and model versions, a critical requirement for peers to build compatible vector search indices without re-encoding documents. If embedding encoders produce identical",
+    "xrefs": [
+      "repo-ggml-org-ggml"
+    ]
+  },
+  {
+    "file": "paper-2602.17099.md",
+    "id": "paper-2602.17099",
+    "kind": "paper",
+    "density": 5,
+    "title": "Understanding and Mitigating Numerical Sources of Nondeterminism in LLMs",
+    "tags": [
+      "determinism",
+      "numerical-reproducibility",
+      "quantization",
+      "integer-arithmetic",
+      "fp-precision",
+      "cross-platform-inference"
+    ],
+    "elev": "This paper quantifies floating-point precision effects on LLM inference non-determinism across FP32, FP16, and BF16, establishing that integer-quantized (INT4/INT8) inference paths are significantly more reproducible than floating-point one",
+    "xrefs": [
+      "paper-2506.09501"
+    ]
+  },
+  {
+    "file": "repo-asg017-sqlite-vec.md",
+    "id": "repo-asg017-sqlite-vec",
+    "kind": "repo",
+    "density": 5,
+    "title": "sqlite-vec: Vector Search SQLite Extension",
+    "tags": [
+      "sqlite-extension",
+      "vector-search",
+      "on-device",
+      "knn-search",
+      "wasm",
+      "zero-dependency",
+      "embedding-storage"
+    ],
+    "elev": "sqlite-vec is a lightweight C extension for SQLite that adds float, int8, and binary vector storage and approximate nearest neighbor (KNN) search. With zero external dependencies and WASM support, it runs anywhere SQLite runs\u2014phones, browse",
+    "xrefs": [
+      "paper-2504.06135",
+      "paper-2507.17647"
+    ]
+  },
+  {
+    "file": "repo-deepsense-ai-edge-slm.md",
+    "id": "repo-deepsense-ai-edge-slm",
+    "kind": "repo",
+    "density": 4,
+    "title": "Edge Small Language Model: On-Device RAG Pipeline",
+    "tags": [
+      "on-device-llm",
+      "mobile-rag",
+      "edge-deployment",
+      "quantized-inference",
+      "ggml",
+      "gte-embeddings",
+      "android"
+    ],
+    "elev": "This reference implementation demonstrates a complete RAG pipeline (embedding + retrieval + LLM generation) running on mobile devices (Samsung S20/S24). It uses quantized models (Phi-2, TinyLLama for LLM; gte-base for embeddings) and proves",
+    "xrefs": [
+      "repo-unum-cloud-usearch",
+      "repo-ggml-org-ggml"
+    ]
+  },
+  {
+    "file": "repo-developermindset-com-faiss-mobile.md",
+    "id": "repo-developermindset-com-faiss-mobile",
+    "kind": "repo",
+    "density": 2,
+    "title": "FAISS Mobile",
+    "tags": [
+      "faiss",
+      "mobile",
+      "vector-search",
+      "ios",
+      "android",
+      "native-compilation",
+      "xcframework"
+    ],
+    "elev": "A community port of Faiss (Facebook AI's similarity-search library) to iOS, macOS, tvOS, watchOS, and Android using XCFramework + NDK packaging. While FAISS itself is for classical vector indexing on single machines or GPU clusters, this po",
+    "xrefs": [
+      "paper-2401.02385",
+      "repo-facebookresearch-faiss"
+    ]
+  },
+  {
+    "file": "repo-earthstar-project-earthstar.md",
+    "id": "repo-earthstar-project-earthstar",
+    "kind": "repo",
+    "density": 4,
+    "title": "Earthstar: Distributed Storage Protocol for P2P Networks",
+    "tags": [
+      "crdt-adjacent",
+      "distributed-storage",
+      "p2p-sync",
+      "ephemeral-documents",
+      "replica-model",
+      "typescript",
+      "append-only"
+    ],
+    "elev": "Earthstar is a small, resilient distributed-storage protocol with a TypeScript reference implementation that enables P2P applications with offline editing, ephemeral documents, and append-only replica drivers. It provides a CRDT-like sync m",
+    "xrefs": [
+      "repo-yjs__yjs"
+    ]
+  },
+  {
+    "file": "repo-earthstar-project-willow-rs.md",
+    "id": "repo-earthstar-project-willow-rs",
+    "kind": "repo",
+    "density": 5,
+    "title": "Willow Protocol (Rust Implementation)",
+    "tags": [
+      "crdt",
+      "data-model",
+      "mesh-sync",
+      "capabilities",
+      "destructive-edits",
+      "replicated-store"
+    ],
+    "elev": "Rust implementation of the Willow data model and synchronization protocol\u2014a CRDT-backed replicated data store with fine-grained capabilities and destructive edits. Load-bearing for Mesh RAG: Willow's core design (grow-only entries, capabili",
+    "xrefs": [
+      "docs-docs-ditto-live",
+      "paper-2505.11783"
+    ]
+  },
+  {
+    "file": "repo-facebookresearch-faiss.md",
+    "id": "repo-facebookresearch-faiss",
+    "kind": "repo",
+    "density": 5,
+    "title": "Faiss",
+    "tags": [
+      "vector-search",
+      "similarity-search",
+      "approximate-nearest-neighbor",
+      "gpu-acceleration",
+      "clustering",
+      "dense-retrieval",
+      "information-retrieval"
+    ],
+    "elev": "The canonical open-source library for efficient similarity search and clustering of dense vectors, developed by Meta's Fundamental AI Research team. Faiss underpins vector databases, retrieval-augmented generation systems, and large-scale s",
+    "xrefs": [
+      "repo-developermindset-com-faiss-mobile",
+      "paper-2401.02385",
+      "repo-unum-cloud-usearch"
+    ]
+  },
+  {
+    "file": "repo-getditto-demoapp-chat.md",
+    "id": "repo-getditto-demoapp-chat",
+    "kind": "repo",
+    "density": 3,
+    "title": "Ditto Chat Demo App (iOS + Android)",
+    "tags": [
+      "ditto-sdk",
+      "mesh-sync",
+      "ble-connectivity",
+      "ios-android-interop",
+      "demo-app",
+      "local-first"
+    ],
+    "elev": "Production Ditto demo showcasing BLE/LAN mesh sync and public/private collections across iOS and Android in a real app. Validates the core Ditto sync infrastructure and peer-discovery mechanics that Mesh RAG will build on, but in a messagin",
+    "xrefs": [
+      "docs-ditto-live"
+    ]
+  },
+  {
+    "file": "repo-getditto-demoapp-inventory.md",
+    "id": "repo-getditto-demoapp-inventory",
+    "kind": "repo",
+    "density": 5,
+    "title": "Ditto Inventory Demo App",
+    "tags": [
+      "ditto",
+      "mesh-network",
+      "crdt",
+      "conflict-resolution",
+      "real-time-sync",
+      "presence-awareness",
+      "mobile-native",
+      "ios-android"
+    ],
+    "elev": "Official Ditto reference implementation showcasing real-time sync and conflict resolution in a peer-to-peer mesh network using inventory counters. Demonstrates Ditto's core mesh capabilities (presence, multi-platform sync, CRDT conflict res",
+    "xrefs": [
+      "docs-ditto-live"
+    ]
+  },
+  {
+    "file": "repo-getditto-demoapp-pos-kds.md",
+    "id": "repo-getditto-demoapp-pos-kds",
+    "kind": "repo",
+    "density": 5,
+    "title": "DittoPOS: Point-of-Sale Demo App",
+    "tags": [
+      "ditto-official",
+      "mesh-sync",
+      "crdt-application",
+      "ios-android",
+      "real-time-collaboration",
+      "pos-system"
+    ],
+    "elev": "Ditto's official demo app for iOS and Android showcasing real-time order sync across devices (POS + Kitchen Display System) using Ditto's CRDT mesh without cloud connectivity. This is the closest production reference for cross-platform BLE ",
+    "xrefs": [
+      "docs-docs-ditto-live"
+    ]
+  },
+  {
+    "file": "repo-getditto-samples.md",
+    "id": "repo-getditto-samples",
+    "kind": "repo",
+    "density": 3,
+    "title": "Ditto Sample Projects",
+    "tags": [
+      "ditto-platform",
+      "local-first",
+      "crdt",
+      "multi-platform",
+      "sample-apps",
+      "authentication-integration"
+    ],
+    "elev": "This repository catalogs sample applications demonstrating Ditto's local-first, eventually-consistent database across multiple platforms (Swift, Kotlin, C#, Electron/React, Rust, MAUI). The samples showcase authentication patterns, real-tim",
+    "xrefs": [
+      "repo-n0-computer-iroh"
+    ]
+  },
+  {
+    "file": "repo-ggml-org-ggml.md",
+    "id": "repo-ggml-org-ggml",
+    "kind": "repo",
+    "density": 5,
+    "title": "GGUF: Quantized Model Format and Inference Runtime",
+    "tags": [
+      "gguf",
+      "quantized-inference",
+      "model-format",
+      "llm-runtime",
+      "mmap",
+      "cpu-inference",
+      "multi-platform"
+    ],
+    "elev": "GGUF is a binary format and runtime for quantized LLM inference on CPU. It provides efficient loading via mmap, extensible metadata, and multi-platform support. GGUF is the standard format for distributing quantized models in peer-to-peer R",
+    "xrefs": [
+      "repo-deepsense-ai-edge-slm"
+    ]
+  },
+  {
+    "file": "repo-google-ai-edge-gallery.md",
+    "id": "repo-google-ai-edge-gallery",
+    "kind": "repo",
+    "density": 3,
+    "title": "Google AI Edge Gallery: On-Device LLM Sandbox",
+    "tags": [
+      "on-device-llm",
+      "litert",
+      "gemma",
+      "android-ios",
+      "ui-ux-reference",
+      "google-ai-edge",
+      "agent-skills"
+    ],
+    "elev": "AI Edge Gallery is a production Android + iOS application from Google demonstrating on-device LLM inference (Gemma, LiteRT) with agent skills, multimodal input, and prompt labs, serving as a reference implementation of mobile LLM UI/UX patt",
+    "xrefs": [
+      "repo-software-mansion-labs-react-native-rag"
+    ]
+  },
+  {
+    "file": "repo-hakimel-reveal-js.md",
+    "id": "repo-hakimel-reveal-js",
+    "kind": "repo",
+    "density": 2,
+    "title": "reveal.js \u2014 Open-source HTML Presentation Framework",
+    "tags": [
+      "presentation-framework",
+      "html5",
+      "markdown-support",
+      "demo-tooling",
+      "speaker-notes"
+    ],
+    "elev": "reveal.js is a mature, widely-used open-source presentation framework supporting nested slides, Markdown, speaker notes, PDF export, and LaTeX typesetting. Relevant to Mesh RAG deliverable: candidate tool for building the hackathon demo sli",
+    "xrefs": []
+  },
+  {
+    "file": "repo-libp2p-go-libp2p.md",
+    "id": "repo-libp2p-go-libp2p",
+    "kind": "repo",
+    "density": 2,
+    "title": "libp2p Go Implementation",
+    "tags": [
+      "peer-to-peer",
+      "networking",
+      "protocol-abstraction",
+      "ipfs",
+      "content-addressing",
+      "decentralized",
+      "golang"
+    ],
+    "elev": "The Go implementation of libp2p, a modular networking stack for peer-to-peer applications extracted from IPFS. libp2p provides protocol abstraction, transport negotiation, NAT traversal, and identity management for P2P systems. For Mesh RAG",
+    "xrefs": [
+      "docs-docs-ditto-live",
+      "repo-n0-computer-iroh"
+    ]
+  },
+  {
+    "file": "repo-loro-dev-loro.md",
+    "id": "repo-loro-dev-loro",
+    "kind": "repo",
+    "density": 3,
+    "title": "Loro: CRDT Data Structure Library (Rust + JS + Swift)",
+    "tags": [
+      "crdt",
+      "local-first",
+      "collaborative-editing",
+      "time-travel",
+      "version-control",
+      "cross-platform-bindings"
+    ],
+    "elev": "Modern CRDT library with cross-platform bindings (Rust, JS/WASM, Swift) supporting rich data structures (text, tree, list, map) with version control and time-travel. While Mesh RAG uses Ditto's grow-only semantics directly, Loro exemplifies",
+    "xrefs": [
+      "paper-1106.4374"
+    ]
+  },
+  {
+    "file": "repo-mfontanini-presenterm.md",
+    "id": "repo-mfontanini-presenterm",
+    "kind": "repo",
+    "density": 1,
+    "title": "Presenterm: Terminal-Based Presentation Framework",
+    "tags": [
+      "rust",
+      "terminal-ui",
+      "tui",
+      "presentation",
+      "markdown",
+      "cli"
+    ],
+    "elev": "Rust-based CLI tool for creating and delivering markdown-formatted presentations in the terminal with rich media support. Tangentially relevant to Mesh RAG as a potential UI framework for demo/documentation delivery. Not core to RAG impleme",
+    "xrefs": []
+  },
+  {
+    "file": "repo-mlc-ai-mlc-llm.md",
+    "id": "repo-mlc-ai-mlc-llm",
+    "kind": "repo",
+    "density": 3,
+    "title": "MLC LLM: Universal LLM Deployment Engine with ML Compilation",
+    "tags": [
+      "ml-compiler",
+      "cross-platform-inference",
+      "mobile-llm",
+      "kernel-optimization",
+      "mlc-engine",
+      "determinism"
+    ],
+    "elev": "MLC LLM is a multi-platform compiler for efficient LLM inference, supporting iOS/Android/web with unified kernels across Metal (Apple) and OpenCL (Qualcomm/Mali). While we anchor on Cactus for the demo, MLC LLM is the reference implementati",
+    "xrefs": [
+      "paper-2403.12844",
+      "paper-2507.01079"
+    ]
+  },
+  {
+    "file": "repo-n0-computer-iroh.md",
+    "id": "repo-n0-computer-iroh",
+    "kind": "repo",
+    "density": 5,
+    "title": "Iroh: less net work for networks",
+    "tags": [
+      "p2p-networking",
+      "hole-punching",
+      "quic",
+      "relay-fallback",
+      "protocol-composition",
+      "content-addressed",
+      "eventually-consistent"
+    ],
+    "elev": "Iroh is a Rust library providing dialing by public key with automatic hole-punching and relay server fallback over QUIC. It includes protocol composition primitives (iroh-blobs, iroh-gossip, iroh-docs) for building content-addressed transfe",
+    "xrefs": [
+      "repo-asg017-sqlite-vec",
+      "paper-2504.06135"
+    ]
+  },
+  {
+    "file": "repo-orbitdb-orbitdb.md",
+    "id": "repo-orbitdb-orbitdb",
+    "kind": "repo",
+    "density": 2,
+    "title": "OrbitDB: CRDT-Based Distributed Database on IPFS",
+    "tags": [
+      "crdt",
+      "peer-to-peer-database",
+      "ipfs",
+      "libp2p",
+      "merkle-crdt",
+      "conflict-free-replication",
+      "eventlog"
+    ],
+    "elev": "OrbitDB is a peer-to-peer database using Merkle-CRDTs for conflict-free writes and IPFS/Libp2p for data distribution. It proves that decentralized databases can achieve eventual consistency without central coordination. The OpLog (operation",
+    "xrefs": [
+      "paper-2505.00443"
+    ]
+  },
+  {
+    "file": "repo-permissionlesstech-bitchat-android.md",
+    "id": "repo-permissionlesstech-bitchat-android",
+    "kind": "repo",
+    "density": 5,
+    "title": "bitchat for Android: BLE Mesh P2P Chat",
+    "tags": [
+      "ble-mesh",
+      "p2p-messaging",
+      "cross-platform",
+      "ios-android-parity",
+      "e2e-encryption",
+      "mesh-presence",
+      "adaptive-power"
+    ],
+    "elev": "bitchat for Android is a production-quality, cross-platform (iOS \u2194 Android) BLE mesh messaging app with end-to-end encryption, 100% protocol compatibility with the iOS original, and proven UX for peer discovery and mesh-state visualization.",
+    "xrefs": [
+      "repo-earthstar-project-earthstar",
+      "repo-yjs__yjs"
+    ]
+  },
+  {
+    "file": "repo-permissionlesstech-bitchat.md",
+    "id": "repo-permissionlesstech-bitchat",
+    "kind": "repo",
+    "density": 4,
+    "title": "BitChat \u2014 Decentralized Peer-to-Peer Messaging (Bluetooth + Nostr)",
+    "tags": [
+      "bluetooth-mesh",
+      "p2p-messaging",
+      "decentralized",
+      "dual-transport",
+      "ios-android-interop",
+      "mesh-networking"
+    ],
+    "elev": "BitChat is a decentralized messaging app with dual transport architecture (Bluetooth LE mesh for offline, Nostr for internet fallback). Directly relevant to Mesh RAG: validates iOS\u2194Android Bluetooth interop, demonstrates mesh topology witho",
+    "xrefs": [
+      "docs-docs-ditto-live"
+    ]
+  },
+  {
+    "file": "repo-qwenlm-qwen3-embedding.md",
+    "id": "repo-qwenlm-qwen3-embedding",
+    "kind": "repo",
+    "density": 4,
+    "title": "Qwen3 Embedding (Official Repository)",
+    "tags": [
+      "embedding-inference",
+      "transformers-compatible",
+      "vllm-support",
+      "instruction-aware",
+      "quantization",
+      "model-weights"
+    ],
+    "elev": "Official Qwen3 Embedding repository with model weights, inference code, and integration examples for Transformers, vLLM, and Sentence Transformers. Provides the reference implementation for on-device embedding inference, including determini",
+    "xrefs": [
+      "paper-2506.05176"
+    ]
+  },
+  {
+    "file": "repo-ramanujammv1988-edge-veda.md",
+    "id": "repo-ramanujammv1988-edge-veda",
+    "kind": "repo",
+    "density": 4,
+    "title": "Edge-Veda",
+    "tags": [
+      "on-device-inference",
+      "flutter",
+      "mobile-ai",
+      "rag",
+      "speech-to-text",
+      "text-to-speech",
+      "supervised-runtime",
+      "thermal-management"
+    ],
+    "elev": "A managed on-device AI runtime for Flutter (iOS-first; Android roadmap) with text, vision, speech-to-text, and RAG capabilities. Edge-Veda wraps llama.cpp, whisper.cpp, and stable-diffusion.cpp via a persistent worker isolate architecture w",
+    "xrefs": [
+      "paper-2403.12844",
+      "paper-2507.01079",
+      "repo-deepsense-ai-edge-slm"
+    ]
+  },
+  {
+    "file": "repo-slidevjs-slidev.md",
+    "id": "repo-slidevjs-slidev",
+    "kind": "repo",
+    "density": 2,
+    "title": "Slidev: Markdown-Based Presentation Framework",
+    "tags": [
+      "presentation",
+      "markdown",
+      "live-coding",
+      "vite",
+      "developer-tools",
+      "recording"
+    ],
+    "elev": "Developer-friendly presentation tool built on Vite + Vue 3 + Markdown, enabling live coding, LaTeX math, diagrams (Mermaid), and media recording. Tangentially relevant to RESEARCH-BRIEF Task 8 (hackathon demo aesthetics and presentation too",
+    "xrefs": []
+  },
+  {
+    "file": "repo-software-mansion-labs-react-native-rag.md",
+    "id": "repo-software-mansion-labs-react-native-rag",
+    "kind": "repo",
+    "density": 4,
+    "title": "React Native RAG",
+    "tags": [
+      "react-native",
+      "on-device-llm",
+      "embeddings",
+      "vector-store",
+      "rag-framework",
+      "executorch",
+      "sqlite",
+      "mobile-rag"
+    ],
+    "elev": "Production React Native framework for on-device RAG with modular LLM, embeddings, and vector store components. Powers Private Mind (production mobile RAG app). Demonstrates patterns for integrating ExecuTorch on-device models with SQLite ve",
+    "xrefs": [
+      "repo-ukplab-sentence-transformers",
+      "paper-1908.10084"
+    ]
+  },
+  {
+    "file": "repo-spotify-annoy.md",
+    "id": "repo-spotify-annoy",
+    "kind": "repo",
+    "density": 3,
+    "title": "Annoy: Approximate Nearest Neighbors Oh Yeah",
+    "tags": [
+      "approximate-nearest-neighbors",
+      "vector-search",
+      "tree-index",
+      "memory-efficient",
+      "static-index",
+      "spotify"
+    ],
+    "elev": "Annoy is a production-grade ANN library using random-projection trees, optimized for small memory footprint and static index sharing across processes. Relevant as a stage-1 escape hatch if we outgrow the \u22645k tuple flat-array approach and ne",
+    "xrefs": [
+      "repo-mlc-ai__mlc-llm"
+    ]
+  },
+  {
+    "file": "repo-thinking-machines-lab-batch-invariant-ops.md",
+    "id": "repo-thinking-machines-lab-batch-invariant-ops",
+    "kind": "repo",
+    "density": 3,
+    "title": "Batch Invariant Ops: Defeating Nondeterminism in LLM Inference",
+    "tags": [
+      "embedding-determinism",
+      "batch-invariance",
+      "deterministic-inference",
+      "pytorch-kernels",
+      "llm-reproducibility",
+      "gpu-optimization"
+    ],
+    "elev": "Batch Invariant Ops provides PyTorch kernel substitutions that ensure identical outputs regardless of batch size, enabling deterministic multi-GPU inference. The library demonstrates that vLLM can be made fully deterministic with minimal up",
+    "xrefs": [
+      "paper-2403.12844",
+      "paper-2106.09685"
+    ]
+  },
+  {
+    "file": "repo-ukplab-sentence-transformers.md",
+    "id": "repo-ukplab-sentence-transformers",
+    "kind": "repo",
+    "density": 2,
+    "title": "Sentence Transformers (UKP Lab / Hugging Face)",
+    "tags": [
+      "embeddings",
+      "transformers",
+      "semantic-search",
+      "reranking",
+      "training-framework",
+      "hugging-face",
+      "python"
+    ],
+    "elev": "Production-ready Python framework for training, fine-tuning, and deploying dense embedding models including Sentence Transformers, Cross-Encoders, and Sparse Encoders. Enables custom embedding models for domain-specific Mesh RAG deployments",
+    "xrefs": [
+      "paper-1908.10084"
+    ]
+  },
+  {
+    "file": "repo-unickcheng-logseq-ai-assistant.md",
+    "id": "repo-unickcheng-logseq-ai-assistant",
+    "kind": "repo",
+    "density": 2,
+    "title": "Logseq AI Assistant Plugin",
+    "tags": [
+      "local-knowledge-management",
+      "plugin-architecture",
+      "logseq",
+      "llm-integration",
+      "openai-api"
+    ],
+    "elev": "A Logseq plugin that integrates OpenAI's GPT API into the knowledge management system, enabling in-app query-and-completion. While not implementing on-device inference or P2P sync, it demonstrates the plugin architecture pattern for local-f",
+    "xrefs": [
+      "repo-getditto__demoapp-pos-kds"
+    ]
+  },
+  {
+    "file": "repo-unum-cloud-usearch.md",
+    "id": "repo-unum-cloud-usearch",
+    "kind": "repo",
+    "density": 4,
+    "title": "USearch: Fast Vector Similarity Search for Constrained Environments",
+    "tags": [
+      "vector-search",
+      "hnsw",
+      "approximate-nearest-neighbor",
+      "quantization",
+      "portable",
+      "single-file",
+      "user-defined-metrics"
+    ],
+    "elev": "USearch is a single-header C++11 HNSW vector search library optimized for speed, memory efficiency, and portability across languages (Python, Rust, JavaScript, etc.). It enables 10x faster indexing than FAISS on modest hardware and supports",
+    "xrefs": [
+      "paper-2404.14219",
+      "repo-deepsense-ai-edge-slm"
+    ]
+  },
+  {
+    "file": "repo-yjs-yjs.md",
+    "id": "repo-yjs-yjs",
+    "kind": "repo",
+    "density": 3,
+    "title": "Yjs: CRDT Framework for Shared Data Types",
+    "tags": [
+      "crdt",
+      "shared-types",
+      "collaborative-editing",
+      "offline-editing",
+      "providers",
+      "undo-redo",
+      "network-agnostic"
+    ],
+    "elev": "Yjs is a production CRDT library exposing shared types (Array, Map, Text, XML) with automatic conflict-free merging, offline editing, version snapshots, and an extensive provider ecosystem (WebRTC, WebSocket, persistence backends). It is re",
+    "xrefs": [
+      "repo-earthstar-project-earthstar"
+    ]
+  }
+]

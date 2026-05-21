@@ -1,0 +1,92 @@
+[
+  {
+    "url": "https://arxiv.org/abs/2106.09685",
+    "kind": "paper",
+    "title": "arXiv 2106.09685"
+  },
+  {
+    "url": "https://arxiv.org/abs/2402.00841",
+    "kind": "paper",
+    "title": "arXiv 2402.00841"
+  },
+  {
+    "url": "https://arxiv.org/abs/2405.00732",
+    "kind": "paper",
+    "title": "arXiv 2405.00732"
+  },
+  {
+    "url": "https://arxiv.org/abs/2412.21023",
+    "kind": "paper",
+    "title": "arXiv 2412.21023"
+  },
+  {
+    "url": "https://arxiv.org/abs/2505.14992",
+    "kind": "paper",
+    "title": "arXiv 2505.14992"
+  },
+  {
+    "url": "https://arxiv.org/abs/2509.20354",
+    "kind": "paper",
+    "title": "arXiv 2509.20354"
+  },
+  {
+    "url": "https://developer.apple.com/documentation/foundationmodels",
+    "kind": "docs",
+    "title": "developer.apple.com"
+  },
+  {
+    "url": "https://docs.ditto.live/home/about-ditto",
+    "kind": "docs",
+    "title": "docs.ditto.live"
+  },
+  {
+    "url": "https://docs.pytorch.org/docs/2.12/notes/numerical_accuracy.html",
+    "kind": "docs",
+    "title": "docs.pytorch.org"
+  },
+  {
+    "url": "https://github.com/UKPLab/sentence-transformers",
+    "kind": "repo",
+    "title": "UKPLab/sentence-transformers"
+  },
+  {
+    "url": "https://github.com/cactus-compute/cactus",
+    "kind": "repo",
+    "title": "cactus-compute/cactus"
+  },
+  {
+    "url": "https://github.com/deepsense-ai/edge-slm",
+    "kind": "repo",
+    "title": "deepsense-ai/edge-slm"
+  },
+  {
+    "url": "https://github.com/getditto/demoapp-inventory",
+    "kind": "repo",
+    "title": "getditto/demoapp-inventory"
+  },
+  {
+    "url": "https://github.com/ggml-org/llama.cpp/blob/master/docs/build.md",
+    "kind": "repo",
+    "title": "github.com"
+  },
+  {
+    "url": "https://github.com/libp2p/go-libp2p",
+    "kind": "repo",
+    "title": "libp2p/go-libp2p"
+  },
+  {
+    "url": "https://github.com/mlc-ai/mlc-llm",
+    "kind": "repo",
+    "title": "mlc-ai/mlc-llm"
+  },
+  {
+    "url": "https://github.com/permissionlesstech/bitchat-android",
+    "kind": "repo",
+    "title": "permissionlesstech/bitchat-android"
+  },
+  {
+    "url": "https://github.com/software-mansion/react-native-executorch",
+    "kind": "repo",
+    "title": "software-mansion/react-native-executorch"
+  }
+]

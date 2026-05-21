@@ -1,0 +1,97 @@
+[
+  {
+    "url": "https://arxiv.org/abs/1910.01108",
+    "kind": "paper",
+    "title": "arXiv 1910.01108"
+  },
+  {
+    "url": "https://arxiv.org/abs/2401.02385",
+    "kind": "paper",
+    "title": "arXiv 2401.02385"
+  },
+  {
+    "url": "https://arxiv.org/abs/2404.14219",
+    "kind": "paper",
+    "title": "arXiv 2404.14219"
+  },
+  {
+    "url": "https://arxiv.org/abs/2412.04922",
+    "kind": "paper",
+    "title": "arXiv 2412.04922"
+  },
+  {
+    "url": "https://arxiv.org/abs/2505.11783",
+    "kind": "paper",
+    "title": "arXiv 2505.11783"
+  },
+  {
+    "url": "https://arxiv.org/abs/2507.17647",
+    "kind": "paper",
+    "title": "arXiv 2507.17647"
+  },
+  {
+    "url": "https://developer.apple.com/documentation/coreml/mlcomputeunits",
+    "kind": "docs",
+    "title": "developer.apple.com"
+  },
+  {
+    "url": "https://docs.ditto.live/dql/dql",
+    "kind": "docs",
+    "title": "docs.ditto.live"
+  },
+  {
+    "url": "https://docs.ditto.live/sdk/v4-8/sync/concepts/transports-overview",
+    "kind": "docs",
+    "title": "docs.ditto.live"
+  },
+  {
+    "url": "https://github.com/QwenLM/Qwen3-Embedding",
+    "kind": "repo",
+    "title": "QwenLM/Qwen3-Embedding"
+  },
+  {
+    "url": "https://github.com/brianpetro/obsidian-smart-connections",
+    "kind": "repo",
+    "title": "brianpetro/obsidian-smart-connections"
+  },
+  {
+    "url": "https://github.com/cactus-compute/example-react-agents",
+    "kind": "repo",
+    "title": "cactus-compute/example-react-agents"
+  },
+  {
+    "url": "https://github.com/getditto/demoapp-chat",
+    "kind": "repo",
+    "title": "getditto/demoapp-chat"
+  },
+  {
+    "url": "https://github.com/ggml-org/llama.cpp",
+    "kind": "repo",
+    "title": "ggml-org/llama.cpp"
+  },
+  {
+    "url": "https://github.com/khoj-ai/khoj",
+    "kind": "repo",
+    "title": "khoj-ai/khoj"
+  },
+  {
+    "url": "https://github.com/microsoft/onnxruntime-genai",
+    "kind": "repo",
+    "title": "microsoft/onnxruntime-genai"
+  },
+  {
+    "url": "https://github.com/permissionlesstech/bitchat",
+    "kind": "repo",
+    "title": "permissionlesstech/bitchat"
+  },
+  {
+    "url": "https://github.com/software-mansion-labs/react-native-rag",
+    "kind": "repo",
+    "title": "software-mansion-labs/react-native-rag"
+  },
+  {
+    "url": "https://github.com/yjs/yjs",
+    "kind": "repo",
+    "title": "yjs/yjs"
+  }
+]

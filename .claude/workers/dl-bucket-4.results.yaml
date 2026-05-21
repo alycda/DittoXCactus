@@ -1,0 +1,75 @@
+version: 1
+bucket: 4
+results:
+  - url: https://arxiv.org/abs/2106.09685
+    status: done
+    path: inspiration/papers/2106.09685.pdf
+    notes: null
+  - url: https://arxiv.org/abs/2402.00841
+    status: done
+    path: inspiration/papers/2402.00841.pdf
+    notes: null
+  - url: https://arxiv.org/abs/2405.00732
+    status: done
+    path: inspiration/papers/2405.00732.pdf
+    notes: null
+  - url: https://arxiv.org/abs/2412.21023
+    status: done
+    path: inspiration/papers/2412.21023.pdf
+    notes: null
+  - url: https://arxiv.org/abs/2505.14992
+    status: done
+    path: inspiration/papers/2505.14992.pdf
+    notes: null
+  - url: https://arxiv.org/abs/2509.20354
+    status: done
+    path: inspiration/papers/2509.20354.pdf
+    notes: null
+  - url: https://developer.apple.com/documentation/foundationmodels
+    status: done
+    path: inspiration/docs/developer-apple-com/index.html
+    notes: "Single-page curl fallback; wget unavailable"
+  - url: https://docs.ditto.live/home/about-ditto
+    status: done
+    path: inspiration/docs/docs-ditto-live/index.html
+    notes: "Single-page curl fallback; wget unavailable"
+  - url: https://docs.pytorch.org/docs/2.12/notes/numerical_accuracy.html
+    status: done
+    path: inspiration/docs/docs-pytorch-org/index.html
+    notes: "Single-page curl fallback; wget unavailable"
+  - url: https://github.com/UKPLab/sentence-transformers
+    status: done
+    path: inspiration/repos/UKPLab__sentence-transformers
+    notes: null
+  - url: https://github.com/cactus-compute/cactus
+    status: skipped
+    path: null
+    notes: "Repo size 53 MB exceeds 50 MB limit; deleted"
+  - url: https://github.com/deepsense-ai/edge-slm
+    status: done
+    path: inspiration/repos/deepsense-ai__edge-slm
+    notes: null
+  - url: https://github.com/getditto/demoapp-inventory
+    status: done
+    path: inspiration/repos/getditto__demoapp-inventory
+    notes: null
+  - url: https://github.com/ggml-org/llama.cpp/blob/master/docs/build.md
+    status: skipped
+    path: null
+    notes: "Repo size 184 MB exceeds 50 MB limit; deleted"
+  - url: https://github.com/libp2p/go-libp2p
+    status: done
+    path: inspiration/repos/libp2p__go-libp2p
+    notes: null
+  - url: https://github.com/mlc-ai/mlc-llm
+    status: done
+    path: inspiration/repos/mlc-ai__mlc-llm
+    notes: null
+  - url: https://github.com/permissionlesstech/bitchat-android
+    status: done
+    path: inspiration/repos/permissionlesstech__bitchat-android
+    notes: null
+  - url: https://github.com/software-mansion/react-native-executorch
+    status: skipped
+    path: null
+    notes: "Repo size 203 MB exceeds 50 MB limit; deleted"

@@ -1,0 +1,79 @@
+version: 1
+bucket: 2
+results:
+  - url: https://arxiv.org/abs/1908.10084
+    status: done
+    path: inspiration/papers/1908.10084.pdf
+    notes: null
+  - url: https://arxiv.org/abs/2308.14963
+    status: done
+    path: inspiration/papers/2308.14963.pdf
+    notes: null
+  - url: https://arxiv.org/abs/2403.12844
+    status: done
+    path: inspiration/papers/2403.12844.pdf
+    notes: null
+  - url: https://arxiv.org/abs/2409.00088
+    status: done
+    path: inspiration/papers/2409.00088.pdf
+    notes: null
+  - url: https://arxiv.org/abs/2505.09388
+    status: done
+    path: inspiration/papers/2505.09388.pdf
+    notes: null
+  - url: https://arxiv.org/abs/2507.01079
+    status: done
+    path: inspiration/papers/2507.01079.pdf
+    notes: null
+  - url: https://bridgefy.me/sdk
+    status: done
+    path: inspiration/docs/bridgefy-sdk/index.html
+    notes: "wget unavailable; downloaded single page via curl (58 KB)"
+  - url: https://docs.ditto.live
+    status: done
+    path: inspiration/docs/docs-ditto-live/index.html
+    notes: "single page via curl (393 KB)"
+  - url: https://docs.ditto.live/sdk/v4-7/basic/mesh-networking-101
+    status: done
+    path: inspiration/docs/mesh-networking-101/index.html
+    notes: "single page via curl (208 KB)"
+  - url: https://github.com/FlagOpen/FlagEmbedding
+    status: skipped
+    path: null
+    notes: "cloned shallow repo size 89 MB exceeds 50 MB limit; deleted"
+  - url: https://github.com/asg017/sqlite-vec
+    status: done
+    path: inspiration/repos/asg017__sqlite-vec
+    notes: "shallow clone (4.4 MB)"
+  - url: https://github.com/cactus-compute/cactus/blob/main/docs/cactus_engine.md
+    status: done
+    path: inspiration/repos/cactus-compute__cactus/cactus_engine.md
+    notes: "downloaded single file from main branch (59 KB)"
+  - url: https://github.com/facebookresearch/faiss
+    status: done
+    path: inspiration/repos/facebookresearch__faiss
+    notes: "shallow clone (13 MB)"
+  - url: https://github.com/ggml-org/ggml/blob/master/docs/gguf.md
+    status: done
+    path: inspiration/repos/ggml-org__ggml/gguf.md
+    notes: "downloaded single file from master branch (42 KB)"
+  - url: https://github.com/hakimel/reveal.js
+    status: done
+    path: inspiration/repos/hakimel__reveal.js
+    notes: "shallow clone (19 MB)"
+  - url: https://github.com/mfontanini/presenterm/blob/master/examples/demo.md
+    status: done
+    path: inspiration/repos/mfontanini__presenterm/demo.md
+    notes: "downloaded single file from master branch (3.3 KB)"
+  - url: https://github.com/ostafen/a556180db7d4c41abb325b5ae5e13ca4
+    status: failed
+    path: null
+    notes: "404; repository not found"
+  - url: https://github.com/slidevjs/slidev
+    status: done
+    path: inspiration/repos/slidevjs__slidev
+    notes: "shallow clone (29 MB)"
+  - url: https://github.com/unum-cloud/usearch
+    status: done
+    path: inspiration/repos/unum-cloud__usearch
+    notes: "shallow clone (3.1 MB)"

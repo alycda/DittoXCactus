@@ -1,0 +1,79 @@
+version: 1
+bucket: 3
+results:
+  - url: https://arxiv.org/abs/1910.01108
+    status: done
+    path: inspiration/papers/1910.01108.pdf
+    notes: null
+  - url: https://arxiv.org/abs/2401.02385
+    status: done
+    path: inspiration/papers/2401.02385.pdf
+    notes: null
+  - url: https://arxiv.org/abs/2404.14219
+    status: done
+    path: inspiration/papers/2404.14219.pdf
+    notes: null
+  - url: https://arxiv.org/abs/2412.04922
+    status: done
+    path: inspiration/papers/2412.04922.pdf
+    notes: null
+  - url: https://arxiv.org/abs/2505.11783
+    status: done
+    path: inspiration/papers/2505.11783.pdf
+    notes: null
+  - url: https://arxiv.org/abs/2507.17647
+    status: done
+    path: inspiration/papers/2507.17647.pdf
+    notes: null
+  - url: https://developer.apple.com/documentation/coreml/mlcomputeunits
+    status: done
+    path: inspiration/docs/developer.apple.com/index.html
+    notes: null
+  - url: https://docs.ditto.live/dql/dql
+    status: done
+    path: inspiration/docs/docs.ditto.live-dql/index.html
+    notes: null
+  - url: https://docs.ditto.live/sdk/v4-8/sync/concepts/transports-overview
+    status: done
+    path: inspiration/docs/docs.ditto.live-transports/index.html
+    notes: null
+  - url: https://github.com/QwenLM/Qwen3-Embedding
+    status: done
+    path: inspiration/repos/QwenLM__Qwen3-Embedding
+    notes: null
+  - url: https://github.com/brianpetro/obsidian-smart-connections
+    status: skipped
+    path: null
+    notes: "Repo size 57MB exceeds 50MB limit; deleted"
+  - url: https://github.com/cactus-compute/example-react-agents
+    status: failed
+    path: null
+    notes: "404 Repository not found"
+  - url: https://github.com/getditto/demoapp-chat
+    status: done
+    path: inspiration/repos/getditto__demoapp-chat
+    notes: null
+  - url: https://github.com/ggml-org/llama.cpp
+    status: skipped
+    path: null
+    notes: "Repo size 185MB exceeds 50MB limit; deleted"
+  - url: https://github.com/khoj-ai/khoj
+    status: skipped
+    path: null
+    notes: "Repo size 163MB exceeds 50MB limit; deleted"
+  - url: https://github.com/microsoft/onnxruntime-genai
+    status: skipped
+    path: null
+    notes: "Repo size 133MB exceeds 50MB limit; deleted"
+  - url: https://github.com/permissionlesstech/bitchat
+    status: done
+    path: inspiration/repos/permissionlesstech__bitchat
+    notes: null
+  - url: https://github.com/software-mansion-labs/react-native-rag
+    status: done
+    path: inspiration/repos/software-mansion-labs__react-native-rag
+    notes: null
+  - url: https://github.com/yjs/yjs
+    status: done
+    path: inspiration/repos/yjs__yjs
+    notes: null

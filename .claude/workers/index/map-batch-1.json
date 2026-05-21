@@ -1,0 +1,52 @@
+[
+  {
+    "id": "paper-1106.4374",
+    "kind": "paper",
+    "path": "inspiration/papers/1106.4374.pdf"
+  },
+  {
+    "id": "paper-2402.00841",
+    "kind": "paper",
+    "path": "inspiration/papers/2402.00841.pdf"
+  },
+  {
+    "id": "paper-2409.00088",
+    "kind": "paper",
+    "path": "inspiration/papers/2409.00088.pdf"
+  },
+  {
+    "id": "paper-2506.05176",
+    "kind": "paper",
+    "path": "inspiration/papers/2506.05176.pdf"
+  },
+  {
+    "id": "repo-qwenlm-qwen3-embedding",
+    "kind": "repo",
+    "path": "inspiration/repos/QwenLM__Qwen3-Embedding"
+  },
+  {
+    "id": "repo-getditto-demoapp-chat",
+    "kind": "repo",
+    "path": "inspiration/repos/getditto__demoapp-chat"
+  },
+  {
+    "id": "repo-loro-dev-loro",
+    "kind": "repo",
+    "path": "inspiration/repos/loro-dev__loro"
+  },
+  {
+    "id": "repo-slidevjs-slidev",
+    "kind": "repo",
+    "path": "inspiration/repos/slidevjs__slidev"
+  },
+  {
+    "id": "docs-developer-apple-com",
+    "kind": "docs",
+    "path": "inspiration/docs/developer.apple.com"
+  },
+  {
+    "id": "docs-mesh-networking-101",
+    "kind": "docs",
+    "path": "inspiration/docs/mesh-networking-101"
+  }
+]

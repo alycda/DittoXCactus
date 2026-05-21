@@ -1,0 +1,47 @@
+[
+  {
+    "id": "paper-1908.10084",
+    "kind": "paper",
+    "path": "inspiration/papers/1908.10084.pdf"
+  },
+  {
+    "id": "paper-2402.01613",
+    "kind": "paper",
+    "path": "inspiration/papers/2402.01613.pdf"
+  },
+  {
+    "id": "paper-2412.04922",
+    "kind": "paper",
+    "path": "inspiration/papers/2412.04922.pdf"
+  },
+  {
+    "id": "paper-2506.09501",
+    "kind": "paper",
+    "path": "inspiration/papers/2506.09501.pdf"
+  },
+  {
+    "id": "repo-ukplab-sentence-transformers",
+    "kind": "repo",
+    "path": "inspiration/repos/UKPLab__sentence-transformers"
+  },
+  {
+    "id": "repo-getditto-demoapp-inventory",
+    "kind": "repo",
+    "path": "inspiration/repos/getditto__demoapp-inventory"
+  },
+  {
+    "id": "repo-mfontanini-presenterm",
+    "kind": "repo",
+    "path": "inspiration/repos/mfontanini__presenterm"
+  },
+  {
+    "id": "repo-software-mansion-labs-react-native-rag",
+    "kind": "repo",
+    "path": "inspiration/repos/software-mansion-labs__react-native-rag"
+  },
+  {
+    "id": "docs-ditto-live",
+    "kind": "docs",
+    "path": "inspiration/docs/ditto-live"
+  }
+]

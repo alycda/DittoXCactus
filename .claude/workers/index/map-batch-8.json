@@ -1,0 +1,47 @@
+[
+  {
+    "id": "paper-2401.02385",
+    "kind": "paper",
+    "path": "inspiration/papers/2401.02385.pdf"
+  },
+  {
+    "id": "paper-2407.07871",
+    "kind": "paper",
+    "path": "inspiration/papers/2407.07871.pdf"
+  },
+  {
+    "id": "paper-2505.14992",
+    "kind": "paper",
+    "path": "inspiration/papers/2505.14992.pdf"
+  },
+  {
+    "id": "repo-developermindset-com-faiss-mobile",
+    "kind": "repo",
+    "path": "inspiration/repos/DeveloperMindset-com__faiss-mobile"
+  },
+  {
+    "id": "repo-facebookresearch-faiss",
+    "kind": "repo",
+    "path": "inspiration/repos/facebookresearch__faiss"
+  },
+  {
+    "id": "repo-libp2p-go-libp2p",
+    "kind": "repo",
+    "path": "inspiration/repos/libp2p__go-libp2p"
+  },
+  {
+    "id": "repo-ramanujammv1988-edge-veda",
+    "kind": "repo",
+    "path": "inspiration/repos/ramanujammv1988__edge-veda"
+  },
+  {
+    "id": "docs-developer-apple-com",
+    "kind": "docs",
+    "path": "inspiration/docs/developer-apple-com"
+  },
+  {
+    "id": "docs-docs-pytorch-org",
+    "kind": "docs",
+    "path": "inspiration/docs/docs.pytorch.org"
+  }
+]

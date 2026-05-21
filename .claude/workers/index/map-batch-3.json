@@ -1,0 +1,47 @@
+[
+  {
+    "id": "paper-1910.01108",
+    "kind": "paper",
+    "path": "inspiration/papers/1910.01108.pdf"
+  },
+  {
+    "id": "paper-2402.04351",
+    "kind": "paper",
+    "path": "inspiration/papers/2402.04351.pdf"
+  },
+  {
+    "id": "paper-2412.21023",
+    "kind": "paper",
+    "path": "inspiration/papers/2412.21023.pdf"
+  },
+  {
+    "id": "paper-2507.01079",
+    "kind": "paper",
+    "path": "inspiration/papers/2507.01079.pdf"
+  },
+  {
+    "id": "repo-unickcheng-logseq-ai-assistant",
+    "kind": "repo",
+    "path": "inspiration/repos/UNICKCHENG__logseq-ai-assistant"
+  },
+  {
+    "id": "repo-getditto-demoapp-pos-kds",
+    "kind": "repo",
+    "path": "inspiration/repos/getditto__demoapp-pos-kds"
+  },
+  {
+    "id": "repo-mlc-ai-mlc-llm",
+    "kind": "repo",
+    "path": "inspiration/repos/mlc-ai__mlc-llm"
+  },
+  {
+    "id": "repo-spotify-annoy",
+    "kind": "repo",
+    "path": "inspiration/repos/spotify__annoy"
+  },
+  {
+    "id": "docs-docs-ditto-live",
+    "kind": "docs",
+    "path": "inspiration/docs/docs-ditto-live"
+  }
+]

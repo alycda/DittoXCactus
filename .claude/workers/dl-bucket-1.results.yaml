@@ -1,0 +1,79 @@
+version: 1
+bucket: 1
+results:
+  - url: "https://arxiv.org/abs/1106.4374"
+    status: done
+    path: inspiration/papers/1106.4374.pdf
+    notes: "arxiv PDF downloaded successfully"
+  - url: "https://arxiv.org/abs/2305.14314"
+    status: done
+    path: inspiration/papers/2305.14314.pdf
+    notes: "arxiv PDF downloaded successfully"
+  - url: "https://arxiv.org/abs/2402.04351"
+    status: done
+    path: inspiration/papers/2402.04351.pdf
+    notes: "arxiv PDF downloaded successfully"
+  - url: "https://arxiv.org/abs/2407.07871"
+    status: done
+    path: inspiration/papers/2407.07871.pdf
+    notes: "arxiv PDF downloaded successfully"
+  - url: "https://arxiv.org/abs/2505.00443"
+    status: done
+    path: inspiration/papers/2505.00443.pdf
+    notes: "arxiv PDF downloaded successfully"
+  - url: "https://arxiv.org/abs/2506.09501"
+    status: done
+    path: inspiration/papers/2506.09501.pdf
+    notes: "arxiv PDF downloaded successfully"
+  - url: "https://arxiv.org/abs/2604.15484"
+    status: done
+    path: inspiration/papers/2604.15484.pdf
+    notes: "arxiv PDF downloaded successfully"
+  - url: "https://dl.acm.org/doi/abs/10.1145/3565383.3566110"
+    status: failed
+    path: null
+    notes: "ACM paywall - unable to download without credentials"
+  - url: "https://docs.ditto.live/key-concepts/syncing-data"
+    status: done
+    path: inspiration/docs/ditto-live/syncing-data.html
+    notes: "documentation page downloaded as HTML (wget unavailable, used curl fallback)"
+  - url: "https://github.com/DeveloperMindset-com/faiss-mobile"
+    status: done
+    path: inspiration/repos/DeveloperMindset-com__faiss-mobile
+    notes: "git clone depth=1 successful (23M)"
+  - url: "https://github.com/anyproto/anytype-ts"
+    status: skipped
+    path: null
+    notes: "clone exceeded 50MB limit (148M total) - deleted"
+  - url: "https://github.com/cactus-compute/cactus-react-native"
+    status: skipped
+    path: null
+    notes: "clone exceeded 50MB limit (290M total) - deleted"
+  - url: "https://github.com/earthstar-project/willow-rs"
+    status: done
+    path: inspiration/repos/earthstar-project__willow-rs
+    notes: "git clone depth=1 successful (2.2M)"
+  - url: "https://github.com/getditto/samples"
+    status: done
+    path: inspiration/repos/getditto__samples
+    notes: "git clone depth=1 successful (508K)"
+  - url: "https://github.com/google/nearby"
+    status: skipped
+    path: null
+    notes: "clone exceeded 50MB limit (151M total) - deleted"
+  - url: "https://github.com/mfontanini/presenterm"
+    status: done
+    path: inspiration/repos/mfontanini__presenterm
+    notes: "git clone depth=1 successful (6.3M)"
+  - url: "https://github.com/orbitdb/orbitdb"
+    status: done
+    path: inspiration/repos/orbitdb__orbitdb
+    notes: "git clone depth=1 successful (1.7M)"
+  - url: "https://github.com/ramanujammv1988/edge-veda"
+    status: done
+    path: inspiration/repos/ramanujammv1988__edge-veda
+    notes: "git clone depth=1 successful (42M)"
+  - url: "https://github.com/thinking-machines-lab/batch_invariant_ops"
+    status: done
+    path: inspiration/repos/thinking-machines-lab__batch_invariant_ops
+    notes: "git clone depth=1 successful (176K)"

@@ -1,0 +1,47 @@
+[
+  {
+    "id": "paper-2106.09685",
+    "kind": "paper",
+    "path": "inspiration/papers/2106.09685.pdf"
+  },
+  {
+    "id": "paper-2403.12844",
+    "kind": "paper",
+    "path": "inspiration/papers/2403.12844.pdf"
+  },
+  {
+    "id": "paper-2504.06135",
+    "kind": "paper",
+    "path": "inspiration/papers/2504.06135.pdf"
+  },
+  {
+    "id": "paper-2507.17647",
+    "kind": "paper",
+    "path": "inspiration/papers/2507.17647.pdf"
+  },
+  {
+    "id": "repo-asg017-sqlite-vec",
+    "kind": "repo",
+    "path": "inspiration/repos/asg017__sqlite-vec"
+  },
+  {
+    "id": "repo-getditto-samples",
+    "kind": "repo",
+    "path": "inspiration/repos/getditto__samples"
+  },
+  {
+    "id": "repo-n0-computer-iroh",
+    "kind": "repo",
+    "path": "inspiration/repos/n0-computer__iroh"
+  },
+  {
+    "id": "repo-thinking-machines-lab-batch-invariant-ops",
+    "kind": "repo",
+    "path": "inspiration/repos/thinking-machines-lab__batch_invariant_ops"
+  },
+  {
+    "id": "docs-docs-pytorch-org",
+    "kind": "docs",
+    "path": "inspiration/docs/docs-pytorch-org"
+  }
+]

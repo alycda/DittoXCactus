@@ -1,0 +1,97 @@
+[
+  {
+    "url": "https://arxiv.org/abs/1908.10084",
+    "kind": "paper",
+    "title": "arXiv 1908.10084"
+  },
+  {
+    "url": "https://arxiv.org/abs/2308.14963",
+    "kind": "paper",
+    "title": "arXiv 2308.14963"
+  },
+  {
+    "url": "https://arxiv.org/abs/2403.12844",
+    "kind": "paper",
+    "title": "arXiv 2403.12844"
+  },
+  {
+    "url": "https://arxiv.org/abs/2409.00088",
+    "kind": "paper",
+    "title": "arXiv 2409.00088"
+  },
+  {
+    "url": "https://arxiv.org/abs/2505.09388",
+    "kind": "paper",
+    "title": "arXiv 2505.09388"
+  },
+  {
+    "url": "https://arxiv.org/abs/2507.01079",
+    "kind": "paper",
+    "title": "arXiv 2507.01079"
+  },
+  {
+    "url": "https://bridgefy.me/sdk",
+    "kind": "docs",
+    "title": "bridgefy.me"
+  },
+  {
+    "url": "https://docs.ditto.live",
+    "kind": "docs",
+    "title": "docs.ditto.live"
+  },
+  {
+    "url": "https://docs.ditto.live/sdk/v4-7/basic/mesh-networking-101",
+    "kind": "docs",
+    "title": "docs.ditto.live"
+  },
+  {
+    "url": "https://github.com/FlagOpen/FlagEmbedding",
+    "kind": "repo",
+    "title": "FlagOpen/FlagEmbedding"
+  },
+  {
+    "url": "https://github.com/asg017/sqlite-vec",
+    "kind": "repo",
+    "title": "asg017/sqlite-vec"
+  },
+  {
+    "url": "https://github.com/cactus-compute/cactus/blob/main/docs/cactus_engine.md",
+    "kind": "repo",
+    "title": "github.com"
+  },
+  {
+    "url": "https://github.com/facebookresearch/faiss",
+    "kind": "repo",
+    "title": "facebookresearch/faiss"
+  },
+  {
+    "url": "https://github.com/ggml-org/ggml/blob/master/docs/gguf.md",
+    "kind": "repo",
+    "title": "github.com"
+  },
+  {
+    "url": "https://github.com/hakimel/reveal.js",
+    "kind": "repo",
+    "title": "hakimel/reveal.js"
+  },
+  {
+    "url": "https://github.com/mfontanini/presenterm/blob/master/examples/demo.md",
+    "kind": "repo",
+    "title": "github.com"
+  },
+  {
+    "url": "https://github.com/ostafen/a556180db7d4c41abb325b5ae5e13ca4",
+    "kind": "repo",
+    "title": "ostafen/a556180db7d4c41abb325b5ae5e13ca4"
+  },
+  {
+    "url": "https://github.com/slidevjs/slidev",
+    "kind": "repo",
+    "title": "slidevjs/slidev"
+  },
+  {
+    "url": "https://github.com/unum-cloud/usearch",
+    "kind": "repo",
+    "title": "unum-cloud/usearch"
+  }
+]

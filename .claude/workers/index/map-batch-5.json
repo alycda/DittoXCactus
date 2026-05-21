@@ -1,0 +1,47 @@
+[
+  {
+    "id": "paper-2301.07788",
+    "kind": "paper",
+    "path": "inspiration/papers/2301.07788.pdf"
+  },
+  {
+    "id": "paper-2404.14219",
+    "kind": "paper",
+    "path": "inspiration/papers/2404.14219.pdf"
+  },
+  {
+    "id": "paper-2505.00443",
+    "kind": "paper",
+    "path": "inspiration/papers/2505.00443.pdf"
+  },
+  {
+    "id": "paper-2509.20354",
+    "kind": "paper",
+    "path": "inspiration/papers/2509.20354.pdf"
+  },
+  {
+    "id": "repo-deepsense-ai-edge-slm",
+    "kind": "repo",
+    "path": "inspiration/repos/deepsense-ai__edge-slm"
+  },
+  {
+    "id": "repo-ggml-org-ggml",
+    "kind": "repo",
+    "path": "inspiration/repos/ggml-org__ggml"
+  },
+  {
+    "id": "repo-orbitdb-orbitdb",
+    "kind": "repo",
+    "path": "inspiration/repos/orbitdb__orbitdb"
+  },
+  {
+    "id": "repo-unum-cloud-usearch",
+    "kind": "repo",
+    "path": "inspiration/repos/unum-cloud__usearch"
+  },
+  {
+    "id": "docs-docs-ditto-live-dql",
+    "kind": "docs",
+    "path": "inspiration/docs/docs.ditto.live-dql"
+  }
+]

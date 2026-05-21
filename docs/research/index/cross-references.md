@@ -1,0 +1,222 @@
+# Cross-references
+
+> Source-to-source citation graph extracted from per-source `Cross-references` sections. Edges are *what the Map-phase summary author saw as related*, not verified primary-source citations — treat as suggestive routing, not authoritative.
+
+> 95 edges across 69 sources. 1 unresolved targets (the cited id didn't match any source in the index — likely a hallucinated cross-reference; listed at the end).
+
+---
+
+## Outgoing edges (from → to)
+
+Group by source:
+
+- **docs-bridgefy-sdk** (Bridgefy SDK — On-device AI + Mesh Networking)
+  - → repo-permissionlesstech-bitchat (BitChat — Decentralized Peer-to-Peer Messaging (Bluetooth + Nostr))
+- **docs-developer-apple-com** (Apple Developer Documentation — Foundation Models)
+  - → paper-2505.14992 (Schema-aware Information Extraction Using On-Device Large Language Models)
+  - → repo-ramanujammv1988-edge-veda (Edge-Veda)
+- **docs-ditto-live** (Ditto Live Documentation: Syncing Data)
+  - → paper-2506.09501 (Conflict-Free Vector Indices for Collaborative Mesh Systems)
+  - → repo-getditto-demoapp-inventory (Ditto Inventory Demo App)
+- **docs-docs-ditto-live** (Ditto Mesh Documentation)
+  - → repo-earthstar-project-willow-rs (Willow Protocol (Rust Implementation))
+  - → repo-permissionlesstech-bitchat (BitChat — Decentralized Peer-to-Peer Messaging (Bluetooth + Nostr))
+- **docs-docs-ditto-live-dql** (Ditto Query Language (DQL): Distributed Data Query and Synchronization)
+  - → paper-2505.00443 (Local-First Computing and Offline-Capable Systems)
+  - → repo-orbitdb-orbitdb (OrbitDB: CRDT-Based Distributed Database on IPFS)
+- **docs-docs-ditto-live-transports** (Ditto Mesh Networking & Transports)
+  - → repo-earthstar-project-earthstar (Earthstar: Distributed Storage Protocol for P2P Networks)
+  - → repo-permissionlesstech-bitchat-android (bitchat for Android: BLE Mesh P2P Chat)
+- **docs-docs-pytorch-org** (PyTorch Documentation — Reproducibility)
+  - → paper-2506.09501 (Conflict-Free Vector Indices for Collaborative Mesh Systems)
+- **docs-mesh-networking-101** (Mesh Networking 101: Topology, Routing, and Resilience)
+  - → docs-developer-apple-com (Apple Developer Documentation — Foundation Models)
+- **paper-1908.10084** (Sentence-BERT: Sentence Embeddings using Siamese BERT-Networks)
+  - → repo-ukplab-sentence-transformers (Sentence Transformers (UKP Lab / Hugging Face))
+- **paper-1910.01108** (DistilBERT, a distilled version of BERT: smaller, faster, cheaper and lighter)
+  - → paper-2402.00841 (Deterministic Transformer Inference Across Hardware)
+  - → paper-2405.00732 (LoRA Land: 310 Fine-Tuned Large Language Models)
+- **paper-2106.09685** (LoRA: Low-Rank Adaptation of Large Language Models)
+  - → repo-thinking-machines-lab-batch-invariant-ops (Batch Invariant Ops: Defeating Nondeterminism in LLM Inference)
+- **paper-2301.07788** (Retrieval-Augmented Generation for Knowledge-Intensive Tasks)
+  - → repo-deepsense-ai-edge-slm (Edge Small Language Model: On-Device RAG Pipeline)
+  - → repo-unum-cloud-usearch (USearch: Fast Vector Similarity Search for Constrained Environments)
+- **paper-2401.02385** (The Faiss Library)
+  - → paper-2407.07871 (Enhancing HNSW Index for Real-Time Updates)
+  - → repo-facebookresearch-faiss (Faiss)
+  - → repo-unum-cloud-usearch (USearch: Fast Vector Similarity Search for Constrained Environments)
+- **paper-2402.00841** (Deterministic Transformer Inference Across Hardware)
+  - → paper-2506.05176 (Qwen3 Embedding: Multilingual, Deterministic Embeddings for On-Device & Mobile)
+- **paper-2402.01613** (Embeddings and Determinism in Small Language Models)
+  - → paper-1908.10084 (Sentence-BERT: Sentence Embeddings using Siamese BERT-Networks)
+- **paper-2402.04351** (Numerical Stability of Transformer Inference)
+  - → docs-docs-ditto-live (Ditto Mesh Documentation)
+- **paper-2403.12844** (MELTing point: Mobile Evaluation of Language Transformers)
+  - → paper-2106.09685 (LoRA: Low-Rank Adaptation of Large Language Models)
+  - → repo-thinking-machines-lab-batch-invariant-ops (Batch Invariant Ops: Defeating Nondeterminism in LLM Inference)
+- **paper-2404.14219** (Efficient Vector Search and Quantization for Edge Deployment)
+  - → repo-unum-cloud-usearch (USearch: Fast Vector Similarity Search for Constrained Environments)
+- **paper-2405.00732** (LoRA Land: 310 Fine-Tuned Large Language Models)
+  - → paper-2402.00841 (Deterministic Transformer Inference Across Hardware)
+- **paper-2406.10290** (MobileAIBench: Benchmarking LLMs and LMMs for On-Device Use Cases)
+  - → paper-2403.12844 (MELTing point: Mobile Evaluation of Language Transformers)
+  - → paper-2409.00088 (On-Device Small LLM Inference & Latency Characterization)
+- **paper-2407.07871** (Enhancing HNSW Index for Real-Time Updates)
+  - → paper-2401.02385 (The Faiss Library)
+  - → repo-unum-cloud-usearch (USearch: Fast Vector Similarity Search for Constrained Environments)
+- **paper-2409.00088** (On-Device Small LLM Inference & Latency Characterization)
+  - → repo-qwenlm-qwen3-embedding (Qwen3 Embedding (Official Repository))
+- **paper-2412.04922** (Approximate Nearest Neighbor Search for Distributed Vector Indices)
+  - → paper-2402.01613 (Embeddings and Determinism in Small Language Models)
+- **paper-2412.21023** (EdgeRAG: Edge-Device Retrieval-Augmented Generation)
+  - → paper-2507.01079 (MobileRAG: A Fast, Memory-Efficient, and Energy-Efficient Method for On-Device RAG)
+  - → repo-mlc-ai-mlc-llm (MLC LLM: Universal LLM Deployment Engine with ML Compilation)
+- **paper-2504.06135** (Decentralizing AI Memory: SHIMI, a Semantic Hierarchical Memory Index for Scalable Agent Reasoning)
+  - → repo-asg017-sqlite-vec (sqlite-vec: Vector Search SQLite Extension)
+  - → repo-n0-computer-iroh (Iroh: less net work for networks)
+- **paper-2505.00443** (Local-First Computing and Offline-Capable Systems)
+  - → repo-orbitdb-orbitdb (OrbitDB: CRDT-Based Distributed Database on IPFS)
+- **paper-2505.09388** (EmbeddingGemma: Powerful and Lightweight Text Representations)
+  - → paper-2402.01613 (Embeddings and Determinism in Small Language Models)
+  - → paper-2509.20354 (Deterministic Embeddings and Reproducible Semantic Search)
+- **paper-2505.14992** (Schema-aware Information Extraction Using On-Device Large Language Models)
+  - → paper-2402.00841 (Deterministic Transformer Inference Across Hardware)
+  - → paper-2412.04922 (Approximate Nearest Neighbor Search for Distributed Vector Indices)
+- **paper-2506.05176** (Qwen3 Embedding: Multilingual, Deterministic Embeddings for On-Device & Mobile)
+  - → repo-qwenlm-qwen3-embedding (Qwen3 Embedding (Official Repository))
+- **paper-2506.09501** (Conflict-Free Vector Indices for Collaborative Mesh Systems)
+  - → paper-2412.04922 (Approximate Nearest Neighbor Search for Distributed Vector Indices)
+- **paper-2507.01079** (MobileRAG: A Fast, Memory-Efficient, and Energy-Efficient Method for On-Device RAG)
+  - → paper-2412.21023 (EdgeRAG: Edge-Device Retrieval-Augmented Generation)
+  - → repo-mlc-ai-mlc-llm (MLC LLM: Universal LLM Deployment Engine with ML Compilation)
+- **paper-2507.17647** (SHINE: A Scalable HNSW Index in Disaggregated Memory)
+  - → paper-2504.06135 (Decentralizing AI Memory: SHIMI, a Semantic Hierarchical Memory Index for Scalable Agent Reasoning)
+  - → repo-asg017-sqlite-vec (sqlite-vec: Vector Search SQLite Extension)
+- **paper-2509.20354** (Deterministic Embeddings and Reproducible Semantic Search)
+  - → repo-ggml-org-ggml (GGUF: Quantized Model Format and Inference Runtime)
+- **paper-2602.17099** (Understanding and Mitigating Numerical Sources of Nondeterminism in LLMs)
+  - → paper-2506.09501 (Conflict-Free Vector Indices for Collaborative Mesh Systems)
+- **repo-asg017-sqlite-vec** (sqlite-vec: Vector Search SQLite Extension)
+  - → paper-2504.06135 (Decentralizing AI Memory: SHIMI, a Semantic Hierarchical Memory Index for Scalable Agent Reasoning)
+  - → paper-2507.17647 (SHINE: A Scalable HNSW Index in Disaggregated Memory)
+- **repo-deepsense-ai-edge-slm** (Edge Small Language Model: On-Device RAG Pipeline)
+  - → repo-ggml-org-ggml (GGUF: Quantized Model Format and Inference Runtime)
+  - → repo-unum-cloud-usearch (USearch: Fast Vector Similarity Search for Constrained Environments)
+- **repo-developermindset-com-faiss-mobile** (FAISS Mobile)
+  - → paper-2401.02385 (The Faiss Library)
+  - → repo-facebookresearch-faiss (Faiss)
+- **repo-earthstar-project-earthstar** (Earthstar: Distributed Storage Protocol for P2P Networks)
+  - → repo-yjs-yjs (Yjs: CRDT Framework for Shared Data Types)
+- **repo-earthstar-project-willow-rs** (Willow Protocol (Rust Implementation))
+  - → docs-docs-ditto-live (Ditto Mesh Documentation)
+  - → paper-2505.11783 (Efficient Vector Search on Disaggregated Memory with d-HNSW)
+- **repo-facebookresearch-faiss** (Faiss)
+  - → paper-2401.02385 (The Faiss Library)
+  - → repo-developermindset-com-faiss-mobile (FAISS Mobile)
+  - → repo-unum-cloud-usearch (USearch: Fast Vector Similarity Search for Constrained Environments)
+- **repo-getditto-demoapp-chat** (Ditto Chat Demo App (iOS + Android))
+  - → docs-ditto-live (Ditto Live Documentation: Syncing Data)
+- **repo-getditto-demoapp-inventory** (Ditto Inventory Demo App)
+  - → docs-ditto-live (Ditto Live Documentation: Syncing Data)
+- **repo-getditto-demoapp-pos-kds** (DittoPOS: Point-of-Sale Demo App)
+  - → docs-docs-ditto-live (Ditto Mesh Documentation)
+- **repo-getditto-samples** (Ditto Sample Projects)
+  - → repo-n0-computer-iroh (Iroh: less net work for networks)
+- **repo-ggml-org-ggml** (GGUF: Quantized Model Format and Inference Runtime)
+  - → repo-deepsense-ai-edge-slm (Edge Small Language Model: On-Device RAG Pipeline)
+- **repo-google-ai-edge-gallery** (Google AI Edge Gallery: On-Device LLM Sandbox)
+  - → repo-software-mansion-labs-react-native-rag (React Native RAG)
+- **repo-libp2p-go-libp2p** (libp2p Go Implementation)
+  - → docs-docs-ditto-live (Ditto Mesh Documentation)
+  - → repo-n0-computer-iroh (Iroh: less net work for networks)
+- **repo-loro-dev-loro** (Loro: CRDT Data Structure Library (Rust + JS + Swift))
+  - → paper-1106.4374 (Conflict-free Replicated Data Types (CRDTs))
+- **repo-mlc-ai-mlc-llm** (MLC LLM: Universal LLM Deployment Engine with ML Compilation)
+  - → paper-2403.12844 (MELTing point: Mobile Evaluation of Language Transformers)
+  - → paper-2507.01079 (MobileRAG: A Fast, Memory-Efficient, and Energy-Efficient Method for On-Device RAG)
+- **repo-n0-computer-iroh** (Iroh: less net work for networks)
+  - → paper-2504.06135 (Decentralizing AI Memory: SHIMI, a Semantic Hierarchical Memory Index for Scalable Agent Reasoning)
+  - → repo-asg017-sqlite-vec (sqlite-vec: Vector Search SQLite Extension)
+- **repo-orbitdb-orbitdb** (OrbitDB: CRDT-Based Distributed Database on IPFS)
+  - → paper-2505.00443 (Local-First Computing and Offline-Capable Systems)
+- **repo-permissionlesstech-bitchat** (BitChat — Decentralized Peer-to-Peer Messaging (Bluetooth + Nostr))
+  - → docs-docs-ditto-live (Ditto Mesh Documentation)
+- **repo-permissionlesstech-bitchat-android** (bitchat for Android: BLE Mesh P2P Chat)
+  - → repo-earthstar-project-earthstar (Earthstar: Distributed Storage Protocol for P2P Networks)
+  - → repo-yjs-yjs (Yjs: CRDT Framework for Shared Data Types)
+- **repo-qwenlm-qwen3-embedding** (Qwen3 Embedding (Official Repository))
+  - → paper-2506.05176 (Qwen3 Embedding: Multilingual, Deterministic Embeddings for On-Device & Mobile)
+- **repo-ramanujammv1988-edge-veda** (Edge-Veda)
+  - → paper-2403.12844 (MELTing point: Mobile Evaluation of Language Transformers)
+  - → paper-2507.01079 (MobileRAG: A Fast, Memory-Efficient, and Energy-Efficient Method for On-Device RAG)
+  - → repo-deepsense-ai-edge-slm (Edge Small Language Model: On-Device RAG Pipeline)
+- **repo-software-mansion-labs-react-native-rag** (React Native RAG)
+  - → paper-1908.10084 (Sentence-BERT: Sentence Embeddings using Siamese BERT-Networks)
+  - → repo-ukplab-sentence-transformers (Sentence Transformers (UKP Lab / Hugging Face))
+- **repo-spotify-annoy** (Annoy: Approximate Nearest Neighbors Oh Yeah)
+  - → repo-mlc-ai-mlc-llm (MLC LLM: Universal LLM Deployment Engine with ML Compilation)
+- **repo-thinking-machines-lab-batch-invariant-ops** (Batch Invariant Ops: Defeating Nondeterminism in LLM Inference)
+  - → paper-2106.09685 (LoRA: Low-Rank Adaptation of Large Language Models)
+  - → paper-2403.12844 (MELTing point: Mobile Evaluation of Language Transformers)
+- **repo-ukplab-sentence-transformers** (Sentence Transformers (UKP Lab / Hugging Face))
+  - → paper-1908.10084 (Sentence-BERT: Sentence Embeddings using Siamese BERT-Networks)
+- **repo-unickcheng-logseq-ai-assistant** (Logseq AI Assistant Plugin)
+  - → repo-getditto-demoapp-pos-kds (DittoPOS: Point-of-Sale Demo App)
+- **repo-unum-cloud-usearch** (USearch: Fast Vector Similarity Search for Constrained Environments)
+  - → paper-2404.14219 (Efficient Vector Search and Quantization for Edge Deployment)
+  - → repo-deepsense-ai-edge-slm (Edge Small Language Model: On-Device RAG Pipeline)
+- **repo-yjs-yjs** (Yjs: CRDT Framework for Shared Data Types)
+  - → repo-earthstar-project-earthstar (Earthstar: Distributed Storage Protocol for P2P Networks)
+
+## Incoming edges (most-cited sources)
+
+- **repo-unum-cloud-usearch** (USearch: Fast Vector Similarity Search for Constrained Environments) — cited by 6: paper-2301.07788, paper-2401.02385, paper-2404.14219, paper-2407.07871, repo-deepsense-ai-edge-slm, repo-facebookresearch-faiss
+- **docs-docs-ditto-live** (Ditto Mesh Documentation) — cited by 5: paper-2402.04351, repo-earthstar-project-willow-rs, repo-getditto-demoapp-pos-kds, repo-libp2p-go-libp2p, repo-permissionlesstech-bitchat
+- **paper-2403.12844** (MELTing point: Mobile Evaluation of Language Transformers) — cited by 4: paper-2406.10290, repo-mlc-ai-mlc-llm, repo-ramanujammv1988-edge-veda, repo-thinking-machines-lab-batch-invariant-ops
+- **repo-deepsense-ai-edge-slm** (Edge Small Language Model: On-Device RAG Pipeline) — cited by 4: paper-2301.07788, repo-ggml-org-ggml, repo-ramanujammv1988-edge-veda, repo-unum-cloud-usearch
+- **paper-1908.10084** (Sentence-BERT: Sentence Embeddings using Siamese BERT-Networks) — cited by 3: paper-2402.01613, repo-software-mansion-labs-react-native-rag, repo-ukplab-sentence-transformers
+- **paper-2401.02385** (The Faiss Library) — cited by 3: paper-2407.07871, repo-developermindset-com-faiss-mobile, repo-facebookresearch-faiss
+- **paper-2402.00841** (Deterministic Transformer Inference Across Hardware) — cited by 3: paper-1910.01108, paper-2405.00732, paper-2505.14992
+- **paper-2504.06135** (Decentralizing AI Memory: SHIMI, a Semantic Hierarchical Memory Index for Scalable Agent Reasoning) — cited by 3: paper-2507.17647, repo-asg017-sqlite-vec, repo-n0-computer-iroh
+- **paper-2506.09501** (Conflict-Free Vector Indices for Collaborative Mesh Systems) — cited by 3: docs-ditto-live, docs-docs-pytorch-org, paper-2602.17099
+- **paper-2507.01079** (MobileRAG: A Fast, Memory-Efficient, and Energy-Efficient Method for On-Device RAG) — cited by 3: paper-2412.21023, repo-mlc-ai-mlc-llm, repo-ramanujammv1988-edge-veda
+- **repo-asg017-sqlite-vec** (sqlite-vec: Vector Search SQLite Extension) — cited by 3: paper-2504.06135, paper-2507.17647, repo-n0-computer-iroh
+- **repo-earthstar-project-earthstar** (Earthstar: Distributed Storage Protocol for P2P Networks) — cited by 3: docs-docs-ditto-live-transports, repo-permissionlesstech-bitchat-android, repo-yjs-yjs
+- **repo-mlc-ai-mlc-llm** (MLC LLM: Universal LLM Deployment Engine with ML Compilation) — cited by 3: paper-2412.21023, paper-2507.01079, repo-spotify-annoy
+- **repo-n0-computer-iroh** (Iroh: less net work for networks) — cited by 3: paper-2504.06135, repo-getditto-samples, repo-libp2p-go-libp2p
+- **docs-ditto-live** (Ditto Live Documentation: Syncing Data) — cited by 2: repo-getditto-demoapp-chat, repo-getditto-demoapp-inventory
+- **paper-2106.09685** (LoRA: Low-Rank Adaptation of Large Language Models) — cited by 2: paper-2403.12844, repo-thinking-machines-lab-batch-invariant-ops
+- **paper-2402.01613** (Embeddings and Determinism in Small Language Models) — cited by 2: paper-2412.04922, paper-2505.09388
+- **paper-2412.04922** (Approximate Nearest Neighbor Search for Distributed Vector Indices) — cited by 2: paper-2505.14992, paper-2506.09501
+- **paper-2505.00443** (Local-First Computing and Offline-Capable Systems) — cited by 2: docs-docs-ditto-live-dql, repo-orbitdb-orbitdb
+- **paper-2506.05176** (Qwen3 Embedding: Multilingual, Deterministic Embeddings for On-Device & Mobile) — cited by 2: paper-2402.00841, repo-qwenlm-qwen3-embedding
+- **repo-facebookresearch-faiss** (Faiss) — cited by 2: paper-2401.02385, repo-developermindset-com-faiss-mobile
+- **repo-ggml-org-ggml** (GGUF: Quantized Model Format and Inference Runtime) — cited by 2: paper-2509.20354, repo-deepsense-ai-edge-slm
+- **repo-orbitdb-orbitdb** (OrbitDB: CRDT-Based Distributed Database on IPFS) — cited by 2: docs-docs-ditto-live-dql, paper-2505.00443
+- **repo-permissionlesstech-bitchat** (BitChat — Decentralized Peer-to-Peer Messaging (Bluetooth + Nostr)) — cited by 2: docs-bridgefy-sdk, docs-docs-ditto-live
+- **repo-qwenlm-qwen3-embedding** (Qwen3 Embedding (Official Repository)) — cited by 2: paper-2409.00088, paper-2506.05176
+- **repo-thinking-machines-lab-batch-invariant-ops** (Batch Invariant Ops: Defeating Nondeterminism in LLM Inference) — cited by 2: paper-2106.09685, paper-2403.12844
+- **repo-ukplab-sentence-transformers** (Sentence Transformers (UKP Lab / Hugging Face)) — cited by 2: paper-1908.10084, repo-software-mansion-labs-react-native-rag
+- **repo-yjs-yjs** (Yjs: CRDT Framework for Shared Data Types) — cited by 2: repo-earthstar-project-earthstar, repo-permissionlesstech-bitchat-android
+- **docs-developer-apple-com** (Apple Developer Documentation — Foundation Models) — cited by 1: docs-mesh-networking-101
+- **paper-1106.4374** (Conflict-free Replicated Data Types (CRDTs)) — cited by 1: repo-loro-dev-loro
+- **paper-2404.14219** (Efficient Vector Search and Quantization for Edge Deployment) — cited by 1: repo-unum-cloud-usearch
+- **paper-2405.00732** (LoRA Land: 310 Fine-Tuned Large Language Models) — cited by 1: paper-1910.01108
+- **paper-2407.07871** (Enhancing HNSW Index for Real-Time Updates) — cited by 1: paper-2401.02385
+- **paper-2409.00088** (On-Device Small LLM Inference & Latency Characterization) — cited by 1: paper-2406.10290
+- **paper-2412.21023** (EdgeRAG: Edge-Device Retrieval-Augmented Generation) — cited by 1: paper-2507.01079
+- **paper-2505.11783** (Efficient Vector Search on Disaggregated Memory with d-HNSW) — cited by 1: repo-earthstar-project-willow-rs
+- **paper-2505.14992** (Schema-aware Information Extraction Using On-Device Large Language Models) — cited by 1: docs-developer-apple-com
+- **paper-2507.17647** (SHINE: A Scalable HNSW Index in Disaggregated Memory) — cited by 1: repo-asg017-sqlite-vec
+- **paper-2509.20354** (Deterministic Embeddings and Reproducible Semantic Search) — cited by 1: paper-2505.09388
+- **repo-developermindset-com-faiss-mobile** (FAISS Mobile) — cited by 1: repo-facebookresearch-faiss
+- **repo-earthstar-project-willow-rs** (Willow Protocol (Rust Implementation)) — cited by 1: docs-docs-ditto-live
+- **repo-getditto-demoapp-inventory** (Ditto Inventory Demo App) — cited by 1: docs-ditto-live
+- **repo-getditto-demoapp-pos-kds** (DittoPOS: Point-of-Sale Demo App) — cited by 1: repo-unickcheng-logseq-ai-assistant
+- **repo-permissionlesstech-bitchat-android** (bitchat for Android: BLE Mesh P2P Chat) — cited by 1: docs-docs-ditto-live-transports
+- **repo-ramanujammv1988-edge-veda** (Edge-Veda) — cited by 1: docs-developer-apple-com
+- **repo-software-mansion-labs-react-native-rag** (React Native RAG) — cited by 1: repo-google-ai-edge-gallery
+
+## Unresolved citation targets (likely Map-phase hallucinations)
+
+- `paper-2305.00583` — no matching source-id; check spelling or treat as a hallucinated cite

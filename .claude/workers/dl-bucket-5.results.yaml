@@ -1,0 +1,59 @@
+version: 1
+bucket: 5
+results:
+  - url: https://arxiv.org/abs/2301.07788
+    status: done
+    path: inspiration/papers/2301.07788.pdf
+  - url: https://arxiv.org/abs/2402.01613
+    status: done
+    path: inspiration/papers/2402.01613.pdf
+  - url: https://arxiv.org/abs/2406.10290
+    status: done
+    path: inspiration/papers/2406.10290.pdf
+  - url: https://arxiv.org/abs/2504.06135
+    status: done
+    path: inspiration/papers/2504.06135.pdf
+  - url: https://arxiv.org/abs/2506.05176
+    status: done
+    path: inspiration/papers/2506.05176.pdf
+  - url: https://arxiv.org/abs/2602.17099
+    status: done
+    path: inspiration/papers/2602.17099.pdf
+  - url: https://developer.apple.com/documentation/multipeerconnectivity
+    status: done
+    path: inspiration/docs/developer.apple.com/index.html
+  - url: https://docs.ditto.live/key-concepts/mesh-networking
+    status: done
+    path: inspiration/docs/docs.ditto.live/index.html
+  - url: https://docs.pytorch.org/docs/2.12/notes/randomness.html
+    status: done
+    path: inspiration/docs/docs.pytorch.org/index.html
+  - url: https://github.com/UNICKCHENG/logseq-ai-assistant
+    status: done
+    path: inspiration/repos/UNICKCHENG__logseq-ai-assistant
+  - url: https://github.com/cactus-compute/cactus-kotlin
+    status: skipped
+    path: null
+    notes: "209M exceeds 50MB limit"
+  - url: https://github.com/earthstar-project/earthstar
+    status: done
+    path: inspiration/repos/earthstar-project__earthstar
+  - url: https://github.com/getditto/demoapp-pos-kds
+    status: done
+    path: inspiration/repos/getditto__demoapp-pos-kds
+  - url: https://github.com/google-ai-edge/gallery
+    status: done
+    path: inspiration/repos/google-ai-edge__gallery
+  - url: https://github.com/loro-dev/loro
+    status: done
+    path: inspiration/repos/loro-dev__loro
+  - url: https://github.com/n0-computer/iroh
+    status: done
+    path: inspiration/repos/n0-computer__iroh
+  - url: https://github.com/pytorch/executorch
+    status: skipped
+    path: null
+    notes: "240M exceeds 50MB limit"
+  - url: https://github.com/spotify/annoy
+    status: done
+    path: inspiration/repos/spotify__annoy

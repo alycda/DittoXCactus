@@ -1,0 +1,47 @@
+[
+  {
+    "id": "paper-2305.14314",
+    "kind": "paper",
+    "path": "inspiration/papers/2305.14314.pdf"
+  },
+  {
+    "id": "paper-2405.00732",
+    "kind": "paper",
+    "path": "inspiration/papers/2405.00732.pdf"
+  },
+  {
+    "id": "paper-2505.09388",
+    "kind": "paper",
+    "path": "inspiration/papers/2505.09388.pdf"
+  },
+  {
+    "id": "paper-2602.17099",
+    "kind": "paper",
+    "path": "inspiration/papers/2602.17099.pdf"
+  },
+  {
+    "id": "repo-earthstar-project-earthstar",
+    "kind": "repo",
+    "path": "inspiration/repos/earthstar-project__earthstar"
+  },
+  {
+    "id": "repo-google-ai-edge-gallery",
+    "kind": "repo",
+    "path": "inspiration/repos/google-ai-edge__gallery"
+  },
+  {
+    "id": "repo-permissionlesstech-bitchat-android",
+    "kind": "repo",
+    "path": "inspiration/repos/permissionlesstech__bitchat-android"
+  },
+  {
+    "id": "repo-yjs-yjs",
+    "kind": "repo",
+    "path": "inspiration/repos/yjs__yjs"
+  },
+  {
+    "id": "docs-docs-ditto-live-transports",
+    "kind": "docs",
+    "path": "inspiration/docs/docs.ditto.live-transports"
+  }
+]

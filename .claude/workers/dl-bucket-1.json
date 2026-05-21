@@ -1,0 +1,97 @@
+[
+  {
+    "url": "https://arxiv.org/abs/1106.4374",
+    "kind": "paper",
+    "title": "arXiv 1106.4374"
+  },
+  {
+    "url": "https://arxiv.org/abs/2305.14314",
+    "kind": "paper",
+    "title": "arXiv 2305.14314"
+  },
+  {
+    "url": "https://arxiv.org/abs/2402.04351",
+    "kind": "paper",
+    "title": "arXiv 2402.04351"
+  },
+  {
+    "url": "https://arxiv.org/abs/2407.07871",
+    "kind": "paper",
+    "title": "arXiv 2407.07871"
+  },
+  {
+    "url": "https://arxiv.org/abs/2505.00443",
+    "kind": "paper",
+    "title": "arXiv 2505.00443"
+  },
+  {
+    "url": "https://arxiv.org/abs/2506.09501",
+    "kind": "paper",
+    "title": "arXiv 2506.09501"
+  },
+  {
+    "url": "https://arxiv.org/abs/2604.15484",
+    "kind": "paper",
+    "title": "arXiv 2604.15484"
+  },
+  {
+    "url": "https://dl.acm.org/doi/abs/10.1145/3565383.3566110",
+    "kind": "paper",
+    "title": "dl.acm.org"
+  },
+  {
+    "url": "https://docs.ditto.live/key-concepts/syncing-data",
+    "kind": "docs",
+    "title": "docs.ditto.live"
+  },
+  {
+    "url": "https://github.com/DeveloperMindset-com/faiss-mobile",
+    "kind": "repo",
+    "title": "DeveloperMindset-com/faiss-mobile"
+  },
+  {
+    "url": "https://github.com/anyproto/anytype-ts",
+    "kind": "repo",
+    "title": "anyproto/anytype-ts"
+  },
+  {
+    "url": "https://github.com/cactus-compute/cactus-react-native",
+    "kind": "repo",
+    "title": "cactus-compute/cactus-react-native"
+  },
+  {
+    "url": "https://github.com/earthstar-project/willow-rs",
+    "kind": "repo",
+    "title": "earthstar-project/willow-rs"
+  },
+  {
+    "url": "https://github.com/getditto/samples",
+    "kind": "repo",
+    "title": "getditto/samples"
+  },
+  {
+    "url": "https://github.com/google/nearby",
+    "kind": "repo",
+    "title": "google/nearby"
+  },
+  {
+    "url": "https://github.com/mfontanini/presenterm",
+    "kind": "repo",
+    "title": "mfontanini/presenterm"
+  },
+  {
+    "url": "https://github.com/orbitdb/orbitdb",
+    "kind": "repo",
+    "title": "orbitdb/orbitdb"
+  },
+  {
+    "url": "https://github.com/ramanujammv1988/edge-veda",
+    "kind": "repo",
+    "title": "ramanujammv1988/edge-veda"
+  },
+  {
+    "url": "https://github.com/thinking-machines-lab/batch_invariant_ops",
+    "kind": "repo",
+    "title": "thinking-machines-lab/batch_invariant_ops"
+  }
+]
