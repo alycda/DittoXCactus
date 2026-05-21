@@ -32,8 +32,8 @@ The deliverable is a blog-post-shaped artifact: a working two-device demo plus a
 
 | # | Scenario | Platform |
 |---|----------|----------|
-| 1 | "Airplane-mode moment of magic": phone A queries its local corpus and returns answer X. Phone B comes into BLE range. Phone A re-queries and returns answer X + Y, visibly drawing on phone B's notes. Recorded on camera with airplane mode toggled live. | 2 phones (iOS+iOS or iOS+Android) |
-| 2 | Embedding determinism: the exact same text embedded on device A and device B produces vectors with cosine similarity > 0.999 (ideally bit-identical). Cross-platform if the demo uses iOS+Android. | iOS + Android (or iOS + macOS) |
+| 1 | "Airplane-mode moment of magic": phone A queries its local corpus and returns answer X. Phone B comes into BLE range. Phone A re-queries and returns answer X + Y, visibly drawing on phone B's notes. Recorded on camera with airplane mode toggled live. | iOS + Android |
+| 2 | Embedding determinism: the exact same text embedded on device A and device B produces vectors with cosine similarity > 0.999 (ideally bit-identical) across iOS and Android Cactus runtimes. | iOS + Android |
 | 3 | Sync idempotence: re-meeting after no changes produces no duplicate tuples and no change to top-k results for any query. | Two devices, repeated BLE meet |
 | 4 | Bidirectional merge: notes pushed from A appear in B's index and vice versa, observable through queries whose nearest neighbors live on the other device. | Two devices |
 | 5 | Cold-load latency: on the slowest target device, the embedding + LLM models load and produce a first answer in under ~10s after app start. | Slowest target device (likely mid-range Android if used) |
@@ -102,23 +102,21 @@ Each run of the validation harness produces a feedback signal fed back into the 
 
 ---
 
-## Open Questions
+## Open Questions (Resolved)
 
-The following items are unresolved as of seed authoring. Resolutions should be folded back in-line and the section retitled "Open Questions (Resolved)".
+1. **Corpus theme for Stage 0** — **Strong candidate: recipes-as-virtual-potluck. Fallback: cars (Ditto-canonical).** Recipes give audience participation (everyone submits one — e.g., chicken tortilla soup variants — and the model normalizes / synthesizes across them as devices meet), instant legibility ("what's in this dish"), and a memorable writeup framing ("virtual potluck"). The known risk is small-LLM merge quality on heterogeneous structured lists — a 1B param model may produce incoherent normalization, a 3B+ may land it. **Recipe viability is gated on Step 1.5 Research Task 4 — if no Cactus-shipped small LLM clears the bar on structured-list merge quality, fall back to cars.** Cars remain the safe Stage-0 corpus and the corpus shape is identical, so swapping is cheap either direction.
 
-1. **Corpus theme for Stage 0** — generic notes (movies / recipes / travel), Ditto-canonical `cars`-collection vibe (notes *about* cars), or a niche that makes the demo memorable? The choice affects which query phrasings work and how legible the "moment of magic" is on camera.
+2. **Hardware mix** — **At least one iOS + one Android device.** Heterogeneity is core to the thesis (Cactus's identical-embedding-across-platforms claim); the demo needs to show it. A third device or a macOS laptop is optional and would only be added if it sharpens the story without inflating demo complexity.
 
-2. **Hardware mix** — two phones only (cleanest visual story), or include a laptop to make heterogeneity visible and show Cactus running on macOS too? Heterogeneity is part of the thesis; the question is whether it's worth the demo complexity.
+3. **Connectivity reveal mechanism** — **Toggle airplane mode live on camera.** High credibility. Mitigation for radio-quirk risk: pre-flight rehearse the toggle sequence, keep a backup pre-recorded take as B-roll.
 
-3. **Connectivity reveal mechanism** — toggle airplane mode on camera (high credibility, slight risk of mid-demo radio quirks), or take "offline" on faith with a verbal claim (low risk, lower credibility)?
+4. **Durability of the thesis** — **Latency and offline-first, NOT pricing.** Cloud RAG will always carry a network round-trip floor (~50–200ms+), and offline-first is a *structural* property that cloud cannot match at any price point. The writeup leads with: on-device retrieval + on-device generation + mesh sync collapse the round-trip; "your phone answers the question with your friend's notes after a 30-second BLE handshake, with the network never involved" is the moment cloud RAG cannot reproduce.
 
-4. **Durability of the thesis** — the writeup needs a non-rising-tide answer to "why does this still matter when cloud RAG is cheaper and faster in a year?" Candidate framings: privacy / offline-by-default / "knowledge composes when devices meet, like Bluetooth pairing for ideas" / mesh as the substrate for AI between strangers. Which one carries the writeup?
+5. **Cactus small-LLM choice** — **Deferred to research (Step 1.5).** Open dependency on the current Cactus model catalog and on-device latency benchmarks.
 
-5. **Cactus small-LLM choice** — which model under Cactus runs at acceptable latency on the slowest target device AND produces coherent answers given the small corpus + retrieved context? Open dependency on the Cactus model catalog at research time.
+6. **Demo artifact form** — **Primary deliverable: working repo. Secondary: Presenterm slide deck.** Stretch: recorded video, blog post, and possibly Directordeck or Claude Design variants of the deck. This prioritization means code-quality and repo-readability take precedence over writeup polish in the final hours.
 
-6. **Demo artifact form** — is the deliverable "blog post + recorded demo video", "blog post + working repo", or both? Affects how much code polish vs. writeup time gets prioritized in the final hours.
-
-7. **Embedding model selection criteria** — small enough to load fast, large enough to give meaningful cosine separation on a hand-picked ~50-note corpus, and shipped by Cactus with deterministic cross-platform output. Which model in the Cactus catalog clears that bar?
+7. **Embedding model selection criteria** — **Deferred to research (Step 1.5).** Criteria are clear (small + fast cold-load + deterministic across iOS/Android, shipped by Cactus, meaningful cosine separation on ~50 notes); the candidate set requires reading the Cactus catalog.
 
 ---
 
