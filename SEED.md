@@ -22,6 +22,8 @@ The deliverable is a blog-post-shaped artifact: a working two-device demo plus a
 
 **Secondary use case:** A live hackathon demo + writeup that frames Ditto's mesh-sync primitive as the missing infrastructure layer for edge AI, and Cactus's identical-cross-platform model packaging as the missing primitive for distributed inference. Both companies get a concrete shared story.
 
+**Future-work angle (writeup):** The hackathon ships a *generalist* small LLM because that's what fits on-device today. The natural next move — and the framing the writeup should leave the reader with — is that the mesh's right granularity is *specialized* small models, one per domain (a sous-chef model for recipes, a service-manual expert for cars, a triage model for symptoms). The CRDT story compounds: not only do corpora merge when devices meet, *expertise* composes when specialist models meet. Generalist-today is a Stage-0 simplification, not the destination.
+
 ---
 
 ## Validation Harness
