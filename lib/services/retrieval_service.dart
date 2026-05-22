@@ -125,6 +125,7 @@ class RetrievalService {
     String topic, {
     int k = defaultK,
     int n = defaultN,
+    List<Flashcard> savedExamples = const [],
   }) async* {
     final retrieved = await topK(topic, k: k);
     yield FlashcardEvent.retrieved(retrieved);

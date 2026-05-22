@@ -66,14 +66,38 @@ SOURCE: def-456
 ''';
 
   /// Build the chat messages handed to `CactusService.complete`.
+  ///
+  /// [savedExamples] are flashcards the user previously rated as good (in
+  /// memory, per device). They're included as few-shot exemplars so the
+  /// model mirrors the style the user has signalled they want. Empty by
+  /// default — first generation always runs without exemplars.
   static List<ChatMessage> build({
     required String topic,
     required int n,
     required List<RetrievedNote> retrieved,
+    List<Flashcard> savedExamples = const [],
   }) {
     final user = StringBuffer()
       ..writeln('Topic: $topic')
-      ..writeln('Number of flashcards (N): $n')
+      ..writeln('Number of flashcards (N): $n');
+
+    if (savedExamples.isNotEmpty) {
+      user
+        ..writeln()
+        ..writeln(
+          'Below are flashcards you produced before that the user kept '
+          '(rated as good). Mirror their style, length, and tone in the new '
+          'cards. Do not copy them verbatim — just match the shape:',
+        );
+      for (final ex in savedExamples.take(3)) {
+        user
+          ..writeln()
+          ..writeln('Q: ${ex.question}')
+          ..writeln('A: ${ex.answer}');
+      }
+    }
+
+    user
       ..writeln()
       ..writeln('Notes:');
 
@@ -91,7 +115,7 @@ SOURCE: def-456
 
     user
       ..writeln()
-      ..writeln('Now output $n flashcards in the Q: / A: / NOTES: format. '
+      ..writeln('Now output $n flashcards in the Q: / A: / SOURCE: format. '
           'Start with "Q:" on its own line. No reasoning, no preamble.');
 
     return [

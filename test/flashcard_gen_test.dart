@@ -59,6 +59,67 @@ void main() {
       );
       expect(msgs[1].content, contains('output nothing'));
     });
+
+    test('saved examples land in the user message as Q:/A: pairs', () {
+      final saved = const [
+        Flashcard(
+          question: 'What is the Oort Cloud?',
+          answer: 'A theorized cloud of icy bodies extending to ~100,000 AU.',
+          sourceNoteIds: ['n1'],
+        ),
+        Flashcard(
+          question: 'How fast is Neptune\'s wind?',
+          answer: 'Up to about 2,100 km/h, the strongest in the solar system.',
+          sourceNoteIds: ['n2'],
+        ),
+      ];
+      final msgs = FlashcardGenPrompt.build(
+        topic: 'the solar system',
+        n: 3,
+        retrieved: [],
+        savedExamples: saved,
+      );
+      final user = msgs[1].content;
+      expect(user, contains('rated as good'));
+      expect(user, contains('Mirror their style'));
+      expect(user, contains('What is the Oort Cloud?'));
+      expect(user, contains('How fast is Neptune'));
+    });
+
+    test('savedExamples defaults to empty list and produces no exemplar block',
+        () {
+      final msgs = FlashcardGenPrompt.build(
+        topic: 'x',
+        n: 1,
+        retrieved: const [],
+      );
+      expect(msgs[1].content, isNot(contains('rated as good')));
+      expect(msgs[1].content, isNot(contains('Mirror their style')));
+    });
+
+    test('only up to 3 savedExamples are surfaced in the prompt', () {
+      final saved = List.generate(
+        6,
+        (i) => Flashcard(
+          question: 'Q$i?',
+          answer: 'A$i.',
+          sourceNoteIds: const [],
+        ),
+      );
+      final msgs = FlashcardGenPrompt.build(
+        topic: 'x',
+        n: 1,
+        retrieved: const [],
+        savedExamples: saved,
+      );
+      final user = msgs[1].content;
+      // Q3..Q5 are the most-recent slice — the caller is responsible for
+      // ordering, so we just check the cap behavior: not all 6 appear.
+      expect(user, contains('Q0?'));
+      expect(user, contains('Q2?'));
+      // Index 3+ should NOT appear (we take(3)).
+      expect(user, isNot(contains('Q3?')));
+    });
   });
 
   group('FlashcardGenPrompt.parse — happy paths', () {

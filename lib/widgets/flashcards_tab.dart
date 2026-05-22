@@ -16,6 +16,10 @@ import '../services/seed_loader.dart';
 /// - Generation counter ("gen #2 — drew on 10 notes (5 from peers)")
 /// - Per-card peer badge (card.sourceNoteIds includes peer-contributed ids)
 /// - Diff alt-view: previous generation vs current, NEW cards highlighted
+/// - Rate mode: swipe-right (keep) / swipe-left (reject) per card. Kept
+///   cards are saved as few-shot exemplars and folded into the prompt on
+///   the next regenerate — the model learns the user's preferred style
+///   without fine-tuning, all on-device.
 ///
 /// Layout responds to OrientationBuilder so landscape (the natural pose for
 /// flipping cards) gets a single big card; portrait keeps the stack.
@@ -26,34 +30,50 @@ class FlashcardsTab extends StatefulWidget {
   State<FlashcardsTab> createState() => _FlashcardsTabState();
 }
 
+enum CardRating { unrated, up, down }
+
+enum FlashcardsMode { view, rate }
+
 class _Generation {
   final int index;
   final List<Flashcard> cards;
   final List<RetrievedNote> retrieved;
   final Set<String> peerNoteIds;
+  final List<Flashcard> savedExamplesUsed; // exemplars folded into this gen
   final DateTime at;
-  const _Generation({
+  final List<CardRating> ratings; // mutable; one per card
+
+  _Generation({
     required this.index,
     required this.cards,
     required this.retrieved,
     required this.peerNoteIds,
+    required this.savedExamplesUsed,
     required this.at,
-  });
+  }) : ratings = List<CardRating>.filled(cards.length, CardRating.unrated);
 
-  int get peerNoteCount => retrieved
-      .where((r) => peerNoteIds.contains(r.note.id))
-      .length;
+  int get peerNoteCount =>
+      retrieved.where((r) => peerNoteIds.contains(r.note.id)).length;
+
+  int get upCount => ratings.where((r) => r == CardRating.up).length;
+  int get downCount => ratings.where((r) => r == CardRating.down).length;
+  bool get allRated => ratings.every((r) => r != CardRating.unrated);
 }
 
 class _FlashcardsTabState extends State<FlashcardsTab> {
   final _controller = TextEditingController(text: 'the solar system');
   final List<_Generation> _history = [];
+  // Cumulative across regenerations. Up-rated cards land here; the next
+  // generation passes the most-recent slice as few-shot exemplars to the
+  // prompt so the model mirrors the user's preferred style.
+  final List<Flashcard> _savedGoodCards = [];
   List<Flashcard> _currentCards = const [];
   List<RetrievedNote> _retrieved = const [];
   StreamSubscription<FlashcardEvent>? _sub;
   bool _busy = false;
   String? _error;
   bool _showDiff = false;
+  FlashcardsMode _mode = FlashcardsMode.view;
 
   @override
   void dispose() {
@@ -67,6 +87,15 @@ class _FlashcardsTabState extends State<FlashcardsTab> {
     final topic = _controller.text.trim();
     if (topic.isEmpty) return;
 
+    // Snapshot the saved-card slice we're about to use, so the generation
+    // can record exactly which exemplars influenced it.
+    final examplesForThisGen = _savedGoodCards
+        .reversed
+        .take(3)
+        .toList()
+        .reversed
+        .toList();
+
     setState(() {
       _busy = true;
       _currentCards = const [];
@@ -75,13 +104,15 @@ class _FlashcardsTabState extends State<FlashcardsTab> {
     });
 
     _sub?.cancel();
-    _sub = RetrievalService.instance.generateFlashcards(topic).listen(
+    _sub = RetrievalService.instance
+        .generateFlashcards(topic, savedExamples: examplesForThisGen)
+        .listen(
       (event) {
         if (!mounted) return;
         if (event.retrieved != null) {
           setState(() => _retrieved = event.retrieved!);
         } else if (event.cards != null) {
-          _commitGeneration(event.cards!);
+          _commitGeneration(event.cards!, examplesForThisGen);
         } else if (event.isDone) {
           setState(() => _busy = false);
         }
@@ -96,7 +127,10 @@ class _FlashcardsTabState extends State<FlashcardsTab> {
     );
   }
 
-  void _commitGeneration(List<Flashcard> cards) {
+  void _commitGeneration(
+    List<Flashcard> cards,
+    List<Flashcard> examplesUsed,
+  ) {
     final self = SeedLoader.instance.selfContributor;
     final peerNoteIds = <String>{
       for (final r in _retrieved)
@@ -107,11 +141,39 @@ class _FlashcardsTabState extends State<FlashcardsTab> {
       cards: cards,
       retrieved: List.unmodifiable(_retrieved),
       peerNoteIds: peerNoteIds,
+      savedExamplesUsed: List.unmodifiable(examplesUsed),
       at: DateTime.now(),
     );
     setState(() {
       _history.add(gen);
       _currentCards = cards;
+      // Flip back to View when a fresh generation arrives — rating only
+      // makes sense once you've seen the cards.
+      _mode = FlashcardsMode.view;
+    });
+  }
+
+  /// Persist a rating decision. Up-rated cards become future few-shot
+  /// exemplars; dedup by normalized question so saving the same idea twice
+  /// across regenerations doesn't crowd the prompt.
+  void _rateCard(int generationIndex, int cardIndex, CardRating rating) {
+    final gen = _history.firstWhere((g) => g.index == generationIndex);
+    setState(() {
+      gen.ratings[cardIndex] = rating;
+      if (rating == CardRating.up) {
+        final card = gen.cards[cardIndex];
+        final norm = card.question.toLowerCase().trim();
+        final exists = _savedGoodCards
+            .any((c) => c.question.toLowerCase().trim() == norm);
+        if (!exists) _savedGoodCards.add(card);
+      } else if (rating == CardRating.down) {
+        // If the user previously up-rated this question and now down-rates,
+        // remove it from the saved set so the prompt stops echoing it.
+        final card = gen.cards[cardIndex];
+        final norm = card.question.toLowerCase().trim();
+        _savedGoodCards
+            .removeWhere((c) => c.question.toLowerCase().trim() == norm);
+      }
     });
   }
 
@@ -173,42 +235,97 @@ class _FlashcardsTabState extends State<FlashcardsTab> {
     final latest = _history.last;
     final newCount = _newCardCount(latest);
     final hasDiff = _history.length >= 2;
-    return Row(
+    return Column(
       children: [
-        Container(
-          padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
-          decoration: BoxDecoration(
-            color: theme.colorScheme.surfaceContainerHigh,
-            borderRadius: BorderRadius.circular(20),
-          ),
-          child: Text(
-            'gen #${latest.index}',
-            style: const TextStyle(fontWeight: FontWeight.w600),
-          ),
-        ),
-        const SizedBox(width: 8),
-        if (hasDiff && newCount > 0)
-          Container(
-            padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
-            decoration: BoxDecoration(
-              color: theme.colorScheme.tertiaryContainer,
-              borderRadius: BorderRadius.circular(20),
-            ),
-            child: Text(
-              '+$newCount new since last',
-              style: TextStyle(
-                fontWeight: FontWeight.w600,
-                color: theme.colorScheme.onTertiaryContainer,
+        Row(
+          children: [
+            Container(
+              padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
+              decoration: BoxDecoration(
+                color: theme.colorScheme.surfaceContainerHigh,
+                borderRadius: BorderRadius.circular(20),
+              ),
+              child: Text(
+                'gen #${latest.index}',
+                style: const TextStyle(fontWeight: FontWeight.w600),
               ),
             ),
-          ),
-        const Spacer(),
-        if (hasDiff)
-          TextButton.icon(
-            onPressed: () => setState(() => _showDiff = !_showDiff),
-            icon: Icon(_showDiff ? Icons.style : Icons.compare_arrows),
-            label: Text(_showDiff ? 'cards' : 'diff'),
-          ),
+            const SizedBox(width: 8),
+            if (hasDiff && newCount > 0)
+              Container(
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 10,
+                  vertical: 6,
+                ),
+                decoration: BoxDecoration(
+                  color: theme.colorScheme.tertiaryContainer,
+                  borderRadius: BorderRadius.circular(20),
+                ),
+                child: Text(
+                  '+$newCount new since last',
+                  style: TextStyle(
+                    fontWeight: FontWeight.w600,
+                    color: theme.colorScheme.onTertiaryContainer,
+                  ),
+                ),
+              ),
+            const SizedBox(width: 8),
+            if (_savedGoodCards.isNotEmpty)
+              Container(
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 10,
+                  vertical: 6,
+                ),
+                decoration: BoxDecoration(
+                  color: Colors.green.withValues(alpha: 0.18),
+                  borderRadius: BorderRadius.circular(20),
+                ),
+                child: Row(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    const Icon(Icons.bookmark, size: 14, color: Colors.green),
+                    const SizedBox(width: 4),
+                    Text(
+                      '${_savedGoodCards.length} kept',
+                      style: const TextStyle(
+                        fontWeight: FontWeight.w600,
+                        color: Colors.green,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            const Spacer(),
+            if (hasDiff)
+              TextButton.icon(
+                onPressed: () => setState(() => _showDiff = !_showDiff),
+                icon: Icon(_showDiff ? Icons.style : Icons.compare_arrows),
+                label: Text(_showDiff ? 'cards' : 'diff'),
+              ),
+          ],
+        ),
+        const SizedBox(height: 8),
+        SegmentedButton<FlashcardsMode>(
+          segments: const [
+            ButtonSegment(
+              value: FlashcardsMode.view,
+              label: Text('View'),
+              icon: Icon(Icons.style_outlined),
+            ),
+            ButtonSegment(
+              value: FlashcardsMode.rate,
+              label: Text('Rate'),
+              icon: Icon(Icons.swipe),
+            ),
+          ],
+          selected: {_mode},
+          onSelectionChanged: (s) => setState(() {
+            _mode = s.first;
+            // Leaving diff view when entering Rate, since rate is a single-
+            // card surface and diff is a list comparison.
+            if (_mode == FlashcardsMode.rate) _showDiff = false;
+          }),
+        ),
       ],
     );
   }
@@ -277,6 +394,15 @@ class _FlashcardsTabState extends State<FlashcardsTab> {
             textAlign: TextAlign.center,
           ),
         ),
+      );
+    }
+    if (_mode == FlashcardsMode.rate && _history.isNotEmpty) {
+      return _FlashcardRater(
+        generation: _history.last,
+        peerNoteIds: _history.last.peerNoteIds,
+        onRate: (cardIndex, rating) =>
+            _rateCard(_history.last.index, cardIndex, rating),
+        onRegenerate: _busy ? null : _ask,
       );
     }
     if (_showDiff && _history.length >= 2) {
@@ -726,6 +852,376 @@ class _DiffCardRow extends StatelessWidget {
                 color: theme.colorScheme.onSurface.withValues(alpha: alpha),
                 height: 1.4,
               ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+/// Edit-mode surface. One card at a time. Swipe right to keep (up-rate);
+/// swipe left to reject (down-rate). The full Q + A is visible so the user
+/// can judge the card on its merits — there's no flip affordance here; the
+/// rating decision is the interaction.
+///
+/// As the user drags, the background tints green or red to telegraph the
+/// rating. Past a threshold (~30% of card width) the card flies off in that
+/// direction and the next card slides in. Once every card has been rated,
+/// a summary appears with a regenerate button.
+class _FlashcardRater extends StatefulWidget {
+  final _Generation generation;
+  final Set<String> peerNoteIds;
+  final void Function(int cardIndex, CardRating rating) onRate;
+  final VoidCallback? onRegenerate;
+  const _FlashcardRater({
+    required this.generation,
+    required this.peerNoteIds,
+    required this.onRate,
+    required this.onRegenerate,
+  });
+
+  @override
+  State<_FlashcardRater> createState() => _FlashcardRaterState();
+}
+
+class _FlashcardRaterState extends State<_FlashcardRater> {
+  @override
+  Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+    final gen = widget.generation;
+    final nextIndex = gen.ratings.indexWhere((r) => r == CardRating.unrated);
+
+    if (nextIndex < 0) {
+      return _RateSummary(
+        upCount: gen.upCount,
+        downCount: gen.downCount,
+        onRegenerate: widget.onRegenerate,
+      );
+    }
+
+    final card = gen.cards[nextIndex];
+    final drewFromPeers = card.sourceNoteIds.any(widget.peerNoteIds.contains);
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.stretch,
+      children: [
+        _RateProgress(
+          rated: gen.upCount + gen.downCount,
+          total: gen.cards.length,
+        ),
+        const SizedBox(height: 8),
+        Expanded(
+          child: Dismissible(
+            key: ValueKey('rate-${gen.index}-$nextIndex-${card.question}'),
+            direction: DismissDirection.horizontal,
+            background: _RateSwipeBackground(
+              icon: Icons.bookmark_added,
+              label: 'KEEP',
+              color: Colors.green,
+              alignLeft: true,
+            ),
+            secondaryBackground: _RateSwipeBackground(
+              icon: Icons.thumb_down_alt,
+              label: 'SKIP',
+              color: Colors.red.shade400,
+              alignLeft: false,
+            ),
+            onDismissed: (direction) {
+              final rating = direction == DismissDirection.startToEnd
+                  ? CardRating.up
+                  : CardRating.down;
+              widget.onRate(nextIndex, rating);
+            },
+            child: _RateCardFace(
+              card: card,
+              index: nextIndex,
+              total: gen.cards.length,
+              drewFromPeers: drewFromPeers,
+            ),
+          ),
+        ),
+        const SizedBox(height: 12),
+        Row(
+          mainAxisAlignment: MainAxisAlignment.spaceAround,
+          children: [
+            _RateHintChip(
+              icon: Icons.swipe_left,
+              label: 'swipe left → skip',
+              color: Colors.red.shade400,
+            ),
+            _RateHintChip(
+              icon: Icons.swipe_right,
+              label: 'swipe right → keep',
+              color: Colors.green,
+            ),
+          ],
+        ),
+        const SizedBox(height: 4),
+        Text(
+          'kept cards become few-shot examples next time — the model learns '
+          'your style without leaving the device.',
+          textAlign: TextAlign.center,
+          style: TextStyle(
+            fontSize: 12,
+            fontStyle: FontStyle.italic,
+            color: theme.colorScheme.onSurface.withValues(alpha: 0.6),
+          ),
+        ),
+      ],
+    );
+  }
+}
+
+class _RateProgress extends StatelessWidget {
+  final int rated;
+  final int total;
+  const _RateProgress({required this.rated, required this.total});
+
+  @override
+  Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+    return Row(
+      children: [
+        Expanded(
+          child: LinearProgressIndicator(
+            value: total == 0 ? 0 : rated / total,
+            minHeight: 6,
+            borderRadius: BorderRadius.circular(4),
+          ),
+        ),
+        const SizedBox(width: 12),
+        Text(
+          '$rated / $total rated',
+          style: TextStyle(
+            fontSize: 13,
+            color: theme.colorScheme.onSurface.withValues(alpha: 0.7),
+          ),
+        ),
+      ],
+    );
+  }
+}
+
+class _RateSwipeBackground extends StatelessWidget {
+  final IconData icon;
+  final String label;
+  final Color color;
+  final bool alignLeft;
+  const _RateSwipeBackground({
+    required this.icon,
+    required this.label,
+    required this.color,
+    required this.alignLeft,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      decoration: BoxDecoration(
+        color: color,
+        borderRadius: BorderRadius.circular(20),
+      ),
+      padding: const EdgeInsets.symmetric(horizontal: 24),
+      alignment: alignLeft ? Alignment.centerLeft : Alignment.centerRight,
+      child: Row(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          Icon(icon, color: Colors.white, size: 32),
+          const SizedBox(width: 12),
+          Text(
+            label,
+            style: const TextStyle(
+              color: Colors.white,
+              fontSize: 22,
+              fontWeight: FontWeight.w700,
+              letterSpacing: 1.5,
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+class _RateCardFace extends StatelessWidget {
+  final Flashcard card;
+  final int index;
+  final int total;
+  final bool drewFromPeers;
+  const _RateCardFace({
+    required this.card,
+    required this.index,
+    required this.total,
+    required this.drewFromPeers,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+    return OrientationBuilder(
+      builder: (context, orientation) {
+        final landscape = orientation == Orientation.landscape;
+        return Container(
+          decoration: BoxDecoration(
+            color: theme.colorScheme.surfaceContainerHigh,
+            borderRadius: BorderRadius.circular(20),
+            boxShadow: [
+              BoxShadow(
+                color: Colors.black.withValues(alpha: 0.08),
+                blurRadius: 12,
+                offset: const Offset(0, 4),
+              ),
+            ],
+          ),
+          padding: EdgeInsets.all(landscape ? 32 : 24),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Text(
+                    '${index + 1} / $total',
+                    style: TextStyle(
+                      fontSize: 14,
+                      color:
+                          theme.colorScheme.onSurface.withValues(alpha: 0.6),
+                    ),
+                  ),
+                  if (drewFromPeers) const _PeerBadge(),
+                ],
+              ),
+              SizedBox(height: landscape ? 24 : 16),
+              Text(
+                card.question,
+                style: TextStyle(
+                  fontSize: landscape ? 28 : 22,
+                  fontWeight: FontWeight.w600,
+                  height: 1.35,
+                  color: theme.colorScheme.onSurface,
+                ),
+              ),
+              const SizedBox(height: 16),
+              Container(height: 1, color: theme.dividerColor),
+              const SizedBox(height: 16),
+              Expanded(
+                child: SingleChildScrollView(
+                  child: Text(
+                    card.answer,
+                    style: TextStyle(
+                      fontSize: landscape ? 20 : 17,
+                      height: 1.45,
+                      color: theme.colorScheme.onSurface
+                          .withValues(alpha: 0.85),
+                    ),
+                  ),
+                ),
+              ),
+              if (card.sourceNoteIds.isNotEmpty)
+                Padding(
+                  padding: const EdgeInsets.only(top: 12),
+                  child: Text(
+                    'from ${card.sourceNoteIds.length} note'
+                    '${card.sourceNoteIds.length == 1 ? '' : 's'}',
+                    style: TextStyle(
+                      fontSize: 12,
+                      color: theme.colorScheme.onSurface
+                          .withValues(alpha: 0.55),
+                    ),
+                  ),
+                ),
+            ],
+          ),
+        );
+      },
+    );
+  }
+}
+
+class _RateHintChip extends StatelessWidget {
+  final IconData icon;
+  final String label;
+  final Color color;
+  const _RateHintChip({
+    required this.icon,
+    required this.label,
+    required this.color,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Row(
+      mainAxisSize: MainAxisSize.min,
+      children: [
+        Icon(icon, size: 18, color: color),
+        const SizedBox(width: 6),
+        Text(
+          label,
+          style: TextStyle(
+            fontSize: 13,
+            fontWeight: FontWeight.w500,
+            color: color,
+          ),
+        ),
+      ],
+    );
+  }
+}
+
+class _RateSummary extends StatelessWidget {
+  final int upCount;
+  final int downCount;
+  final VoidCallback? onRegenerate;
+  const _RateSummary({
+    required this.upCount,
+    required this.downCount,
+    required this.onRegenerate,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+    return Center(
+      child: Padding(
+        padding: const EdgeInsets.all(24),
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            const Icon(Icons.check_circle, size: 64, color: Colors.green),
+            const SizedBox(height: 16),
+            Text(
+              'all cards rated',
+              style: theme.textTheme.titleLarge,
+              textAlign: TextAlign.center,
+            ),
+            const SizedBox(height: 8),
+            Text(
+              '$upCount kept, $downCount skipped',
+              style: TextStyle(
+                fontSize: 16,
+                color: theme.colorScheme.onSurface.withValues(alpha: 0.7),
+              ),
+              textAlign: TextAlign.center,
+            ),
+            const SizedBox(height: 24),
+            Text(
+              upCount > 0
+                  ? 'next regenerate will fold your $upCount kept card'
+                      '${upCount == 1 ? '' : 's'} into the prompt as '
+                      'few-shot examples — the model will mirror their style.'
+                  : 'no cards kept this round. regenerate to try again.',
+              textAlign: TextAlign.center,
+              style: TextStyle(
+                fontSize: 14,
+                color: theme.colorScheme.onSurface.withValues(alpha: 0.6),
+                height: 1.5,
+              ),
+            ),
+            const SizedBox(height: 24),
+            FilledButton.icon(
+              onPressed: onRegenerate,
+              icon: const Icon(Icons.auto_awesome),
+              label: const Text('regenerate'),
             ),
           ],
         ),

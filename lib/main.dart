@@ -2,6 +2,7 @@ import 'dart:io' show Platform;
 
 import 'package:flutter/foundation.dart' show kIsWeb, debugPrint;
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart' show DeviceOrientation, SystemChrome;
 import 'package:permission_handler/permission_handler.dart';
 
 import 'services/cactus_service.dart';
@@ -12,6 +13,15 @@ import 'widgets/query_screen.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
+
+  // Lock to portrait. The card surfaces are tuned for vertical reading;
+  // landscape support exists in widget code (OrientationBuilder branches)
+  // but isn't laid out well enough for the demo. Remove this call to allow
+  // rotation back.
+  await SystemChrome.setPreferredOrientations(const [
+    DeviceOrientation.portraitUp,
+    DeviceOrientation.portraitDown,
+  ]);
 
   if (!kIsWeb && (Platform.isAndroid || Platform.isIOS)) {
     await [
