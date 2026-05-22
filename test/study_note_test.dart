@@ -103,6 +103,89 @@ void main() {
       expect(restored.originalContributor, isEmpty);
       expect(restored.isCloned, isFalse);
     });
+
+    test('absent acceptedBy round-trips to empty list', () {
+      final doc = {
+        '_id': 'abc',
+        'topic': 't',
+        'contributor': 'p',
+        'body': 'b',
+        'embedding': const <double>[],
+        'createdAt': '2026-05-21T00:00:01Z',
+      };
+      final restored = StudyNote.fromDittoValue(doc);
+      expect(restored.acceptedBy, isEmpty);
+    });
+
+    test('acceptedBy round-trips with dedup on load', () {
+      // Simulates two replicas concurrently writing the same acceptor — the
+      // ground-truth document may carry the same name twice; on load we
+      // present it as a Set so the UI doesn't show "saved by phone-a, phone-a".
+      final doc = {
+        '_id': 'abc',
+        'topic': 't',
+        'contributor': 'p',
+        'body': 'b',
+        'embedding': const <double>[],
+        'createdAt': '2026-05-21T00:00:01Z',
+        'acceptedBy': const ['phone-a', 'phone-b', 'phone-a', ''],
+      };
+      final restored = StudyNote.fromDittoValue(doc);
+      expect(restored.acceptedBy, contains('phone-a'));
+      expect(restored.acceptedBy, contains('phone-b'));
+      expect(restored.acceptedBy.length, equals(2));
+    });
+  });
+
+  group('StudyNote.acceptedBy operations', () {
+    final base = StudyNote.seed(
+      topic: 'the solar system',
+      contributor: 'phone-b',
+      body: 'Uranus is an ice giant.',
+      tags: const ['ice-giants'],
+      createdAt: DateTime.parse('2026-05-21T00:00:11Z'),
+    );
+
+    test('withAcceptedBy adds a contributor', () {
+      final next = base.withAcceptedBy('phone-a');
+      expect(next.acceptedBy, equals(['phone-a']));
+      expect(next.isAcceptedBy('phone-a'), isTrue);
+      expect(next.isAcceptedBy('phone-c'), isFalse);
+    });
+
+    test('withAcceptedBy is idempotent (OR-Set semantics)', () {
+      final once = base.withAcceptedBy('phone-a');
+      final twice = once.withAcceptedBy('phone-a');
+      expect(twice.acceptedBy.length, equals(1));
+      // Returning `this` when no-op is a useful signal for callers.
+      expect(identical(once, twice), isTrue);
+    });
+
+    test('withAcceptedBy preserves note identity (_id unchanged)', () {
+      final next = base.withAcceptedBy('phone-a');
+      expect(next.id, equals(base.id));
+      expect(next.contributor, equals('phone-b'));
+      expect(next.body, equals(base.body));
+    });
+
+    test('withoutAcceptedBy removes a contributor', () {
+      final accepted = base.withAcceptedBy('phone-a').withAcceptedBy('phone-c');
+      final removed = accepted.withoutAcceptedBy('phone-a');
+      expect(removed.acceptedBy, equals(['phone-c']));
+      expect(removed.isAcceptedBy('phone-a'), isFalse);
+    });
+
+    test('withoutAcceptedBy on un-accepted contributor is a no-op', () {
+      final removed = base.withoutAcceptedBy('phone-a');
+      expect(identical(removed, base), isTrue);
+    });
+
+    test('acceptedBy round-trips through Ditto doc', () {
+      final accepted = base.withAcceptedBy('phone-a').withAcceptedBy('phone-c');
+      final doc = accepted.toDittoDoc();
+      final restored = StudyNote.fromDittoValue(doc);
+      expect(restored.acceptedBy, equals(['phone-a', 'phone-c']));
+    });
   });
 
   group('StudyNote.cloneFrom', () {

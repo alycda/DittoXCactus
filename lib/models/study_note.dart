@@ -13,11 +13,20 @@ class StudyNote {
   final List<double> embedding;
   final DateTime createdAt;
 
-  /// If this note was cloned from a peer's note via `StudyNote.cloneFrom`,
-  /// these track the source. Empty for native notes. Cloned notes are
-  /// independent Ditto documents — editing this clone does NOT update the
-  /// peer's original. That intentional split is why we have "clone" rather
-  /// than pure CRDT auto-merge for the trust/sourcing thesis.
+  /// Set of contributors who have "saved" / accepted this note into their
+  /// retrieval set. Mesh-wide consensus is reached via Ditto CRDT — when
+  /// peer-a accepts peer-b's note, peer-a adds itself to acceptedBy, the
+  /// add propagates, and now peer-b sees "saved by 1 peer" on their
+  /// original document. There is NO new document — same _id, shared.
+  ///
+  /// Set semantics implemented at the application layer (dedup on insert).
+  /// Ditto's underlying field is a list; we treat it as an OR-Set.
+  final List<String> acceptedBy;
+
+  /// Legacy: set on documents created by the older fork-clone flow before
+  /// we moved to acceptance semantics. Newly-created notes do not populate
+  /// these fields. Round-tripped for backward compatibility with existing
+  /// Ditto data; UI hides clone-style displays.
   final String originalNoteId;
   final String originalContributor;
 
@@ -29,6 +38,7 @@ class StudyNote {
     required this.tags,
     required this.embedding,
     required this.createdAt,
+    this.acceptedBy = const [],
     this.originalNoteId = '',
     this.originalContributor = '',
   });
@@ -92,6 +102,30 @@ class StudyNote {
 
   bool get isCloned => originalNoteId.isNotEmpty;
 
+  /// Idempotent OR-Set add. Returns a new note with `contributor` added to
+  /// `acceptedBy` if not already present, otherwise returns `this` unchanged.
+  /// The caller then upserts the returned note to Ditto, which propagates the
+  /// acceptance to every replica via CRDT merge.
+  StudyNote withAcceptedBy(String contributor) {
+    if (acceptedBy.contains(contributor)) return this;
+    return copyWith(
+      acceptedBy: List<String>.unmodifiable([...acceptedBy, contributor]),
+    );
+  }
+
+  /// Idempotent OR-Set remove (un-accept). Returns `this` unchanged if the
+  /// contributor wasn't accepting this note.
+  StudyNote withoutAcceptedBy(String contributor) {
+    if (!acceptedBy.contains(contributor)) return this;
+    return copyWith(
+      acceptedBy: List<String>.unmodifiable(
+        acceptedBy.where((c) => c != contributor),
+      ),
+    );
+  }
+
+  bool isAcceptedBy(String contributor) => acceptedBy.contains(contributor);
+
   Map<String, dynamic> toDittoDoc() => {
         '_id': id,
         'topic': topic,
@@ -100,6 +134,7 @@ class StudyNote {
         'tags': tags,
         'embedding': embedding,
         'createdAt': createdAt.toIso8601String(),
+        'acceptedBy': acceptedBy,
         'originalNoteId': originalNoteId,
         'originalContributor': originalContributor,
       };
@@ -113,12 +148,23 @@ class StudyNote {
       tags: (v['tags'] as List?)?.map((e) => e.toString()).toList() ?? const [],
       embedding: (v['embedding'] as List?)?.map((e) => (e as num).toDouble()).toList() ?? const [],
       createdAt: DateTime.parse(v['createdAt'].toString()),
+      acceptedBy: (v['acceptedBy'] as List?)
+              ?.map((e) => e.toString())
+              .where((e) => e.isNotEmpty)
+              .toSet() // dedup defensively in case multiple replicas raced
+              .toList() ??
+          const [],
       originalNoteId: v['originalNoteId']?.toString() ?? '',
       originalContributor: v['originalContributor']?.toString() ?? '',
     );
   }
 
-  StudyNote copyWith({List<double>? embedding, String? body}) => StudyNote(
+  StudyNote copyWith({
+    List<double>? embedding,
+    String? body,
+    List<String>? acceptedBy,
+  }) =>
+      StudyNote(
         id: id,
         topic: topic,
         contributor: contributor,
@@ -126,6 +172,7 @@ class StudyNote {
         tags: tags,
         embedding: embedding ?? this.embedding,
         createdAt: createdAt,
+        acceptedBy: acceptedBy ?? this.acceptedBy,
         originalNoteId: originalNoteId,
         originalContributor: originalContributor,
       );

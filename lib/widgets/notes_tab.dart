@@ -9,13 +9,20 @@ import '../services/seed_loader.dart';
 /// first, peers after. Subscribes to the local Ditto store so notes
 /// arriving via mesh sync animate into the list without manual refresh.
 ///
-/// Each note collapses to a single-line summary (topic · tags) and expands
-/// on tap to reveal the full body. Long-press a peer note for a "Save to
-/// my notes" action that clones the peer's note into your contributor
-/// namespace as a new Ditto document — the original peer's note is
-/// untouched, but the clone is yours to edit/curate. This is the explicit
-/// fork model: human-in-the-loop trust, no automatic CRDT merging of
-/// possibly-wrong peer content into your retrieval set.
+/// **Acceptance model (selective sync, not cloning).** Long-press a peer
+/// note to "save to my notes" — this adds your contributor to the peer
+/// document's `acceptedBy` OR-Set. No new document is created; the same
+/// `_id` is shared across both phones. The original author sees the
+/// acceptance via the same CRDT field ("saved by N peers" subtitle on
+/// their note). This avoids the duplication problem the fork-clone model
+/// produced when a peer's clone synced back to the original author's
+/// device and appeared as a separate doc.
+///
+/// **Edit applies only to notes you authored.** Long-press your own
+/// notes to tweak the body. Cloned-from-peer notes (legacy from the
+/// pre-acceptance flow) are still editable since they're under your
+/// contributor; future work adds local-overlay editing of accepted peer
+/// notes without mutating the original.
 class NotesTab extends StatefulWidget {
   const NotesTab({super.key});
 
@@ -44,23 +51,150 @@ class _NotesTabState extends State<NotesTab> {
     super.dispose();
   }
 
-  Future<void> _clonePeerNote(StudyNote peer) async {
-    final clone = StudyNote.cloneFrom(
-      peer: peer,
-      myContributor: SeedLoader.instance.selfContributor,
+  Future<void> _toggleAcceptance(StudyNote peer) async {
+    final me = SeedLoader.instance.selfContributor;
+    final next = peer.isAcceptedBy(me)
+        ? peer.withoutAcceptedBy(me)
+        : peer.withAcceptedBy(me);
+    if (identical(next, peer)) return; // no-op
+    await DittoService.instance.upsertNote(next);
+    if (!mounted) return;
+    final msg = peer.isAcceptedBy(me)
+        ? 'removed from your notes'
+        : 'saved ${peer.contributor}\'s note';
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(content: Text(msg), duration: const Duration(seconds: 2)),
     );
-    await DittoService.instance.upsertNote(clone);
+  }
+
+  Future<void> _editMyNote(StudyNote note) async {
+    final controller = TextEditingController(text: note.body);
+    final edited = await showModalBottomSheet<String>(
+      context: context,
+      isScrollControlled: true,
+      showDragHandle: true,
+      builder: (sheetCtx) {
+        final viewInsets = MediaQuery.of(sheetCtx).viewInsets;
+        return Padding(
+          padding: EdgeInsets.fromLTRB(16, 8, 16, 16 + viewInsets.bottom),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: [
+              Text(
+                'edit your note',
+                style: Theme.of(sheetCtx).textTheme.titleMedium,
+              ),
+              const SizedBox(height: 4),
+              Text(
+                'topic: ${note.topic}',
+                style: TextStyle(
+                  fontSize: 12,
+                  color: Theme.of(sheetCtx)
+                      .colorScheme
+                      .onSurface
+                      .withValues(alpha: 0.6),
+                ),
+              ),
+              const SizedBox(height: 12),
+              TextField(
+                controller: controller,
+                maxLines: null,
+                minLines: 4,
+                autofocus: true,
+                style: const TextStyle(fontSize: 15, height: 1.4),
+                decoration: const InputDecoration(
+                  border: OutlineInputBorder(),
+                  hintText: 'note body',
+                ),
+              ),
+              const SizedBox(height: 12),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.end,
+                children: [
+                  TextButton(
+                    onPressed: () => Navigator.of(sheetCtx).pop(),
+                    child: const Text('cancel'),
+                  ),
+                  const SizedBox(width: 8),
+                  FilledButton.icon(
+                    onPressed: () =>
+                        Navigator.of(sheetCtx).pop(controller.text.trim()),
+                    icon: const Icon(Icons.save_outlined),
+                    label: const Text('save'),
+                  ),
+                ],
+              ),
+            ],
+          ),
+        );
+      },
+    );
+    if (edited == null) return;
+    if (edited.isEmpty || edited == note.body) return;
+    // Clear embedding so the next ensureEmbeddings call re-embeds against
+    // the new body. Otherwise the cosine top-k would match against stale
+    // vector content while the UI shows the updated text.
+    final updated = note.copyWith(body: edited, embedding: const []);
+    await DittoService.instance.upsertNote(updated);
     if (!mounted) return;
     ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(
-        content: Text('cloned ${peer.contributor}\'s note to your notes'),
-        duration: const Duration(seconds: 2),
+      const SnackBar(
+        content: Text('note saved'),
+        duration: Duration(seconds: 2),
       ),
     );
   }
 
-  Future<void> _showPeerActions(StudyNote peer, bool alreadyCloned) async {
+  Future<void> _showMyNoteActions(StudyNote note) async {
     final theme = Theme.of(context);
+    await showModalBottomSheet<void>(
+      context: context,
+      showDragHandle: true,
+      builder: (sheetCtx) => SafeArea(
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: [
+            Padding(
+              padding: const EdgeInsets.fromLTRB(20, 8, 20, 4),
+              child: Text('your note', style: theme.textTheme.titleMedium),
+            ),
+            Padding(
+              padding: const EdgeInsets.fromLTRB(20, 0, 20, 12),
+              child: Text(
+                'topic: ${note.topic}',
+                style: TextStyle(
+                  fontSize: 12,
+                  color: theme.colorScheme.onSurface.withValues(alpha: 0.65),
+                ),
+              ),
+            ),
+            const Divider(height: 1),
+            ListTile(
+              leading: const Icon(Icons.edit_outlined),
+              title: const Text('edit body'),
+              subtitle: const Text(
+                'tweak wording for your own note-taking style. '
+                'the edit syncs to peers who have saved this note.',
+                style: TextStyle(fontSize: 12, height: 1.35),
+              ),
+              onTap: () async {
+                Navigator.of(sheetCtx).pop();
+                await _editMyNote(note);
+              },
+            ),
+            const SizedBox(height: 8),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Future<void> _showPeerActions(StudyNote peer) async {
+    final theme = Theme.of(context);
+    final me = SeedLoader.instance.selfContributor;
+    final saved = peer.isAcceptedBy(me);
     await showModalBottomSheet<void>(
       context: context,
       showDragHandle: true,
@@ -91,30 +225,29 @@ class _NotesTabState extends State<NotesTab> {
             const Divider(height: 1),
             ListTile(
               leading: Icon(
-                alreadyCloned
-                    ? Icons.check_circle_outline
-                    : Icons.copy_all_outlined,
-                color: alreadyCloned
-                    ? theme.colorScheme.primary
-                    : theme.colorScheme.onSurface,
+                saved
+                    ? Icons.bookmark_remove_outlined
+                    : Icons.bookmark_add_outlined,
+                color: saved
+                    ? theme.colorScheme.error
+                    : theme.colorScheme.primary,
               ),
               title: Text(
-                alreadyCloned ? 'already saved' : 'save to my notes',
+                saved ? 'remove from my notes' : 'save to my notes',
               ),
               subtitle: Text(
-                alreadyCloned
-                    ? 're-saving will overwrite your local copy with the original'
-                    : 'creates an independent copy under your name. '
-                        'editing your copy will NOT change the peer\'s original.',
+                saved
+                    ? 'un-accept: future flashcards stop drawing on this note.'
+                    : 'this is the same document, not a copy. you are adding '
+                        'yourself to its acceptedBy set; the original peer '
+                        'sees that you saved it.',
                 style: const TextStyle(fontSize: 12, height: 1.35),
               ),
               onTap: () async {
                 Navigator.of(sheetCtx).pop();
-                await _clonePeerNote(peer);
+                await _toggleAcceptance(peer);
               },
             ),
-            // Future actions land here: "save & edit", "propose merge to peer",
-            // "trust score signals", etc. See SEED-A.md deferrals.
             const SizedBox(height: 8),
           ],
         ),
@@ -126,17 +259,12 @@ class _NotesTabState extends State<NotesTab> {
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
     final self = SeedLoader.instance.selfContributor;
+    // "Your notes" = notes you authored (contributor == self).
+    // Legacy clone documents created by the older fork flow also live here
+    // since they were authored under your contributor.
     final mine = _notes.where((n) => n.contributor == self).toList();
     final peers = _notes.where((n) => n.contributor != self).toList();
     final peerContribs = {for (final n in peers) n.contributor};
-
-    // Set of peer note ids that we've already cloned into our namespace,
-    // so the peer-row UI can mark them as "saved" and the clone action
-    // can advertise overwrite semantics.
-    final clonedPeerIds = {
-      for (final n in mine)
-        if (n.isCloned) n.originalNoteId,
-    };
 
     if (_notes.isEmpty) {
       return Center(
@@ -158,10 +286,18 @@ class _NotesTabState extends State<NotesTab> {
       children: [
         _SectionHeader(
           title: 'your notes',
-          subtitle: '$self · ${mine.length} note${mine.length == 1 ? '' : 's'}',
+          subtitle: '$self · ${mine.length} note${mine.length == 1 ? '' : 's'}'
+              ' · long-press to edit',
           color: theme.colorScheme.primary,
         ),
-        ...mine.map((n) => _NoteCard(note: n, isMine: true)),
+        ...mine.map(
+          (n) => _NoteCard(
+            note: n,
+            isMine: true,
+            savedByMe: false,
+            onLongPress: () => _showMyNoteActions(n),
+          ),
+        ),
         const SizedBox(height: 24),
         _SectionHeader(
           title: 'from peers',
@@ -188,9 +324,8 @@ class _NotesTabState extends State<NotesTab> {
             (n) => _NoteCard(
               note: n,
               isMine: false,
-              alreadyCloned: clonedPeerIds.contains(n.id),
-              onLongPress: () =>
-                  _showPeerActions(n, clonedPeerIds.contains(n.id)),
+              savedByMe: n.isAcceptedBy(self),
+              onLongPress: () => _showPeerActions(n),
             ),
           ),
         const SizedBox(height: 32),
@@ -249,12 +384,12 @@ class _SectionHeader extends StatelessWidget {
 class _NoteCard extends StatelessWidget {
   final StudyNote note;
   final bool isMine;
-  final bool alreadyCloned;
+  final bool savedByMe;
   final VoidCallback? onLongPress;
   const _NoteCard({
     required this.note,
     required this.isMine,
-    this.alreadyCloned = false,
+    required this.savedByMe,
     this.onLongPress,
   });
 
@@ -264,6 +399,9 @@ class _NoteCard extends StatelessWidget {
     final bg = isMine
         ? theme.colorScheme.primaryContainer.withValues(alpha: 0.5)
         : theme.colorScheme.tertiaryContainer.withValues(alpha: 0.5);
+    // For my own notes, surface how many peers have saved this note.
+    // For peer notes, show whether I've saved this one (bookmark badge).
+    final acceptedCount = note.acceptedBy.length;
     return Card(
       color: bg,
       margin: const EdgeInsets.symmetric(vertical: 4),
@@ -275,16 +413,7 @@ class _NoteCard extends StatelessWidget {
           shape: const Border(),
           title: Row(
             children: [
-              if (note.isCloned && isMine)
-                Padding(
-                  padding: const EdgeInsets.only(right: 6, top: 2),
-                  child: Icon(
-                    Icons.call_merge,
-                    size: 16,
-                    color: theme.colorScheme.primary,
-                  ),
-                ),
-              if (alreadyCloned)
+              if (savedByMe)
                 Padding(
                   padding: const EdgeInsets.only(right: 6, top: 2),
                   child: Icon(
@@ -308,7 +437,8 @@ class _NoteCard extends StatelessWidget {
           subtitle: _NoteCardSubtitle(
             note: note,
             isMine: isMine,
-            alreadyCloned: alreadyCloned,
+            savedByMe: savedByMe,
+            acceptedCount: acceptedCount,
           ),
           children: [
             Padding(
@@ -328,16 +458,16 @@ class _NoteCard extends StatelessWidget {
                       color: theme.colorScheme.onSurface.withValues(alpha: 0.55),
                     ),
                   ),
-                  if (note.isCloned)
+                  if (isMine && note.acceptedBy.isNotEmpty)
                     Padding(
                       padding: const EdgeInsets.only(top: 4),
                       child: Text(
-                        'cloned from peer · ${note.originalContributor}',
+                        'saved by ${note.acceptedBy.join(', ')}',
                         style: TextStyle(
                           fontSize: 12,
                           fontStyle: FontStyle.italic,
-                          color:
-                              theme.colorScheme.onSurface.withValues(alpha: 0.6),
+                          color: theme.colorScheme.onSurface
+                              .withValues(alpha: 0.6),
                         ),
                       ),
                     ),
@@ -354,19 +484,27 @@ class _NoteCard extends StatelessWidget {
 class _NoteCardSubtitle extends StatelessWidget {
   final StudyNote note;
   final bool isMine;
-  final bool alreadyCloned;
+  final bool savedByMe;
+  final int acceptedCount;
   const _NoteCardSubtitle({
     required this.note,
     required this.isMine,
-    required this.alreadyCloned,
+    required this.savedByMe,
+    required this.acceptedCount,
   });
 
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
-    final hintText = alreadyCloned
-        ? 'saved to your notes'
-        : (!isMine ? 'long-press to save' : null);
+    String? hintText;
+    if (isMine) {
+      if (acceptedCount > 0) {
+        hintText =
+            'saved by $acceptedCount peer${acceptedCount == 1 ? '' : 's'}';
+      }
+    } else {
+      hintText = savedByMe ? 'saved to your notes' : 'long-press to save';
+    }
     if (note.tags.isEmpty && hintText == null) return const SizedBox.shrink();
     return Padding(
       padding: const EdgeInsets.only(top: 6),
