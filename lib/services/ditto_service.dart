@@ -1,5 +1,7 @@
 import 'dart:async';
 
+import 'package:ditto_live/ditto_live.dart' show StoreObserver;
+
 import '../models/study_note.dart';
 
 /// Owns persistence + P2P sync for RecipeTuple documents.
@@ -16,6 +18,10 @@ class DittoService {
   /// observer fires. UI surfaces (e.g. MeshStatusWidget) listen here to
   /// render the "alone → connected" transition.
   Stream<int> get peerCount => _peerCountController.stream;
+
+  /// True once [init] has resolved. UI guards (e.g. NotesTab) read this
+  /// before attempting to subscribe.
+  bool get isReady => _initialized;
 
   /// Initializes the local Ditto store, configures BLE/LAN transports,
   /// and calls sync.start. Eager-called on app start.
@@ -50,5 +56,14 @@ class DittoService {
   Future<List<StudyNote>> queryWithEmbedding() async {
     // TODO(later): SELECT … FROM notes WHERE array_length(embedding) > 0
     return const [];
+  }
+
+  /// Registers a live observer over `SELECT * FROM notes` and invokes
+  /// [onUpdate] whenever the result set changes (including from peer-synced
+  /// inserts). Returns the observer for the caller to cancel on dispose.
+  /// Stub returns null until ditto_live is wired.
+  StoreObserver? subscribeToNotes(void Function(List<StudyNote>) onUpdate) {
+    // TODO(later): ditto.store.registerObserver(NotesQueries.selectAll, ...)
+    return null;
   }
 }
