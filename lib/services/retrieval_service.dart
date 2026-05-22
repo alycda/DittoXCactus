@@ -2,6 +2,7 @@ import 'dart:math' as math;
 import 'dart:typed_data';
 
 import '../models/recipe_tuple.dart';
+import '../prompts/recipe_merge.dart';
 import 'cactus_service.dart';
 import 'ditto_service.dart';
 
@@ -11,6 +12,19 @@ class RetrievedRecipe {
   final double score;
 
   const RetrievedRecipe(this.recipe, this.score);
+}
+
+/// Discriminated union over the events the answer pipeline can emit.
+class AnswerEvent {
+  final List<RetrievedRecipe>? retrieved;
+  final String? token;
+  final bool isDone;
+
+  const AnswerEvent._({this.retrieved, this.token, this.isDone = false});
+
+  const AnswerEvent.retrieved(List<RetrievedRecipe> r) : this._(retrieved: r);
+  const AnswerEvent.token(String t) : this._(token: t);
+  const AnswerEvent.done() : this._(isDone: true);
 }
 
 /// Cosine top-k over a flat float32 array materialized from Ditto. Stage 0 is
@@ -70,6 +84,20 @@ class RetrievalService {
 
     scored.sort((a, b) => b.score.compareTo(a.score));
     return scored.take(k).toList();
+  }
+
+  /// End-to-end answer pipeline: embed → top-k → prompt → streaming completion.
+  /// Yields the top-k results once (as a structured marker) followed by raw
+  /// LLM token chunks. U8 listens on this stream to render answer + attribution.
+  Stream<AnswerEvent> answerQuery(String query, {int k = defaultK}) async* {
+    final retrieved = await topK(query, k: k);
+    yield AnswerEvent.retrieved(retrieved);
+
+    final messages = RecipeMergePrompt.build(query: query, retrieved: retrieved);
+    await for (final chunk in CactusService.instance.complete(messages, maxTokens: 384)) {
+      yield AnswerEvent.token(chunk);
+    }
+    yield const AnswerEvent.done();
   }
 
   // ---------------------------------------------------------------------------
