@@ -1,0 +1,229 @@
+// docs/c4/model.c4 — Likec4 architectural model for Mesh RAG (Ditto × Cactus).
+//
+// Source: docs/plans/2026-05-21-001-feat-mesh-rag-stage-0-implementation-plan.md (ce-plan, sibling A).
+// Companion sources: SEED.md, docs/research/index/README.md → top-N.md.
+//
+// Source of truth. Edit this file; rebuild the dashboard with:
+//   npx --yes likec4@latest build docs/c4 -o docs/c4/dashboard
+// Validate with:
+//   npx --yes likec4@latest validate docs/c4
+
+specification {
+  element actor {
+    style {
+      shape person
+      color secondary
+    }
+  }
+
+  element externalSystem {
+    style {
+      shape rectangle
+      color muted
+    }
+  }
+
+  element system
+
+  element container {
+    style {
+      shape rectangle
+    }
+  }
+
+  element component {
+    style {
+      shape rectangle
+      color primary
+    }
+  }
+}
+
+model {
+  //
+  // ─── External actors ────────────────────────────────────────────────
+  //
+
+  operator = actor 'Demo Operator' {
+    description 'Holds the phones, types queries, toggles airplane mode live on camera. The thesis stands or falls on what the operator can show the audience in a single take.'
+  }
+
+  audience = actor 'Audience' {
+    description 'Watches the demo at hackathon. Stage 0: passive observers. Stage 1 (deferred to follow-up): may submit free-text queries.'
+  }
+
+  developer = actor 'App Developer' {
+    description 'Runs the U2 determinism spike and U3 LLM-merge eval on dev hardware. Not present at demo time.'
+  }
+
+  //
+  // ─── External systems ───────────────────────────────────────────────
+  //
+
+  cactusModelDist = externalSystem 'Cactus Model Distribution' {
+    description 'Cactus model registry. Phones fetch EmbeddingGemma 300M and Qwen 2.5 1.5B GGUF weights at first install. At demo time: offline; weights are local.'
+  }
+
+  //
+  // ─── The system being designed ──────────────────────────────────────
+  //
+
+  meshRAG = system 'Mesh RAG' {
+    description 'Two-device peer-to-peer RAG demo. Vector index is a CRDT; embedding + LLM run on-device via Cactus; sync + storage via Ditto over BLE/LAN. Thesis: latency + offline-first as durable properties cloud RAG cannot match.'
+
+    //
+    // ─── Containers (deployable units) ────────────────────────────────
+    //
+    // Two deployments of the same Flutter Mesh RAG App codebase, one per
+    // platform. The mesh sync edge runs between them — the whole point of
+    // the demo is two devices visibly composing knowledge when they meet.
+    //
+
+    iosApp = container 'Mesh RAG App (iOS)' {
+      technology 'Flutter / Dart, Cactus + Ditto Flutter packages'
+      description 'Flutter app deployed to an iOS device. Eager-loads embedding + LLM models at splash; renders query UI, mesh-state pill, and tuple cards.'
+
+      // ─── UI components ───
+      iosQueryScreen = component 'QueryScreen' {
+        description 'Main UI: query input, streaming answer pane, top-k tuple cards with source-device labels, source-attribution footer.'
+      }
+      iosMeshStatusWidget = component 'MeshStatusWidget' {
+        description 'Top-bar pill showing peer count + colored connection dot. Visible during the on-camera demo so the audience sees the transition "alone → connected" coincide with the answer change.'
+      }
+
+      // ─── Services ───
+      iosDittoService = component 'DittoService' {
+        description 'Init, sync.start, subscriptions, CRUD over RecipeTuple. Preserves source_device_id through sync for H4 provenance.'
+      }
+      iosCactusService = component 'CactusService' {
+        description 'Narrow Cactus surface: embed() and complete() only. Does NOT use cactus_rag_query — keeps Cactus from owning persistence (Ditto owns it).'
+      }
+      iosRetrievalService = component 'RetrievalService' {
+        description 'Cosine top-k via brute-force loop over flat float32 array. Lazy-fills missing embedding columns on app start.'
+      }
+
+      // ─── Models + Prompts ───
+      iosRecipeTupleModel = component 'RecipeTuple (data model)' {
+        description '{ id, dish, contributor, ingredients, steps, embedding, created_at, metadata: { source_device_id } }. Schema matches the inline shape in RESEARCH-BRIEF.md and SEED.md.'
+      }
+      iosPromptTemplate = component 'PromptTemplate' {
+        description 'Recipe-merge prompt: synthesize a single coherent recipe from N retrieved variants, with provenance markers.'
+      }
+
+      // ─── Embedded runtime libraries (in-process, statically linked) ───
+      iosCactusRuntime = component 'Cactus Runtime' {
+        technology 'GGUF Q4 quantization, INT4 path for cross-runtime stability'
+        description 'On-device embedding + LLM inference engine. Same backend tier as Android to maximize cross-platform parity (R1).'
+      }
+      iosDittoRuntime = component 'Ditto SDK' {
+        technology 'BLE + LAN transports, no big-peer'
+        description 'Embedded P2P document store + sync engine. Delta-state CRDTs, HLC version vectors. Subscribes / observes a single collection of RecipeTuple documents.'
+      }
+    }
+
+    androidApp = container 'Mesh RAG App (Android)' {
+      technology 'Flutter / Dart, Cactus + Ditto Flutter packages'
+      description 'Flutter app deployed to an Android device. Symmetric with the iOS container — same codebase, native bindings on each platform.'
+
+      androidQueryScreen = component 'QueryScreen' {
+        description 'Same as iOS. Side-by-side on camera reads as "two devices, same app."'
+      }
+      androidMeshStatusWidget = component 'MeshStatusWidget' {
+        description 'Same as iOS.'
+      }
+      androidDittoService = component 'DittoService' {
+        description 'Same shape and semantics as iOS DittoService.'
+      }
+      androidCactusService = component 'CactusService' {
+        description 'Same shape as iOS CactusService.'
+      }
+      androidRetrievalService = component 'RetrievalService' {
+        description 'Same cosine implementation as iOS.'
+      }
+      androidRecipeTupleModel = component 'RecipeTuple (data model)' {
+        description 'Same schema as iOS RecipeTuple.'
+      }
+      androidPromptTemplate = component 'PromptTemplate' {
+        description 'Same prompt as iOS.'
+      }
+      androidCactusRuntime = component 'Cactus Runtime' {
+        technology 'GGUF Q4 quantization, INT4 path for cross-runtime stability'
+        description 'Same Q4 quantization + backend tier as iOS, pinned to maximize parity (R1).'
+      }
+      androidDittoRuntime = component 'Ditto SDK' {
+        technology 'BLE + LAN transports, no big-peer'
+        description 'Same Ditto SDK build as iOS. Symmetric peer in the mesh.'
+      }
+    }
+  }
+
+  //
+  // ─── Relationships ──────────────────────────────────────────────────
+  //
+
+  // External actors → system
+  operator -> meshRAG.iosApp 'Types queries; toggles airplane mode live'
+  operator -> meshRAG.androidApp 'Types queries; toggles airplane mode live'
+  audience -> meshRAG.iosApp 'Watches answer pane on camera'
+  audience -> meshRAG.androidApp 'Watches answer pane on camera'
+
+  // External systems
+  meshRAG.iosApp -> cactusModelDist 'Fetches model weights at first install (offline at demo time)'
+  meshRAG.androidApp -> cactusModelDist 'Fetches model weights at first install (offline at demo time)'
+
+  // The core mesh relationship — between the two containers
+  meshRAG.iosApp.iosDittoRuntime -> meshRAG.androidApp.androidDittoRuntime 'Bidirectional RecipeTuple sync over BLE/LAN; CRDT merge'
+  meshRAG.androidApp.androidDittoRuntime -> meshRAG.iosApp.iosDittoRuntime 'Bidirectional RecipeTuple sync over BLE/LAN; CRDT merge'
+
+  // ─── Internal component edges — iOS container ───
+  meshRAG.iosApp.iosQueryScreen -> meshRAG.iosApp.iosRetrievalService 'Submits query; renders streaming answer'
+  meshRAG.iosApp.iosMeshStatusWidget -> meshRAG.iosApp.iosDittoService 'Subscribes to peer count'
+
+  meshRAG.iosApp.iosRetrievalService -> meshRAG.iosApp.iosCactusService 'embed(query)'
+  meshRAG.iosApp.iosRetrievalService -> meshRAG.iosApp.iosDittoService 'Materializes RecipeTuple set; subscribes to updates'
+  meshRAG.iosApp.iosRetrievalService -> meshRAG.iosApp.iosCactusService 'complete(prompt + top-k)'
+
+  meshRAG.iosApp.iosCactusService -> meshRAG.iosApp.iosPromptTemplate 'Loads prompt'
+  meshRAG.iosApp.iosCactusService -> meshRAG.iosApp.iosCactusRuntime 'FFI / native bindings — embed, complete'
+  meshRAG.iosApp.iosDittoService -> meshRAG.iosApp.iosDittoRuntime 'Native bindings — sync, subscribe, CRUD'
+  meshRAG.iosApp.iosDittoService -> meshRAG.iosApp.iosRecipeTupleModel 'Read / write RecipeTuple documents'
+
+  // ─── Internal component edges — Android container (symmetric) ───
+  meshRAG.androidApp.androidQueryScreen -> meshRAG.androidApp.androidRetrievalService 'Submits query; renders streaming answer'
+  meshRAG.androidApp.androidMeshStatusWidget -> meshRAG.androidApp.androidDittoService 'Subscribes to peer count'
+
+  meshRAG.androidApp.androidRetrievalService -> meshRAG.androidApp.androidCactusService 'embed(query)'
+  meshRAG.androidApp.androidRetrievalService -> meshRAG.androidApp.androidDittoService 'Materializes RecipeTuple set; subscribes to updates'
+  meshRAG.androidApp.androidRetrievalService -> meshRAG.androidApp.androidCactusService 'complete(prompt + top-k)'
+
+  meshRAG.androidApp.androidCactusService -> meshRAG.androidApp.androidPromptTemplate 'Loads prompt'
+  meshRAG.androidApp.androidCactusService -> meshRAG.androidApp.androidCactusRuntime 'FFI / native bindings — embed, complete'
+  meshRAG.androidApp.androidDittoService -> meshRAG.androidApp.androidDittoRuntime 'Native bindings — sync, subscribe, CRUD'
+  meshRAG.androidApp.androidDittoService -> meshRAG.androidApp.androidRecipeTupleModel 'Read / write RecipeTuple documents'
+}
+
+views {
+  view index {
+    title 'System Context'
+    description 'Demo operator, audience, app developer, and the Cactus Model Distribution that Mesh RAG depends on at install time.'
+    include *
+  }
+
+  view containers of meshRAG {
+    title 'Containers'
+    description 'Two deployable units of the same Flutter codebase — Mesh RAG App on iOS and on Android — communicating peer-to-peer via Ditto BLE/LAN sync.'
+    include *
+  }
+
+  view iosAppComponents of meshRAG.iosApp {
+    title 'iOS App — Components'
+    description 'Internal modules of the iOS container. UI widgets call services; services call embedded Cactus + Ditto runtimes. Cactus is held narrow (no cactus_rag_query) to avoid persistence conflict with Ditto.'
+    include *
+  }
+
+  view androidAppComponents of meshRAG.androidApp {
+    title 'Android App — Components'
+    description 'Internal modules of the Android container. Symmetric to iOS — same Flutter codebase, native Kotlin bindings instead of Swift.'
+    include *
+  }
+}
