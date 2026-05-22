@@ -140,6 +140,22 @@ flat-cosine top-k retrieval, BLE permissions, plan + spike docs structure.
   (subheaders per topic, peer columns alongside yours) and let the
   Flashcards tab pick a topic from a dropdown of "topics the mesh has
   notes on."
+- **Reviewer role (TA-as-peer / "code suggestions" for notes).** A
+  future participant role — call it *reviewer* rather than *TA* since
+  the GitHub-code-suggestion semantic (propose, the owner accepts or
+  rejects) is a better fit than *TA*'s authority-over connotations. A
+  reviewer evaluates everyone's notes and proposes corrections to ones
+  that are wrong or misleading. Implementation shape: a
+  `note_suggestions` collection synced over the mesh, each document
+  referencing a `targetNoteId` + suggested body diff + reviewer
+  contributor. The author of the target note sees pending suggestions
+  on their note (badge in the Notes tab), can accept (overwrites local
+  body) or reject (suggestion stays in the mesh as record but is marked
+  dismissed). Composes naturally with the clone semantics already
+  shipped: a suggestion is essentially a one-line PR against a peer
+  note. Couples to the deferred trust-scoring thread — a reviewer who
+  is consistently right earns weight; an LLM verifier could play this
+  role too.
 
 ## Why this passes the on-device LLM bar
 
