@@ -1,0 +1,242 @@
+// docs/c4/model.c4 — Likec4 architectural model for Mesh RAG (Ditto × Cactus).
+//
+// Source: docs/plans/2026-05-21-002-feat-mesh-rag-stage-0-composite-plan.md (composite).
+// Companion sources: SEED.md, docs/research/index/README.md → top-N.md.
+//
+// Source of truth. Edit this file; rebuild the dashboard with:
+//   npx --yes likec4@latest build docs/c4 -o docs/c4/dashboard
+// Validate with:
+//   npx --yes likec4@latest validate docs/c4
+
+specification {
+  element actor {
+    style {
+      shape person
+      color secondary
+    }
+  }
+
+  element externalSystem {
+    style {
+      shape rectangle
+      color muted
+    }
+  }
+
+  element system
+
+  element container {
+    style {
+      shape rectangle
+    }
+  }
+
+  element component {
+    style {
+      shape rectangle
+      color primary
+    }
+  }
+}
+
+model {
+  //
+  // ─── External actors ────────────────────────────────────────────────
+  //
+
+  operator = actor 'Demo Operator' {
+    description 'Holds the phones, types queries, toggles airplane mode live on camera. The thesis stands or falls on what the operator can show the audience in a single take.'
+  }
+
+  audience = actor 'Audience' {
+    description 'Watches the demo at hackathon. Stage 0: passive observers. Stage 1 (out of scope): may submit free-text queries.'
+  }
+
+  developer = actor 'App Developer' {
+    description 'Runs the U2 embedding-determinism spike, the U3 LLM-merge eval, and the U7 no-server invariant check on the build pipeline. Not present at demo time.'
+  }
+
+  //
+  // ─── External systems ───────────────────────────────────────────────
+  //
+
+  cactusModelDist = externalSystem 'Cactus Model Distribution' {
+    description 'HuggingFace + Cactus model registry. Phones fetch Qwen3-Embedding-0.6B and Qwen 2.5 1.5B GGUF weights (Q4_K_M) at first install. At demo time: offline; weights are local.'
+  }
+
+  dittoLicense = externalSystem 'Ditto Licensing' {
+    description 'Build-time only. Resolves Ditto SDK trial terms for public-repo redistribution. Demo runs entirely on offline-only Ditto identity; no big-peer cloud, no licensing call at runtime.'
+  }
+
+  //
+  // ─── The system being designed ──────────────────────────────────────
+  //
+
+  meshRAG = system 'Mesh RAG' {
+    description 'Two-device peer-to-peer RAG demo. Vector index is a CRDT; embedding + LLM run on-device via Cactus; sync + storage via Ditto over BLE/LAN. Thesis: latency + offline-first as durable properties cloud RAG cannot match.'
+
+    //
+    // ─── Containers (deployable units) ────────────────────────────────
+    //
+    // Two deployments of the same Flutter Mesh RAG App codebase, one per
+    // platform. The mesh sync edge runs between them — the whole point of
+    // the demo is two devices visibly composing knowledge when they meet.
+    //
+
+    iosApp = container 'Mesh RAG App (iOS)' {
+      technology 'Flutter / Dart, Cactus Swift bridge, Ditto Swift SDK'
+      description 'Flutter app deployed to an iOS device. Eager-loads embedding + LLM models at splash; renders query UI, mesh-state pill, and tuple cards.'
+
+      // ─── UI components ───
+      iosQueryScreen = component 'QueryScreen' {
+        description 'Main UI: query input, streaming answer pane, top-k tuple cards with source-device labels, source-attribution footer.'
+      }
+      iosMeshStatusWidget = component 'MeshStatusWidget' {
+        description 'Top-bar pill showing peer count + colored connection dot + "tuples from other device" counter. The load-bearing affordance for H4 / R10 (camera legibility).'
+      }
+      iosDebugMenu = component 'DebugMenu' {
+        description 'Long-press easter egg. One-tap reset (clear synced state without uninstall); one-tap re-seed (rerun corpus loader). Demo-day recovery only.'
+      }
+
+      // ─── Services ───
+      iosDittoService = component 'DittoService' {
+        description 'Init, sync.start, subscriptions, CRUD over Tuple. Deterministic _id = sha256(corpus + title + text) ensures H3 idempotence. Preserves source_device_id through sync for H4 provenance.'
+      }
+      iosCactusService = component 'CactusService' {
+        description 'Narrow Cactus surface: embed() and complete() only. Does NOT use cactus_rag_query or cactus_index_* (would fight Ditto for persistence — see R8).'
+      }
+      iosRetrievalService = component 'RetrievalService' {
+        description 'L2-normalize embeddings at insertion; cosine top-k via brute-force dot product over flat float32 array. Deterministic tie-break: (score desc, _id asc) prevents H3 top-k drift.'
+      }
+
+      // ─── Models + Prompts ───
+      iosTupleModel = component 'Tuple (data model)' {
+        description 'Corpus-neutral Dart class. { _id, dish, contributor, ingredients, steps, embedding, created_at, metadata: { source_device_id, corpus } }. Corpus theme lives in metadata.corpus, not in the type name — hot-swappable to cars per U3 gate outcome.'
+      }
+      iosPromptTemplate = component 'PromptTemplate' {
+        description 'Pinned recipe-merge prompt locked at U3 gate decision. Same prompt for eval and production — no prompt drift between gate and demo.'
+      }
+
+      // ─── Embedded runtime libraries (in-process, statically linked) ───
+      iosCactusRuntime = component 'Cactus Runtime' {
+        technology 'GGUF Q4_K_M, CPU backend, batch=1'
+        description 'On-device embedding + LLM inference engine. Pinned to CPU backend in Stage 0 to maximize cross-platform parity (ANE dispatch off — see R11).'
+      }
+      iosDittoRuntime = component 'Ditto SDK' {
+        technology 'BLE + LAN transports, no big-peer'
+        description 'Embedded P2P document store + sync engine. Delta-state CRDTs, HLC version vectors. Subscribes / observes a single collection of Tuple documents.'
+      }
+    }
+
+    androidApp = container 'Mesh RAG App (Android)' {
+      technology 'Flutter / Dart, Cactus Kotlin bridge, Ditto Kotlin SDK'
+      description 'Flutter app deployed to an Android device. Symmetric with the iOS container — same codebase, native bindings on each platform.'
+
+      androidQueryScreen = component 'QueryScreen' {
+        description 'Same as iOS. Side-by-side on camera reads as "two devices, same app."'
+      }
+      androidMeshStatusWidget = component 'MeshStatusWidget' {
+        description 'Same as iOS.'
+      }
+      androidDebugMenu = component 'DebugMenu' {
+        description 'Same as iOS.'
+      }
+      androidDittoService = component 'DittoService' {
+        description 'Same shape and semantics as iOS DittoService. Identical deterministic ID rule.'
+      }
+      androidCactusService = component 'CactusService' {
+        description 'Same shape as iOS CactusService.'
+      }
+      androidRetrievalService = component 'RetrievalService' {
+        description 'Same cosine + tie-break implementation as iOS. Parity unit test (U5) asserts iOS and Android return same top-k for same query.'
+      }
+      androidTupleModel = component 'Tuple (data model)' {
+        description 'Same schema as iOS Tuple.'
+      }
+      androidPromptTemplate = component 'PromptTemplate' {
+        description 'Same pinned prompt as iOS.'
+      }
+      androidCactusRuntime = component 'Cactus Runtime' {
+        technology 'GGUF Q4_K_M, CPU backend, batch=1'
+        description 'Same Q4_K_M quantization + CPU backend as iOS, pinned away from Hexagon NPU to maximize parity (R11).'
+      }
+      androidDittoRuntime = component 'Ditto SDK' {
+        technology 'BLE + LAN transports, no big-peer'
+        description 'Same Ditto SDK build as iOS. Symmetric peer in the mesh.'
+      }
+    }
+  }
+
+  //
+  // ─── Relationships ──────────────────────────────────────────────────
+  //
+
+  // External actors → system
+  operator -> meshRAG.iosApp 'Types queries; toggles airplane mode live'
+  operator -> meshRAG.androidApp 'Types queries; toggles airplane mode live'
+  audience -> meshRAG.iosApp 'Watches answer pane on camera'
+  audience -> meshRAG.androidApp 'Watches answer pane on camera'
+
+  // External systems
+  meshRAG.iosApp -> cactusModelDist 'Fetches Q4_K_M model weights at first install (offline at demo time)'
+  meshRAG.androidApp -> cactusModelDist 'Fetches Q4_K_M model weights at first install (offline at demo time)'
+  developer -> dittoLicense 'Resolves SDK trial terms for public-repo redistribution (build-time only)'
+
+  // The core mesh relationship — between the two containers
+  meshRAG.iosApp.iosDittoRuntime -> meshRAG.androidApp.androidDittoRuntime 'Bidirectional Tuple sync over BLE/LAN; CRDT merge'
+  meshRAG.androidApp.androidDittoRuntime -> meshRAG.iosApp.iosDittoRuntime 'Bidirectional Tuple sync over BLE/LAN; CRDT merge'
+
+  // ─── Internal component edges — iOS container ───
+  meshRAG.iosApp.iosQueryScreen -> meshRAG.iosApp.iosRetrievalService 'Submits query; renders streaming answer'
+  meshRAG.iosApp.iosMeshStatusWidget -> meshRAG.iosApp.iosDittoService 'Subscribes to peer count + tuple-from-peer events'
+  meshRAG.iosApp.iosDebugMenu -> meshRAG.iosApp.iosDittoService 'Triggers reset / re-seed (demo recovery)'
+
+  meshRAG.iosApp.iosRetrievalService -> meshRAG.iosApp.iosCactusService 'embed(query)'
+  meshRAG.iosApp.iosRetrievalService -> meshRAG.iosApp.iosDittoService 'Materializes Tuple set; subscribes to updates'
+  meshRAG.iosApp.iosRetrievalService -> meshRAG.iosApp.iosCactusService 'complete(prompt + top-k)'
+
+  meshRAG.iosApp.iosCactusService -> meshRAG.iosApp.iosPromptTemplate 'Loads pinned prompt'
+  meshRAG.iosApp.iosCactusService -> meshRAG.iosApp.iosCactusRuntime 'FFI / native bindings — embed, complete'
+  meshRAG.iosApp.iosDittoService -> meshRAG.iosApp.iosDittoRuntime 'Native bindings — sync, subscribe, CRUD'
+  meshRAG.iosApp.iosDittoService -> meshRAG.iosApp.iosTupleModel 'Read / write Tuple documents'
+
+  // ─── Internal component edges — Android container (symmetric) ───
+  meshRAG.androidApp.androidQueryScreen -> meshRAG.androidApp.androidRetrievalService 'Submits query; renders streaming answer'
+  meshRAG.androidApp.androidMeshStatusWidget -> meshRAG.androidApp.androidDittoService 'Subscribes to peer count + tuple-from-peer events'
+  meshRAG.androidApp.androidDebugMenu -> meshRAG.androidApp.androidDittoService 'Triggers reset / re-seed (demo recovery)'
+
+  meshRAG.androidApp.androidRetrievalService -> meshRAG.androidApp.androidCactusService 'embed(query)'
+  meshRAG.androidApp.androidRetrievalService -> meshRAG.androidApp.androidDittoService 'Materializes Tuple set; subscribes to updates'
+  meshRAG.androidApp.androidRetrievalService -> meshRAG.androidApp.androidCactusService 'complete(prompt + top-k)'
+
+  meshRAG.androidApp.androidCactusService -> meshRAG.androidApp.androidPromptTemplate 'Loads pinned prompt'
+  meshRAG.androidApp.androidCactusService -> meshRAG.androidApp.androidCactusRuntime 'FFI / native bindings — embed, complete'
+  meshRAG.androidApp.androidDittoService -> meshRAG.androidApp.androidDittoRuntime 'Native bindings — sync, subscribe, CRUD'
+  meshRAG.androidApp.androidDittoService -> meshRAG.androidApp.androidTupleModel 'Read / write Tuple documents'
+}
+
+views {
+  view index {
+    title 'System Context'
+    description 'Demo operator, audience, app developer, and the third-party services Mesh RAG depends on. The Mesh RAG system is the two-phone deployment as a whole.'
+    include *
+  }
+
+  view containers of meshRAG {
+    title 'Containers'
+    description 'Two deployable units of the same Flutter codebase — Mesh RAG App on iOS and on Android — communicating peer-to-peer via Ditto BLE/LAN sync. The system boundary contains both containers.'
+    include *
+  }
+
+  view iosAppComponents of meshRAG.iosApp {
+    title 'iOS App — Components'
+    description 'Internal modules of the iOS container. UI widgets call services; services call embedded Cactus + Ditto runtimes. Cactus is held narrow (no cactus_rag_query) to avoid persistence conflict with Ditto.'
+    include *
+  }
+
+  view androidAppComponents of meshRAG.androidApp {
+    title 'Android App — Components'
+    description 'Internal modules of the Android container. Symmetric to iOS — same Flutter codebase, native Kotlin bindings instead of Swift. The parity unit test in U5 asserts iOS and Android return the same top-k for the same query.'
+    include *
+  }
+}
