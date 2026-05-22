@@ -1,0 +1,11 @@
+You drafted /Users/alyssaevans/Experiments/DittoXCactus/docs/sprints/drafts/SPRINT-0001-CODEX.md for sprint SPRINT-0001.
+
+Read the other two drafts at:
+- /Users/alyssaevans/Experiments/DittoXCactus/docs/sprints/drafts/SPRINT-0001-GEMINI.md
+- /Users/alyssaevans/Experiments/DittoXCactus/docs/sprints/drafts/SPRINT-0001-CLAUDE.md
+
+Write a critique to /Users/alyssaevans/Experiments/DittoXCactus/docs/sprints/drafts/SPRINT-0001-CODEX-critique.md.
+
+For each of the other two drafts: what is stronger than yours, what is weaker, what tasks are missing, what risks are underweighted, what sequencing is wrong. Be specific and cite task names. End with a short "if I were merging, I'd keep X from draft A and Y from draft B" section.
+
+You MUST use your file-write tool to create the critique file. End your turn with a single line confirming you wrote it.
