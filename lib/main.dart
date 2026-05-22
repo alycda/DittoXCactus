@@ -6,7 +6,9 @@ import 'package:permission_handler/permission_handler.dart';
 
 import 'services/cactus_service.dart';
 import 'services/ditto_service.dart';
+import 'services/retrieval_service.dart';
 import 'services/seed_loader.dart';
+import 'widgets/query_screen.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -45,28 +47,26 @@ class MeshRagApp extends StatelessWidget {
         useMaterial3: true,
       ),
       themeMode: ThemeMode.system,
-      home: const InitScreen(),
+      home: const BootScreen(),
     );
   }
 }
 
-/// Stage-0 placeholder. Init both SDKs, show "Cactus: ready / Ditto: peers=N"
-/// so the implementer can verify on hardware that U1 is done.
-/// U8 replaces this with the actual query screen.
-class InitScreen extends StatefulWidget {
-  const InitScreen({super.key});
+/// Splash + init flow. Boots Ditto + Cactus + seed insert + ensureEmbeddings,
+/// then swaps in QueryScreen. The flow is intentionally one-shot — no
+/// settings UI, no retry button — Stage 0 is "run once on demo day."
+class BootScreen extends StatefulWidget {
+  const BootScreen({super.key});
 
   @override
-  State<InitScreen> createState() => _InitScreenState();
+  State<BootScreen> createState() => _BootScreenState();
 }
 
-class _InitScreenState extends State<InitScreen> {
-  String _cactusStatus = 'idle';
-  String _dittoStatus = 'idle';
-  double? _modelDownloadProgress; // null = indeterminate
-  int _peerCount = 0;
-  int _localRecipeCount = 0;
+class _BootScreenState extends State<BootScreen> {
+  String _stage = 'starting…';
+  double? _modelDownloadProgress;
   String? _error;
+  bool _ready = false;
 
   @override
   void initState() {
@@ -76,108 +76,85 @@ class _InitScreenState extends State<InitScreen> {
 
   Future<void> _boot() async {
     try {
-      setState(() => _dittoStatus = 'initializing');
+      setState(() => _stage = 'connecting to mesh');
       await DittoService.instance.initialize();
       await DittoService.instance.startSync(
         subscriptionQuery: 'SELECT * FROM recipes',
       );
-      DittoService.instance.peerCount.listen((n) {
-        if (mounted) setState(() => _peerCount = n);
-      });
-      DittoService.instance.subscribeToRecipes((rows) {
-        if (mounted) setState(() => _localRecipeCount = rows.length);
-      });
-      await SeedLoader.instance.loadAndInsert();
-      setState(() => _dittoStatus = 'ready (role=${SeedLoader.instance.role})');
-    } catch (e) {
-      setState(() {
-        _dittoStatus = 'failed';
-        _error = e.toString();
-      });
-    }
 
-    try {
-      setState(() => _cactusStatus = 'downloading model');
+      setState(() => _stage = 'seeding local corpus (role=${SeedLoader.instance.role})');
+      await SeedLoader.instance.loadAndInsert();
+
+      setState(() => _stage = 'downloading cactus model');
       await CactusService.instance.initialize(
         onProgress: (p, status, isErr) {
-          if (mounted) {
-            setState(() {
-              _modelDownloadProgress = p;
-              _cactusStatus = status;
-            });
-          }
+          if (!mounted) return;
+          setState(() {
+            _modelDownloadProgress = p;
+            _stage = status;
+          });
         },
       );
+
       setState(() {
-        _cactusStatus = 'ready';
+        _stage = 'embedding local corpus';
         _modelDownloadProgress = null;
       });
+      await RetrievalService.instance.ensureEmbeddings();
+
+      setState(() => _ready = true);
     } catch (e) {
-      setState(() {
-        _cactusStatus = 'failed';
-        _error = '${_error ?? ''}\nCactus: $e';
-      });
+      setState(() => _error = e.toString());
     }
   }
 
   @override
   Widget build(BuildContext context) {
+    if (_ready) return const QueryScreen();
+
     return Scaffold(
-      appBar: AppBar(title: const Text('Mesh RAG — Stage 0')),
-      body: Center(
-        child: Padding(
-          padding: const EdgeInsets.all(24),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              _line('Ditto', _dittoStatus, ok: _dittoStatus.startsWith('ready')),
-              const SizedBox(height: 8),
-              Text('  peers: $_peerCount   |   local recipes: $_localRecipeCount'),
-              const SizedBox(height: 24),
-              _line('Cactus', _cactusStatus, ok: _cactusStatus == 'ready'),
-              if (_modelDownloadProgress != null) ...[
-                const SizedBox(height: 8),
-                LinearProgressIndicator(value: _modelDownloadProgress),
-              ],
-              if (_error != null) ...[
-                const SizedBox(height: 24),
-                Container(
-                  padding: const EdgeInsets.all(12),
-                  decoration: BoxDecoration(
-                    color: Theme.of(context).colorScheme.errorContainer,
-                    borderRadius: BorderRadius.circular(8),
+      body: SafeArea(
+        child: Center(
+          child: Padding(
+            padding: const EdgeInsets.all(32),
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              children: [
+                Text(
+                  'Mesh RAG — Stage 0',
+                  style: Theme.of(context).textTheme.headlineMedium,
+                  textAlign: TextAlign.center,
+                ),
+                const SizedBox(height: 32),
+                if (_error == null) ...[
+                  Text(
+                    _stage,
+                    style: const TextStyle(fontSize: 18),
+                    textAlign: TextAlign.center,
                   ),
-                  child: Text(
-                    _error!,
-                    style: TextStyle(
-                      color: Theme.of(context).colorScheme.onErrorContainer,
-                      fontFamily: 'monospace',
+                  const SizedBox(height: 16),
+                  LinearProgressIndicator(value: _modelDownloadProgress),
+                ] else
+                  Container(
+                    padding: const EdgeInsets.all(16),
+                    decoration: BoxDecoration(
+                      color: Theme.of(context).colorScheme.errorContainer,
+                      borderRadius: BorderRadius.circular(8),
+                    ),
+                    child: Text(
+                      _error!,
+                      style: TextStyle(
+                        color: Theme.of(context).colorScheme.onErrorContainer,
+                        fontFamily: 'monospace',
+                      ),
                     ),
                   ),
-                ),
               ],
-            ],
+            ),
           ),
         ),
       ),
-    );
-  }
-
-  Widget _line(String label, String status, {required bool ok}) {
-    return Row(
-      children: [
-        Icon(
-          ok ? Icons.check_circle : Icons.hourglass_empty,
-          color: ok ? Colors.green : Colors.grey,
-          size: 20,
-        ),
-        const SizedBox(width: 8),
-        Text(
-          '$label: $status',
-          style: const TextStyle(fontSize: 16, fontWeight: FontWeight.w600),
-        ),
-      ],
     );
   }
 }

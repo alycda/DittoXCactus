@@ -19,6 +19,11 @@ class SeedLoader {
   String get role => _envRole;
   String get assetPath => 'assets/seed_recipes_$_envRole.json';
 
+  /// The `contributor` value this device tags its tuples with. Matches the
+  /// values inside `assets/seed_recipes_<role>.json`. Used by the UI to count
+  /// how many retrieved tuples came from a *peer* device versus this one.
+  String get selfContributor => 'phone-$_envRole';
+
   Future<int> loadAndInsert() async {
     final raw = await rootBundle.loadString(assetPath);
     final List<dynamic> json = jsonDecode(raw) as List<dynamic>;
