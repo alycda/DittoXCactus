@@ -1,47 +1,65 @@
 import 'dart:math' as math;
 import 'dart:typed_data';
 
-import '../models/recipe_tuple.dart';
-import '../prompts/recipe_merge.dart';
+import '../models/study_note.dart';
+import '../prompts/flashcard_gen.dart';
 import 'cactus_service.dart';
 import 'ditto_service.dart';
 
-/// A scored retrieval result: a recipe and its cosine similarity vs the query.
-class RetrievedRecipe {
-  final RecipeTuple recipe;
+/// A scored retrieval result: a study note and its cosine similarity vs the
+/// query topic.
+class RetrievedNote {
+  final StudyNote note;
   final double score;
 
-  const RetrievedRecipe(this.recipe, this.score);
+  const RetrievedNote(this.note, this.score);
 }
 
-/// Discriminated union over the events the answer pipeline can emit.
-class AnswerEvent {
-  final List<RetrievedRecipe>? retrieved;
-  final String? token;
+/// Discriminated union over the events the flashcard pipeline can emit.
+/// U8 listens on this stream to render the loading state and the final stack.
+class FlashcardEvent {
+  final List<RetrievedNote>? retrieved;
+  final String? partial;
+  final List<Flashcard>? cards;
   final bool isDone;
 
-  const AnswerEvent._({this.retrieved, this.token, this.isDone = false});
+  const FlashcardEvent._({
+    this.retrieved,
+    this.partial,
+    this.cards,
+    this.isDone = false,
+  });
 
-  const AnswerEvent.retrieved(List<RetrievedRecipe> r) : this._(retrieved: r);
-  const AnswerEvent.token(String t) : this._(token: t);
-  const AnswerEvent.done() : this._(isDone: true);
+  const FlashcardEvent.retrieved(List<RetrievedNote> r) : this._(retrieved: r);
+  const FlashcardEvent.partial(String chunk) : this._(partial: chunk);
+  const FlashcardEvent.cards(List<Flashcard> c) : this._(cards: c);
+  const FlashcardEvent.done() : this._(isDone: true);
 }
 
 /// Cosine top-k over a flat float32 array materialized from Ditto. Stage 0 is
-/// brute-force on purpose: ≤5k tuples × 384 dims = 7.7 MB, so exact-recall
-/// brute force is sub-millisecond and the CRDT-merged tuple set has no index
+/// brute-force on purpose: ≤5k notes × 384 dims = 7.7 MB, so exact-recall
+/// brute force is sub-millisecond and the CRDT-merged note set has no index
 /// state to keep in sync.
 class RetrievalService {
   RetrievalService._();
   static final RetrievalService instance = RetrievalService._();
 
-  /// Default k for Stage 0; the prompt template (U6) expects ~3 tuples.
-  static const int defaultK = 3;
+  /// Default k for Stage 0; the flashcard prompt expects ~3-5 notes.
+  static const int defaultK = 5;
 
-  /// Encode a recipe as the short text we hand to `cactus_embed`.
-  /// Keeps it short on purpose — embedding context budgets are tight.
-  String _recipeText(RecipeTuple r) {
-    return '${r.dish}. Ingredients: ${r.ingredients.join(', ')}.';
+  /// Default number of flashcards to generate per request. SEED-A's demo
+  /// shows 5; the token budget is ~256/card × 5 = 1280 in one streamed call.
+  static const int defaultN = 5;
+
+  /// Token budget for the streamed JSON output: ~256 tokens per card.
+  static const int maxTokensPerCard = 256;
+
+  /// Encode a study note as the short text we hand to `cactus_embed`.
+  /// Keeps it short on purpose — embedding context budgets are tight, and
+  /// the topic + first 200 chars of body is enough signal for cosine.
+  String _noteText(StudyNote n) {
+    final body = n.body.length > 200 ? n.body.substring(0, 200) : n.body;
+    return '${n.topic}. $body';
   }
 
   /// Embed missing rows and persist the embedding column back to Ditto.
@@ -50,9 +68,9 @@ class RetrievalService {
   Future<int> ensureEmbeddings() async {
     final missing = await DittoService.instance.queryMissingEmbedding();
     var n = 0;
-    for (final r in missing) {
-      final emb = await CactusService.instance.embed(_recipeText(r));
-      await DittoService.instance.setEmbedding(r.id, emb);
+    for (final note in missing) {
+      final emb = await CactusService.instance.embed(_noteText(note));
+      await DittoService.instance.setEmbedding(note.id, emb);
       n++;
     }
     return n;
@@ -66,38 +84,59 @@ class RetrievalService {
   }
 
   /// Compute cosine-top-k over the embedded corpus. Returns up to `k`
-  /// `RetrievedRecipe`s in descending score order.
+  /// `RetrievedNote`s in descending score order.
   ///
   /// Cactus output is typically L2-normalized; we still normalize on both
   /// sides so the score stays in [-1, 1] regardless of model quirks.
-  Future<List<RetrievedRecipe>> topK(String query, {int k = defaultK}) async {
-    final qVec = normalize(await embedQuery(query));
+  Future<List<RetrievedNote>> topK(String topic, {int k = defaultK}) async {
+    final qVec = normalize(await embedQuery(topic));
     final corpus = await DittoService.instance.queryWithEmbedding();
     if (corpus.isEmpty) return const [];
 
-    final scored = <RetrievedRecipe>[];
-    for (final r in corpus) {
-      final docVec = normalize(Float32List.fromList(r.embedding.map((d) => d.toDouble()).toList()));
+    final scored = <RetrievedNote>[];
+    for (final note in corpus) {
+      final docVec = normalize(Float32List.fromList(note.embedding.map((d) => d.toDouble()).toList()));
       if (docVec.length != qVec.length) continue;
-      scored.add(RetrievedRecipe(r, dot(qVec, docVec)));
+      scored.add(RetrievedNote(note, dot(qVec, docVec)));
     }
 
-    scored.sort((a, b) => b.score.compareTo(a.score));
+    scored.sort((a, b) {
+      final s = b.score.compareTo(a.score);
+      return s != 0 ? s : a.note.id.compareTo(b.note.id); // tie-break by _id
+    });
     return scored.take(k).toList();
   }
 
-  /// End-to-end answer pipeline: embed → top-k → prompt → streaming completion.
-  /// Yields the top-k results once (as a structured marker) followed by raw
-  /// LLM token chunks. U8 listens on this stream to render answer + attribution.
-  Stream<AnswerEvent> answerQuery(String query, {int k = defaultK}) async* {
-    final retrieved = await topK(query, k: k);
-    yield AnswerEvent.retrieved(retrieved);
+  /// End-to-end flashcard pipeline: embed topic → top-k notes → prompt →
+  /// streaming completion → parse JSON → emit cards. Yields the top-k
+  /// retrieval marker first (so U8 can render the attribution footer
+  /// while the LLM is still streaming), then per-chunk partial markers
+  /// (for a "generating…" indicator), then the parsed cards on completion.
+  Stream<FlashcardEvent> generateFlashcards(
+    String topic, {
+    int k = defaultK,
+    int n = defaultN,
+  }) async* {
+    final retrieved = await topK(topic, k: k);
+    yield FlashcardEvent.retrieved(retrieved);
 
-    final messages = RecipeMergePrompt.build(query: query, retrieved: retrieved);
-    await for (final chunk in CactusService.instance.complete(messages, maxTokens: 768)) {
-      yield AnswerEvent.token(chunk);
+    final messages = FlashcardGenPrompt.build(
+      topic: topic,
+      n: n,
+      retrieved: retrieved,
+    );
+    final buffer = StringBuffer();
+    await for (final chunk in CactusService.instance.complete(
+      messages,
+      maxTokens: maxTokensPerCard * n,
+    )) {
+      buffer.write(chunk);
+      yield FlashcardEvent.partial(chunk);
     }
-    yield const AnswerEvent.done();
+
+    final cards = FlashcardGenPrompt.parse(buffer.toString());
+    yield FlashcardEvent.cards(cards);
+    yield const FlashcardEvent.done();
   }
 
   // ---------------------------------------------------------------------------

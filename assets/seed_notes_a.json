@@ -1,0 +1,37 @@
+[
+  {
+    "topic": "CRDT internals",
+    "contributor": "phone-a",
+    "createdAt": "2026-05-21T00:00:01Z",
+    "tags": ["definition", "core"],
+    "body": "A Conflict-free Replicated Data Type (CRDT) is a data structure that multiple peers can update independently and concurrently without coordination, and whose replicas mathematically converge to the same state once all updates have been delivered. Convergence is guaranteed by the algebraic properties of the merge operation — associativity, commutativity, and idempotence — which together make merge order irrelevant."
+  },
+  {
+    "topic": "CRDT internals",
+    "contributor": "phone-a",
+    "createdAt": "2026-05-21T00:00:02Z",
+    "tags": ["state-based", "operation-based"],
+    "body": "CRDTs come in two flavors. State-based CRDTs (CvRDTs) ship the entire local state to peers; peers merge by taking the least-upper-bound in a join-semilattice. Operation-based CRDTs (CmRDTs) ship individual operations over a causal-delivery channel; peers apply each operation in any causal order. State-based tolerates message loss and duplication; operation-based has smaller payloads but requires a stronger transport."
+  },
+  {
+    "topic": "CRDT internals",
+    "contributor": "phone-a",
+    "createdAt": "2026-05-21T00:00:03Z",
+    "tags": ["counter"],
+    "body": "A G-Counter is the simplest CRDT: each replica keeps a monotonic per-replica count and the total is the sum across replicas. Merge is element-wise max. A PN-Counter pairs two G-Counters — one for increments and one for decrements — so the visible value is increments minus decrements. Neither can go backwards locally; both converge regardless of delivery order."
+  },
+  {
+    "topic": "CRDT internals",
+    "contributor": "phone-a",
+    "createdAt": "2026-05-21T00:00:04Z",
+    "tags": ["set", "tombstone"],
+    "body": "A G-Set is a grow-only set: insert is the only operation, merge is set union. A 2P-Set adds a tombstone set so elements can be removed, but removed elements can never be re-added. An OR-Set (Observed-Remove Set) tags each insertion with a unique identifier so a remove only retracts the specific add it observed — re-adding after a remove works correctly. OR-Set is the standard set CRDT in production systems."
+  },
+  {
+    "topic": "CRDT internals",
+    "contributor": "phone-a",
+    "createdAt": "2026-05-21T00:00:05Z",
+    "tags": ["register", "lww"],
+    "body": "An LWW-Register (Last-Writer-Wins) stores one value plus a timestamp; merge takes the value with the larger timestamp. The catch is the timestamp — wall-clock time fails because peer clocks drift. A Multi-Value Register avoids the loss entirely: concurrent writes are kept as a set of candidate values and the application is responsible for resolving them."
+  }
+]

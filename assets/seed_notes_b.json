@@ -1,0 +1,37 @@
+[
+  {
+    "topic": "CRDT internals",
+    "contributor": "phone-b",
+    "createdAt": "2026-05-21T00:00:11Z",
+    "tags": ["delta-state", "optimization"],
+    "body": "Delta-state CRDTs are a refinement of state-based CRDTs that ship only the changes — the delta-mutators — rather than the full state on every sync. Each delta is itself a join-semilattice element, so merging a delta into a replica is the same operation as merging full states. This keeps the convergence guarantees of CvRDTs while approaching the payload size of operation-based CRDTs. Ditto and Automerge both use this design."
+  },
+  {
+    "topic": "CRDT internals",
+    "contributor": "phone-b",
+    "createdAt": "2026-05-21T00:00:12Z",
+    "tags": ["clock", "causality"],
+    "body": "Causal ordering between replicas requires a logical clock. A Lamport clock is a single integer per peer that ticks on every local event and on every received message; it gives a total order but loses concurrency information. A vector clock keeps one counter per peer and can detect concurrent updates exactly, at the cost of growing with the peer count."
+  },
+  {
+    "topic": "CRDT internals",
+    "contributor": "phone-b",
+    "createdAt": "2026-05-21T00:00:13Z",
+    "tags": ["clock", "hlc"],
+    "body": "A Hybrid Logical Clock (HLC) blends a Lamport clock with wall-clock time: each event gets a (physical, logical) pair where the physical part tracks wall time and the logical part breaks ties when events happen within the same millisecond. HLCs are bounded in size, give human-readable timestamps, and preserve causality. Ditto uses HLCs to tag every CRDT operation so peers can order updates without coordination."
+  },
+  {
+    "topic": "CRDT internals",
+    "contributor": "phone-b",
+    "createdAt": "2026-05-21T00:00:14Z",
+    "tags": ["ditto", "mesh"],
+    "body": "Ditto models documents as nested CRDT Maps where each field is itself a CRDT (Register, Counter, Set, Map, or List). Sync over the mesh ships dot-tagged delta nodes rather than per-peer per-field deltas, so a document changed once syncs to everyone in O(change) bytes regardless of replica count. Combined with the BLE transport, this makes phone-to-phone document sync feasible without a server."
+  },
+  {
+    "topic": "CRDT internals",
+    "contributor": "phone-b",
+    "createdAt": "2026-05-21T00:00:15Z",
+    "tags": ["sequence", "text"],
+    "body": "Sequence CRDTs — used for collaborative text editing — assign each character a dense, dynamically-allocated identifier so concurrent insertions at the same position get a well-defined order. RGA (Replicated Growable Array) and the Logoot/LSEQ families take different approaches: RGA uses an append-only tree with a deletion bit, while Logoot identifiers are variable-length fractional indices. Tombstones accumulate over time, which is why long-lived text documents need garbage collection."
+  }
+]

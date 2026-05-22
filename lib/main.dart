@@ -79,7 +79,7 @@ class _BootScreenState extends State<BootScreen> {
       setState(() => _stage = 'connecting to mesh');
       await DittoService.instance.initialize();
       await DittoService.instance.startSync(
-        subscriptionQuery: 'SELECT * FROM recipes',
+        subscriptionQuery: 'SELECT * FROM notes',
       );
 
       setState(() => _stage = 'seeding local corpus (role=${SeedLoader.instance.role})');
@@ -124,7 +124,7 @@ class _BootScreenState extends State<BootScreen> {
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
                 Text(
-                  'Mesh RAG — Stage 0',
+                  'Learning Together',
                   style: Theme.of(context).textTheme.headlineMedium,
                   textAlign: TextAlign.center,
                 ),
