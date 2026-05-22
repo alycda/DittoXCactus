@@ -1,6 +1,6 @@
 import 'dart:io' show Platform;
 
-import 'package:flutter/foundation.dart' show kIsWeb;
+import 'package:flutter/foundation.dart' show kIsWeb, debugPrint;
 import 'package:flutter/material.dart';
 import 'package:permission_handler/permission_handler.dart';
 
@@ -103,7 +103,9 @@ class _BootScreenState extends State<BootScreen> {
       await RetrievalService.instance.ensureEmbeddings();
 
       setState(() => _ready = true);
-    } catch (e) {
+    } catch (e, st) {
+      debugPrint('boot error: $e');
+      debugPrint(st.toString());
       setState(() => _error = e.toString());
     }
   }

@@ -113,18 +113,17 @@ class DittoService {
         .toList();
   }
 
+  /// Dart-side filter — Ditto's MISSING vs NULL semantics + the `embedding`
+  /// field being absent on fresh seeds make a DQL predicate brittle here, and
+  /// the Stage 0 corpus is ≤ 10 rows so the cost is invisible.
   Future<List<RecipeTuple>> queryWithEmbedding() async {
-    final r = await ditto.store.execute(RecipeQueries.selectWithEmbedding);
-    return r.items
-        .map((it) => RecipeTuple.fromDittoValue(Map<String, dynamic>.from(it.value)))
-        .toList();
+    final all = await queryAll();
+    return all.where((r) => r.hasEmbedding).toList();
   }
 
   Future<List<RecipeTuple>> queryMissingEmbedding() async {
-    final r = await ditto.store.execute(RecipeQueries.selectMissingEmbedding);
-    return r.items
-        .map((it) => RecipeTuple.fromDittoValue(Map<String, dynamic>.from(it.value)))
-        .toList();
+    final all = await queryAll();
+    return all.where((r) => !r.hasEmbedding).toList();
   }
 
   Future<void> setEmbedding(String id, List<double> embedding) async {

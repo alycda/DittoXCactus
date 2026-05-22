@@ -8,14 +8,7 @@ class RecipeQueries {
 
   static const String collection = 'recipes';
 
-  static const String selectAll =
-      'SELECT * FROM recipes ORDER BY createdAt';
-
-  static const String selectWithEmbedding =
-      'SELECT * FROM recipes WHERE embedding IS NOT NULL AND len(embedding) > 0 ORDER BY createdAt';
-
-  static const String selectMissingEmbedding =
-      'SELECT * FROM recipes WHERE embedding IS NULL OR len(embedding) = 0';
+  static const String selectAll = 'SELECT * FROM recipes';
 
   static const String selectById = 'SELECT * FROM recipes WHERE _id = :id';
 
