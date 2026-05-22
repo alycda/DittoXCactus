@@ -1243,3 +1243,107 @@ entries:
   - claude
   status: pending
   path: null
+- url: https://martin.kleppmann.com/papers/bft-crdt-papoc22.pdf
+  kind: paper
+  title: Making CRDTs Byzantine Fault Tolerant — Kleppmann (PaPoC 2022)
+  cited_in:
+  - step-4.5-opus
+  status: pending
+  path: null
+  notes: Step-4.5 thread 3
+- url: https://dl.acm.org/doi/abs/10.1145/3517209.3524042
+  kind: paper
+  title: Making CRDTs Byzantine fault tolerant (ACM DL canonical) — Kleppmann 2022
+  cited_in:
+  - step-4.5-opus
+  status: pending
+  path: null
+  notes: Step-4.5 thread 3; same paper as the .pdf URL above, both kept for traceability
+- url: https://arxiv.org/abs/2604.26970
+  kind: paper
+  title: 'Not All Memories Age the Same: Autodiscovery of Adaptive Decay in Knowledge Graphs — Karhade (Apr 2026)'
+  cited_in:
+  - step-4.5-opus
+  status: pending
+  path: null
+  notes: Step-4.5 thread 4; strongest thread-4 primary
+- url: https://arxiv.org/abs/2504.05731
+  kind: paper
+  title: CFRAG — Retrieval Augmented Generation with Collaborative Filtering for Personalized Text Generation (Apr 2025)
+  cited_in:
+  - step-4.5-opus
+  status: pending
+  path: null
+  notes: Step-4.5 thread 2; closest preference-aware-RAG primary
+- url: https://arxiv.org/abs/2506.21931
+  kind: paper
+  title: ARAG — Agentic Retrieval Augmented Generation for Personalized Recommendation (Jun 2025)
+  cited_in:
+  - step-4.5-opus
+  status: pending
+  path: null
+  notes: Step-4.5 thread 2
+- url: https://arxiv.org/abs/2603.20939
+  kind: paper
+  title: User Preference Modeling for Conversational LLM Agents (VARS)
+  cited_in:
+  - step-4.5-opus
+  status: pending
+  path: null
+  notes: Step-4.5 thread 2
+- url: https://arxiv.org/abs/2505.20243
+  kind: paper
+  title: 'It''s High Time: A Survey of Temporal Information Retrieval and QA'
+  cited_in:
+  - step-4.5-opus
+  status: pending
+  path: null
+  notes: Step-4.5 thread 4 survey
+- url: https://arxiv.org/abs/2505.01657
+  kind: paper
+  title: RAGAR — Retrieval Augmented Personalized Image Generation
+  cited_in:
+  - step-4.5-opus
+  status: pending
+  path: null
+  notes: Step-4.5 thread 2 (low priority)
+- url: https://www.preprints.org/manuscript/202601.0618/v2/download
+  kind: paper
+  title: 'From Storage to Experience: A Survey on the Evolution of LLM Agent Memory Mechanisms (v2)'
+  cited_in:
+  - step-4.5-opus
+  status: pending
+  path: null
+  notes: Step-4.5 thread 4
+- url: https://hal.science/hal-01261638v1
+  kind: paper
+  title: Byzantine-resistant reputation-based trust management
+  cited_in:
+  - step-4.5-opus
+  status: pending
+  path: null
+  notes: Step-4.5 thread 3 (older but adjacent)
+- url: https://github.com/Emmimal/temporal-rag
+  kind: repo
+  title: temporal-rag — post-retrieval temporal layer reference impl
+  cited_in:
+  - step-4.5-opus
+  status: pending
+  path: null
+  notes: Step-4.5 thread 4
+- url: https://towardsdatascience.com/rag-is-blind-to-time-i-built-a-temporal-layer-to-fix-it-in-production/
+  kind: article
+  title: RAG Is Blind to Time — engineering writeup
+  cited_in:
+  - step-4.5-opus
+  status: pending
+  path: null
+  notes: Step-4.5 thread 4; cites 15–30ms overhead vs 1–4s LLM
+- url: https://airweave.ai/blog/temporal-relevance-explained
+  kind: article
+  title: Temporal Relevance Explained
+  cited_in:
+  - step-4.5-opus
+  status: pending
+  path: null
+  notes: Step-4.5 thread 4 primer

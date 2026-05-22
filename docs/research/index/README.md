@@ -12,6 +12,7 @@
 | [by-tag.md](by-tag.md) | Tag → sources lookup (323 unique tags across 69 sources) | For wide-net searches |
 | [cross-references.md](cross-references.md) | Source-to-source citation graph | When you've found one good source and want adjacent ones |
 | [open-questions.md](open-questions.md) | Gaps the prior art doesn't answer + the four-thread future-work arc that the writeup should land on | Before designing anything new; before writing the post |
+| [`../future-work-research.md`](../future-work-research.md) | Supplementary Step-4.5 research findings: direct primary sources for the preference-aware merge / adversarial filtering / generational evolution threads | When fleshing out the writeup's future-work arc |
 | `_per_source/*.md` | One ~30-line summary per source (69 files) | When the index points you at a specific source — read the summary before opening the underlying material |
 
 ## Materials on disk

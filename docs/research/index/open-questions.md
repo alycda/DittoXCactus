@@ -79,6 +79,8 @@ These are the gaps where prior art is silent or contradictory, and where the hol
 
 This is the arc the writeup should leave the reader with. **Stage 0 ships the simplest possible version of Mesh RAG — a generalist small LLM, a flat grow-only CRDT union, and recipes as a corpus.** The thesis the writeup lands on is that the simplest version is *only* the beginning, and that the deeper claim — *the mesh's natural unit is specialists, and the merge's natural shape is preference-aware* — sketches a much more interesting destination.
 
+> **Step 4.5 update (2026-05-21):** A supplementary hand-research pass found direct prior art for all three threads that were originally synthesized from conversation alone. See [`../future-work-research.md`](../future-work-research.md) for the detailed findings. The summaries below have been updated to reference the strongest primary sources.
+
 ### Thread 1: Specialists, not generalists
 
 **Stage 0 today:** one generalist small LLM (~1.5B–3B) does everything — embed query, retrieve, synthesize answer.
@@ -95,9 +97,9 @@ This is the arc the writeup should leave the reader with. **Stage 0 ships the si
 
 **The future move:** the *set* stays grow-only — every contribution is preserved as a tuple in the CRDT — but the *retrieval/synthesis* at query time is preference-weighted by who's asking. If I hate avocados, my phone's synthesized recipe quietly omits them. Unless the small LLM judges I wouldn't notice in this dish, in which case it leaves them in.
 
-**What the prior art says:** Recommender systems and federated learning have decades of work on preference-weighted aggregation, but it's not been applied to CRDT-merged knowledge stores. None of the CRDT theory papers (paper-1106.4374, SHIMI paper-2504.06135, etc.) treat preferences as a first-class dimension of merge.
+**What the prior art says:** Server-side personalized RAG is now well-developed. **CFRAG** (Shi et al., [arXiv 2504.05731](https://arxiv.org/abs/2504.05731), Apr 2025) adapts collaborative filtering to RAG, retrieving from *similar users'* history via contrastive-learned user embeddings + a personalized retriever/reranker. **ARAG** ([arXiv 2506.21931](https://arxiv.org/abs/2506.21931), Jun 2025) extends the architecture to multi-agent collaboration (User Understanding Agent + alignment-evaluation + ranking). **VARS** ([arXiv 2603.20939](https://arxiv.org/abs/2603.20939)) uses dual long-term + short-term preference vectors with weak rewards from interaction. Recommender systems and federated learning provide decades of underlying theory, but none of it has been applied to CRDT-merged knowledge stores.
 
-**The gap:** What does "preference-aware retrieval over a grow-only CRDT" look like, formally? Per-user query-time reranking is the easiest shape; per-user-pair embedding bias is more interesting; explicit preference vectors broadcast in the mesh is most interesting.
+**The gap:** What does "peer-composable CFRAG" look like? CFRAG's user-similarity embeddings + ARAG's multi-agent decomposition + Mesh RAG's CRDT substrate compose into a system nobody has built. See [`../future-work-research.md`](../future-work-research.md#thread-2--preference-aware-merge).
 
 ### Thread 3: Adversarial / mistake filtering
 
@@ -105,9 +107,9 @@ This is the arc the writeup should leave the reader with. **Stage 0 ships the si
 
 **The future move:** the CRDT *keeps* everything — that's the merge semantic and we don't want to lose history — but *promotion into the canonical recipe* needs a gate. Reputation of the contributor; consensus from other diners; provenance of the source; cooking-grammar plausibility check by the small LLM. The mesh becomes a multi-write log, with curation as a separate layer.
 
-**What the prior art says:** Distributed systems have plenty of voting/reputation/consensus literature, but mostly for byzantine fault tolerance, not collaborative knowledge curation. CRDT theory deliberately avoids this question (the whole point of conflict-free is "you don't need consensus"). So this is a real CRDT-extension problem.
+**What the prior art says:** **Kleppmann (2022) — ["Making CRDTs Byzantine Fault Tolerant"](https://martin.kleppmann.com/papers/bft-crdt-papoc22.pdf)** is the gold-standard primary source. Adapts existing CRDT algorithms to tolerate any number of Byzantine nodes (immune to Sybil attacks) while maintaining Strong Eventual Consistency, via cryptographic + verification mechanisms layered onto standard CRDT semantics. **The arc point:** Kleppmann is also the lead author of the Local-First Software essay — the writeup's foundational citation. The progression *local-first → mesh RAG → Byzantine-tolerant mesh RAG* is one author's intellectual lineage.
 
-**The gap:** A *curation layer* over a grow-only CRDT is its own design space. Multi-vote promotion? LLM-graded promotion? Trust-weighted promotion? Promotion that branches when tastes diverge? Open.
+**The gap:** A *curation layer* over a grow-only BFT-CRDT — promotion gated by LLM-judged plausibility or by multi-vote consensus — is its own design space on top of Kleppmann's substrate. See [`../future-work-research.md`](../future-work-research.md#thread-3--adversarial--mistake-filtering).
 
 ### Thread 4: Generational evolution
 
@@ -115,9 +117,9 @@ This is the arc the writeup should leave the reader with. **Stage 0 ships the si
 
 **The future move:** family recipes drift over time even with the same people involved — taste shifts, ingredients become available, old steps get pruned, kids stop liking what their parents make for them. A temporal weighting layer on retrieval ("recent contributions weigh more") or an explicit "branch when tastes diverge" semantic would model this. **Family recipes through generations is the load-bearing analogy** — written down, passed through generations, quietly mutating along the way, and recognizably "ours" even though almost nothing is exactly what grandma wrote.
 
-**What the prior art says:** Operational transformation literature handles temporal sequences for collaborative text. Yjs and Loro support history/time-travel as first-class operations. Nothing — nothing — applies this lens to AI-mediated knowledge stores.
+**What the prior art says:** **Karhade — ["Not All Memories Age the Same: Autodiscovery of Adaptive Decay in Knowledge Graphs"](https://arxiv.org/abs/2604.26970) (arXiv 2604.26970, Apr 2026)** is the strongest direct prior art and the most recent. Replaces uniform decay with a continuous *decay surface* parameterized by velocity (frequency observed) and volatility (value-change between observations); formulates edge lifetime as survival analysis. **Headline empirical claim: uniform decay performs 18× worse than no temporal weighting at all; heterogeneous decay recovers gains.** The temporal-IR survey ([arXiv 2505.20243](https://arxiv.org/abs/2505.20243)) provides the citation map. Operational transformation literature and Yjs/Loro provide adjacent temporal-state framing.
 
-**The gap:** Designing the *temporal* dimension of a preference-aware mesh CRDT. This is where the writeup's most interesting unsolved problem lives.
+**The gap:** Nobody has applied an adaptive-decay framework to a *mesh-synced* CRDT corpus. The implementation overhead is documented as cheap (15–30ms reranking vs 1–4s LLM call per the Emmimal engineering writeup) — could even be a Stage-1 add if Stage 0 lands cleanly. See [`../future-work-research.md`](../future-work-research.md#thread-4--generational-evolution).
 
 ### The thesis the writeup lands on
 
