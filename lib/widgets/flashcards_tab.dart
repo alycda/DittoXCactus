@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 
+import '../models/study_note.dart';
 import '../prompts/flashcard_gen.dart';
 import '../services/retrieval_service.dart';
 import '../services/seed_loader.dart';
@@ -58,6 +59,12 @@ class _Generation {
   int get upCount => ratings.where((r) => r == CardRating.up).length;
   int get downCount => ratings.where((r) => r == CardRating.down).length;
   bool get allRated => ratings.every((r) => r != CardRating.unrated);
+
+  /// Lookup table for resolving a card's sourceNoteIds back to the note body
+  /// the LLM claimed to draw from. Built lazily.
+  late final Map<String, StudyNote> notesById = {
+    for (final r in retrieved) r.note.id: r.note,
+  };
 }
 
 class _FlashcardsTabState extends State<FlashcardsTab> {
@@ -239,63 +246,79 @@ class _FlashcardsTabState extends State<FlashcardsTab> {
       children: [
         Row(
           children: [
-            Container(
-              padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
-              decoration: BoxDecoration(
-                color: theme.colorScheme.surfaceContainerHigh,
-                borderRadius: BorderRadius.circular(20),
-              ),
-              child: Text(
-                'gen #${latest.index}',
-                style: const TextStyle(fontWeight: FontWeight.w600),
-              ),
-            ),
-            const SizedBox(width: 8),
-            if (hasDiff && newCount > 0)
-              Container(
-                padding: const EdgeInsets.symmetric(
-                  horizontal: 10,
-                  vertical: 6,
-                ),
-                decoration: BoxDecoration(
-                  color: theme.colorScheme.tertiaryContainer,
-                  borderRadius: BorderRadius.circular(20),
-                ),
-                child: Text(
-                  '+$newCount new since last',
-                  style: TextStyle(
-                    fontWeight: FontWeight.w600,
-                    color: theme.colorScheme.onTertiaryContainer,
+            // Chips reflow to a second line on narrow widths so the diff
+            // button stays accessible. Without Wrap, gen+new+kept+diff
+            // overflow by a hair on a Pixel 6a (~379 px wide).
+            Expanded(
+              child: Wrap(
+                spacing: 8,
+                runSpacing: 6,
+                crossAxisAlignment: WrapCrossAlignment.center,
+                children: [
+                  Container(
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: 10,
+                      vertical: 6,
+                    ),
+                    decoration: BoxDecoration(
+                      color: theme.colorScheme.surfaceContainerHigh,
+                      borderRadius: BorderRadius.circular(20),
+                    ),
+                    child: Text(
+                      'gen #${latest.index}',
+                      style: const TextStyle(fontWeight: FontWeight.w600),
+                    ),
                   ),
-                ),
-              ),
-            const SizedBox(width: 8),
-            if (_savedGoodCards.isNotEmpty)
-              Container(
-                padding: const EdgeInsets.symmetric(
-                  horizontal: 10,
-                  vertical: 6,
-                ),
-                decoration: BoxDecoration(
-                  color: Colors.green.withValues(alpha: 0.18),
-                  borderRadius: BorderRadius.circular(20),
-                ),
-                child: Row(
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    const Icon(Icons.bookmark, size: 14, color: Colors.green),
-                    const SizedBox(width: 4),
-                    Text(
-                      '${_savedGoodCards.length} kept',
-                      style: const TextStyle(
-                        fontWeight: FontWeight.w600,
-                        color: Colors.green,
+                  if (hasDiff && newCount > 0)
+                    Container(
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: 10,
+                        vertical: 6,
+                      ),
+                      decoration: BoxDecoration(
+                        color: theme.colorScheme.tertiaryContainer,
+                        borderRadius: BorderRadius.circular(20),
+                      ),
+                      child: Text(
+                        '+$newCount new since last',
+                        style: TextStyle(
+                          fontWeight: FontWeight.w600,
+                          color: theme.colorScheme.onTertiaryContainer,
+                        ),
                       ),
                     ),
-                  ],
-                ),
+                  if (_savedGoodCards.isNotEmpty)
+                    Container(
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: 10,
+                        vertical: 6,
+                      ),
+                      decoration: BoxDecoration(
+                        color: Colors.green.withValues(alpha: 0.18),
+                        borderRadius: BorderRadius.circular(20),
+                      ),
+                      child: Row(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          const Icon(
+                            Icons.bookmark,
+                            size: 14,
+                            color: Colors.green,
+                          ),
+                          const SizedBox(width: 4),
+                          Text(
+                            '${_savedGoodCards.length} kept',
+                            style: const TextStyle(
+                              fontWeight: FontWeight.w600,
+                              color: Colors.green,
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                ],
               ),
-            const Spacer(),
+            ),
             if (hasDiff)
               TextButton.icon(
                 onPressed: () => setState(() => _showDiff = !_showDiff),
@@ -400,6 +423,8 @@ class _FlashcardsTabState extends State<FlashcardsTab> {
       return _FlashcardRater(
         generation: _history.last,
         peerNoteIds: _history.last.peerNoteIds,
+        notesById: _history.last.notesById,
+        selfContributor: SeedLoader.instance.selfContributor,
         onRate: (cardIndex, rating) =>
             _rateCard(_history.last.index, cardIndex, rating),
         onRegenerate: _busy ? null : _ask,
@@ -415,6 +440,8 @@ class _FlashcardsTabState extends State<FlashcardsTab> {
     return _FlashcardStack(
       cards: _currentCards,
       peerNoteIds: _history.isEmpty ? const {} : _history.last.peerNoteIds,
+      notesById: _history.isEmpty ? const {} : _history.last.notesById,
+      selfContributor: SeedLoader.instance.selfContributor,
     );
   }
 
@@ -437,7 +464,14 @@ class _FlashcardsTabState extends State<FlashcardsTab> {
 class _FlashcardStack extends StatefulWidget {
   final List<Flashcard> cards;
   final Set<String> peerNoteIds;
-  const _FlashcardStack({required this.cards, required this.peerNoteIds});
+  final Map<String, StudyNote> notesById;
+  final String selfContributor;
+  const _FlashcardStack({
+    required this.cards,
+    required this.peerNoteIds,
+    required this.notesById,
+    required this.selfContributor,
+  });
 
   @override
   State<_FlashcardStack> createState() => _FlashcardStackState();
@@ -486,6 +520,8 @@ class _FlashcardStackState extends State<_FlashcardStack> {
                   total: widget.cards.length,
                   drewFromPeers: card.sourceNoteIds
                       .any(widget.peerNoteIds.contains),
+                  notesById: widget.notesById,
+                  selfContributor: widget.selfContributor,
                 ),
               );
             },
@@ -519,12 +555,16 @@ class _FlashcardTile extends StatefulWidget {
   final int index;
   final int total;
   final bool drewFromPeers;
+  final Map<String, StudyNote> notesById;
+  final String selfContributor;
   const _FlashcardTile({
     super.key,
     required this.card,
     required this.index,
     required this.total,
     required this.drewFromPeers,
+    required this.notesById,
+    required this.selfContributor,
   });
 
   @override
@@ -533,6 +573,7 @@ class _FlashcardTile extends StatefulWidget {
 
 class _FlashcardTileState extends State<_FlashcardTile> {
   bool _showAnswer = false;
+  bool _showSources = false;
 
   @override
   Widget build(BuildContext context) {
@@ -617,18 +658,15 @@ class _FlashcardTileState extends State<_FlashcardTile> {
                     ),
                   ),
                 ),
-                if (!isFront && widget.card.sourceNoteIds.isNotEmpty)
-                  Padding(
-                    padding: const EdgeInsets.only(top: 12),
-                    child: Text(
-                      'from ${widget.card.sourceNoteIds.length} note'
-                      '${widget.card.sourceNoteIds.length == 1 ? '' : 's'}',
-                      style: TextStyle(
-                        fontSize: 12,
-                        color: theme.colorScheme.onSecondaryContainer
-                            .withValues(alpha: 0.7),
-                      ),
-                    ),
+                if (!isFront)
+                  _SourceArea(
+                    card: widget.card,
+                    notesById: widget.notesById,
+                    selfContributor: widget.selfContributor,
+                    expanded: _showSources,
+                    onToggle: () =>
+                        setState(() => _showSources = !_showSources),
+                    onBackground: theme.colorScheme.onSecondaryContainer,
                   ),
               ],
             ),
@@ -636,6 +674,161 @@ class _FlashcardTileState extends State<_FlashcardTile> {
         );
       },
     );
+  }
+}
+
+/// Renders the source-note transparency block: a header with claimed-vs-
+/// resolved-counts (so the audience can see when the model hallucinated a
+/// source id), and an expandable list of the actual note bodies the model
+/// claimed to draw from. Used by both view-mode tiles and rate-mode faces.
+class _SourceArea extends StatelessWidget {
+  final Flashcard card;
+  final Map<String, StudyNote> notesById;
+  final String selfContributor;
+  final bool expanded;
+  final VoidCallback onToggle;
+  final Color onBackground;
+  const _SourceArea({
+    required this.card,
+    required this.notesById,
+    required this.selfContributor,
+    required this.expanded,
+    required this.onToggle,
+    required this.onBackground,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+    final claimed = card.sourceNoteIds;
+    final resolved = <StudyNote>[];
+    for (final id in claimed) {
+      final n = notesById[id];
+      if (n != null) resolved.add(n);
+    }
+    final unmatched = claimed.length - resolved.length;
+    // No claim at all and nothing to show — render nothing.
+    if (claimed.isEmpty && resolved.isEmpty) {
+      return const SizedBox.shrink();
+    }
+    return Padding(
+      padding: const EdgeInsets.only(top: 12),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          InkWell(
+            onTap: claimed.isEmpty ? null : onToggle,
+            borderRadius: BorderRadius.circular(8),
+            child: Padding(
+              padding: const EdgeInsets.symmetric(vertical: 4, horizontal: 2),
+              child: Row(
+                children: [
+                  Icon(
+                    expanded ? Icons.expand_less : Icons.menu_book_outlined,
+                    size: 16,
+                    color: onBackground.withValues(alpha: 0.7),
+                  ),
+                  const SizedBox(width: 6),
+                  Expanded(
+                    child: Text(
+                      _headerLabel(claimed.length, resolved.length, unmatched),
+                      style: TextStyle(
+                        fontSize: 12,
+                        fontWeight: FontWeight.w600,
+                        color: onBackground.withValues(alpha: 0.75),
+                      ),
+                    ),
+                  ),
+                  if (unmatched > 0)
+                    Container(
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: 6,
+                        vertical: 2,
+                      ),
+                      decoration: BoxDecoration(
+                        color: Colors.orange.withValues(alpha: 0.22),
+                        borderRadius: BorderRadius.circular(6),
+                      ),
+                      child: Text(
+                        '$unmatched not found',
+                        style: const TextStyle(
+                          fontSize: 10,
+                          fontWeight: FontWeight.w700,
+                          color: Colors.orange,
+                        ),
+                      ),
+                    ),
+                ],
+              ),
+            ),
+          ),
+          if (expanded && resolved.isNotEmpty) ...[
+            const SizedBox(height: 6),
+            ...resolved.map((n) {
+              final isMine = n.contributor == selfContributor;
+              return Padding(
+                padding: const EdgeInsets.symmetric(vertical: 4),
+                child: Container(
+                  padding: const EdgeInsets.all(10),
+                  decoration: BoxDecoration(
+                    color: theme.colorScheme.surface.withValues(alpha: 0.5),
+                    borderRadius: BorderRadius.circular(10),
+                    border: Border.all(
+                      color: onBackground.withValues(alpha: 0.15),
+                    ),
+                  ),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Row(
+                        children: [
+                          Icon(
+                            isMine
+                                ? Icons.phone_iphone
+                                : Icons.bluetooth_searching,
+                            size: 14,
+                            color: onBackground.withValues(alpha: 0.6),
+                          ),
+                          const SizedBox(width: 6),
+                          Text(
+                            isMine ? 'you' : 'peer · ${n.contributor}',
+                            style: TextStyle(
+                              fontSize: 11,
+                              fontWeight: FontWeight.w600,
+                              color: onBackground.withValues(alpha: 0.7),
+                            ),
+                          ),
+                        ],
+                      ),
+                      const SizedBox(height: 6),
+                      SelectableText(
+                        n.body,
+                        style: TextStyle(
+                          fontSize: 13,
+                          height: 1.4,
+                          color: onBackground.withValues(alpha: 0.9),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              );
+            }),
+          ],
+        ],
+      ),
+    );
+  }
+
+  String _headerLabel(int claimed, int resolved, int unmatched) {
+    if (resolved == 0 && unmatched > 0) {
+      return 'claimed $claimed source${claimed == 1 ? '' : 's'} '
+          '— none matched retrieval';
+    }
+    if (expanded) {
+      return 'sources ($resolved)';
+    }
+    return resolved == 1 ? 'show source' : 'show $resolved sources';
   }
 }
 
@@ -872,11 +1065,15 @@ class _DiffCardRow extends StatelessWidget {
 class _FlashcardRater extends StatefulWidget {
   final _Generation generation;
   final Set<String> peerNoteIds;
+  final Map<String, StudyNote> notesById;
+  final String selfContributor;
   final void Function(int cardIndex, CardRating rating) onRate;
   final VoidCallback? onRegenerate;
   const _FlashcardRater({
     required this.generation,
     required this.peerNoteIds,
+    required this.notesById,
+    required this.selfContributor,
     required this.onRate,
     required this.onRegenerate,
   });
@@ -937,6 +1134,8 @@ class _FlashcardRaterState extends State<_FlashcardRater> {
               index: nextIndex,
               total: gen.cards.length,
               drewFromPeers: drewFromPeers,
+              notesById: widget.notesById,
+              selfContributor: widget.selfContributor,
             ),
           ),
         ),
@@ -1043,17 +1242,28 @@ class _RateSwipeBackground extends StatelessWidget {
   }
 }
 
-class _RateCardFace extends StatelessWidget {
+class _RateCardFace extends StatefulWidget {
   final Flashcard card;
   final int index;
   final int total;
   final bool drewFromPeers;
+  final Map<String, StudyNote> notesById;
+  final String selfContributor;
   const _RateCardFace({
     required this.card,
     required this.index,
     required this.total,
     required this.drewFromPeers,
+    required this.notesById,
+    required this.selfContributor,
   });
+
+  @override
+  State<_RateCardFace> createState() => _RateCardFaceState();
+}
+
+class _RateCardFaceState extends State<_RateCardFace> {
+  bool _showSources = false;
 
   @override
   Widget build(BuildContext context) {
@@ -1081,19 +1291,19 @@ class _RateCardFace extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Text(
-                    '${index + 1} / $total',
+                    '${widget.index + 1} / ${widget.total}',
                     style: TextStyle(
                       fontSize: 14,
                       color:
                           theme.colorScheme.onSurface.withValues(alpha: 0.6),
                     ),
                   ),
-                  if (drewFromPeers) const _PeerBadge(),
+                  if (widget.drewFromPeers) const _PeerBadge(),
                 ],
               ),
               SizedBox(height: landscape ? 24 : 16),
               Text(
-                card.question,
+                widget.card.question,
                 style: TextStyle(
                   fontSize: landscape ? 28 : 22,
                   fontWeight: FontWeight.w600,
@@ -1106,30 +1316,31 @@ class _RateCardFace extends StatelessWidget {
               const SizedBox(height: 16),
               Expanded(
                 child: SingleChildScrollView(
-                  child: Text(
-                    card.answer,
-                    style: TextStyle(
-                      fontSize: landscape ? 20 : 17,
-                      height: 1.45,
-                      color: theme.colorScheme.onSurface
-                          .withValues(alpha: 0.85),
-                    ),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        widget.card.answer,
+                        style: TextStyle(
+                          fontSize: landscape ? 20 : 17,
+                          height: 1.45,
+                          color: theme.colorScheme.onSurface
+                              .withValues(alpha: 0.85),
+                        ),
+                      ),
+                      _SourceArea(
+                        card: widget.card,
+                        notesById: widget.notesById,
+                        selfContributor: widget.selfContributor,
+                        expanded: _showSources,
+                        onToggle: () =>
+                            setState(() => _showSources = !_showSources),
+                        onBackground: theme.colorScheme.onSurface,
+                      ),
+                    ],
                   ),
                 ),
               ),
-              if (card.sourceNoteIds.isNotEmpty)
-                Padding(
-                  padding: const EdgeInsets.only(top: 12),
-                  child: Text(
-                    'from ${card.sourceNoteIds.length} note'
-                    '${card.sourceNoteIds.length == 1 ? '' : 's'}',
-                    style: TextStyle(
-                      fontSize: 12,
-                      color: theme.colorScheme.onSurface
-                          .withValues(alpha: 0.55),
-                    ),
-                  ),
-                ),
             ],
           ),
         );
