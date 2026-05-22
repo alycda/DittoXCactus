@@ -94,7 +94,7 @@ class RetrievalService {
     yield AnswerEvent.retrieved(retrieved);
 
     final messages = RecipeMergePrompt.build(query: query, retrieved: retrieved);
-    await for (final chunk in CactusService.instance.complete(messages, maxTokens: 384)) {
+    await for (final chunk in CactusService.instance.complete(messages, maxTokens: 768)) {
       yield AnswerEvent.token(chunk);
     }
     yield const AnswerEvent.done();
