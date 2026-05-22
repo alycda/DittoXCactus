@@ -89,12 +89,27 @@ class _BootScreenState extends State<BootScreen> {
       await CactusService.instance.initialize(
         onProgress: (p, status, isErr) {
           if (!mounted) return;
+          if (isErr) {
+            // Cactus is reporting a download / load failure. The most common
+            // cause on hardware demos is "no network on first launch and the
+            // model isn't cached yet" — surface it clearly so the user knows
+            // to toggle wifi rather than wait through a silent spinner.
+            setState(() {
+              _error = 'Cactus model download failed: $status\n\n'
+                  'If this is the first launch on this device, connect to '
+                  'wifi to fetch the model (~1 GB). Subsequent launches '
+                  'run offline.';
+              _modelDownloadProgress = null;
+            });
+            return;
+          }
           setState(() {
             _modelDownloadProgress = p;
             _stage = status;
           });
         },
       );
+      if (_error != null) return; // Cactus reported an error mid-download.
 
       setState(() {
         _stage = 'embedding local corpus';

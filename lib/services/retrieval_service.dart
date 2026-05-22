@@ -1,6 +1,8 @@
 import 'dart:math' as math;
 import 'dart:typed_data';
 
+import 'package:flutter/foundation.dart' show debugPrint;
+
 import '../models/study_note.dart';
 import '../prompts/flashcard_gen.dart';
 import 'cactus_service.dart';
@@ -47,12 +49,19 @@ class RetrievalService {
   /// Default k for Stage 0; the flashcard prompt expects ~3-5 notes.
   static const int defaultK = 5;
 
-  /// Default number of flashcards to generate per request. SEED-A's demo
-  /// shows 5; the token budget is ~256/card × 5 = 1280 in one streamed call.
-  static const int defaultN = 5;
+  /// Default number of flashcards to generate per request. Tuned down from
+  /// 5 to 3 because 1.5B Qwen on a Pixel 6a in debug mode decodes at ~6
+  /// chars/s; 3 cards in Q/A line format fit in ~25 lines and decode in
+  /// roughly half the time 5 JSON cards took.
+  static const int defaultN = 3;
 
-  /// Token budget for the streamed JSON output: ~256 tokens per card.
-  static const int maxTokensPerCard = 256;
+  /// Token budget per card. Q/A plain-text format is more compact than the
+  /// old JSON shape, so 160 tokens covers a reasonable Q + A + NOTES block.
+  /// Add a reasoning-leak slush so `<think>` blocks (Qwen 2.5 emits them
+  /// despite the `/no_think` directive being Qwen3-only) don't starve the
+  /// real output of tokens. Total = thinkBudget + n × maxTokensPerCard.
+  static const int maxTokensPerCard = 160;
+  static const int thinkBudget = 512;
 
   /// Encode a study note as the short text we hand to `cactus_embed`.
   /// Keeps it short on purpose — embedding context budgets are tight, and
@@ -119,6 +128,10 @@ class RetrievalService {
   }) async* {
     final retrieved = await topK(topic, k: k);
     yield FlashcardEvent.retrieved(retrieved);
+    debugPrint(
+      '[flashcards] topic="$topic" n=$n k=$k retrieved=${retrieved.length} '
+      'maxTokens=${maxTokensPerCard * n}',
+    );
 
     final messages = FlashcardGenPrompt.build(
       topic: topic,
@@ -126,15 +139,38 @@ class RetrievalService {
       retrieved: retrieved,
     );
     final buffer = StringBuffer();
+    var chunkCount = 0;
+    final decodeStart = DateTime.now();
     await for (final chunk in CactusService.instance.complete(
       messages,
-      maxTokens: maxTokensPerCard * n,
+      maxTokens: thinkBudget + maxTokensPerCard * n,
     )) {
       buffer.write(chunk);
+      chunkCount++;
+      // Heartbeat every 32 chunks so a stuck decode is obvious in the log.
+      if (chunkCount % 32 == 0) {
+        final elapsed = DateTime.now().difference(decodeStart).inSeconds;
+        debugPrint(
+          '[flashcards] decode tick: $chunkCount chunks, '
+          '${buffer.length} chars, ${elapsed}s elapsed',
+        );
+      }
       yield FlashcardEvent.partial(chunk);
     }
+    final raw = buffer.toString();
+    final elapsedSec = DateTime.now().difference(decodeStart).inSeconds;
+    debugPrint(
+      '[flashcards] decode done: $chunkCount chunks, '
+      '${raw.length} chars, ${elapsedSec}s',
+    );
+    debugPrint(
+      '[flashcards] === raw completion (${raw.length} chars) ===\n'
+      '$raw\n'
+      '[flashcards] === end raw completion ===',
+    );
 
-    final cards = FlashcardGenPrompt.parse(buffer.toString());
+    final cards = FlashcardGenPrompt.parse(raw);
+    debugPrint('[flashcards] parsed ${cards.length} card(s)');
     yield FlashcardEvent.cards(cards);
     yield const FlashcardEvent.done();
   }

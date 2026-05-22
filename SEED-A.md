@@ -107,6 +107,39 @@ flat-cosine top-k retrieval, BLE permissions, plan + spike docs structure.
   it came from — just the aggregate count. Stage 1 = source citations.
 - **Cross-topic notes.** Stage 0.5 assumes one topic per demo. Stage 1+
   could let users tag and filter.
+- **Copy-a-peer's-note locally.** Nice-to-have: long-press on a peer note
+  in the Notes tab to copy it into your local contributor namespace
+  (new `_id`, contributor = self) so you can edit it later. Edits proper
+  are further out.
+- **Swipe-to-reject a card.** Future: swipe a flashcard left/right to
+  dismiss. Ditto doesn't natively support per-replica document
+  suppression, but a local-tombstone collection (`rejected_card_ids`
+  scoped to this peer) would give the UI a "I don't want this" signal
+  without touching the synced note set.
+- **Hybrid cloud-fallback for slow on-device decode.** When the local
+  1.5B model is too slow (5 cards × 256 maxTokens on a Pixel 6a in
+  debug ≈ 80-160s decode), surface an "ask cloud" affordance that
+  routes the same prompt through a hosted endpoint. Cactus already
+  has hybrid cloud fallback. Stage 0.5 keeps everything local for the
+  thesis; this lands when latency-vs-quality calls for it.
+- **Pin a flashcard.** If a generated card is particularly good, let
+  the user star it — that promotes the runtime `Flashcard` into a
+  persisted `PinnedCard` document in Ditto, with the source notes
+  snapshotted so the answer is stable even if the underlying note
+  changes. Pinned cards survive across sessions and sync across the
+  mesh like notes do.
+- **On-the-fly regeneration to combat rote.** Because cards are
+  regenerated per query, the *same* topic + corpus can produce
+  meaningfully different cards. Stage 1+ could automatically rotate
+  cards on a study schedule so the learner sees the concept framed
+  differently rather than memorizing a particular wording. The pinned-
+  card flow is the deliberate counterweight when the user *wants* a
+  specific framing locked in.
+- **Topic grouping in Notes + Flashcards.** Stage 0.5 hardcodes one
+  topic per demo. Stage 1+ could group notes by topic in the Notes tab
+  (subheaders per topic, peer columns alongside yours) and let the
+  Flashcards tab pick a topic from a dropdown of "topics the mesh has
+  notes on."
 
 ## Why this passes the on-device LLM bar
 
