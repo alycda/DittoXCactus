@@ -1,0 +1,32 @@
+name: mesh_rag_demo
+description: "Mesh RAG Stage 0 — two-device P2P RAG demo (Ditto × Cactus)."
+publish_to: 'none'
+version: 0.1.0+1
+
+environment:
+  sdk: ^3.8.0
+
+dependencies:
+  flutter:
+    sdk: flutter
+  cupertino_icons: ^1.0.8
+
+  # On-device LLM + embeddings. See lib/services/cactus_service.dart.
+  cactus: ^1.3.0
+
+  # P2P mesh sync + DQL store. See lib/services/ditto_service.dart.
+  ditto_live: ^5.0.0
+
+  # Runtime BLE / nearby-Wi-Fi permission requests. iOS uses Info.plist usage
+  # descriptions; Android 12+ requires runtime BLE permissions.
+  permission_handler: ^12.0.1
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  flutter_lints: ^5.0.0
+
+flutter:
+  uses-material-design: true
+  # Asset entries (seed_recipes_*.json, eval_recipes_*.json) get added when the
+  # files land in U3 (eval) and U4 (seed corpora).
