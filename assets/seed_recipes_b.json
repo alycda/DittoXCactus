@@ -1,0 +1,134 @@
+[
+  {
+    "dish": "chicken tortilla soup",
+    "contributor": "phone-b",
+    "createdAt": "2026-05-21T00:00:11Z",
+    "ingredients": [
+      "shredded chicken",
+      "chipotle peppers in adobo",
+      "yellow onion",
+      "garlic",
+      "fire-roasted tomatoes",
+      "chicken broth",
+      "smoked paprika",
+      "cumin",
+      "lime",
+      "mexican crema",
+      "tortilla strips",
+      "fresh cilantro"
+    ],
+    "steps": [
+      "Purée chipotle peppers in adobo with a ladle of broth; set aside.",
+      "Sauté onion and garlic until translucent.",
+      "Add fire-roasted tomatoes, broth, and smoked paprika; simmer 10 minutes.",
+      "Stir in chipotle purée gradually until heat is balanced.",
+      "Add shredded chicken; warm through.",
+      "Finish with lime; serve with crema, tortilla strips, cilantro."
+    ]
+  },
+  {
+    "dish": "chicken tortilla soup",
+    "contributor": "phone-b",
+    "createdAt": "2026-05-21T00:00:12Z",
+    "ingredients": [
+      "black beans",
+      "shredded chicken",
+      "white hominy",
+      "onion",
+      "garlic",
+      "poblano",
+      "tomato",
+      "chicken broth",
+      "cumin",
+      "lime",
+      "queso fresco",
+      "tortilla strips"
+    ],
+    "steps": [
+      "Sauté onion, garlic, and diced poblano.",
+      "Add tomato, broth, cumin; simmer 10 minutes.",
+      "Stir in black beans, hominy, and shredded chicken.",
+      "Simmer additional 5 minutes; finish with lime.",
+      "Garnish with queso fresco and tortilla strips."
+    ]
+  },
+  {
+    "dish": "chicken tortilla soup",
+    "contributor": "phone-b",
+    "createdAt": "2026-05-21T00:00:13Z",
+    "ingredients": [
+      "rotisserie chicken",
+      "avocado",
+      "fresh cilantro",
+      "lime",
+      "white onion",
+      "garlic",
+      "serrano pepper",
+      "chicken broth",
+      "tomatillo",
+      "ground cumin",
+      "tortilla strips",
+      "mexican oregano"
+    ],
+    "steps": [
+      "Simmer tomatillo, onion, garlic, serrano in broth until soft.",
+      "Blend until smooth; return to pot.",
+      "Stir in cumin and shredded rotisserie chicken; warm through.",
+      "Top with avocado, cilantro, lime, tortilla strips, dried oregano."
+    ]
+  },
+  {
+    "dish": "chicken tortilla soup",
+    "contributor": "phone-b",
+    "createdAt": "2026-05-21T00:00:14Z",
+    "ingredients": [
+      "chicken breast",
+      "onion",
+      "garlic",
+      "red bell pepper",
+      "corn",
+      "diced tomatoes",
+      "chicken broth",
+      "lime juice",
+      "cumin",
+      "ancho chile powder",
+      "fresh cilantro",
+      "tortilla strips",
+      "avocado"
+    ],
+    "steps": [
+      "Poach chicken breast in broth; shred when cool.",
+      "Sauté onion, garlic, bell pepper until softened.",
+      "Add tomatoes, corn, ancho, cumin; simmer 10 minutes.",
+      "Stir in shredded chicken and lime juice.",
+      "Garnish with avocado, cilantro, tortilla strips."
+    ]
+  },
+  {
+    "dish": "chicken tortilla soup",
+    "contributor": "phone-b",
+    "createdAt": "2026-05-21T00:00:15Z",
+    "ingredients": [
+      "vegetable broth",
+      "onion",
+      "garlic",
+      "pinto beans",
+      "diced tomatoes",
+      "corn",
+      "zucchini",
+      "ground cumin",
+      "chili powder",
+      "lime",
+      "vegan sour cream",
+      "tortilla strips",
+      "avocado"
+    ],
+    "steps": [
+      "Sauté onion and garlic in olive oil.",
+      "Add cumin and chili powder; toast 30 seconds.",
+      "Stir in diced tomatoes, corn, zucchini, and broth; simmer 10 minutes.",
+      "Add pinto beans; simmer 5 more minutes.",
+      "Finish with lime; serve with avocado, vegan sour cream, tortilla strips."
+    ]
+  }
+]

@@ -1,0 +1,134 @@
+[
+  {
+    "dish": "chicken tortilla soup",
+    "contributor": "phone-a",
+    "createdAt": "2026-05-21T00:00:01Z",
+    "ingredients": [
+      "shredded rotisserie chicken",
+      "yellow onion",
+      "garlic",
+      "diced tomatoes",
+      "chicken broth",
+      "ground cumin",
+      "chili powder",
+      "corn tortillas",
+      "vegetable oil",
+      "lime",
+      "fresh cilantro",
+      "salt"
+    ],
+    "steps": [
+      "Sauté onion and garlic in oil over medium heat until softened.",
+      "Stir in cumin and chili powder; toast 30 seconds.",
+      "Add diced tomatoes and chicken broth; simmer 15 minutes.",
+      "Stir in shredded chicken; warm through.",
+      "Fry tortilla strips in oil until crisp; drain on paper towel.",
+      "Ladle soup into bowls; top with tortilla strips, lime, cilantro."
+    ]
+  },
+  {
+    "dish": "chicken tortilla soup",
+    "contributor": "phone-a",
+    "createdAt": "2026-05-21T00:00:02Z",
+    "ingredients": [
+      "bone-in chicken thighs",
+      "fire-roasted poblano peppers",
+      "white onion",
+      "garlic",
+      "tomatillo",
+      "chicken stock",
+      "mexican oregano",
+      "cumin",
+      "epazote",
+      "queso fresco",
+      "tortilla strips",
+      "salt"
+    ],
+    "steps": [
+      "Char poblanos and tomatillos under broiler; peel and chop.",
+      "Brown chicken thighs in heavy pot; remove.",
+      "Sauté onion and garlic in pan drippings.",
+      "Add charred vegetables and stock; simmer 30 minutes.",
+      "Return chicken to pot; cook until tender; shred.",
+      "Finish with epazote and oregano; serve with queso fresco and tortilla strips."
+    ]
+  },
+  {
+    "dish": "chicken tortilla soup",
+    "contributor": "phone-a",
+    "createdAt": "2026-05-21T00:00:03Z",
+    "ingredients": [
+      "chicken breasts",
+      "onion",
+      "garlic",
+      "diced tomatoes",
+      "tomato paste",
+      "black beans",
+      "corn",
+      "chicken broth",
+      "cumin",
+      "smoked paprika",
+      "chipotle in adobo",
+      "tortilla chips"
+    ],
+    "steps": [
+      "Combine all ingredients except chips in slow cooker.",
+      "Cook on low for 6 hours or high for 3 hours.",
+      "Shred chicken with two forks; stir back into soup.",
+      "Crush tortilla chips over each bowl just before serving."
+    ]
+  },
+  {
+    "dish": "chicken tortilla soup",
+    "contributor": "phone-a",
+    "createdAt": "2026-05-21T00:00:04Z",
+    "ingredients": [
+      "boneless chicken thighs",
+      "onion",
+      "garlic",
+      "jalapeño",
+      "diced tomatoes",
+      "chicken stock",
+      "cumin",
+      "coriander",
+      "lime juice",
+      "avocado",
+      "fresh cilantro",
+      "tortilla strips"
+    ],
+    "steps": [
+      "Sauté onion, garlic, and jalapeño in Instant Pot on sauté mode.",
+      "Add chicken, tomatoes, stock, cumin, coriander.",
+      "Pressure cook on high 12 minutes; quick release.",
+      "Shred chicken; stir lime juice into broth.",
+      "Top each bowl with avocado, cilantro, tortilla strips."
+    ]
+  },
+  {
+    "dish": "chicken tortilla soup",
+    "contributor": "phone-a",
+    "createdAt": "2026-05-21T00:00:05Z",
+    "ingredients": [
+      "whole chicken",
+      "white onion",
+      "garlic",
+      "carrot",
+      "celery",
+      "bay leaf",
+      "ancho chile",
+      "guajillo chile",
+      "tomato",
+      "corn tortillas",
+      "queso fresco",
+      "lime",
+      "cilantro"
+    ],
+    "steps": [
+      "Simmer whole chicken with onion, garlic, carrot, celery, bay leaf for 1 hour.",
+      "Toast and rehydrate ancho and guajillo chiles; blend with tomato.",
+      "Strain stock; return to pot. Stir in chile-tomato purée.",
+      "Shred chicken; return meat to pot.",
+      "Fry tortilla strips; serve atop soup with queso fresco, lime, cilantro."
+    ]
+  }
+]

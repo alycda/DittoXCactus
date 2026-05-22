@@ -6,6 +6,7 @@ import 'package:permission_handler/permission_handler.dart';
 
 import 'services/cactus_service.dart';
 import 'services/ditto_service.dart';
+import 'services/seed_loader.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -64,6 +65,7 @@ class _InitScreenState extends State<InitScreen> {
   String _dittoStatus = 'idle';
   double? _modelDownloadProgress; // null = indeterminate
   int _peerCount = 0;
+  int _localRecipeCount = 0;
   String? _error;
 
   @override
@@ -82,7 +84,11 @@ class _InitScreenState extends State<InitScreen> {
       DittoService.instance.peerCount.listen((n) {
         if (mounted) setState(() => _peerCount = n);
       });
-      setState(() => _dittoStatus = 'ready');
+      DittoService.instance.subscribeToRecipes((rows) {
+        if (mounted) setState(() => _localRecipeCount = rows.length);
+      });
+      await SeedLoader.instance.loadAndInsert();
+      setState(() => _dittoStatus = 'ready (role=${SeedLoader.instance.role})');
     } catch (e) {
       setState(() {
         _dittoStatus = 'failed';
@@ -125,9 +131,9 @@ class _InitScreenState extends State<InitScreen> {
             mainAxisAlignment: MainAxisAlignment.center,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              _line('Ditto', _dittoStatus, ok: _dittoStatus == 'ready'),
+              _line('Ditto', _dittoStatus, ok: _dittoStatus.startsWith('ready')),
               const SizedBox(height: 8),
-              Text('  peers: $_peerCount'),
+              Text('  peers: $_peerCount   |   local recipes: $_localRecipeCount'),
               const SizedBox(height: 24),
               _line('Cactus', _cactusStatus, ok: _cactusStatus == 'ready'),
               if (_modelDownloadProgress != null) ...[

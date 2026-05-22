@@ -21,6 +21,9 @@ dependencies:
   # descriptions; Android 12+ requires runtime BLE permissions.
   permission_handler: ^12.0.1
 
+  # Deterministic UUIDv5 for idempotent seed inserts (see RecipeTuple.seed).
+  uuid: ^4.5.1
+
 dev_dependencies:
   flutter_test:
     sdk: flutter
@@ -28,5 +31,6 @@ dev_dependencies:
 
 flutter:
   uses-material-design: true
-  # Asset entries (seed_recipes_*.json, eval_recipes_*.json) get added when the
-  # files land in U3 (eval) and U4 (seed corpora).
+  assets:
+    - assets/seed_recipes_a.json
+    - assets/seed_recipes_b.json

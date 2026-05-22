@@ -4,8 +4,12 @@ import 'dart:io' show Platform;
 import 'package:ditto_live/ditto_live.dart';
 import 'package:flutter/foundation.dart' show kIsWeb;
 
+import '../models/recipe_tuple.dart';
+import '../prompts/dql_queries.dart';
+
 /// Owns the global Ditto lifecycle: init, license token, transport config,
-/// sync, presence stream. Stage 0 uses **small-peers-only** mode (no Big Peer).
+/// sync, presence stream, and CRUD over `RecipeTuple`. Stage 0 uses
+/// **small-peers-only** mode (no Big Peer).
 ///
 /// Configuration is provided at build time via `--dart-define`:
 /// - `DITTO_APP_ID` — UUID of the development app (required).
@@ -89,6 +93,60 @@ class DittoService {
   }
 
   void stopSync() => _ditto?.sync.stop();
+
+  // ---------------------------------------------------------------------------
+  // RecipeTuple CRUD
+
+  /// Idempotent insert: same `_id` lands as an update, so re-running the seed
+  /// loader doesn't duplicate tuples (verification gate for R3).
+  Future<void> upsertRecipe(RecipeTuple recipe) async {
+    await ditto.store.execute(
+      RecipeQueries.upsert,
+      arguments: {'doc': recipe.toDittoDoc()},
+    );
+  }
+
+  Future<List<RecipeTuple>> queryAll() async {
+    final r = await ditto.store.execute(RecipeQueries.selectAll);
+    return r.items
+        .map((it) => RecipeTuple.fromDittoValue(Map<String, dynamic>.from(it.value)))
+        .toList();
+  }
+
+  Future<List<RecipeTuple>> queryWithEmbedding() async {
+    final r = await ditto.store.execute(RecipeQueries.selectWithEmbedding);
+    return r.items
+        .map((it) => RecipeTuple.fromDittoValue(Map<String, dynamic>.from(it.value)))
+        .toList();
+  }
+
+  Future<List<RecipeTuple>> queryMissingEmbedding() async {
+    final r = await ditto.store.execute(RecipeQueries.selectMissingEmbedding);
+    return r.items
+        .map((it) => RecipeTuple.fromDittoValue(Map<String, dynamic>.from(it.value)))
+        .toList();
+  }
+
+  Future<void> setEmbedding(String id, List<double> embedding) async {
+    await ditto.store.execute(
+      RecipeQueries.setEmbedding,
+      arguments: {'id': id, 'embedding': embedding},
+    );
+  }
+
+  /// Live updates: callback fires whenever a `RecipeTuple` is added, modified,
+  /// or removed (locally or via mesh sync).
+  StoreObserver subscribeToRecipes(void Function(List<RecipeTuple>) onChange) {
+    return ditto.store.registerObserver(
+      RecipeQueries.selectAll,
+      onChange: (result) {
+        final rows = result.items
+            .map((it) => RecipeTuple.fromDittoValue(Map<String, dynamic>.from(it.value)))
+            .toList();
+        onChange(rows);
+      },
+    );
+  }
 
   Future<void> dispose() async {
     _presenceObserver?.stop();
