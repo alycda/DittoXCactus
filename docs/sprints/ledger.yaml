@@ -1,0 +1,7 @@
+sprints:
+  - id: SPRINT-0001
+    title: "Mesh RAG Stage 0 — two-device P2P RAG demo (Ditto × Cactus)"
+    status: planned
+    executor: ""
+    created: 2026-05-21T17:18:00
+    updated: 2026-05-21T17:18:00

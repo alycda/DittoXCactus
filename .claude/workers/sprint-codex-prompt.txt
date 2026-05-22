@@ -1,0 +1,9 @@
+You are drafting sprint SPRINT-0001. Intent:
+
+Plan Stage 0 of Mesh RAG (Ditto × Cactus): a hackathon-weekend, two-device (iOS + Android) demo of peer-to-peer RAG where the vector index is a CRDT. Recipes corpus primary, cars fallback if small-LLM merge quality is bad. Airplane mode toggled live on camera as the moment of magic. Deliverable = working repo + Presenterm slide deck. Holdouts in /Users/alyssaevans/Experiments/DittoXCactus/SEED.md at the project root are the verification checklist (most critical: cross-platform embedding cosine ≥ 0.999, sync idempotence, bidirectional merge observable through queries, cold-load latency under ~10s, full offline operation). Companion research at /Users/alyssaevans/Experiments/DittoXCactus/docs/research/index/ — start at README.md → top-N.md. Stack is non-negotiable (Cactus narrow for embed + LLM, Ditto owns sync + storage). The two empirical gates — embedding determinism spike and recipe-merge LLM eval — must run before the main pipeline so corpus-or-fallback decisions are in hand by mid-Day-1. A sibling ce-plan document exists at /Users/alyssaevans/Experiments/DittoXCactus/docs/plans/2026-05-21-001-feat-mesh-rag-stage-0-implementation-plan.md but you must NOT read it — produce an independent draft.
+
+Write a sprint plan to /Users/alyssaevans/Experiments/DittoXCactus/docs/sprints/drafts/SPRINT-0001-CODEX.md. Freestyle the structure, but every concrete piece of work must be a checkbox task `- [ ] ...`. Cover goals, scope boundaries, task list with checkboxes, sequencing, risks, and acceptance criteria. Be concrete — task names should be things someone can actually start on.
+
+Read SEED.md and docs/research/index/top-N.md before drafting. Use them as the authoritative source for holdout scenarios + model/tool decisions.
+
+You MUST use your file-write tool to actually create the file. End your turn with a single line confirming you wrote it.
