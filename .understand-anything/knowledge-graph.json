@@ -1,0 +1,4403 @@
+{
+  "version": "1.0.0",
+  "project": {
+    "name": "mesh_rag_demo",
+    "languages": [
+      "c4",
+      "config",
+      "cpp",
+      "dart",
+      "javascript",
+      "json",
+      "kotlin",
+      "markdown",
+      "pbxproj",
+      "ruby",
+      "storyboard",
+      "swift",
+      "txt",
+      "unknown",
+      "xcconfig",
+      "xcscheme",
+      "xcsettings",
+      "xcworkspacedata",
+      "xml",
+      "yaml"
+    ],
+    "frameworks": [
+      "Android",
+      "Cactus",
+      "CocoaPods",
+      "Ditto",
+      "Flutter",
+      "Gradle",
+      "flutter_lints",
+      "flutter_test",
+      "iOS",
+      "permission_handler"
+    ],
+    "description": "Mesh RAG Stage 0: a Flutter dual-target (iOS + Android) demo where two phones each hold a slice of a recipe corpus, meet over BLE/Wi-Fi, and merge their vector index as a Ditto CRDT so on-device RAG queries draw on the peer's tuples after handshake — no WAN required. Uses ditto_live 5.0.0 for P2P sync + DQL persistence and cactus 1.3.0 for on-device embeddings and small-LLM completion, with retrieval implemented as flat-array cosine top-k over the materialized corpus. Note: this project has over 100 source files; consider scoping analysis to a subdirectory for faster results.",
+    "analyzedAt": "2026-05-22T07:12:12.619Z",
+    "gitCommitHash": "5c269e370b9fad434eaf866a91c057e88ceca33d"
+  },
+  "nodes": [
+    {
+      "id": "file:android/app/build.gradle.kts",
+      "type": "config",
+      "name": "build.gradle.kts",
+      "filePath": "android/app/build.gradle.kts",
+      "summary": "Android app module Gradle build script declaring Flutter+Kotlin plugins, namespace, and SDK targets; pins minSdk to 24 to satisfy ditto_live's transitive com.ditto:rustls floor and cactus's API-24 requirement.",
+      "tags": [
+        "build-system",
+        "configuration",
+        "android",
+        "gradle",
+        "flutter"
+      ],
+      "complexity": "simple",
+      "languageNotes": "Kotlin DSL Gradle script using the dev.flutter.flutter-gradle-plugin to integrate with Flutter's build."
+    },
+    {
+      "id": "file:android/app/src/main/kotlin/com/ditto/meshrag/mesh_rag_demo/MainActivity.kt",
+      "type": "file",
+      "name": "MainActivity.kt",
+      "filePath": "android/app/src/main/kotlin/com/ditto/meshrag/mesh_rag_demo/MainActivity.kt",
+      "summary": "Single-class Android entry point that extends Flutter's FlutterActivity; no custom platform-channel logic — Flutter handles the entire UI.",
+      "tags": [
+        "entry-point",
+        "android",
+        "kotlin",
+        "flutter"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:android/build.gradle.kts",
+      "type": "config",
+      "name": "build.gradle.kts",
+      "filePath": "android/build.gradle.kts",
+      "summary": "Root Android Gradle script wiring up Google/Maven Central repositories and redirecting all subproject build outputs to a sibling ../../build directory shared with Flutter.",
+      "tags": [
+        "build-system",
+        "configuration",
+        "android",
+        "gradle"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:android/settings.gradle.kts",
+      "type": "config",
+      "name": "settings.gradle.kts",
+      "filePath": "android/settings.gradle.kts",
+      "summary": "Gradle settings file that resolves the Flutter SDK path from local.properties and registers the Flutter, Android, and Kotlin plugin versions used by the :app module.",
+      "tags": [
+        "build-system",
+        "configuration",
+        "android",
+        "gradle",
+        "flutter"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:assets/.gitkeep",
+      "type": "file",
+      "name": ".gitkeep",
+      "filePath": "assets/.gitkeep",
+      "summary": "Placeholder file that keeps the otherwise-empty assets/ directory tracked in git; bundled seed JSON drops in here at build time.",
+      "tags": [
+        "placeholder",
+        "assets",
+        "git"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:docs/c4/model.c4",
+      "type": "document",
+      "name": "model.c4",
+      "filePath": "docs/c4/model.c4",
+      "summary": "Likec4 DSL source defining the Mesh RAG architecture: actors (operator, audience, developer), external systems, and the Context-Container-Component hierarchy rendered into the interactive dashboard under docs/c4/dashboard.",
+      "tags": [
+        "documentation",
+        "architecture",
+        "c4-model",
+        "likec4",
+        "design"
+      ],
+      "complexity": "complex",
+      "languageNotes": "Likec4 DSL — declarative element/relationship blocks compiled by `likec4 build` into a static HTML dashboard."
+    },
+    {
+      "id": "file:ios/Flutter/Debug.xcconfig",
+      "type": "config",
+      "name": "Debug.xcconfig",
+      "filePath": "ios/Flutter/Debug.xcconfig",
+      "summary": "iOS debug build configuration that includes the Flutter-generated and pod-generated xcconfigs into the Runner project.",
+      "tags": [
+        "configuration",
+        "ios",
+        "xcode",
+        "build-system"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:ios/Flutter/Release.xcconfig",
+      "type": "config",
+      "name": "Release.xcconfig",
+      "filePath": "ios/Flutter/Release.xcconfig",
+      "summary": "iOS release build configuration that includes the Flutter-generated and pod-generated xcconfigs into the Runner project.",
+      "tags": [
+        "configuration",
+        "ios",
+        "xcode",
+        "build-system"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:ios/Podfile",
+      "type": "config",
+      "name": "Podfile",
+      "filePath": "ios/Podfile",
+      "summary": "CocoaPods spec pinning the iOS platform to 15.0 (floor required by ditto_live 14+ and objectbox_flutter_libs transitive from cactus) and wiring Flutter's pod helper into the Runner and RunnerTests targets.",
+      "tags": [
+        "configuration",
+        "ios",
+        "cocoapods",
+        "dependencies",
+        "flutter"
+      ],
+      "complexity": "simple",
+      "languageNotes": "Ruby DSL Podfile — `post_install` hook applies flutter_additional_ios_build_settings to every transitive pod target."
+    },
+    {
+      "id": "file:ios/Runner.xcodeproj/project.pbxproj",
+      "type": "config",
+      "name": "project.pbxproj",
+      "filePath": "ios/Runner.xcodeproj/project.pbxproj",
+      "summary": "Generated Xcode project file describing build phases, file references, and target configurations for the Runner app and RunnerTests bundle; typically edited only by Xcode.",
+      "tags": [
+        "configuration",
+        "ios",
+        "xcode",
+        "generated",
+        "build-system"
+      ],
+      "complexity": "complex"
+    },
+    {
+      "id": "file:ios/Runner.xcodeproj/project.xcworkspace/contents.xcworkspacedata",
+      "type": "config",
+      "name": "contents.xcworkspacedata",
+      "filePath": "ios/Runner.xcodeproj/project.xcworkspace/contents.xcworkspacedata",
+      "summary": "Xcode-managed workspace contents file generated alongside the .xcodeproj; lists the self-reference used by the project's internal workspace.",
+      "tags": [
+        "configuration",
+        "ios",
+        "xcode",
+        "generated"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:ios/Runner.xcodeproj/project.xcworkspace/xcshareddata/WorkspaceSettings.xcsettings",
+      "type": "config",
+      "name": "WorkspaceSettings.xcsettings",
+      "filePath": "ios/Runner.xcodeproj/project.xcworkspace/xcshareddata/WorkspaceSettings.xcsettings",
+      "summary": "Shared Xcode workspace settings plist controlling auto-creation of schemes and other workspace-level toggles.",
+      "tags": [
+        "configuration",
+        "ios",
+        "xcode"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:ios/Runner.xcodeproj/xcshareddata/xcschemes/Runner.xcscheme",
+      "type": "config",
+      "name": "Runner.xcscheme",
+      "filePath": "ios/Runner.xcodeproj/xcshareddata/xcschemes/Runner.xcscheme",
+      "summary": "Xcode scheme for the Runner target wiring Build/Run/Test/Profile/Archive actions and selecting the RunnerTests bundle for the test action.",
+      "tags": [
+        "configuration",
+        "ios",
+        "xcode",
+        "scheme"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "file:ios/Runner.xcworkspace/contents.xcworkspacedata",
+      "type": "config",
+      "name": "contents.xcworkspacedata",
+      "filePath": "ios/Runner.xcworkspace/contents.xcworkspacedata",
+      "summary": "CocoaPods-generated workspace listing the Runner.xcodeproj alongside Pods.xcodeproj; the workspace Xcode actually opens when building the Flutter iOS app.",
+      "tags": [
+        "configuration",
+        "ios",
+        "xcode",
+        "cocoapods",
+        "workspace"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:ios/Runner.xcworkspace/xcshareddata/WorkspaceSettings.xcsettings",
+      "type": "config",
+      "name": "WorkspaceSettings.xcsettings",
+      "filePath": "ios/Runner.xcworkspace/xcshareddata/WorkspaceSettings.xcsettings",
+      "summary": "Workspace-level shared settings for the Pods workspace controlling Xcode auto-scheme creation.",
+      "tags": [
+        "configuration",
+        "ios",
+        "xcode",
+        "workspace"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:ios/Runner/AppDelegate.swift",
+      "type": "file",
+      "name": "AppDelegate.swift",
+      "filePath": "ios/Runner/AppDelegate.swift",
+      "summary": "iOS entry point extending FlutterAppDelegate; registers Flutter-generated plugin bindings and otherwise defers to Flutter for app lifecycle.",
+      "tags": [
+        "entry-point",
+        "ios",
+        "swift",
+        "flutter"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "class:ios/Runner/AppDelegate.swift:AppDelegate",
+      "type": "class",
+      "name": "AppDelegate",
+      "filePath": "ios/Runner/AppDelegate.swift",
+      "lineRange": [
+        5,
+        13
+      ],
+      "summary": "FlutterAppDelegate subclass annotated with @main; registers GeneratedPluginRegistrant on didFinishLaunchingWithOptions so Flutter plugins (ditto_live, cactus, permission_handler) come online.",
+      "tags": [
+        "entry-point",
+        "ios",
+        "lifecycle",
+        "flutter"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:ios/Runner/Base.lproj/LaunchScreen.storyboard",
+      "type": "file",
+      "name": "LaunchScreen.storyboard",
+      "filePath": "ios/Runner/Base.lproj/LaunchScreen.storyboard",
+      "summary": "Default Flutter-generated iOS launch screen storyboard shown before the Flutter engine attaches.",
+      "tags": [
+        "ios",
+        "storyboard",
+        "launch",
+        "ui"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:ios/Runner/Base.lproj/Main.storyboard",
+      "type": "file",
+      "name": "Main.storyboard",
+      "filePath": "ios/Runner/Base.lproj/Main.storyboard",
+      "summary": "Default Flutter-generated iOS main storyboard hosting the FlutterViewController where the Dart UI mounts.",
+      "tags": [
+        "ios",
+        "storyboard",
+        "ui",
+        "flutter"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:ios/Runner/Runner-Bridging-Header.h",
+      "type": "file",
+      "name": "Runner-Bridging-Header.h",
+      "filePath": "ios/Runner/Runner-Bridging-Header.h",
+      "summary": "Empty Swift/Obj-C bridging header generated by Flutter's iOS template; would expose C/Obj-C symbols to Swift if needed.",
+      "tags": [
+        "ios",
+        "swift",
+        "bridging-header",
+        "generated"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:ios/RunnerTests/RunnerTests.swift",
+      "type": "file",
+      "name": "RunnerTests.swift",
+      "filePath": "ios/RunnerTests/RunnerTests.swift",
+      "summary": "Default Flutter-generated XCTest scaffold with a single empty testExample placeholder; no real native tests yet since the app logic lives in Dart.",
+      "tags": [
+        "test",
+        "ios",
+        "swift",
+        "xctest",
+        "scaffold"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:justfile",
+      "type": "config",
+      "name": "justfile",
+      "filePath": "justfile",
+      "summary": "Just task runner recipes wrapping the Likec4 CLI for serving, validating, and building the docs/c4 architecture dashboard, plus a macOS open-dashboard shortcut.",
+      "tags": [
+        "build-system",
+        "task-runner",
+        "documentation",
+        "developer-tooling"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:lib/main.dart",
+      "type": "file",
+      "name": "main.dart",
+      "filePath": "lib/main.dart",
+      "summary": "Flutter entry point that requests BLE/Wi-Fi permissions, then runs MeshRagApp whose BootScreen orchestrates Ditto init → seed insert → Cactus model download → embedding backfill before swapping in the QueryScreen.",
+      "tags": [
+        "entry-point",
+        "flutter",
+        "bootstrap",
+        "permissions",
+        "lifecycle"
+      ],
+      "complexity": "moderate",
+      "languageNotes": "Uses Dart's async/await with conditional permission requests gated on Platform.isAndroid || Platform.isIOS to skip permission prompts on desktop/web."
+    },
+    {
+      "id": "function:lib/main.dart:main",
+      "type": "function",
+      "name": "main",
+      "filePath": "lib/main.dart",
+      "lineRange": [
+        13,
+        26
+      ],
+      "summary": "App entry: ensures Flutter binding, requests Bluetooth + nearby Wi-Fi permissions on mobile platforms, and launches MeshRagApp.",
+      "tags": [
+        "entry-point",
+        "bootstrap",
+        "permissions"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "class:lib/main.dart:MeshRagApp",
+      "type": "class",
+      "name": "MeshRagApp",
+      "filePath": "lib/main.dart",
+      "lineRange": [
+        28,
+        53
+      ],
+      "summary": "Root MaterialApp stateless widget configuring deepPurple Material3 light/dark themes and mounting BootScreen as the home route.",
+      "tags": [
+        "widget",
+        "material-app",
+        "theme",
+        "root"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "class:lib/main.dart:BootScreen",
+      "type": "class",
+      "name": "BootScreen",
+      "filePath": "lib/main.dart",
+      "lineRange": [
+        58,
+        63
+      ],
+      "summary": "StatefulWidget shell for the one-shot Stage 0 boot flow; intentionally has no retry UI or settings — succeeds once or fails visibly with an error card.",
+      "tags": [
+        "widget",
+        "splash",
+        "boot",
+        "lifecycle"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "class:lib/main.dart:_BootScreenState",
+      "type": "class",
+      "name": "_BootScreenState",
+      "filePath": "lib/main.dart",
+      "lineRange": [
+        65,
+        162
+      ],
+      "summary": "Boot orchestrator: drives DittoService.initialize → startSync → SeedLoader → CactusService model download (with progress) → RetrievalService.ensureEmbeddings, surfacing each stage label and any errors in the splash UI before handing control to QueryScreen.",
+      "tags": [
+        "state",
+        "boot",
+        "orchestration",
+        "progress-ui",
+        "error-handling"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "file:lib/models/recipe_tuple.dart",
+      "type": "file",
+      "name": "recipe_tuple.dart",
+      "filePath": "lib/models/recipe_tuple.dart",
+      "summary": "Dart data model for a single recipe document in the Ditto `recipes` collection, with deterministic UUIDv5 seed IDs, Ditto doc serialization helpers, and a copyWith for embedding backfill.",
+      "tags": [
+        "data-model",
+        "serialization",
+        "ditto",
+        "recipe"
+      ],
+      "complexity": "moderate",
+      "languageNotes": "Uses Dart's named-constructor factories (`seed`, `fromDittoValue`) as alternative constructors for different construction paths."
+    },
+    {
+      "id": "class:lib/models/recipe_tuple.dart:RecipeTuple",
+      "type": "class",
+      "name": "RecipeTuple",
+      "filePath": "lib/models/recipe_tuple.dart",
+      "lineRange": [
+        7,
+        83
+      ],
+      "summary": "Immutable recipe document with id, dish, contributor, ingredients, steps, embedding, and createdAt; provides UUIDv5-keyed seed factory, Ditto value <-> map round-tripping, copyWith for embedding updates, and a hasEmbedding convenience getter.",
+      "tags": [
+        "data-model",
+        "immutable",
+        "serialization",
+        "recipe",
+        "ditto"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "file:lib/prompts/dql_queries.dart",
+      "type": "file",
+      "name": "dql_queries.dart",
+      "filePath": "lib/prompts/dql_queries.dart",
+      "summary": "Single-source-of-truth holder for the project's DQL query strings against the Ditto `recipes` collection: selectAll, selectById, upsert (with ON ID CONFLICT DO UPDATE), and setEmbedding.",
+      "tags": [
+        "constants",
+        "dql",
+        "ditto",
+        "queries"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "class:lib/prompts/dql_queries.dart:RecipeQueries",
+      "type": "class",
+      "name": "RecipeQueries",
+      "filePath": "lib/prompts/dql_queries.dart",
+      "lineRange": [
+        6,
+        27
+      ],
+      "summary": "Static-only constants holder (private constructor) for DQL strings used by DittoService, RetrievalService, and any future sync-verification UI to share identical query text.",
+      "tags": [
+        "constants",
+        "dql",
+        "static-class",
+        "queries"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:lib/prompts/recipe_merge.dart",
+      "type": "file",
+      "name": "recipe_merge.dart",
+      "filePath": "lib/prompts/recipe_merge.dart",
+      "summary": "Prompt builder for the on-device LLM merge step: assembles a system message asking cactus to synthesize one coherent recipe from K retrieved variants and a user message enumerating each variant's contributor, ingredients, and steps.",
+      "tags": [
+        "prompt",
+        "llm",
+        "merge",
+        "cactus",
+        "rag"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "class:lib/prompts/recipe_merge.dart:RecipeMergePrompt",
+      "type": "class",
+      "name": "RecipeMergePrompt",
+      "filePath": "lib/prompts/recipe_merge.dart",
+      "lineRange": [
+        8,
+        51
+      ],
+      "summary": "Static prompt-builder class with private constructor; `build(query, retrieved)` returns a List<ChatMessage> pairing the careful-home-cook system instruction with a structured user message enumerating variants for cactus_complete to merge.",
+      "tags": [
+        "prompt-builder",
+        "llm",
+        "static-class",
+        "rag",
+        "synthesis"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "file:lib/services/cactus_service.dart",
+      "type": "file",
+      "name": "cactus_service.dart",
+      "filePath": "lib/services/cactus_service.dart",
+      "summary": "Singleton wrapper around the Cactus on-device LLM that exposes embedding generation and streaming/non-streaming chat completion for the RAG pipeline. Pins model slugs at compile time for demo-day reproducibility.",
+      "tags": [
+        "service",
+        "singleton",
+        "llm",
+        "embedding",
+        "on-device"
+      ],
+      "complexity": "simple",
+      "languageNotes": "Uses a private named constructor + static `instance` field for the Dart idiom of a manually-managed singleton."
+    },
+    {
+      "id": "class:lib/services/cactus_service.dart:CactusService",
+      "type": "class",
+      "name": "CactusService",
+      "filePath": "lib/services/cactus_service.dart",
+      "lineRange": [
+        10,
+        100
+      ],
+      "summary": "Owns the Cactus LLM lifecycle: model download/initialization, embedding generation, and streaming chat completion. Stage 0 reuses a single qwen3-0.6 slug for both embed and complete to stay under the first-launch download budget.",
+      "tags": [
+        "singleton",
+        "llm-wrapper",
+        "stateful-service",
+        "lifecycle"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "function:lib/services/cactus_service.dart:initialize",
+      "type": "function",
+      "name": "initialize",
+      "filePath": "lib/services/cactus_service.dart",
+      "lineRange": [
+        30,
+        48
+      ],
+      "summary": "Downloads (if needed) and initializes the Cactus model with a progress callback, idempotent on repeat calls.",
+      "tags": [
+        "initialization",
+        "async",
+        "model-loading"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:lib/services/cactus_service.dart:complete",
+      "type": "function",
+      "name": "complete",
+      "filePath": "lib/services/cactus_service.dart",
+      "lineRange": [
+        68,
+        80
+      ],
+      "summary": "Async generator that streams completion token chunks from the Cactus model for a given chat-message history.",
+      "tags": [
+        "streaming",
+        "completion",
+        "async-generator"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:lib/services/ditto_service.dart",
+      "type": "file",
+      "name": "ditto_service.dart",
+      "filePath": "lib/services/ditto_service.dart",
+      "summary": "Singleton that owns the Ditto CRDT runtime: init with offline license, small-peers-only transport (BLE + LAN + AWDL), presence stream, and DQL CRUD over `RecipeTuple`. Backbone of the mesh sync layer.",
+      "tags": [
+        "service",
+        "singleton",
+        "crdt",
+        "mesh-sync",
+        "p2p"
+      ],
+      "complexity": "moderate",
+      "languageNotes": "Configuration is injected at compile time via `String.fromEnvironment` (Flutter's `--dart-define`)."
+    },
+    {
+      "id": "class:lib/services/ditto_service.dart:DittoService",
+      "type": "class",
+      "name": "DittoService",
+      "filePath": "lib/services/ditto_service.dart",
+      "lineRange": [
+        17,
+        156
+      ],
+      "summary": "Manages the global Ditto instance: initialization with offline license, peer-to-peer transport config, presence broadcasting, and RecipeTuple CRUD via DQL. Dart-side filters embeddings rather than using DQL predicates to dodge MISSING/NULL ambiguity.",
+      "tags": [
+        "singleton",
+        "crdt",
+        "p2p",
+        "ditto",
+        "lifecycle"
+      ],
+      "complexity": "complex"
+    },
+    {
+      "id": "function:lib/services/ditto_service.dart:initialize",
+      "type": "function",
+      "name": "initialize",
+      "filePath": "lib/services/ditto_service.dart",
+      "lineRange": [
+        47,
+        86
+      ],
+      "summary": "Opens a Ditto instance with the injected app id + offline license, enables BLE/LAN/AWDL transports, and wires the presence observer that drives the peer-count stream.",
+      "tags": [
+        "initialization",
+        "transport-config",
+        "presence"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "function:lib/services/ditto_service.dart:subscribeToRecipes",
+      "type": "function",
+      "name": "subscribeToRecipes",
+      "filePath": "lib/services/ditto_service.dart",
+      "lineRange": [
+        138,
+        148
+      ],
+      "summary": "Registers a live store observer that fires the supplied callback whenever a RecipeTuple is added, modified, or removed (locally or via mesh sync).",
+      "tags": [
+        "observer",
+        "live-query",
+        "reactive"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:lib/services/retrieval_service.dart",
+      "type": "file",
+      "name": "retrieval_service.dart",
+      "filePath": "lib/services/retrieval_service.dart",
+      "summary": "Stage 0 RAG core: embeds missing recipes back into Ditto, runs brute-force cosine top-k over the merged corpus, and streams the answer pipeline as an `AnswerEvent` discriminated union.",
+      "tags": [
+        "service",
+        "rag",
+        "retrieval",
+        "cosine-similarity",
+        "streaming"
+      ],
+      "complexity": "moderate",
+      "languageNotes": "Brute force is deliberate: ≤5k tuples × 384 dims fits in <8MB so an index would just be CRDT merge overhead with no recall win."
+    },
+    {
+      "id": "class:lib/services/retrieval_service.dart:RetrievalService",
+      "type": "class",
+      "name": "RetrievalService",
+      "filePath": "lib/services/retrieval_service.dart",
+      "lineRange": [
+        34,
+        127
+      ],
+      "summary": "Coordinates the RAG loop end-to-end: ensures embeddings exist in Ditto, embeds the user query, runs cosine top-k, builds the merge prompt, and streams completion tokens. Exposes static `normalize`/`dot` helpers for testing.",
+      "tags": [
+        "singleton",
+        "rag",
+        "retrieval",
+        "vector-search"
+      ],
+      "complexity": "complex"
+    },
+    {
+      "id": "class:lib/services/retrieval_service.dart:RetrievedRecipe",
+      "type": "class",
+      "name": "RetrievedRecipe",
+      "filePath": "lib/services/retrieval_service.dart",
+      "lineRange": [
+        10,
+        15
+      ],
+      "summary": "Immutable value object pairing a RecipeTuple with its cosine similarity score against the query.",
+      "tags": [
+        "value-object",
+        "data-class",
+        "retrieval"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "class:lib/services/retrieval_service.dart:AnswerEvent",
+      "type": "class",
+      "name": "AnswerEvent",
+      "filePath": "lib/services/retrieval_service.dart",
+      "lineRange": [
+        18,
+        28
+      ],
+      "summary": "Discriminated union over the events the answer pipeline emits: a retrieved-results frame, a streaming token, or a done marker. Lets the UI render attribution before the LLM finishes.",
+      "tags": [
+        "discriminated-union",
+        "event",
+        "streaming"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:lib/services/retrieval_service.dart:topK",
+      "type": "function",
+      "name": "topK",
+      "filePath": "lib/services/retrieval_service.dart",
+      "lineRange": [
+        73,
+        87
+      ],
+      "summary": "Computes cosine top-k against the embedded portion of the Ditto corpus, normalizing both query and doc vectors so the score stays in [-1, 1].",
+      "tags": [
+        "cosine-similarity",
+        "top-k",
+        "vector-search"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "function:lib/services/retrieval_service.dart:answerQuery",
+      "type": "function",
+      "name": "answerQuery",
+      "filePath": "lib/services/retrieval_service.dart",
+      "lineRange": [
+        92,
+        101
+      ],
+      "summary": "Async-generator end-to-end pipeline: embed query, run topK, yield retrieved frame, build the merge prompt, and yield streaming token events until done.",
+      "tags": [
+        "streaming",
+        "rag-pipeline",
+        "async-generator"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "function:lib/services/retrieval_service.dart:ensureEmbeddings",
+      "type": "function",
+      "name": "ensureEmbeddings",
+      "filePath": "lib/services/retrieval_service.dart",
+      "lineRange": [
+        50,
+        59
+      ],
+      "summary": "Embeds every recipe row missing an embedding and writes the vector back to Ditto so the CRDT can sync it to peers. Idempotent.",
+      "tags": [
+        "batch-embedding",
+        "idempotent",
+        "backfill"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:lib/services/retrieval_service.dart:normalize",
+      "type": "function",
+      "name": "normalize",
+      "filePath": "lib/services/retrieval_service.dart",
+      "lineRange": [
+        106,
+        118
+      ],
+      "summary": "Returns the L2-normalized copy of a Float32List (identity on a zero vector). Pure math, unit tested.",
+      "tags": [
+        "math",
+        "vector-normalization",
+        "pure-function"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:lib/services/seed_loader.dart",
+      "type": "file",
+      "name": "seed_loader.dart",
+      "filePath": "lib/services/seed_loader.dart",
+      "summary": "Loads role-specific seed recipes from a bundled JSON asset (selected via `--dart-define=PHONE_ROLE=a|b`) and upserts each into Ditto, with idempotency guaranteed by the deterministic seed UUID.",
+      "tags": [
+        "service",
+        "seed-data",
+        "bootstrap",
+        "singleton"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "class:lib/services/seed_loader.dart:SeedLoader",
+      "type": "class",
+      "name": "SeedLoader",
+      "filePath": "lib/services/seed_loader.dart",
+      "lineRange": [
+        10,
+        49
+      ],
+      "summary": "Singleton that resolves the device's role (phone-a or phone-b), loads the matching JSON asset, and inserts each recipe into Ditto. Exposes `selfContributor` so the UI can count peer-vs-local tuples.",
+      "tags": [
+        "singleton",
+        "seed-data",
+        "role-based"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:lib/widgets/mesh_status_widget.dart",
+      "type": "file",
+      "name": "mesh_status_widget.dart",
+      "filePath": "lib/widgets/mesh_status_widget.dart",
+      "summary": "Top-bar pill widget that subscribes to DittoService's peer-count stream and renders a colored dot plus 'mesh: N peers' / 'mesh: alone' label, sized for camera-legible demo capture.",
+      "tags": [
+        "component",
+        "widget",
+        "stateful",
+        "presence-ui"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "class:lib/widgets/mesh_status_widget.dart:MeshStatusWidget",
+      "type": "class",
+      "name": "MeshStatusWidget",
+      "filePath": "lib/widgets/mesh_status_widget.dart",
+      "lineRange": [
+        8,
+        13
+      ],
+      "summary": "StatefulWidget that displays current peer count with color-coded connection state. Listens on DittoService.peerCount in its State and rebuilds on changes.",
+      "tags": [
+        "stateful-widget",
+        "presence",
+        "ui"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:lib/widgets/query_screen.dart",
+      "type": "file",
+      "name": "query_screen.dart",
+      "filePath": "lib/widgets/query_screen.dart",
+      "summary": "The Stage-0 demo screen: text input, streaming answer pane, mesh-status pill, and a '(N tuples, M from peers)' attribution footer. Wires the RetrievalService AnswerEvent stream into UI state.",
+      "tags": [
+        "component",
+        "widget",
+        "screen",
+        "stateful",
+        "demo-ui"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "class:lib/widgets/query_screen.dart:QueryScreen",
+      "type": "class",
+      "name": "QueryScreen",
+      "filePath": "lib/widgets/query_screen.dart",
+      "lineRange": [
+        12,
+        17
+      ],
+      "summary": "StatefulWidget hosting the demo's single screen — query input, streaming answer, and peer-attribution footer.",
+      "tags": [
+        "stateful-widget",
+        "screen",
+        "entry-point"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:test/recipe_merge_prompt_test.dart",
+      "type": "file",
+      "name": "recipe_merge_prompt_test.dart",
+      "filePath": "test/recipe_merge_prompt_test.dart",
+      "summary": "Unit tests for RecipeMergePrompt.build: verifies the system+user message shape, that each contributor's tag appears for attribution, and that empty retrieval falls back to a graceful 'I don't know yet' prompt.",
+      "tags": [
+        "test",
+        "unit-test",
+        "prompt-engineering"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:test/recipe_tuple_test.dart",
+      "type": "file",
+      "name": "recipe_tuple_test.dart",
+      "filePath": "test/recipe_tuple_test.dart",
+      "summary": "Unit tests for RecipeTuple: deterministic seed UUIDs (same inputs → same id, different contributor → different id), round-trip through the Ditto doc shape, and the `hasEmbedding` flag after copyWith.",
+      "tags": [
+        "test",
+        "unit-test",
+        "data-model"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:test/retrieval_service_test.dart",
+      "type": "file",
+      "name": "retrieval_service_test.dart",
+      "filePath": "test/retrieval_service_test.dart",
+      "summary": "Unit tests for the pure-math helpers on RetrievalService: normalize handles the unit-length and zero-vector cases, and dot of normalized vectors equals cosine similarity through a 384-dim sanity check.",
+      "tags": [
+        "test",
+        "unit-test",
+        "math",
+        "vector"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "document:CLAUDE.md",
+      "type": "document",
+      "name": "CLAUDE.md",
+      "filePath": "CLAUDE.md",
+      "summary": "Project instructions for Claude Code: prefer jujutsu over git, prefer gh CLI for GitHub URLs, and reference to the Understand-Anything plugin.",
+      "tags": [
+        "documentation",
+        "agent-instructions",
+        "tooling"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "document:IDEA-A.md",
+      "type": "document",
+      "name": "IDEA-A.md",
+      "filePath": "IDEA-A.md",
+      "summary": "Hackathon build doc framing Mesh RAG's thesis (the network round-trip is the moat), a staged toy→plausible→convincing plan, hard-part watchlist, and open decisions.",
+      "tags": [
+        "documentation",
+        "design-doc",
+        "thesis",
+        "planning"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "document:README.md",
+      "type": "document",
+      "name": "README.md",
+      "filePath": "README.md",
+      "summary": "Project entry-point documentation describing the Ditto × Cactus Stage 0 stack and the `flutter run` commands to bring up phones A and B for the demo.",
+      "tags": [
+        "documentation",
+        "entry-point",
+        "overview"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "document:RESEARCH-BRIEF.md",
+      "type": "document",
+      "name": "RESEARCH-BRIEF.md",
+      "filePath": "RESEARCH-BRIEF.md",
+      "summary": "Research brief enumerating 8 prior-art domains to investigate (cross-platform embedding determinism, CRDT vector indexes, mesh sync, on-device LLMs, etc.), with deliverables and scope guardrails for the Mesh RAG project.",
+      "tags": [
+        "documentation",
+        "research",
+        "prior-art",
+        "planning"
+      ],
+      "complexity": "complex"
+    },
+    {
+      "id": "document:SEED.md",
+      "type": "document",
+      "name": "SEED.md",
+      "filePath": "SEED.md",
+      "summary": "Software-Factory SEED document for Mesh RAG: what we're building, why it exists, validation harness with holdout scenarios, definition of 'real environment', feedback loop, and resolved open questions.",
+      "tags": [
+        "documentation",
+        "seed-doc",
+        "validation",
+        "compound-engineering"
+      ],
+      "complexity": "complex"
+    },
+    {
+      "id": "document:WEB-PROMPT.md",
+      "type": "document",
+      "name": "WEB-PROMPT.md",
+      "filePath": "WEB-PROMPT.md",
+      "summary": "Deep-research prompt sent to hosted research tools (Claude.ai / ChatGPT / Gemini) covering the same 8 research tasks as RESEARCH-BRIEF.md plus URL conventions and post-report instructions.",
+      "tags": [
+        "documentation",
+        "research-prompt",
+        "prior-art"
+      ],
+      "complexity": "complex"
+    },
+    {
+      "id": "config:analysis_options.yaml",
+      "type": "config",
+      "name": "analysis_options.yaml",
+      "filePath": "analysis_options.yaml",
+      "summary": "Dart analyzer + linter configuration extending package:flutter_lints/flutter.yaml to enforce project-wide style and static-analysis rules.",
+      "tags": [
+        "configuration",
+        "linter",
+        "dart",
+        "static-analysis"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "config:android/app/src/debug/AndroidManifest.xml",
+      "type": "config",
+      "name": "AndroidManifest.xml",
+      "filePath": "android/app/src/debug/AndroidManifest.xml",
+      "summary": "Debug-flavor AndroidManifest overlay that adds the INTERNET permission required for Flutter hot-reload over the local network.",
+      "tags": [
+        "configuration",
+        "android",
+        "manifest",
+        "debug"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "config:android/app/src/main/AndroidManifest.xml",
+      "type": "config",
+      "name": "AndroidManifest.xml",
+      "filePath": "android/app/src/main/AndroidManifest.xml",
+      "summary": "Main Android manifest declaring the FlutterActivity, launch theme, and the BLE/Wi-Fi/location permissions Ditto needs for small-peers mesh transport on Android.",
+      "tags": [
+        "configuration",
+        "android",
+        "manifest",
+        "permissions",
+        "ble"
+      ],
+      "complexity": "moderate",
+      "languageNotes": "Ditto's small-peers transport requires BLUETOOTH_SCAN/CONNECT/ADVERTISE plus fine-location for BLE peer discovery on Android 12+."
+    },
+    {
+      "id": "config:android/app/src/main/res/drawable-v21/launch_background.xml",
+      "type": "config",
+      "name": "launch_background.xml",
+      "filePath": "android/app/src/main/res/drawable-v21/launch_background.xml",
+      "summary": "API 21+ launch-screen drawable defining the splash background shown while Flutter engine warms up.",
+      "tags": [
+        "configuration",
+        "android",
+        "ui",
+        "splash"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "config:android/app/src/main/res/drawable/launch_background.xml",
+      "type": "config",
+      "name": "launch_background.xml",
+      "filePath": "android/app/src/main/res/drawable/launch_background.xml",
+      "summary": "Default launch-screen drawable defining the splash background for pre-API-21 devices.",
+      "tags": [
+        "configuration",
+        "android",
+        "ui",
+        "splash"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "config:android/app/src/main/res/values-night/styles.xml",
+      "type": "config",
+      "name": "styles.xml",
+      "filePath": "android/app/src/main/res/values-night/styles.xml",
+      "summary": "Night-mode Android style resources defining LaunchTheme and NormalTheme for dark-mode rendering.",
+      "tags": [
+        "configuration",
+        "android",
+        "theme",
+        "dark-mode"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "config:android/app/src/main/res/values/styles.xml",
+      "type": "config",
+      "name": "styles.xml",
+      "filePath": "android/app/src/main/res/values/styles.xml",
+      "summary": "Default Android style resources defining LaunchTheme and NormalTheme used by the FlutterActivity.",
+      "tags": [
+        "configuration",
+        "android",
+        "theme"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "config:android/app/src/profile/AndroidManifest.xml",
+      "type": "config",
+      "name": "AndroidManifest.xml",
+      "filePath": "android/app/src/profile/AndroidManifest.xml",
+      "summary": "Profile-flavor AndroidManifest overlay that adds INTERNET permission needed for Flutter profile-mode tooling.",
+      "tags": [
+        "configuration",
+        "android",
+        "manifest",
+        "profile"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "config:android/gradle.properties",
+      "type": "config",
+      "name": "gradle.properties",
+      "filePath": "android/gradle.properties",
+      "summary": "Top-level Gradle properties controlling JVM args, AndroidX migration flag, and Jetifier for the Android build.",
+      "tags": [
+        "configuration",
+        "android",
+        "gradle",
+        "build-system"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "config:android/gradle/wrapper/gradle-wrapper.properties",
+      "type": "config",
+      "name": "gradle-wrapper.properties",
+      "filePath": "android/gradle/wrapper/gradle-wrapper.properties",
+      "summary": "Gradle wrapper configuration pinning the Gradle distribution URL and version used by the Android subproject.",
+      "tags": [
+        "configuration",
+        "android",
+        "gradle",
+        "build-system"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "config:assets/seed_recipes_a.json",
+      "type": "config",
+      "name": "seed_recipes_a.json",
+      "filePath": "assets/seed_recipes_a.json",
+      "summary": "Seed recipe corpus loaded on phone A — variant recipe tuples (e.g. classic-style chicken tortilla soup) ingested into Ditto on first run so phone A holds only its slice of the merged corpus until mesh sync.",
+      "tags": [
+        "seed-data",
+        "recipe-corpus",
+        "phone-a",
+        "ditto",
+        "demo-fixture"
+      ],
+      "complexity": "simple",
+      "languageNotes": "Each entry has dish, contributor='phone-a', createdAt, ingredients[], steps[] — shape matches the RecipeTuple schema used by U4."
+    },
+    {
+      "id": "config:assets/seed_recipes_b.json",
+      "type": "config",
+      "name": "seed_recipes_b.json",
+      "filePath": "assets/seed_recipes_b.json",
+      "summary": "Seed recipe corpus loaded on phone B — alternate-variant recipe tuples (chipotle/smoky-style versions of the same dishes as phone A) so merging the two devices over Ditto demonstrably enriches the on-device RAG answer.",
+      "tags": [
+        "seed-data",
+        "recipe-corpus",
+        "phone-b",
+        "ditto",
+        "demo-fixture"
+      ],
+      "complexity": "simple",
+      "languageNotes": "Mirrors seed_recipes_a.json with contributor='phone-b' and distinct ingredients/steps; pairwise contrast is what makes the post-sync answer visibly richer."
+    },
+    {
+      "id": "document:docs/architecture-vs-flutter-skills.md",
+      "type": "document",
+      "name": "architecture-vs-flutter-skills.md",
+      "filePath": "docs/architecture-vs-flutter-skills.md",
+      "summary": "Architecture review comparing Mesh RAG Stage 0's built structure against the official flutter/skills guidance, with a concrete refactor map deferred to Stage 1+.",
+      "tags": [
+        "architecture-review",
+        "documentation",
+        "flutter",
+        "refactor-map"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "document:docs/c4-vs-code-drift.md",
+      "type": "document",
+      "name": "c4-vs-code-drift.md",
+      "filePath": "docs/c4-vs-code-drift.md",
+      "summary": "Manual drift report comparing the C4 architecture model against what was actually built — flags matched/drifted/unmodelled components and schema drift on RecipeTuple, standing in for an automated /understand pass.",
+      "tags": [
+        "drift-report",
+        "c4-model",
+        "documentation",
+        "architecture-review"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "document:docs/plans/2026-05-21-001-feat-mesh-rag-stage-0-implementation-plan.md",
+      "type": "document",
+      "name": "2026-05-21-001-feat-mesh-rag-stage-0-implementation-plan.md",
+      "filePath": "docs/plans/2026-05-21-001-feat-mesh-rag-stage-0-implementation-plan.md",
+      "summary": "Authoritative Stage 0 implementation plan — defines U1-U10 work units (scaffold, embedding determinism spike, recipe-merge eval, Ditto schema, retrieval pipeline, LLM synthesis, mesh verification, demo UI, rehearsal, Presenterm deck) and the demo-flow sequence.",
+      "tags": [
+        "implementation-plan",
+        "documentation",
+        "entry-point",
+        "work-breakdown",
+        "mesh-rag"
+      ],
+      "complexity": "complex",
+      "languageNotes": "Reads as the source of truth for the project — every file in lib/, ios/, android/, and assets/ traces back to a unit (U1-U10) defined here."
+    },
+    {
+      "id": "document:docs/research/chatgpt-deep-research.md",
+      "type": "document",
+      "name": "chatgpt-deep-research.md",
+      "filePath": "docs/research/chatgpt-deep-research.md",
+      "summary": "ChatGPT-pass deep-research synthesis covering embedding determinism, CRDT-backed vector indexes, Ditto/mesh alternatives, on-device LLM runtimes, and presentation tooling for the Cactus × Ditto Mesh RAG pitch.",
+      "tags": [
+        "deep-research",
+        "synthesis",
+        "documentation",
+        "prior-art"
+      ],
+      "complexity": "complex"
+    },
+    {
+      "id": "document:docs/research/claude-deep-research.md",
+      "type": "document",
+      "name": "claude-deep-research.md",
+      "filePath": "docs/research/claude-deep-research.md",
+      "summary": "Claude-pass deep-research synthesis on peer-to-peer RAG over a CRDT vector index — top-10 sources, per-topic findings, tool shortlist, reference architectures, and gaps the CLI agents would have missed.",
+      "tags": [
+        "deep-research",
+        "synthesis",
+        "documentation",
+        "prior-art"
+      ],
+      "complexity": "complex"
+    },
+    {
+      "id": "document:docs/research/claude.md",
+      "type": "document",
+      "name": "claude.md",
+      "filePath": "docs/research/claude.md",
+      "summary": "Claude CLI prior-art research pass — embedding determinism, CRDT vector indexes, Ditto mesh transports, on-device LLM ecosystem (Cactus, Executorch), embedding models, and demo-deck framing for the writeup.",
+      "tags": [
+        "research",
+        "prior-art",
+        "documentation",
+        "cli-pass"
+      ],
+      "complexity": "complex"
+    },
+    {
+      "id": "document:docs/research/codex.md",
+      "type": "document",
+      "name": "codex.md",
+      "filePath": "docs/research/codex.md",
+      "summary": "Codex CLI prior-art research pass covering the same eight topics (determinism, CRDT vector indexes, mobile mesh sync, on-device LLM frameworks, embeddings, local-first AI, latency moats, demo aesthetics) for cross-model triangulation.",
+      "tags": [
+        "research",
+        "prior-art",
+        "documentation",
+        "cli-pass"
+      ],
+      "complexity": "complex"
+    },
+    {
+      "id": "config:docs/research/downloads.yaml",
+      "type": "config",
+      "name": "downloads.yaml",
+      "filePath": "docs/research/downloads.yaml",
+      "summary": "Manifest of research artefacts to ingest into the per-source index — every paper, doc page, repo README, and tool homepage cited across the Claude/Codex/Gemini/ChatGPT passes, with URL, local path, and license metadata.",
+      "tags": [
+        "research-manifest",
+        "configuration",
+        "downloads",
+        "ingest-list"
+      ],
+      "complexity": "complex",
+      "languageNotes": "1349 lines of structured entries; serves as the index-fetcher's single source of truth and pairs 1:1 with the _per_source/*.md cards."
+    },
+    {
+      "id": "document:docs/research/future-work-research.md",
+      "type": "document",
+      "name": "future-work-research.md",
+      "filePath": "docs/research/future-work-research.md",
+      "summary": "Step-4.5 future-work research pass — direct prior art for the writeup's later threads (preference-aware merge, adversarial/mistake filtering, generational evolution) plus additions to downloads.yaml.",
+      "tags": [
+        "research",
+        "future-work",
+        "documentation",
+        "writeup-arc"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "document:docs/research/gemini-deep-research.md",
+      "type": "document",
+      "name": "gemini-deep-research.md",
+      "filePath": "docs/research/gemini-deep-research.md",
+      "summary": "Gemini-pass deep-research synthesis on architectural foundations for peer-to-peer RAG at the edge — top-10 sources, per-topic findings across all eight tasks, tool shortlist, reference architectures, and gaps.",
+      "tags": [
+        "deep-research",
+        "synthesis",
+        "documentation",
+        "prior-art"
+      ],
+      "complexity": "complex"
+    },
+    {
+      "id": "document:docs/research/gemini.md",
+      "type": "document",
+      "name": "gemini.md",
+      "filePath": "docs/research/gemini.md",
+      "summary": "Gemini CLI prior-art research pass — compact per-topic findings on determinism, CRDT vector indexes, P2P mesh, small-LLM merge quality, embeddings, local-first framing, latency moats, and presentation tooling.",
+      "tags": [
+        "research",
+        "prior-art",
+        "documentation",
+        "cli-pass"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "document:docs/research/index/README.md",
+      "type": "document",
+      "name": "README.md",
+      "filePath": "docs/research/index/README.md",
+      "summary": "Index README for the Mesh RAG research directory — describes the layout (per-source cards, downloads manifest, deep-research syntheses), data-flow honesty caveats, and the writeup arc to land on.",
+      "tags": [
+        "documentation",
+        "entry-point",
+        "research-index",
+        "overview"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "document:docs/research/index/_per_source/docs-bridgefy-sdk.md",
+      "type": "document",
+      "name": "docs-bridgefy-sdk.md",
+      "filePath": "docs/research/index/_per_source/docs-bridgefy-sdk.md",
+      "summary": "Per-source index card for the Bridgefy SDK — on-device AI plus mesh networking; tags, topics covered, takeaways, and cross-references relevant to Ditto alternatives.",
+      "tags": [
+        "index-card",
+        "documentation",
+        "bridgefy",
+        "mesh-networking"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "document:docs/research/index/_per_source/docs-developer-apple-com.md",
+      "type": "document",
+      "name": "docs-developer-apple-com.md",
+      "filePath": "docs/research/index/_per_source/docs-developer-apple-com.md",
+      "summary": "Per-source index card for Apple Developer's Foundation Models documentation — relevant to on-device LLM alternatives on iOS for the Cactus comparison.",
+      "tags": [
+        "index-card",
+        "documentation",
+        "apple",
+        "on-device-llm"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "document:docs/research/index/_per_source/docs-ditto-live.md",
+      "type": "document",
+      "name": "docs-ditto-live.md",
+      "filePath": "docs/research/index/_per_source/docs-ditto-live.md",
+      "summary": "Per-source index card for Ditto Live's syncing-data documentation — the canonical reference for the CRDT sync semantics that Stage 0 relies on.",
+      "tags": [
+        "index-card",
+        "documentation",
+        "ditto",
+        "sync"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "document:docs/research/index/_per_source/docs-docs-ditto-live-dql.md",
+      "type": "document",
+      "name": "docs-docs-ditto-live-dql.md",
+      "filePath": "docs/research/index/_per_source/docs-docs-ditto-live-dql.md",
+      "summary": "Per-source index card for Ditto Query Language (DQL) — distributed query and subscription mechanics that the Flutter app uses to materialise RecipeTuples.",
+      "tags": [
+        "index-card",
+        "documentation",
+        "ditto",
+        "dql"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "document:docs/research/index/_per_source/docs-docs-ditto-live-transports.md",
+      "type": "document",
+      "name": "docs-docs-ditto-live-transports.md",
+      "filePath": "docs/research/index/_per_source/docs-docs-ditto-live-transports.md",
+      "summary": "Per-source index card for Ditto mesh networking and transports — BLE, Wi-Fi Aware/LAN, AWDL, the exact peer-to-peer mediums Stage 0 demonstrates.",
+      "tags": [
+        "index-card",
+        "documentation",
+        "ditto",
+        "transports",
+        "ble"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "document:docs/research/index/_per_source/docs-docs-ditto-live.md",
+      "type": "document",
+      "name": "docs-docs-ditto-live.md",
+      "filePath": "docs/research/index/_per_source/docs-docs-ditto-live.md",
+      "summary": "Per-source index card summarising the broader Ditto mesh documentation site — context, capabilities, and where the project's mesh assumptions come from.",
+      "tags": [
+        "index-card",
+        "documentation",
+        "ditto",
+        "mesh"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "document:docs/research/index/_per_source/docs-docs-pytorch-org.md",
+      "type": "document",
+      "name": "docs-docs-pytorch-org.md",
+      "filePath": "docs/research/index/_per_source/docs-docs-pytorch-org.md",
+      "summary": "Per-source index card for PyTorch reproducibility docs — non-determinism sources relevant to the embedding-parity spike (U2).",
+      "tags": [
+        "index-card",
+        "documentation",
+        "pytorch",
+        "determinism"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "document:docs/research/index/_per_source/docs-mesh-networking-101.md",
+      "type": "document",
+      "name": "docs-mesh-networking-101.md",
+      "filePath": "docs/research/index/_per_source/docs-mesh-networking-101.md",
+      "summary": "Per-source index card on mesh networking 101 — topology, routing, and resilience primers used to frame why a CRDT-over-mesh story holds up.",
+      "tags": [
+        "index-card",
+        "documentation",
+        "mesh-networking",
+        "fundamentals"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "document:docs/research/index/_per_source/paper-1106.4374.md",
+      "type": "document",
+      "name": "paper-1106.4374.md",
+      "filePath": "docs/research/index/_per_source/paper-1106.4374.md",
+      "summary": "Per-source index card for Shapiro et al.'s foundational CRDT paper (arXiv 1106.4374) — the academic backing for Ditto's mergeable data model.",
+      "tags": [
+        "index-card",
+        "documentation",
+        "crdt",
+        "paper"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "document:docs/research/index/_per_source/paper-1908.10084.md",
+      "type": "document",
+      "name": "paper-1908.10084.md",
+      "filePath": "docs/research/index/_per_source/paper-1908.10084.md",
+      "summary": "Per-source index card for Sentence-BERT (Reimers & Gurevych, arXiv 1908.10084) — the embedding-model lineage that small on-device models in U2/U5 inherit from.",
+      "tags": [
+        "index-card",
+        "documentation",
+        "embeddings",
+        "paper"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "document:docs/research/index/_per_source/paper-1910.01108.md",
+      "type": "document",
+      "name": "paper-1910.01108.md",
+      "filePath": "docs/research/index/_per_source/paper-1910.01108.md",
+      "summary": "Per-source index card for DistilBERT (Sanh et al., arXiv 1910.01108) — distillation prior art justifying the small-LLM and small-embedder choices for on-device inference.",
+      "tags": [
+        "index-card",
+        "documentation",
+        "distillation",
+        "paper"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "document:docs/research/index/_per_source/paper-2106.09685.md",
+      "type": "document",
+      "name": "paper-2106.09685.md",
+      "filePath": "docs/research/index/_per_source/paper-2106.09685.md",
+      "summary": "Per-source research note on LoRA (Low-Rank Adaptation of Large Language Models), capturing the parameter-efficient fine-tuning pattern that informs the project's future-work specialist-small-models thesis.",
+      "tags": [
+        "research-note",
+        "prior-art",
+        "parameter-efficient-finetuning",
+        "lora",
+        "specialist-models"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "document:docs/research/index/_per_source/paper-2301.07788.md",
+      "type": "document",
+      "name": "paper-2301.07788.md",
+      "filePath": "docs/research/index/_per_source/paper-2301.07788.md",
+      "summary": "Per-source research note on Round Trip Time (RTT) Delay in the Internet, used to ground the project's 'network round-trip is the moat' latency-floor argument against cloud RAG.",
+      "tags": [
+        "research-note",
+        "prior-art",
+        "network-latency",
+        "rtt",
+        "latency-floor"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "document:docs/research/index/_per_source/paper-2305.14314.md",
+      "type": "document",
+      "name": "paper-2305.14314.md",
+      "filePath": "docs/research/index/_per_source/paper-2305.14314.md",
+      "summary": "Per-source research note (Arxiv redirect placeholder) representing a deferred or stub reference in the prior-art index; minimal note pending full ingestion.",
+      "tags": [
+        "research-note",
+        "prior-art",
+        "stub",
+        "deferred"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "document:docs/research/index/_per_source/paper-2308.14963.md",
+      "type": "document",
+      "name": "paper-2308.14963.md",
+      "filePath": "docs/research/index/_per_source/paper-2308.14963.md",
+      "summary": "Per-source research note on 'Vector Search with OpenAI Embeddings: Lucene Is All You Need', cited as evidence that simple inverted-index/brute-force search competes with purpose-built ANN at modest scale — supporting the Stage 0 flat-array cosine choice.",
+      "tags": [
+        "research-note",
+        "prior-art",
+        "vector-search",
+        "lucene",
+        "ann-baseline"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "document:docs/research/index/_per_source/paper-2401.02385.md",
+      "type": "document",
+      "name": "paper-2401.02385.md",
+      "filePath": "docs/research/index/_per_source/paper-2401.02385.md",
+      "summary": "Per-source research note on 'The Faiss Library', the canonical reference for production vector search; used as the comparison baseline when discussing on-device vector search trade-offs.",
+      "tags": [
+        "research-note",
+        "prior-art",
+        "vector-search",
+        "faiss",
+        "ann"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "document:docs/research/index/_per_source/paper-2402.00841.md",
+      "type": "document",
+      "name": "paper-2402.00841.md",
+      "filePath": "docs/research/index/_per_source/paper-2402.00841.md",
+      "summary": "Per-source research note on 'Tiny Titans' (FLAN-T5-Large rivals zero-shot 7B–70B on meeting summarization) — primary evidence for the specialist-small-models thesis that narrow fine-tuned small models can beat generalist big ones.",
+      "tags": [
+        "research-note",
+        "prior-art",
+        "specialist-models",
+        "small-language-models",
+        "fine-tuning"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "document:docs/research/index/_per_source/paper-2402.01613.md",
+      "type": "document",
+      "name": "paper-2402.01613.md",
+      "filePath": "docs/research/index/_per_source/paper-2402.01613.md",
+      "summary": "Per-source research note on Nomic Embed v1.5 (137M params, Matryoshka 64–768 dims), a primary backup candidate for the on-device embedding model role since Cactus ships the related nomic-embed-text-v2-moe.",
+      "tags": [
+        "research-note",
+        "prior-art",
+        "embeddings",
+        "nomic-embed",
+        "on-device"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "document:docs/research/index/_per_source/paper-2402.04351.md",
+      "type": "document",
+      "name": "paper-2402.04351.md",
+      "filePath": "docs/research/index/_per_source/paper-2402.04351.md",
+      "summary": "Per-source research note on numerical stability of Transformer inference, complementing the embedding-determinism work and informing what to instrument when measuring cross-platform cosine parity.",
+      "tags": [
+        "research-note",
+        "prior-art",
+        "determinism",
+        "numerical-stability",
+        "transformer-inference"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "document:docs/research/index/_per_source/paper-2403.12844.md",
+      "type": "document",
+      "name": "paper-2403.12844.md",
+      "filePath": "docs/research/index/_per_source/paper-2403.12844.md",
+      "summary": "Per-source research note on MELTing Point (Mobile Evaluation of Language Transformers) — the project's primary source for realistic on-device LLM latency, memory, energy and accuracy numbers on iOS and Android.",
+      "tags": [
+        "research-note",
+        "prior-art",
+        "mobile-llm",
+        "benchmark",
+        "melt"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "document:docs/research/index/_per_source/paper-2404.14219.md",
+      "type": "document",
+      "name": "paper-2404.14219.md",
+      "filePath": "docs/research/index/_per_source/paper-2404.14219.md",
+      "summary": "Per-source research note on the Phi-3 Mini technical report — strong-for-size scores under MIT license; a candidate generalist LLM for the Stage 0 demo where license cleanliness matters.",
+      "tags": [
+        "research-note",
+        "prior-art",
+        "small-language-models",
+        "phi-3",
+        "on-device-llm"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "document:docs/research/index/_per_source/paper-2405.00732.md",
+      "type": "document",
+      "name": "paper-2405.00732.md",
+      "filePath": "docs/research/index/_per_source/paper-2405.00732.md",
+      "summary": "Per-source research note on LoRA Land (310 fine-tuned 7B-scale LoRAs rivaling GPT-4 on narrow tasks) — secondary defense of the specialist-small-models future-work thesis.",
+      "tags": [
+        "research-note",
+        "prior-art",
+        "lora",
+        "specialist-models",
+        "fine-tuning"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "document:docs/research/index/_per_source/paper-2406.10290.md",
+      "type": "document",
+      "name": "paper-2406.10290.md",
+      "filePath": "docs/research/index/_per_source/paper-2406.10290.md",
+      "summary": "Per-source research note on MobileAIBench — the project's secondary mobile-LLM benchmark source (complementary to MELT) for picking 1B–3B candidates across iPhone and Android.",
+      "tags": [
+        "research-note",
+        "prior-art",
+        "mobile-llm",
+        "benchmark",
+        "mobileaibench"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "document:docs/research/index/_per_source/paper-2407.07871.md",
+      "type": "document",
+      "name": "paper-2407.07871.md",
+      "filePath": "docs/research/index/_per_source/paper-2407.07871.md",
+      "summary": "Per-source research note on 'Enhancing HNSW Index for Real-Time Updates' — documents the unreachable-points phenomenon under concurrent inserts/deletes, motivating the Stage 0 choice of flat-array brute-force cosine over HNSW.",
+      "tags": [
+        "research-note",
+        "prior-art",
+        "hnsw",
+        "vector-search",
+        "concurrency"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "document:docs/research/index/_per_source/paper-2409.00088.md",
+      "type": "document",
+      "name": "paper-2409.00088.md",
+      "filePath": "docs/research/index/_per_source/paper-2409.00088.md",
+      "summary": "Per-source research note on 'On-Device Language Models: A Comprehensive Review' — survey-level grounding for the small-LLM ecosystem section of the writeup.",
+      "tags": [
+        "research-note",
+        "prior-art",
+        "on-device-llm",
+        "survey",
+        "small-language-models"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "document:docs/research/index/_per_source/paper-2412.04922.md",
+      "type": "document",
+      "name": "paper-2412.04922.md",
+      "filePath": "docs/research/index/_per_source/paper-2412.04922.md",
+      "summary": "Per-source research note on 'Large Language Models for Ingredient Substitution' — closest published prior art for the recipes-corpus structured-merge quality question that the Stage 0 specialist screen has to answer.",
+      "tags": [
+        "research-note",
+        "prior-art",
+        "recipes",
+        "ingredient-substitution",
+        "domain-llm"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "document:docs/research/index/_per_source/paper-2412.21023.md",
+      "type": "document",
+      "name": "paper-2412.21023.md",
+      "filePath": "docs/research/index/_per_source/paper-2412.21023.md",
+      "summary": "Per-source research note on EdgeRAG (Edge-Device Retrieval-Augmented Generation), reporting 131% retrieval-latency improvement vs CPU baseline — supporting the on-device latency-floor argument.",
+      "tags": [
+        "research-note",
+        "prior-art",
+        "edge-rag",
+        "on-device-rag",
+        "retrieval-latency"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "document:docs/research/index/_per_source/paper-2504.06135.md",
+      "type": "document",
+      "name": "paper-2504.06135.md",
+      "filePath": "docs/research/index/_per_source/paper-2504.06135.md",
+      "summary": "Per-source research note on SHIMI (Semantic Hierarchical Memory Index for Scalable Agent Reasoning) — closest prior art for 'treat the memory as a CRDT' with Merkle-DAG summaries and CRDT-style merging, though server-class rather than phone-class.",
+      "tags": [
+        "research-note",
+        "prior-art",
+        "decentralized-memory",
+        "crdt",
+        "shimi"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "document:docs/research/index/_per_source/paper-2505.00443.md",
+      "type": "document",
+      "name": "paper-2505.00443.md",
+      "filePath": "docs/research/index/_per_source/paper-2505.00443.md",
+      "summary": "Per-source research note on DRAG (Distributed Retrieval-Augmented Generation) — the closest published prior art to the Mesh RAG thesis (P2P RAG, no central index), instructive because it uses overlay routing rather than CRDT merge.",
+      "tags": [
+        "research-note",
+        "prior-art",
+        "p2p-rag",
+        "drag",
+        "distributed-rag"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "document:docs/research/index/_per_source/paper-2505.09388.md",
+      "type": "document",
+      "name": "paper-2505.09388.md",
+      "filePath": "docs/research/index/_per_source/paper-2505.09388.md",
+      "summary": "Per-source research note on EmbeddingGemma 300M (Powerful and Lightweight Text Representations) — the project's primary candidate on-device embedding model, with Matryoshka dims and sub-22ms EdgeTPU latency.",
+      "tags": [
+        "research-note",
+        "prior-art",
+        "embeddings",
+        "embeddinggemma",
+        "on-device"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "document:docs/research/index/_per_source/paper-2505.11783.md",
+      "type": "document",
+      "name": "paper-2505.11783.md",
+      "filePath": "docs/research/index/_per_source/paper-2505.11783.md",
+      "summary": "Per-source research note on d-HNSW (Efficient Vector Search on Disaggregated Memory) — relevant prior art on distributed HNSW variants, contrasted with the project's flat-array Stage 0 choice.",
+      "tags": [
+        "research-note",
+        "prior-art",
+        "hnsw",
+        "distributed-memory",
+        "vector-search"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "document:docs/research/index/_per_source/paper-2505.14992.md",
+      "type": "document",
+      "name": "paper-2505.14992.md",
+      "filePath": "docs/research/index/_per_source/paper-2505.14992.md",
+      "summary": "Per-source research note on 'Schema-aware Information Extraction Using On-Device Large Language Models' — closest prior art for structured extraction on phones, relevant to the recipes-merge specialist screen.",
+      "tags": [
+        "research-note",
+        "prior-art",
+        "structured-extraction",
+        "on-device-llm",
+        "schema-aware"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "document:docs/research/index/_per_source/paper-2506.05176.md",
+      "type": "document",
+      "name": "paper-2506.05176.md",
+      "filePath": "docs/research/index/_per_source/paper-2506.05176.md",
+      "summary": "Per-source research note on Qwen3 Embedding (multilingual, deterministic embeddings for on-device and mobile) — alternative embedding candidate in the same class as EmbeddingGemma and Nomic-v1.5.",
+      "tags": [
+        "research-note",
+        "prior-art",
+        "embeddings",
+        "qwen3-embedding",
+        "on-device"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "document:docs/research/index/_per_source/paper-2506.09501.md",
+      "type": "document",
+      "name": "paper-2506.09501.md",
+      "filePath": "docs/research/index/_per_source/paper-2506.09501.md",
+      "summary": "Per-source research note on 'Understanding and Mitigating Numerical Sources of Nondeterminism' — quantifies FP32 vs FP16 vs BF16 vs INT cross-GPU divergence, directly informing the Cactus iOS↔Android embedding-parity holdout.",
+      "tags": [
+        "research-note",
+        "prior-art",
+        "determinism",
+        "numerical-precision",
+        "quantization"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "document:docs/research/index/_per_source/paper-2507.01079.md",
+      "type": "document",
+      "name": "paper-2507.01079.md",
+      "filePath": "docs/research/index/_per_source/paper-2507.01079.md",
+      "summary": "Per-source research note on MobileRAG (fast, memory- and energy-efficient on-device RAG with EcoVector ANN and selective content reduction) — the closest measured end-to-end on-device RAG pipeline on real phones.",
+      "tags": [
+        "research-note",
+        "prior-art",
+        "mobile-rag",
+        "on-device-rag",
+        "ecovector"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "document:docs/research/index/_per_source/paper-2507.17647.md",
+      "type": "document",
+      "name": "paper-2507.17647.md",
+      "filePath": "docs/research/index/_per_source/paper-2507.17647.md",
+      "summary": "Per-source research note on SHINE (Scalable HNSW Index in Disaggregated Memory) — large-scale HNSW prior art, complementary to d-HNSW and SHIMI in the decentralized-memory section.",
+      "tags": [
+        "research-note",
+        "prior-art",
+        "hnsw",
+        "disaggregated-memory",
+        "vector-search"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "document:docs/research/index/_per_source/paper-2509.20354.md",
+      "type": "document",
+      "name": "paper-2509.20354.md",
+      "filePath": "docs/research/index/_per_source/paper-2509.20354.md",
+      "summary": "Research note on the EmbeddingGemma 300M paper (arXiv 2509.20354), framing it as the primary candidate small embedding model for the Mesh RAG demo — sub-200MB quantized, Matryoshka dims, top open <500M on MTEB.",
+      "tags": [
+        "research-note",
+        "embedding-model",
+        "embeddinggemma",
+        "on-device-ai",
+        "matryoshka"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "document:docs/research/index/_per_source/paper-2602.17099.md",
+      "type": "document",
+      "name": "paper-2602.17099.md",
+      "filePath": "docs/research/index/_per_source/paper-2602.17099.md",
+      "summary": "Research note on Understanding and Mitigating Numerical Sources of Nondeterminism in LLMs, quantifying FP32/FP16/BF16 cross-GPU divergence and supporting the embedding-determinism holdout argument.",
+      "tags": [
+        "research-note",
+        "determinism",
+        "numerical-stability",
+        "quantization",
+        "reproducibility"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "document:docs/research/index/_per_source/repo-asg017-sqlite-vec.md",
+      "type": "document",
+      "name": "repo-asg017-sqlite-vec.md",
+      "filePath": "docs/research/index/_per_source/repo-asg017-sqlite-vec.md",
+      "summary": "Research note on sqlite-vec, a pure-C SQLite vector search extension with pre-compiled iOS and Android NDK ABIs — evaluated as a persistence option but not the Stage 0 choice since Ditto already provides storage.",
+      "tags": [
+        "research-note",
+        "vector-search",
+        "sqlite",
+        "mobile",
+        "persistence"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "document:docs/research/index/_per_source/repo-deepsense-ai-edge-slm.md",
+      "type": "document",
+      "name": "repo-deepsense-ai-edge-slm.md",
+      "filePath": "docs/research/index/_per_source/repo-deepsense-ai-edge-slm.md",
+      "summary": "Research note on DeepSense's edge-slm — an Android-native on-device RAG pipeline (llama.cpp backend, tested with Phi-2/Gemma/TinyLlama) treated as the closest reference architecture for everything-on-device RAG without mesh sync.",
+      "tags": [
+        "research-note",
+        "reference-architecture",
+        "on-device-rag",
+        "android",
+        "slm"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "document:docs/research/index/_per_source/repo-developermindset-com-faiss-mobile.md",
+      "type": "document",
+      "name": "repo-developermindset-com-faiss-mobile.md",
+      "filePath": "docs/research/index/_per_source/repo-developermindset-com-faiss-mobile.md",
+      "summary": "Research note on the faiss-mobile community port (Apple-only — iOS/macOS/tvOS/watchOS), evaluated and rejected as a Stage 0 vector search option because it lacks Android support.",
+      "tags": [
+        "research-note",
+        "vector-search",
+        "faiss",
+        "ios-only",
+        "rejected-option"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "document:docs/research/index/_per_source/repo-earthstar-project-earthstar.md",
+      "type": "document",
+      "name": "repo-earthstar-project-earthstar.md",
+      "filePath": "docs/research/index/_per_source/repo-earthstar-project-earthstar.md",
+      "summary": "Research note on Earthstar, a distributed storage protocol for P2P networks evaluated as a comparison point against Ditto for the mesh-sync transport layer.",
+      "tags": [
+        "research-note",
+        "p2p",
+        "distributed-storage",
+        "sync-protocol",
+        "alternative"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "document:docs/research/index/_per_source/repo-earthstar-project-willow-rs.md",
+      "type": "document",
+      "name": "repo-earthstar-project-willow-rs.md",
+      "filePath": "docs/research/index/_per_source/repo-earthstar-project-willow-rs.md",
+      "summary": "Research note on willow-rs, the Rust implementation of the Willow Protocol providing partial sync with private set intersection — a mobile-friendly alternative sync-layer worth knowing about.",
+      "tags": [
+        "research-note",
+        "p2p",
+        "willow-protocol",
+        "rust",
+        "partial-sync"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "document:docs/research/index/_per_source/repo-facebookresearch-faiss.md",
+      "type": "document",
+      "name": "repo-facebookresearch-faiss.md",
+      "filePath": "docs/research/index/_per_source/repo-facebookresearch-faiss.md",
+      "summary": "Research note on Facebook's FAISS, the canonical vector similarity search library — referenced as the comparison baseline that USearch claims to outperform 10×, but not directly used since FAISS lacks first-class mobile bindings.",
+      "tags": [
+        "research-note",
+        "vector-search",
+        "faiss",
+        "baseline",
+        "ann"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "document:docs/research/index/_per_source/repo-getditto-demoapp-chat.md",
+      "type": "document",
+      "name": "repo-getditto-demoapp-chat.md",
+      "filePath": "docs/research/index/_per_source/repo-getditto-demoapp-chat.md",
+      "summary": "Research note on the official Ditto Chat demo app (iOS + Android), studied as a reference for what a working Ditto cross-platform mesh app looks like end-to-end.",
+      "tags": [
+        "research-note",
+        "ditto",
+        "reference-app",
+        "mesh-chat",
+        "cross-platform"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "document:docs/research/index/_per_source/repo-getditto-demoapp-inventory.md",
+      "type": "document",
+      "name": "repo-getditto-demoapp-inventory.md",
+      "filePath": "docs/research/index/_per_source/repo-getditto-demoapp-inventory.md",
+      "summary": "Research note on the Ditto Inventory demo app, evaluated as a reference for shared-counter / shared-state CRDT patterns on mobile that we can adapt for the RecipeTuple document model.",
+      "tags": [
+        "research-note",
+        "ditto",
+        "reference-app",
+        "crdt",
+        "shared-state"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "document:docs/research/index/_per_source/repo-getditto-demoapp-pos-kds.md",
+      "type": "document",
+      "name": "repo-getditto-demoapp-pos-kds.md",
+      "filePath": "docs/research/index/_per_source/repo-getditto-demoapp-pos-kds.md",
+      "summary": "Research note on the DittoPOS point-of-sale + kitchen-display demo app, studied for its multi-device mesh ergonomics and as a polished Ditto cross-platform reference build.",
+      "tags": [
+        "research-note",
+        "ditto",
+        "reference-app",
+        "point-of-sale",
+        "multi-device"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "document:docs/research/index/_per_source/repo-getditto-samples.md",
+      "type": "document",
+      "name": "repo-getditto-samples.md",
+      "filePath": "docs/research/index/_per_source/repo-getditto-samples.md",
+      "summary": "Research note on Ditto's official sample-project catalog, a meta-reference for picking platform-specific starting points across Swift, Kotlin, Flutter, and React Native.",
+      "tags": [
+        "research-note",
+        "ditto",
+        "samples",
+        "starter-code",
+        "multi-platform"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "document:docs/research/index/_per_source/repo-ggml-org-ggml.md",
+      "type": "document",
+      "name": "repo-ggml-org-ggml.md",
+      "filePath": "docs/research/index/_per_source/repo-ggml-org-ggml.md",
+      "summary": "Research note on ggml / GGUF, the quantized model format and tensor runtime underlying llama.cpp and Cactus — central to the determinism story since INT4/INT8 quantized GGUF kernels are the most reproducible inference path.",
+      "tags": [
+        "research-note",
+        "ggml",
+        "gguf",
+        "quantization",
+        "inference-runtime"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "document:docs/research/index/_per_source/repo-google-ai-edge-gallery.md",
+      "type": "document",
+      "name": "repo-google-ai-edge-gallery.md",
+      "filePath": "docs/research/index/_per_source/repo-google-ai-edge-gallery.md",
+      "summary": "Research note on Google's AI Edge Gallery — an on-device LLM sandbox app that ships Gemma 3 1B IT and Gemma 2 2B IT via MediaPipe / LiteRT, used as a reference for the on-device generalist LLM end of the demo.",
+      "tags": [
+        "research-note",
+        "on-device-llm",
+        "gemma",
+        "litert",
+        "reference-app"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "document:docs/research/index/_per_source/repo-hakimel-reveal-js.md",
+      "type": "document",
+      "name": "repo-hakimel-reveal-js.md",
+      "filePath": "docs/research/index/_per_source/repo-hakimel-reveal-js.md",
+      "summary": "Research note on reveal.js, the long-standing web-based HTML presentation framework, evaluated as a fallback deck tool but not chosen since Presenterm fits the Markdown-source-controlled hackathon repo better.",
+      "tags": [
+        "research-note",
+        "presentation",
+        "reveal-js",
+        "deck",
+        "fallback-option"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "document:docs/research/index/_per_source/repo-libp2p-go-libp2p.md",
+      "type": "document",
+      "name": "repo-libp2p-go-libp2p.md",
+      "filePath": "docs/research/index/_per_source/repo-libp2p-go-libp2p.md",
+      "summary": "Research note on libp2p (Go implementation), evaluated as a P2P transport alternative — feature-rich but heavyweight on mobile and lacking BLE, so rejected in favor of Ditto.",
+      "tags": [
+        "research-note",
+        "p2p",
+        "libp2p",
+        "transport",
+        "rejected-option"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "document:docs/research/index/_per_source/repo-loro-dev-loro.md",
+      "type": "document",
+      "name": "repo-loro-dev-loro.md",
+      "filePath": "docs/research/index/_per_source/repo-loro-dev-loro.md",
+      "summary": "Research note on Loro, a high-performance CRDT library (Rust + JS + Swift bindings) evaluated alongside Yjs and Automerge as a CRDT alternative — not chosen because Ditto already bundles CRDT + transport.",
+      "tags": [
+        "research-note",
+        "crdt",
+        "loro",
+        "rust",
+        "alternative"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "document:docs/research/index/_per_source/repo-mfontanini-presenterm.md",
+      "type": "document",
+      "name": "repo-mfontanini-presenterm.md",
+      "filePath": "docs/research/index/_per_source/repo-mfontanini-presenterm.md",
+      "summary": "Research note on Presenterm, the Rust-based terminal Markdown deck tool chosen as the primary slide framework for the Mesh RAG hackathon demo — supports Mermaid, code execution, speaker notes, and PDF export.",
+      "tags": [
+        "research-note",
+        "presentation",
+        "presenterm",
+        "markdown",
+        "primary-choice"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "document:docs/research/index/_per_source/repo-mlc-ai-mlc-llm.md",
+      "type": "document",
+      "name": "repo-mlc-ai-mlc-llm.md",
+      "filePath": "docs/research/index/_per_source/repo-mlc-ai-mlc-llm.md",
+      "summary": "Research note on MLC LLM, the universal multi-backend mobile LLM compiler (Metal on iOS, OpenCL on Adreno/Mali), referenced as a benchmarked alternative inference engine to Cactus and llama.cpp.",
+      "tags": [
+        "research-note",
+        "mlc-llm",
+        "on-device-llm",
+        "mobile-inference",
+        "alternative"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "document:docs/research/index/_per_source/repo-n0-computer-iroh.md",
+      "type": "document",
+      "name": "repo-n0-computer-iroh.md",
+      "filePath": "docs/research/index/_per_source/repo-n0-computer-iroh.md",
+      "summary": "Research note on iroh, the QUIC-based P2P library with mobile builds (iOS, Android, WASM) — the next-best alternative to Ditto but rejected because iroh lacks a BLE transport.",
+      "tags": [
+        "research-note",
+        "p2p",
+        "iroh",
+        "quic",
+        "alternative"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "document:docs/research/index/_per_source/repo-orbitdb-orbitdb.md",
+      "type": "document",
+      "name": "repo-orbitdb-orbitdb.md",
+      "filePath": "docs/research/index/_per_source/repo-orbitdb-orbitdb.md",
+      "summary": "Research note on OrbitDB, a CRDT-based distributed database on top of IPFS — surveyed as a peer-to-peer datastore alternative and as adjacent prior art for CRDT-merged structured stores.",
+      "tags": [
+        "research-note",
+        "crdt",
+        "orbitdb",
+        "ipfs",
+        "distributed-database"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "document:docs/research/index/_per_source/repo-permissionlesstech-bitchat-android.md",
+      "type": "document",
+      "name": "repo-permissionlesstech-bitchat-android.md",
+      "filePath": "docs/research/index/_per_source/repo-permissionlesstech-bitchat-android.md",
+      "summary": "Research note on bitchat-android, the Android port of the public-domain BLE-mesh chat app — studied for BLE-mesh ergonomics (peer discovery UX, foregrounding, mesh-state indicators) on the Android side.",
+      "tags": [
+        "research-note",
+        "ble-mesh",
+        "bitchat",
+        "android",
+        "ux-reference"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "document:docs/research/index/_per_source/repo-permissionlesstech-bitchat.md",
+      "type": "document",
+      "name": "repo-permissionlesstech-bitchat.md",
+      "filePath": "docs/research/index/_per_source/repo-permissionlesstech-bitchat.md",
+      "summary": "Research note on BitChat — the decentralized peer-to-peer messaging app (Bluetooth + Nostr) treated as the 2025 reference for what a working iOS/Android BLE-mesh app feels like and as the moment-of-magic demo UX baseline.",
+      "tags": [
+        "research-note",
+        "ble-mesh",
+        "bitchat",
+        "p2p-messaging",
+        "ux-reference"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "document:docs/research/index/_per_source/repo-qwenlm-qwen3-embedding.md",
+      "type": "document",
+      "name": "repo-qwenlm-qwen3-embedding.md",
+      "filePath": "docs/research/index/_per_source/repo-qwenlm-qwen3-embedding.md",
+      "summary": "Research note on the Qwen3 Embedding model family from QwenLM — an Apache-2.0 embedding option that Cactus packages directly, evaluated as a candidate alongside EmbeddingGemma and Nomic.",
+      "tags": [
+        "research-note",
+        "embedding-model",
+        "qwen3",
+        "apache-license",
+        "cactus-supported"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "document:docs/research/index/_per_source/repo-ramanujammv1988-edge-veda.md",
+      "type": "document",
+      "name": "repo-ramanujammv1988-edge-veda.md",
+      "filePath": "docs/research/index/_per_source/repo-ramanujammv1988-edge-veda.md",
+      "summary": "Research note on Edge-Veda, a Flutter on-device RAG reference architecture with dual-model (separate embedder + generator) design and source-attribution UX — a directly applicable model for the Mesh RAG Flutter demo.",
+      "tags": [
+        "research-note",
+        "reference-architecture",
+        "flutter",
+        "on-device-rag",
+        "edge-veda"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "document:docs/research/index/_per_source/repo-slidevjs-slidev.md",
+      "type": "document",
+      "name": "repo-slidevjs-slidev.md",
+      "filePath": "docs/research/index/_per_source/repo-slidevjs-slidev.md",
+      "summary": "Per-source research note on Slidev (Vite + Vue 3 + Markdown presentation framework), evaluated as a secondary slide-deck option for the Stage 0 writeup behind Presenterm.",
+      "tags": [
+        "research-note",
+        "prior-art",
+        "presentation",
+        "demo-tooling",
+        "documentation"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "document:docs/research/index/_per_source/repo-software-mansion-labs-react-native-rag.md",
+      "type": "document",
+      "name": "repo-software-mansion-labs-react-native-rag.md",
+      "filePath": "docs/research/index/_per_source/repo-software-mansion-labs-react-native-rag.md",
+      "summary": "Per-source research note on Software Mansion's react-native-rag reference architecture, used to lift modular Embeddings/VectorStore/LLM seam shapes onto a Cactus-backed Flutter implementation.",
+      "tags": [
+        "research-note",
+        "prior-art",
+        "rag",
+        "reference-architecture",
+        "documentation"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "document:docs/research/index/_per_source/repo-spotify-annoy.md",
+      "type": "document",
+      "name": "repo-spotify-annoy.md",
+      "filePath": "docs/research/index/_per_source/repo-spotify-annoy.md",
+      "summary": "Per-source research note on Spotify's Annoy ANN library, captured as background for the vector-search escape hatch but not chosen for Stage 0 since brute-force cosine over a flat array suffices at <=5k tuples.",
+      "tags": [
+        "research-note",
+        "prior-art",
+        "vector-search",
+        "ann",
+        "documentation"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "document:docs/research/index/_per_source/repo-thinking-machines-lab-batch-invariant-ops.md",
+      "type": "document",
+      "name": "repo-thinking-machines-lab-batch-invariant-ops.md",
+      "filePath": "docs/research/index/_per_source/repo-thinking-machines-lab-batch-invariant-ops.md",
+      "summary": "Per-source research note on Thinking Machines' batch-invariant ops reference implementation, the load-bearing source for engineering iOS/Android embedding determinism (single-sample paths, fixed reduction order).",
+      "tags": [
+        "research-note",
+        "prior-art",
+        "determinism",
+        "embeddings",
+        "documentation"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "document:docs/research/index/_per_source/repo-ukplab-sentence-transformers.md",
+      "type": "document",
+      "name": "repo-ukplab-sentence-transformers.md",
+      "filePath": "docs/research/index/_per_source/repo-ukplab-sentence-transformers.md",
+      "summary": "Per-source research note on UKP Lab's sentence-transformers library, evaluated for the all-MiniLM-L6-v2 floor option and as the canonical small-embedding ecosystem baseline.",
+      "tags": [
+        "research-note",
+        "prior-art",
+        "embeddings",
+        "sentence-transformers",
+        "documentation"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "document:docs/research/index/_per_source/repo-unickcheng-logseq-ai-assistant.md",
+      "type": "document",
+      "name": "repo-unickcheng-logseq-ai-assistant.md",
+      "filePath": "docs/research/index/_per_source/repo-unickcheng-logseq-ai-assistant.md",
+      "summary": "Per-source research note on the Logseq AI assistant plugin, treated as a local-first AI near-miss that runs local LLMs but does not sync the RAG corpus peer-to-peer.",
+      "tags": [
+        "research-note",
+        "prior-art",
+        "local-first",
+        "plugin",
+        "documentation"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "document:docs/research/index/_per_source/repo-unum-cloud-usearch.md",
+      "type": "document",
+      "name": "repo-unum-cloud-usearch.md",
+      "filePath": "docs/research/index/_per_source/repo-unum-cloud-usearch.md",
+      "summary": "Per-source research note on Unum Cloud's USearch single-header C++11 vector index, selected as the Stage-0 ANN escape hatch when corpus size outgrows the brute-force flat-array path.",
+      "tags": [
+        "research-note",
+        "prior-art",
+        "vector-search",
+        "ann",
+        "documentation"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "document:docs/research/index/_per_source/repo-yjs-yjs.md",
+      "type": "document",
+      "name": "repo-yjs-yjs.md",
+      "filePath": "docs/research/index/_per_source/repo-yjs-yjs.md",
+      "summary": "Per-source research note on Yjs CRDT framework, captured as CRDT-library background that the project deliberately does not use because Ditto subsumes the merge layer.",
+      "tags": [
+        "research-note",
+        "prior-art",
+        "crdt",
+        "background",
+        "documentation"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "document:docs/research/index/by-tag.md",
+      "type": "document",
+      "name": "by-tag.md",
+      "filePath": "docs/research/index/by-tag.md",
+      "summary": "Alphabetical tag index across all per-source research notes, grouping prior-art into navigable buckets from A through Z to support cross-cutting lookups by keyword.",
+      "tags": [
+        "research-index",
+        "tag-index",
+        "navigation",
+        "documentation"
+      ],
+      "complexity": "complex"
+    },
+    {
+      "id": "document:docs/research/index/by-topic.md",
+      "type": "document",
+      "name": "by-topic.md",
+      "filePath": "docs/research/index/by-topic.md",
+      "summary": "Topic-organized index of prior-art research grouping sources under mesh sync, embedding determinism, on-device LLM frameworks, vector search, and writeup-framing themes.",
+      "tags": [
+        "research-index",
+        "topic-index",
+        "navigation",
+        "documentation"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "document:docs/research/index/clusters.md",
+      "type": "document",
+      "name": "clusters.md",
+      "filePath": "docs/research/index/clusters.md",
+      "summary": "Thematic clustering of research sources into ten architectural clusters (Ditto stack, mesh alternatives, CRDT theory, embedding determinism, on-device LLMs, retrieval layer, end-to-end RAG, HNSW, specialists, local-first framing).",
+      "tags": [
+        "research-index",
+        "clusters",
+        "synthesis",
+        "documentation"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "document:docs/research/index/cross-references.md",
+      "type": "document",
+      "name": "cross-references.md",
+      "filePath": "docs/research/index/cross-references.md",
+      "summary": "Edge-list of outgoing and incoming citations across per-source research notes, plus a section flagging unresolved citation targets likely originating from Map-phase hallucinations.",
+      "tags": [
+        "research-index",
+        "cross-references",
+        "citations",
+        "documentation"
+      ],
+      "complexity": "complex"
+    },
+    {
+      "id": "document:docs/research/index/open-questions.md",
+      "type": "document",
+      "name": "open-questions.md",
+      "filePath": "docs/research/index/open-questions.md",
+      "summary": "Catalogue of Stage 0 empirical open questions (Cactus iOS/Android parity, specialist parameter floor, RAG latency, Cactus+Ditto integration, iOS background BLE) plus the four-thread future-work arc framing the writeup.",
+      "tags": [
+        "research-index",
+        "open-questions",
+        "future-work",
+        "documentation"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "document:docs/research/index/top-N.md",
+      "type": "document",
+      "name": "top-N.md",
+      "filePath": "docs/research/index/top-N.md",
+      "summary": "Ranked top 12 must-read sources for Mesh RAG, with the Thinking Machines determinism essay at #1 and curated picks across Ditto docs, SHIMI, MobileRAG, local-first, MELTing Point, EmbeddingGemma, and vector-search escape hatches.",
+      "tags": [
+        "research-index",
+        "top-sources",
+        "ranking",
+        "documentation"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "document:docs/spikes/README.md",
+      "type": "document",
+      "name": "README.md",
+      "filePath": "docs/spikes/README.md",
+      "summary": "On-device spike runbook entry point with quick-start instructions for running the U2/U3/U7/U9 hardware spikes and pre-spike sanity checks.",
+      "tags": [
+        "documentation",
+        "runbook",
+        "spike",
+        "on-device"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "document:docs/spikes/U2-determinism-results.md",
+      "type": "document",
+      "name": "U2-determinism-results.md",
+      "filePath": "docs/spikes/U2-determinism-results.md",
+      "summary": "U2 spike record capturing the cross-platform embedding determinism procedure, fixture strings, measured cosine parity between iOS and Android, and the resulting go/no-go decision.",
+      "tags": [
+        "spike",
+        "determinism",
+        "embeddings",
+        "experiment",
+        "documentation"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "document:docs/spikes/U3-recipe-merge-eval.md",
+      "type": "document",
+      "name": "U3-recipe-merge-eval.md",
+      "filePath": "docs/spikes/U3-recipe-merge-eval.md",
+      "summary": "U3 spike record evaluating on-device recipe-merge LLM quality across audience-likely queries, with a rubric, candidate models, and a decision on whether recipes or cars is the demo corpus.",
+      "tags": [
+        "spike",
+        "llm-eval",
+        "recipes",
+        "experiment",
+        "documentation"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "document:docs/spikes/U7-sync-verification.md",
+      "type": "document",
+      "name": "U7-sync-verification.md",
+      "filePath": "docs/spikes/U7-sync-verification.md",
+      "summary": "U7 spike record verifying Ditto BLE/LAN mesh sync between two phones with bring-up status, the airplane-mode procedure, observed convergence behavior, and fallback steps.",
+      "tags": [
+        "spike",
+        "mesh-sync",
+        "ditto",
+        "experiment",
+        "documentation"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "document:docs/spikes/U9-demo-rehearsal.md",
+      "type": "document",
+      "name": "U9-demo-rehearsal.md",
+      "filePath": "docs/spikes/U9-demo-rehearsal.md",
+      "summary": "U9 demo rehearsal runbook with the preflight checklist, take blocking, rehearsal cadence, and fallback plan for the two-phone airplane-mode mesh RAG presentation.",
+      "tags": [
+        "spike",
+        "demo",
+        "rehearsal",
+        "runbook",
+        "documentation"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "config:ios/Flutter/AppFrameworkInfo.plist",
+      "type": "config",
+      "name": "AppFrameworkInfo.plist",
+      "filePath": "ios/Flutter/AppFrameworkInfo.plist",
+      "summary": "Flutter iOS framework Info.plist bundling the App.framework metadata used by the Runner host application.",
+      "tags": [
+        "configuration",
+        "ios",
+        "flutter",
+        "plist"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "config:ios/Runner.xcodeproj/project.xcworkspace/xcshareddata/IDEWorkspaceChecks.plist",
+      "type": "config",
+      "name": "IDEWorkspaceChecks.plist",
+      "filePath": "ios/Runner.xcodeproj/project.xcworkspace/xcshareddata/IDEWorkspaceChecks.plist",
+      "summary": "Xcode workspace checks plist storing the IDE's record that 32-bit upgrade compatibility checks have been performed for the Runner project.",
+      "tags": [
+        "configuration",
+        "ios",
+        "xcode",
+        "plist"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "config:ios/Runner.xcworkspace/xcshareddata/IDEWorkspaceChecks.plist",
+      "type": "config",
+      "name": "IDEWorkspaceChecks.plist",
+      "filePath": "ios/Runner.xcworkspace/xcshareddata/IDEWorkspaceChecks.plist",
+      "summary": "Xcode workspace checks plist for the shared Runner workspace tracking IDE compatibility-check state.",
+      "tags": [
+        "configuration",
+        "ios",
+        "xcode",
+        "plist"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "config:ios/Runner/Assets.xcassets/AppIcon.appiconset/Contents.json",
+      "type": "config",
+      "name": "Contents.json",
+      "filePath": "ios/Runner/Assets.xcassets/AppIcon.appiconset/Contents.json",
+      "summary": "Asset catalog manifest enumerating the iOS app icon image variants (sizes, idioms, scales) bundled with the Runner application.",
+      "tags": [
+        "configuration",
+        "ios",
+        "assets",
+        "app-icon"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "config:ios/Runner/Assets.xcassets/LaunchImage.imageset/Contents.json",
+      "type": "config",
+      "name": "Contents.json",
+      "filePath": "ios/Runner/Assets.xcassets/LaunchImage.imageset/Contents.json",
+      "summary": "Asset catalog manifest declaring the launch image variants at 1x/2x/3x scales for the iOS Runner application.",
+      "tags": [
+        "configuration",
+        "ios",
+        "assets",
+        "launch-image"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "document:ios/Runner/Assets.xcassets/LaunchImage.imageset/README.md",
+      "type": "document",
+      "name": "README.md",
+      "filePath": "ios/Runner/Assets.xcassets/LaunchImage.imageset/README.md",
+      "summary": "Brief README explaining how to customize the iOS launch screen assets in the Flutter Runner project.",
+      "tags": [
+        "documentation",
+        "ios",
+        "launch-image",
+        "assets"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "config:ios/Runner/Info.plist",
+      "type": "config",
+      "name": "Info.plist",
+      "filePath": "ios/Runner/Info.plist",
+      "summary": "iOS app bundle manifest for Mesh RAG Stage 0, declaring Bluetooth, local network, and Bonjour usage descriptions required for Ditto's BLE/Wi-Fi mesh sync between phones.",
+      "tags": [
+        "configuration",
+        "ios",
+        "permissions",
+        "bluetooth",
+        "infrastructure"
+      ],
+      "complexity": "simple",
+      "languageNotes": "NSBluetoothAlwaysUsageDescription + NSLocalNetworkUsageDescription + NSBonjourServices (_http-alt._tcp.) together are the iOS-side prerequisite for Ditto's peer-to-peer transport."
+    },
+    {
+      "id": "config:pubspec.yaml",
+      "type": "config",
+      "name": "pubspec.yaml",
+      "filePath": "pubspec.yaml",
+      "summary": "Flutter project manifest pinning the Stage 0 stack — cactus 1.3.0 for on-device LLM/embeddings, ditto_live 5.0.0 for CRDT mesh sync, permission_handler for BLE runtime grants, uuid for deterministic seed IDs — and bundling the per-phone seed_recipes_{a,b}.json assets.",
+      "tags": [
+        "configuration",
+        "flutter",
+        "dependencies",
+        "build-system",
+        "entry-point"
+      ],
+      "complexity": "simple",
+      "languageNotes": "version 0.1.0+1 with Dart SDK ^3.8.0; assets list is the contract that makes per-phone corpus slices loadable via rootBundle."
+    },
+    {
+      "id": "document:slides/deck.md",
+      "type": "document",
+      "name": "deck.md",
+      "filePath": "slides/deck.md",
+      "summary": "Presenterm slide deck (~10 min runtime) framing the Mesh RAG thesis — vector index as grow-only CRDT, two phones meeting over BLE, on-device retrieval beating cloud latency — and walking through architecture, live demo, scope honesty, and the four-thread specialist-models arc.",
+      "tags": [
+        "documentation",
+        "presentation",
+        "overview",
+        "thesis"
+      ],
+      "complexity": "moderate",
+      "languageNotes": "Presenterm-flavored markdown using `<!-- pause -->` / `<!-- end_slide -->` directives and a mermaid sequence diagram with `+render`; eight slides plus title."
+    },
+    {
+      "id": "document:slides/notes.md",
+      "type": "document",
+      "name": "notes.md",
+      "filePath": "slides/notes.md",
+      "summary": "Speaker notes for the Mesh RAG deck — per-slide timing budget, framing reminders (latency over cost), demo fallback choreography for BLE flakes, and Q&A pre-answers covering Ditto licensing, Qwen-vs-Llama, and iOS background BLE limits.",
+      "tags": [
+        "documentation",
+        "presentation",
+        "speaker-notes"
+      ],
+      "complexity": "simple"
+    }
+  ],
+  "edges": [
+    {
+      "source": "file:lib/main.dart",
+      "target": "file:lib/services/cactus_service.dart",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:lib/main.dart",
+      "target": "file:lib/services/ditto_service.dart",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:lib/main.dart",
+      "target": "file:lib/services/retrieval_service.dart",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:lib/main.dart",
+      "target": "file:lib/services/seed_loader.dart",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:lib/main.dart",
+      "target": "file:lib/widgets/query_screen.dart",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:lib/prompts/recipe_merge.dart",
+      "target": "file:lib/services/retrieval_service.dart",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:lib/main.dart",
+      "target": "function:lib/main.dart:main",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:lib/main.dart",
+      "target": "class:lib/main.dart:MeshRagApp",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:lib/main.dart",
+      "target": "class:lib/main.dart:BootScreen",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:lib/main.dart",
+      "target": "class:lib/main.dart:_BootScreenState",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:lib/models/recipe_tuple.dart",
+      "target": "class:lib/models/recipe_tuple.dart:RecipeTuple",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:lib/prompts/dql_queries.dart",
+      "target": "class:lib/prompts/dql_queries.dart:RecipeQueries",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:lib/prompts/recipe_merge.dart",
+      "target": "class:lib/prompts/recipe_merge.dart:RecipeMergePrompt",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:ios/Runner/AppDelegate.swift",
+      "target": "class:ios/Runner/AppDelegate.swift:AppDelegate",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:lib/main.dart",
+      "target": "function:lib/main.dart:main",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:lib/main.dart",
+      "target": "class:lib/main.dart:MeshRagApp",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:lib/main.dart",
+      "target": "class:lib/main.dart:BootScreen",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:lib/models/recipe_tuple.dart",
+      "target": "class:lib/models/recipe_tuple.dart:RecipeTuple",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:lib/prompts/dql_queries.dart",
+      "target": "class:lib/prompts/dql_queries.dart:RecipeQueries",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:lib/prompts/recipe_merge.dart",
+      "target": "class:lib/prompts/recipe_merge.dart:RecipeMergePrompt",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:ios/Runner/AppDelegate.swift",
+      "target": "class:ios/Runner/AppDelegate.swift:AppDelegate",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:android/settings.gradle.kts",
+      "target": "file:android/app/build.gradle.kts",
+      "type": "configures",
+      "direction": "forward",
+      "weight": 0.6
+    },
+    {
+      "source": "file:android/build.gradle.kts",
+      "target": "file:android/app/build.gradle.kts",
+      "type": "configures",
+      "direction": "forward",
+      "weight": 0.6
+    },
+    {
+      "source": "file:android/app/build.gradle.kts",
+      "target": "file:android/app/src/main/kotlin/com/ditto/meshrag/mesh_rag_demo/MainActivity.kt",
+      "type": "configures",
+      "direction": "forward",
+      "weight": 0.6
+    },
+    {
+      "source": "file:android/app/build.gradle.kts",
+      "target": "file:lib/main.dart",
+      "type": "deploys",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:ios/Podfile",
+      "target": "file:ios/Runner/AppDelegate.swift",
+      "type": "configures",
+      "direction": "forward",
+      "weight": 0.6
+    },
+    {
+      "source": "file:ios/Flutter/Debug.xcconfig",
+      "target": "file:ios/Runner.xcodeproj/project.pbxproj",
+      "type": "configures",
+      "direction": "forward",
+      "weight": 0.6
+    },
+    {
+      "source": "file:ios/Flutter/Release.xcconfig",
+      "target": "file:ios/Runner.xcodeproj/project.pbxproj",
+      "type": "configures",
+      "direction": "forward",
+      "weight": 0.6
+    },
+    {
+      "source": "file:ios/Runner.xcodeproj/project.pbxproj",
+      "target": "file:ios/Runner/AppDelegate.swift",
+      "type": "configures",
+      "direction": "forward",
+      "weight": 0.6
+    },
+    {
+      "source": "file:ios/Runner.xcodeproj/xcshareddata/xcschemes/Runner.xcscheme",
+      "target": "file:ios/Runner.xcodeproj/project.pbxproj",
+      "type": "configures",
+      "direction": "forward",
+      "weight": 0.6
+    },
+    {
+      "source": "file:ios/Runner.xcworkspace/contents.xcworkspacedata",
+      "target": "file:ios/Runner.xcodeproj/project.pbxproj",
+      "type": "depends_on",
+      "direction": "forward",
+      "weight": 0.6
+    },
+    {
+      "source": "file:ios/Runner.xcodeproj/project.xcworkspace/contents.xcworkspacedata",
+      "target": "file:ios/Runner.xcodeproj/project.pbxproj",
+      "type": "depends_on",
+      "direction": "forward",
+      "weight": 0.6
+    },
+    {
+      "source": "file:ios/Runner.xcodeproj/project.xcworkspace/xcshareddata/WorkspaceSettings.xcsettings",
+      "target": "file:ios/Runner.xcodeproj/project.xcworkspace/contents.xcworkspacedata",
+      "type": "configures",
+      "direction": "forward",
+      "weight": 0.6
+    },
+    {
+      "source": "file:ios/Runner.xcworkspace/xcshareddata/WorkspaceSettings.xcsettings",
+      "target": "file:ios/Runner.xcworkspace/contents.xcworkspacedata",
+      "type": "configures",
+      "direction": "forward",
+      "weight": 0.6
+    },
+    {
+      "source": "file:justfile",
+      "target": "file:docs/c4/model.c4",
+      "type": "triggers",
+      "direction": "forward",
+      "weight": 0.6
+    },
+    {
+      "source": "file:docs/c4/model.c4",
+      "target": "file:lib/main.dart",
+      "type": "documents",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "file:lib/prompts/recipe_merge.dart",
+      "target": "file:lib/models/recipe_tuple.dart",
+      "type": "depends_on",
+      "direction": "forward",
+      "weight": 0.6
+    },
+    {
+      "source": "file:lib/prompts/dql_queries.dart",
+      "target": "file:lib/models/recipe_tuple.dart",
+      "type": "related",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "file:lib/services/cactus_service.dart",
+      "target": "class:lib/services/cactus_service.dart:CactusService",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:lib/services/cactus_service.dart",
+      "target": "function:lib/services/cactus_service.dart:initialize",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:lib/services/cactus_service.dart",
+      "target": "function:lib/services/cactus_service.dart:complete",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:lib/services/cactus_service.dart",
+      "target": "class:lib/services/cactus_service.dart:CactusService",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:lib/services/ditto_service.dart",
+      "target": "class:lib/services/ditto_service.dart:DittoService",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:lib/services/ditto_service.dart",
+      "target": "function:lib/services/ditto_service.dart:initialize",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:lib/services/ditto_service.dart",
+      "target": "function:lib/services/ditto_service.dart:subscribeToRecipes",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:lib/services/ditto_service.dart",
+      "target": "class:lib/services/ditto_service.dart:DittoService",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:lib/services/ditto_service.dart",
+      "target": "file:lib/models/recipe_tuple.dart",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:lib/services/ditto_service.dart",
+      "target": "file:lib/prompts/dql_queries.dart",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:lib/services/retrieval_service.dart",
+      "target": "class:lib/services/retrieval_service.dart:RetrievalService",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:lib/services/retrieval_service.dart",
+      "target": "class:lib/services/retrieval_service.dart:RetrievedRecipe",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:lib/services/retrieval_service.dart",
+      "target": "class:lib/services/retrieval_service.dart:AnswerEvent",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:lib/services/retrieval_service.dart",
+      "target": "function:lib/services/retrieval_service.dart:topK",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:lib/services/retrieval_service.dart",
+      "target": "function:lib/services/retrieval_service.dart:answerQuery",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:lib/services/retrieval_service.dart",
+      "target": "function:lib/services/retrieval_service.dart:ensureEmbeddings",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:lib/services/retrieval_service.dart",
+      "target": "function:lib/services/retrieval_service.dart:normalize",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:lib/services/retrieval_service.dart",
+      "target": "class:lib/services/retrieval_service.dart:RetrievalService",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:lib/services/retrieval_service.dart",
+      "target": "class:lib/services/retrieval_service.dart:RetrievedRecipe",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:lib/services/retrieval_service.dart",
+      "target": "class:lib/services/retrieval_service.dart:AnswerEvent",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:lib/services/retrieval_service.dart",
+      "target": "file:lib/models/recipe_tuple.dart",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:lib/services/retrieval_service.dart",
+      "target": "file:lib/prompts/recipe_merge.dart",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:lib/services/retrieval_service.dart",
+      "target": "file:lib/services/cactus_service.dart",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:lib/services/retrieval_service.dart",
+      "target": "file:lib/services/ditto_service.dart",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "function:lib/services/retrieval_service.dart:ensureEmbeddings",
+      "target": "function:lib/services/cactus_service.dart:initialize",
+      "type": "calls",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "function:lib/services/retrieval_service.dart:answerQuery",
+      "target": "function:lib/services/retrieval_service.dart:topK",
+      "type": "calls",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "function:lib/services/retrieval_service.dart:answerQuery",
+      "target": "function:lib/services/cactus_service.dart:complete",
+      "type": "calls",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:lib/services/seed_loader.dart",
+      "target": "class:lib/services/seed_loader.dart:SeedLoader",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:lib/services/seed_loader.dart",
+      "target": "class:lib/services/seed_loader.dart:SeedLoader",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:lib/services/seed_loader.dart",
+      "target": "file:lib/models/recipe_tuple.dart",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:lib/services/seed_loader.dart",
+      "target": "file:lib/services/ditto_service.dart",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:lib/widgets/mesh_status_widget.dart",
+      "target": "class:lib/widgets/mesh_status_widget.dart:MeshStatusWidget",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:lib/widgets/mesh_status_widget.dart",
+      "target": "class:lib/widgets/mesh_status_widget.dart:MeshStatusWidget",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:lib/widgets/mesh_status_widget.dart",
+      "target": "file:lib/services/ditto_service.dart",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:lib/widgets/query_screen.dart",
+      "target": "class:lib/widgets/query_screen.dart:QueryScreen",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:lib/widgets/query_screen.dart",
+      "target": "class:lib/widgets/query_screen.dart:QueryScreen",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:lib/widgets/query_screen.dart",
+      "target": "file:lib/services/retrieval_service.dart",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:lib/widgets/query_screen.dart",
+      "target": "file:lib/services/seed_loader.dart",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:lib/widgets/query_screen.dart",
+      "target": "file:lib/widgets/mesh_status_widget.dart",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:test/recipe_merge_prompt_test.dart",
+      "target": "file:lib/models/recipe_tuple.dart",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:test/recipe_merge_prompt_test.dart",
+      "target": "file:lib/prompts/recipe_merge.dart",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:test/recipe_merge_prompt_test.dart",
+      "target": "file:lib/services/retrieval_service.dart",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:test/recipe_tuple_test.dart",
+      "target": "file:lib/models/recipe_tuple.dart",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:test/retrieval_service_test.dart",
+      "target": "file:lib/services/retrieval_service.dart",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "config:analysis_options.yaml",
+      "target": "file:lib/services/cactus_service.dart",
+      "type": "configures",
+      "direction": "forward",
+      "weight": 0.6
+    },
+    {
+      "source": "config:analysis_options.yaml",
+      "target": "file:lib/services/ditto_service.dart",
+      "type": "configures",
+      "direction": "forward",
+      "weight": 0.6
+    },
+    {
+      "source": "config:analysis_options.yaml",
+      "target": "file:lib/services/retrieval_service.dart",
+      "type": "configures",
+      "direction": "forward",
+      "weight": 0.6
+    },
+    {
+      "source": "config:analysis_options.yaml",
+      "target": "file:lib/services/seed_loader.dart",
+      "type": "configures",
+      "direction": "forward",
+      "weight": 0.6
+    },
+    {
+      "source": "config:analysis_options.yaml",
+      "target": "file:lib/widgets/query_screen.dart",
+      "type": "configures",
+      "direction": "forward",
+      "weight": 0.6
+    },
+    {
+      "source": "config:analysis_options.yaml",
+      "target": "file:lib/widgets/mesh_status_widget.dart",
+      "type": "configures",
+      "direction": "forward",
+      "weight": 0.6
+    },
+    {
+      "source": "config:android/app/src/main/AndroidManifest.xml",
+      "target": "file:lib/services/ditto_service.dart",
+      "type": "configures",
+      "direction": "forward",
+      "weight": 0.6
+    },
+    {
+      "source": "config:android/app/src/main/res/values/styles.xml",
+      "target": "config:android/app/src/main/AndroidManifest.xml",
+      "type": "configures",
+      "direction": "forward",
+      "weight": 0.6
+    },
+    {
+      "source": "config:android/app/src/main/res/values-night/styles.xml",
+      "target": "config:android/app/src/main/AndroidManifest.xml",
+      "type": "configures",
+      "direction": "forward",
+      "weight": 0.6
+    },
+    {
+      "source": "config:android/app/src/main/res/drawable/launch_background.xml",
+      "target": "config:android/app/src/main/res/values/styles.xml",
+      "type": "configures",
+      "direction": "forward",
+      "weight": 0.6
+    },
+    {
+      "source": "config:android/app/src/main/res/drawable-v21/launch_background.xml",
+      "target": "config:android/app/src/main/res/values/styles.xml",
+      "type": "configures",
+      "direction": "forward",
+      "weight": 0.6
+    },
+    {
+      "source": "config:android/gradle.properties",
+      "target": "config:android/gradle/wrapper/gradle-wrapper.properties",
+      "type": "depends_on",
+      "direction": "forward",
+      "weight": 0.6
+    },
+    {
+      "source": "document:README.md",
+      "target": "file:lib/widgets/query_screen.dart",
+      "type": "documents",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "document:README.md",
+      "target": "file:lib/services/seed_loader.dart",
+      "type": "documents",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "document:IDEA-A.md",
+      "target": "file:lib/services/ditto_service.dart",
+      "type": "documents",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "document:IDEA-A.md",
+      "target": "file:lib/services/cactus_service.dart",
+      "type": "documents",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "document:IDEA-A.md",
+      "target": "file:lib/services/retrieval_service.dart",
+      "type": "documents",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "document:SEED.md",
+      "target": "file:lib/services/retrieval_service.dart",
+      "type": "documents",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "document:SEED.md",
+      "target": "file:lib/services/ditto_service.dart",
+      "type": "documents",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "document:RESEARCH-BRIEF.md",
+      "target": "document:WEB-PROMPT.md",
+      "type": "related",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "document:CLAUDE.md",
+      "target": "document:README.md",
+      "type": "related",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "document:docs/research/index/README.md",
+      "target": "document:docs/research/index/_per_source/docs-bridgefy-sdk.md",
+      "type": "related",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "document:docs/research/index/README.md",
+      "target": "document:docs/research/index/_per_source/docs-developer-apple-com.md",
+      "type": "related",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "document:docs/research/index/README.md",
+      "target": "document:docs/research/index/_per_source/docs-ditto-live.md",
+      "type": "related",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "document:docs/research/index/README.md",
+      "target": "document:docs/research/index/_per_source/docs-docs-ditto-live-dql.md",
+      "type": "related",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "document:docs/research/index/README.md",
+      "target": "document:docs/research/index/_per_source/docs-docs-ditto-live-transports.md",
+      "type": "related",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "document:docs/research/index/README.md",
+      "target": "document:docs/research/index/_per_source/docs-docs-ditto-live.md",
+      "type": "related",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "document:docs/research/index/README.md",
+      "target": "document:docs/research/index/_per_source/docs-docs-pytorch-org.md",
+      "type": "related",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "document:docs/research/index/README.md",
+      "target": "document:docs/research/index/_per_source/docs-mesh-networking-101.md",
+      "type": "related",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "document:docs/research/index/README.md",
+      "target": "document:docs/research/index/_per_source/paper-1106.4374.md",
+      "type": "related",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "document:docs/research/index/README.md",
+      "target": "document:docs/research/index/_per_source/paper-1908.10084.md",
+      "type": "related",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "document:docs/research/index/README.md",
+      "target": "document:docs/research/index/_per_source/paper-1910.01108.md",
+      "type": "related",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "config:docs/research/downloads.yaml",
+      "target": "document:docs/research/index/_per_source/docs-bridgefy-sdk.md",
+      "type": "configures",
+      "direction": "forward",
+      "weight": 0.6
+    },
+    {
+      "source": "config:docs/research/downloads.yaml",
+      "target": "document:docs/research/index/_per_source/docs-developer-apple-com.md",
+      "type": "configures",
+      "direction": "forward",
+      "weight": 0.6
+    },
+    {
+      "source": "config:docs/research/downloads.yaml",
+      "target": "document:docs/research/index/_per_source/docs-ditto-live.md",
+      "type": "configures",
+      "direction": "forward",
+      "weight": 0.6
+    },
+    {
+      "source": "config:docs/research/downloads.yaml",
+      "target": "document:docs/research/index/_per_source/docs-docs-ditto-live-dql.md",
+      "type": "configures",
+      "direction": "forward",
+      "weight": 0.6
+    },
+    {
+      "source": "config:docs/research/downloads.yaml",
+      "target": "document:docs/research/index/_per_source/docs-docs-ditto-live-transports.md",
+      "type": "configures",
+      "direction": "forward",
+      "weight": 0.6
+    },
+    {
+      "source": "config:docs/research/downloads.yaml",
+      "target": "document:docs/research/index/_per_source/docs-docs-ditto-live.md",
+      "type": "configures",
+      "direction": "forward",
+      "weight": 0.6
+    },
+    {
+      "source": "config:docs/research/downloads.yaml",
+      "target": "document:docs/research/index/_per_source/docs-docs-pytorch-org.md",
+      "type": "configures",
+      "direction": "forward",
+      "weight": 0.6
+    },
+    {
+      "source": "config:docs/research/downloads.yaml",
+      "target": "document:docs/research/index/_per_source/docs-mesh-networking-101.md",
+      "type": "configures",
+      "direction": "forward",
+      "weight": 0.6
+    },
+    {
+      "source": "config:docs/research/downloads.yaml",
+      "target": "document:docs/research/index/_per_source/paper-1106.4374.md",
+      "type": "configures",
+      "direction": "forward",
+      "weight": 0.6
+    },
+    {
+      "source": "config:docs/research/downloads.yaml",
+      "target": "document:docs/research/index/_per_source/paper-1908.10084.md",
+      "type": "configures",
+      "direction": "forward",
+      "weight": 0.6
+    },
+    {
+      "source": "config:docs/research/downloads.yaml",
+      "target": "document:docs/research/index/_per_source/paper-1910.01108.md",
+      "type": "configures",
+      "direction": "forward",
+      "weight": 0.6
+    },
+    {
+      "source": "document:docs/research/chatgpt-deep-research.md",
+      "target": "config:docs/research/downloads.yaml",
+      "type": "depends_on",
+      "direction": "forward",
+      "weight": 0.6
+    },
+    {
+      "source": "document:docs/research/claude-deep-research.md",
+      "target": "config:docs/research/downloads.yaml",
+      "type": "depends_on",
+      "direction": "forward",
+      "weight": 0.6
+    },
+    {
+      "source": "document:docs/research/gemini-deep-research.md",
+      "target": "config:docs/research/downloads.yaml",
+      "type": "depends_on",
+      "direction": "forward",
+      "weight": 0.6
+    },
+    {
+      "source": "document:docs/research/claude.md",
+      "target": "config:docs/research/downloads.yaml",
+      "type": "depends_on",
+      "direction": "forward",
+      "weight": 0.6
+    },
+    {
+      "source": "document:docs/research/codex.md",
+      "target": "config:docs/research/downloads.yaml",
+      "type": "depends_on",
+      "direction": "forward",
+      "weight": 0.6
+    },
+    {
+      "source": "document:docs/research/gemini.md",
+      "target": "config:docs/research/downloads.yaml",
+      "type": "depends_on",
+      "direction": "forward",
+      "weight": 0.6
+    },
+    {
+      "source": "document:docs/research/future-work-research.md",
+      "target": "config:docs/research/downloads.yaml",
+      "type": "depends_on",
+      "direction": "forward",
+      "weight": 0.6
+    },
+    {
+      "source": "document:docs/plans/2026-05-21-001-feat-mesh-rag-stage-0-implementation-plan.md",
+      "target": "document:docs/research/claude.md",
+      "type": "depends_on",
+      "direction": "forward",
+      "weight": 0.6
+    },
+    {
+      "source": "document:docs/plans/2026-05-21-001-feat-mesh-rag-stage-0-implementation-plan.md",
+      "target": "document:docs/research/codex.md",
+      "type": "depends_on",
+      "direction": "forward",
+      "weight": 0.6
+    },
+    {
+      "source": "document:docs/plans/2026-05-21-001-feat-mesh-rag-stage-0-implementation-plan.md",
+      "target": "document:docs/research/gemini.md",
+      "type": "depends_on",
+      "direction": "forward",
+      "weight": 0.6
+    },
+    {
+      "source": "document:docs/plans/2026-05-21-001-feat-mesh-rag-stage-0-implementation-plan.md",
+      "target": "document:docs/research/chatgpt-deep-research.md",
+      "type": "depends_on",
+      "direction": "forward",
+      "weight": 0.6
+    },
+    {
+      "source": "document:docs/plans/2026-05-21-001-feat-mesh-rag-stage-0-implementation-plan.md",
+      "target": "document:docs/research/claude-deep-research.md",
+      "type": "depends_on",
+      "direction": "forward",
+      "weight": 0.6
+    },
+    {
+      "source": "document:docs/plans/2026-05-21-001-feat-mesh-rag-stage-0-implementation-plan.md",
+      "target": "document:docs/research/gemini-deep-research.md",
+      "type": "depends_on",
+      "direction": "forward",
+      "weight": 0.6
+    },
+    {
+      "source": "document:docs/plans/2026-05-21-001-feat-mesh-rag-stage-0-implementation-plan.md",
+      "target": "config:assets/seed_recipes_a.json",
+      "type": "documents",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "document:docs/plans/2026-05-21-001-feat-mesh-rag-stage-0-implementation-plan.md",
+      "target": "config:assets/seed_recipes_b.json",
+      "type": "documents",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "document:docs/architecture-vs-flutter-skills.md",
+      "target": "document:docs/plans/2026-05-21-001-feat-mesh-rag-stage-0-implementation-plan.md",
+      "type": "depends_on",
+      "direction": "forward",
+      "weight": 0.6
+    },
+    {
+      "source": "document:docs/c4-vs-code-drift.md",
+      "target": "document:docs/plans/2026-05-21-001-feat-mesh-rag-stage-0-implementation-plan.md",
+      "type": "depends_on",
+      "direction": "forward",
+      "weight": 0.6
+    },
+    {
+      "source": "document:docs/research/future-work-research.md",
+      "target": "document:docs/research/claude-deep-research.md",
+      "type": "depends_on",
+      "direction": "forward",
+      "weight": 0.6
+    },
+    {
+      "source": "config:assets/seed_recipes_a.json",
+      "target": "config:assets/seed_recipes_b.json",
+      "type": "related",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "document:docs/research/index/by-tag.md",
+      "target": "document:docs/research/index/_per_source/repo-slidevjs-slidev.md",
+      "type": "documents",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "document:docs/research/index/by-tag.md",
+      "target": "document:docs/research/index/_per_source/repo-software-mansion-labs-react-native-rag.md",
+      "type": "documents",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "document:docs/research/index/by-tag.md",
+      "target": "document:docs/research/index/_per_source/repo-spotify-annoy.md",
+      "type": "documents",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "document:docs/research/index/by-tag.md",
+      "target": "document:docs/research/index/_per_source/repo-thinking-machines-lab-batch-invariant-ops.md",
+      "type": "documents",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "document:docs/research/index/by-tag.md",
+      "target": "document:docs/research/index/_per_source/repo-ukplab-sentence-transformers.md",
+      "type": "documents",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "document:docs/research/index/by-tag.md",
+      "target": "document:docs/research/index/_per_source/repo-unickcheng-logseq-ai-assistant.md",
+      "type": "documents",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "document:docs/research/index/by-tag.md",
+      "target": "document:docs/research/index/_per_source/repo-unum-cloud-usearch.md",
+      "type": "documents",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "document:docs/research/index/by-tag.md",
+      "target": "document:docs/research/index/_per_source/repo-yjs-yjs.md",
+      "type": "documents",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "document:docs/research/index/by-topic.md",
+      "target": "document:docs/research/index/_per_source/repo-slidevjs-slidev.md",
+      "type": "documents",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "document:docs/research/index/by-topic.md",
+      "target": "document:docs/research/index/_per_source/repo-software-mansion-labs-react-native-rag.md",
+      "type": "documents",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "document:docs/research/index/by-topic.md",
+      "target": "document:docs/research/index/_per_source/repo-spotify-annoy.md",
+      "type": "documents",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "document:docs/research/index/by-topic.md",
+      "target": "document:docs/research/index/_per_source/repo-thinking-machines-lab-batch-invariant-ops.md",
+      "type": "documents",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "document:docs/research/index/by-topic.md",
+      "target": "document:docs/research/index/_per_source/repo-ukplab-sentence-transformers.md",
+      "type": "documents",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "document:docs/research/index/by-topic.md",
+      "target": "document:docs/research/index/_per_source/repo-unickcheng-logseq-ai-assistant.md",
+      "type": "documents",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "document:docs/research/index/by-topic.md",
+      "target": "document:docs/research/index/_per_source/repo-unum-cloud-usearch.md",
+      "type": "documents",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "document:docs/research/index/by-topic.md",
+      "target": "document:docs/research/index/_per_source/repo-yjs-yjs.md",
+      "type": "documents",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "document:docs/research/index/clusters.md",
+      "target": "document:docs/research/index/_per_source/repo-slidevjs-slidev.md",
+      "type": "documents",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "document:docs/research/index/clusters.md",
+      "target": "document:docs/research/index/_per_source/repo-software-mansion-labs-react-native-rag.md",
+      "type": "documents",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "document:docs/research/index/clusters.md",
+      "target": "document:docs/research/index/_per_source/repo-spotify-annoy.md",
+      "type": "documents",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "document:docs/research/index/clusters.md",
+      "target": "document:docs/research/index/_per_source/repo-thinking-machines-lab-batch-invariant-ops.md",
+      "type": "documents",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "document:docs/research/index/clusters.md",
+      "target": "document:docs/research/index/_per_source/repo-ukplab-sentence-transformers.md",
+      "type": "documents",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "document:docs/research/index/clusters.md",
+      "target": "document:docs/research/index/_per_source/repo-unickcheng-logseq-ai-assistant.md",
+      "type": "documents",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "document:docs/research/index/clusters.md",
+      "target": "document:docs/research/index/_per_source/repo-unum-cloud-usearch.md",
+      "type": "documents",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "document:docs/research/index/clusters.md",
+      "target": "document:docs/research/index/_per_source/repo-yjs-yjs.md",
+      "type": "documents",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "document:docs/research/index/cross-references.md",
+      "target": "document:docs/research/index/_per_source/repo-slidevjs-slidev.md",
+      "type": "documents",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "document:docs/research/index/cross-references.md",
+      "target": "document:docs/research/index/_per_source/repo-software-mansion-labs-react-native-rag.md",
+      "type": "documents",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "document:docs/research/index/cross-references.md",
+      "target": "document:docs/research/index/_per_source/repo-spotify-annoy.md",
+      "type": "documents",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "document:docs/research/index/cross-references.md",
+      "target": "document:docs/research/index/_per_source/repo-thinking-machines-lab-batch-invariant-ops.md",
+      "type": "documents",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "document:docs/research/index/cross-references.md",
+      "target": "document:docs/research/index/_per_source/repo-ukplab-sentence-transformers.md",
+      "type": "documents",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "document:docs/research/index/cross-references.md",
+      "target": "document:docs/research/index/_per_source/repo-unickcheng-logseq-ai-assistant.md",
+      "type": "documents",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "document:docs/research/index/cross-references.md",
+      "target": "document:docs/research/index/_per_source/repo-unum-cloud-usearch.md",
+      "type": "documents",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "document:docs/research/index/cross-references.md",
+      "target": "document:docs/research/index/_per_source/repo-yjs-yjs.md",
+      "type": "documents",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "document:docs/research/index/top-N.md",
+      "target": "document:docs/research/index/_per_source/repo-thinking-machines-lab-batch-invariant-ops.md",
+      "type": "documents",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "document:docs/research/index/top-N.md",
+      "target": "document:docs/research/index/_per_source/repo-unum-cloud-usearch.md",
+      "type": "documents",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "document:docs/research/index/open-questions.md",
+      "target": "document:docs/research/index/_per_source/repo-thinking-machines-lab-batch-invariant-ops.md",
+      "type": "related",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "document:docs/spikes/README.md",
+      "target": "document:docs/spikes/U2-determinism-results.md",
+      "type": "documents",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "document:docs/spikes/README.md",
+      "target": "document:docs/spikes/U3-recipe-merge-eval.md",
+      "type": "documents",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "document:docs/spikes/README.md",
+      "target": "document:docs/spikes/U7-sync-verification.md",
+      "type": "documents",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "document:docs/spikes/README.md",
+      "target": "document:docs/spikes/U9-demo-rehearsal.md",
+      "type": "documents",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "document:docs/spikes/U2-determinism-results.md",
+      "target": "document:docs/research/index/_per_source/repo-thinking-machines-lab-batch-invariant-ops.md",
+      "type": "related",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "document:docs/spikes/U3-recipe-merge-eval.md",
+      "target": "document:docs/research/index/_per_source/repo-software-mansion-labs-react-native-rag.md",
+      "type": "related",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "document:ios/Runner/Assets.xcassets/LaunchImage.imageset/README.md",
+      "target": "config:ios/Runner/Assets.xcassets/LaunchImage.imageset/Contents.json",
+      "type": "documents",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "config:ios/Runner/Info.plist",
+      "target": "file:lib/services/ditto_service.dart",
+      "type": "configures",
+      "direction": "forward",
+      "weight": 0.6
+    },
+    {
+      "source": "config:pubspec.yaml",
+      "target": "file:lib/main.dart",
+      "type": "configures",
+      "direction": "forward",
+      "weight": 0.6
+    },
+    {
+      "source": "config:pubspec.yaml",
+      "target": "file:lib/services/cactus_service.dart",
+      "type": "configures",
+      "direction": "forward",
+      "weight": 0.6
+    },
+    {
+      "source": "config:pubspec.yaml",
+      "target": "file:lib/services/ditto_service.dart",
+      "type": "configures",
+      "direction": "forward",
+      "weight": 0.6
+    },
+    {
+      "source": "document:slides/deck.md",
+      "target": "file:lib/main.dart",
+      "type": "documents",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "document:slides/deck.md",
+      "target": "file:lib/services/cactus_service.dart",
+      "type": "documents",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "document:slides/deck.md",
+      "target": "file:lib/services/ditto_service.dart",
+      "type": "documents",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "document:slides/notes.md",
+      "target": "document:slides/deck.md",
+      "type": "related",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "config:pubspec.yaml",
+      "target": "config:assets/seed_recipes_a.json",
+      "type": "configures",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "config:pubspec.yaml",
+      "target": "config:assets/seed_recipes_b.json",
+      "type": "configures",
+      "direction": "forward",
+      "weight": 0.7
+    }
+  ],
+  "layers": [
+    {
+      "id": "layer:ui",
+      "name": "UI Layer",
+      "description": "Flutter app entry point and on-device UI widgets (mesh status, recipe query screen) that drive user interaction during the Stage 0 P2P RAG demo.",
+      "nodeIds": [
+        "file:lib/main.dart",
+        "file:lib/widgets/mesh_status_widget.dart",
+        "file:lib/widgets/query_screen.dart"
+      ]
+    },
+    {
+      "id": "layer:service",
+      "name": "Service Layer",
+      "description": "Core runtime services that wire Cactus on-device embeddings + LLM, Ditto P2P sync and DQL persistence, JSON seed loading, and flat-array cosine retrieval together.",
+      "nodeIds": [
+        "file:lib/services/cactus_service.dart",
+        "file:lib/services/ditto_service.dart",
+        "file:lib/services/retrieval_service.dart",
+        "file:lib/services/seed_loader.dart"
+      ]
+    },
+    {
+      "id": "layer:domain",
+      "name": "Domain Layer",
+      "description": "Recipe tuple data model plus DQL query strings and merge-prompt templates that define the shape and semantics of the synced recipe corpus.",
+      "nodeIds": [
+        "file:lib/models/recipe_tuple.dart",
+        "file:lib/prompts/dql_queries.dart",
+        "file:lib/prompts/recipe_merge.dart"
+      ]
+    },
+    {
+      "id": "layer:test",
+      "name": "Test",
+      "description": "Dart unit tests for retrieval, recipe tuple parsing, and merge-prompt construction — the only layer with cross-group imports into lib/.",
+      "nodeIds": [
+        "file:test/recipe_merge_prompt_test.dart",
+        "file:test/recipe_tuple_test.dart",
+        "file:test/retrieval_service_test.dart"
+      ]
+    },
+    {
+      "id": "layer:platform-configuration",
+      "name": "Platform Configuration",
+      "description": "iOS (Xcode project, Podfile, Info.plist, Swift host) and Android (Gradle Kotlin DSL, manifests, MainActivity) host-app scaffolding required to embed the Flutter runtime with cactus + ditto_live native pods/AARs.",
+      "nodeIds": [
+        "file:android/app/build.gradle.kts",
+        "file:android/app/src/main/kotlin/com/ditto/meshrag/mesh_rag_demo/MainActivity.kt",
+        "file:android/build.gradle.kts",
+        "file:android/settings.gradle.kts",
+        "config:android/app/src/debug/AndroidManifest.xml",
+        "config:android/app/src/main/AndroidManifest.xml",
+        "config:android/app/src/main/res/drawable-v21/launch_background.xml",
+        "config:android/app/src/main/res/drawable/launch_background.xml",
+        "config:android/app/src/main/res/values-night/styles.xml",
+        "config:android/app/src/main/res/values/styles.xml",
+        "config:android/app/src/profile/AndroidManifest.xml",
+        "config:android/gradle.properties",
+        "config:android/gradle/wrapper/gradle-wrapper.properties",
+        "file:ios/Flutter/Debug.xcconfig",
+        "file:ios/Flutter/Release.xcconfig",
+        "file:ios/Podfile",
+        "file:ios/Runner.xcodeproj/project.pbxproj",
+        "file:ios/Runner.xcodeproj/project.xcworkspace/contents.xcworkspacedata",
+        "file:ios/Runner.xcodeproj/project.xcworkspace/xcshareddata/WorkspaceSettings.xcsettings",
+        "file:ios/Runner.xcodeproj/xcshareddata/xcschemes/Runner.xcscheme",
+        "file:ios/Runner.xcworkspace/contents.xcworkspacedata",
+        "file:ios/Runner.xcworkspace/xcshareddata/WorkspaceSettings.xcsettings",
+        "file:ios/Runner/AppDelegate.swift",
+        "file:ios/Runner/Base.lproj/LaunchScreen.storyboard",
+        "file:ios/Runner/Base.lproj/Main.storyboard",
+        "file:ios/Runner/Runner-Bridging-Header.h",
+        "file:ios/RunnerTests/RunnerTests.swift",
+        "config:ios/Flutter/AppFrameworkInfo.plist",
+        "config:ios/Runner.xcodeproj/project.xcworkspace/xcshareddata/IDEWorkspaceChecks.plist",
+        "config:ios/Runner.xcworkspace/xcshareddata/IDEWorkspaceChecks.plist",
+        "config:ios/Runner/Assets.xcassets/AppIcon.appiconset/Contents.json",
+        "config:ios/Runner/Assets.xcassets/LaunchImage.imageset/Contents.json",
+        "document:ios/Runner/Assets.xcassets/LaunchImage.imageset/README.md",
+        "config:ios/Runner/Info.plist"
+      ]
+    },
+    {
+      "id": "layer:project-documentation",
+      "name": "Project Documentation",
+      "description": "Top-level README/SEED/IDEA/RESEARCH-BRIEF/WEB-PROMPT/CLAUDE plus docs/plans, docs/spikes, docs/c4 model, and the architecture-vs-flutter-skills + c4-vs-code-drift drift reports for the Mesh RAG Stage 0 build.",
+      "nodeIds": [
+        "file:docs/c4/model.c4",
+        "document:docs/architecture-vs-flutter-skills.md",
+        "document:docs/c4-vs-code-drift.md",
+        "document:docs/plans/2026-05-21-001-feat-mesh-rag-stage-0-implementation-plan.md",
+        "document:docs/spikes/README.md",
+        "document:docs/spikes/U2-determinism-results.md",
+        "document:docs/spikes/U3-recipe-merge-eval.md",
+        "document:docs/spikes/U7-sync-verification.md",
+        "document:docs/spikes/U9-demo-rehearsal.md",
+        "document:CLAUDE.md",
+        "document:IDEA-A.md",
+        "document:README.md",
+        "document:RESEARCH-BRIEF.md",
+        "document:SEED.md",
+        "document:WEB-PROMPT.md"
+      ]
+    },
+    {
+      "id": "layer:prior-art-research",
+      "name": "Prior-Art Research",
+      "description": "Deep-research outputs and the per-source research index covering Ditto/DQL, mesh transports, embeddings, edge LLMs, CRDTs, vector search, and presentation tooling that grounded the project design.",
+      "nodeIds": [
+        "document:docs/research/chatgpt-deep-research.md",
+        "document:docs/research/claude-deep-research.md",
+        "document:docs/research/claude.md",
+        "document:docs/research/codex.md",
+        "config:docs/research/downloads.yaml",
+        "document:docs/research/future-work-research.md",
+        "document:docs/research/gemini-deep-research.md",
+        "document:docs/research/gemini.md",
+        "document:docs/research/index/README.md",
+        "document:docs/research/index/_per_source/docs-bridgefy-sdk.md",
+        "document:docs/research/index/_per_source/docs-developer-apple-com.md",
+        "document:docs/research/index/_per_source/docs-ditto-live.md",
+        "document:docs/research/index/_per_source/docs-docs-ditto-live-dql.md",
+        "document:docs/research/index/_per_source/docs-docs-ditto-live-transports.md",
+        "document:docs/research/index/_per_source/docs-docs-ditto-live.md",
+        "document:docs/research/index/_per_source/docs-docs-pytorch-org.md",
+        "document:docs/research/index/_per_source/docs-mesh-networking-101.md",
+        "document:docs/research/index/_per_source/paper-1106.4374.md",
+        "document:docs/research/index/_per_source/paper-1908.10084.md",
+        "document:docs/research/index/_per_source/paper-1910.01108.md",
+        "document:docs/research/index/_per_source/paper-2106.09685.md",
+        "document:docs/research/index/_per_source/paper-2301.07788.md",
+        "document:docs/research/index/_per_source/paper-2305.14314.md",
+        "document:docs/research/index/_per_source/paper-2308.14963.md",
+        "document:docs/research/index/_per_source/paper-2401.02385.md",
+        "document:docs/research/index/_per_source/paper-2402.00841.md",
+        "document:docs/research/index/_per_source/paper-2402.01613.md",
+        "document:docs/research/index/_per_source/paper-2402.04351.md",
+        "document:docs/research/index/_per_source/paper-2403.12844.md",
+        "document:docs/research/index/_per_source/paper-2404.14219.md",
+        "document:docs/research/index/_per_source/paper-2405.00732.md",
+        "document:docs/research/index/_per_source/paper-2406.10290.md",
+        "document:docs/research/index/_per_source/paper-2407.07871.md",
+        "document:docs/research/index/_per_source/paper-2409.00088.md",
+        "document:docs/research/index/_per_source/paper-2412.04922.md",
+        "document:docs/research/index/_per_source/paper-2412.21023.md",
+        "document:docs/research/index/_per_source/paper-2504.06135.md",
+        "document:docs/research/index/_per_source/paper-2505.00443.md",
+        "document:docs/research/index/_per_source/paper-2505.09388.md",
+        "document:docs/research/index/_per_source/paper-2505.11783.md",
+        "document:docs/research/index/_per_source/paper-2505.14992.md",
+        "document:docs/research/index/_per_source/paper-2506.05176.md",
+        "document:docs/research/index/_per_source/paper-2506.09501.md",
+        "document:docs/research/index/_per_source/paper-2507.01079.md",
+        "document:docs/research/index/_per_source/paper-2507.17647.md",
+        "document:docs/research/index/_per_source/paper-2509.20354.md",
+        "document:docs/research/index/_per_source/paper-2602.17099.md",
+        "document:docs/research/index/_per_source/repo-asg017-sqlite-vec.md",
+        "document:docs/research/index/_per_source/repo-deepsense-ai-edge-slm.md",
+        "document:docs/research/index/_per_source/repo-developermindset-com-faiss-mobile.md",
+        "document:docs/research/index/_per_source/repo-earthstar-project-earthstar.md",
+        "document:docs/research/index/_per_source/repo-earthstar-project-willow-rs.md",
+        "document:docs/research/index/_per_source/repo-facebookresearch-faiss.md",
+        "document:docs/research/index/_per_source/repo-getditto-demoapp-chat.md",
+        "document:docs/research/index/_per_source/repo-getditto-demoapp-inventory.md",
+        "document:docs/research/index/_per_source/repo-getditto-demoapp-pos-kds.md",
+        "document:docs/research/index/_per_source/repo-getditto-samples.md",
+        "document:docs/research/index/_per_source/repo-ggml-org-ggml.md",
+        "document:docs/research/index/_per_source/repo-google-ai-edge-gallery.md",
+        "document:docs/research/index/_per_source/repo-hakimel-reveal-js.md",
+        "document:docs/research/index/_per_source/repo-libp2p-go-libp2p.md",
+        "document:docs/research/index/_per_source/repo-loro-dev-loro.md",
+        "document:docs/research/index/_per_source/repo-mfontanini-presenterm.md",
+        "document:docs/research/index/_per_source/repo-mlc-ai-mlc-llm.md",
+        "document:docs/research/index/_per_source/repo-n0-computer-iroh.md",
+        "document:docs/research/index/_per_source/repo-orbitdb-orbitdb.md",
+        "document:docs/research/index/_per_source/repo-permissionlesstech-bitchat-android.md",
+        "document:docs/research/index/_per_source/repo-permissionlesstech-bitchat.md",
+        "document:docs/research/index/_per_source/repo-qwenlm-qwen3-embedding.md",
+        "document:docs/research/index/_per_source/repo-ramanujammv1988-edge-veda.md",
+        "document:docs/research/index/_per_source/repo-slidevjs-slidev.md",
+        "document:docs/research/index/_per_source/repo-software-mansion-labs-react-native-rag.md",
+        "document:docs/research/index/_per_source/repo-spotify-annoy.md",
+        "document:docs/research/index/_per_source/repo-thinking-machines-lab-batch-invariant-ops.md",
+        "document:docs/research/index/_per_source/repo-ukplab-sentence-transformers.md",
+        "document:docs/research/index/_per_source/repo-unickcheng-logseq-ai-assistant.md",
+        "document:docs/research/index/_per_source/repo-unum-cloud-usearch.md",
+        "document:docs/research/index/_per_source/repo-yjs-yjs.md",
+        "document:docs/research/index/by-tag.md",
+        "document:docs/research/index/by-topic.md",
+        "document:docs/research/index/clusters.md",
+        "document:docs/research/index/cross-references.md",
+        "document:docs/research/index/open-questions.md",
+        "document:docs/research/index/top-N.md"
+      ]
+    },
+    {
+      "id": "layer:deliverables",
+      "name": "Deliverables",
+      "description": "Presenterm slide deck plus speaker notes and the seed_recipes_a/b JSON corpora loaded as Flutter assets and split across the two demo phones.",
+      "nodeIds": [
+        "document:slides/deck.md",
+        "document:slides/notes.md",
+        "file:assets/.gitkeep",
+        "config:assets/seed_recipes_a.json",
+        "config:assets/seed_recipes_b.json"
+      ]
+    },
+    {
+      "id": "layer:build",
+      "name": "Build",
+      "description": "Project-root build and lint configuration (pubspec.yaml manifest, analysis_options.yaml, justfile task runner) that drives Flutter package resolution and developer workflow.",
+      "nodeIds": [
+        "file:justfile",
+        "config:analysis_options.yaml",
+        "config:pubspec.yaml"
+      ]
+    }
+  ],
+  "tour": [
+    {
+      "order": 1,
+      "title": "The Thesis",
+      "description": "Begin where the project began. SEED.md is the Software-Factory seed document that names the wager — that a vector index can sync as a CRDT and make WAN-free, peer-to-peer RAG real — while README.md translates that thesis into the actual Stage 0 stack (Flutter dual-target, ditto_live 5.0.0 for sync, cactus 1.3.0 narrowly scoped to embeddings + completion). Read these together to understand what the demo is trying to prove before looking at how it proves it.",
+      "nodeIds": [
+        "document:SEED.md",
+        "document:README.md"
+      ]
+    },
+    {
+      "order": 2,
+      "title": "The Plan That Drove The Build",
+      "description": "Between thesis and code sits the implementation plan. The Stage 0 plan enumerates the U1–U10 work units (scaffold, determinism spike, recipe-merge eval, retrieval, sync verification, demo rehearsal) that shaped every file you are about to read. pubspec.yaml is the receipt — it pins exactly the dependencies the plan called for and bundles the per-phone seed_recipes_{a,b}.json assets that make the corpus-split demo possible.",
+      "nodeIds": [
+        "document:docs/plans/2026-05-21-001-feat-mesh-rag-stage-0-implementation-plan.md",
+        "config:pubspec.yaml"
+      ]
+    },
+    {
+      "order": 3,
+      "title": "App Boot Lifecycle",
+      "description": "lib/main.dart is the Flutter entry point and the choreographer of the entire boot sequence. It requests BLE and Wi-Fi runtime permissions, then runs MeshRagApp whose BootScreen orchestrates a strict order: Ditto init → seed insert → Cactus model download → embedding backfill → swap in the QueryScreen. This file is the load-bearing scaffold; every later step is something this file imports.",
+      "nodeIds": [
+        "file:lib/main.dart"
+      ],
+      "languageLesson": "Dart async/await with Flutter: top-level `main()` is async, calls `WidgetsFlutterBinding.ensureInitialized()` before any plugin work, and BootScreen uses a StatefulWidget with sequential `await` calls inside `initState`-triggered futures to keep startup deterministic across iOS and Android."
+    },
+    {
+      "order": 4,
+      "title": "Data Model & Sync Layer",
+      "description": "The data layer is where the CRDT promise becomes concrete. RecipeTuple is the immutable Dart record that round-trips through Ditto's DQL store. ditto_service.dart (fan-in 11 — the most depended-upon file in the project) owns Ditto identity, transport config, store registration, and the insert/observe paths. dql_queries.dart centralizes every DQL string so the rest of the codebase never hand-rolls a query. seed_loader.dart reads the per-phone JSON asset and inserts it into Ditto so each device starts the demo holding only its slice of the corpus.",
+      "nodeIds": [
+        "file:lib/models/recipe_tuple.dart",
+        "file:lib/services/ditto_service.dart",
+        "file:lib/prompts/dql_queries.dart",
+        "file:lib/services/seed_loader.dart"
+      ],
+      "languageLesson": "DQL (Ditto Query Language) is a SQL-like surface over a CRDT document store. Queries return live result sets you `observe()` for changes, and inserts are local-first — they replicate to peers as they appear without a central coordinator."
+    },
+    {
+      "order": 5,
+      "title": "On-Device Retrieval",
+      "description": "With tuples flowing through the CRDT, retrieval happens entirely on-device. CactusService is held deliberately narrow: it exposes only `embed()` and `complete()`, never cactus_rag_query or cactus_index_*, because the project's thesis is that the *index* lives in Ditto, not Cactus. RetrievalService materializes the merged corpus out of Ditto, runs a flat-array cosine top-k in Dart, and returns the nearest tuples — including tuples that arrived from the peer over BLE.",
+      "nodeIds": [
+        "file:lib/services/cactus_service.dart",
+        "file:lib/services/retrieval_service.dart"
+      ],
+      "languageLesson": "Flat-array cosine top-k is intentionally chosen over HNSW/Annoy/FAISS for Stage 0: with a few hundred recipe tuples per device, an O(N) scan in Dart is faster end-to-end than building and merging an ANN index, and — critically — it has no index data structure that would need its own CRDT merge semantics."
+    },
+    {
+      "order": 6,
+      "title": "Synthesis & Attribution",
+      "description": "Retrieval returns tuples; synthesis turns them into an answer. RecipeMergePrompt builds the system+user message that asks the on-device LLM to merge retrieved recipes while tagging each contributor — so when phone A answers a query using tuples that came from phone B, the provenance is visible in the output. RetrievalService.answerQuery threads the embedding, top-k, prompt-building, and Cactus completion into a single call the UI can await.",
+      "nodeIds": [
+        "file:lib/prompts/recipe_merge.dart"
+      ]
+    },
+    {
+      "order": 7,
+      "title": "User Interface & Mesh Status",
+      "description": "QueryScreen is the post-boot UI: a text field, a result panel, and a continuous mesh-status indicator. MeshStatusWidget subscribes to Ditto's peer-presence stream so the demo audience can watch the peer connect over BLE/Wi-Fi in real time — making the otherwise-invisible CRDT merge legible. Together these widgets close the loop from the boot lifecycle in Step 3.",
+      "nodeIds": [
+        "file:lib/widgets/query_screen.dart",
+        "file:lib/widgets/mesh_status_widget.dart"
+      ],
+      "languageLesson": "Flutter StreamBuilder pattern: MeshStatusWidget wraps a `StreamBuilder<List<Peer>>` over the Ditto presence stream, rebuilding only the status chip on peer-list changes — idiomatic Flutter for live, push-based UI without manual setState plumbing."
+    },
+    {
+      "order": 8,
+      "title": "Verification Surface",
+      "description": "Trust in the demo comes from two layers of verification. The Dart unit tests pin the contracts that matter most — RecipeTuple parsing round-trips, retrieval ranks deterministically, and RecipeMergePrompt produces the exact system+user shape (including the graceful 'I don't know yet' fallback for empty retrieval). The U7 spike then proves the harder claim: that two physical phones actually mesh over BLE/LAN and that tuples inserted on A become queryable on B.",
+      "nodeIds": [
+        "file:test/recipe_tuple_test.dart",
+        "file:test/retrieval_service_test.dart",
+        "file:test/recipe_merge_prompt_test.dart",
+        "document:docs/spikes/README.md",
+        "document:docs/spikes/U7-sync-verification.md"
+      ]
+    },
+    {
+      "order": 9,
+      "title": "The Deliverables",
+      "description": "Stage 0 is a demo first and a codebase second. slides/deck.md is the ~10-minute Presenterm deck that frames the thesis (vector index as CRDT) for an audience, and slides/notes.md is the per-slide speaker-notes script with timing budgets and framing reminders. These are the artifacts that translate everything in Steps 1–8 into a story a viewer can follow in a single sitting.",
+      "nodeIds": [
+        "document:slides/deck.md",
+        "document:slides/notes.md"
+      ],
+      "languageLesson": "Presenterm is a terminal-based Markdown deck tool: slides are plain Markdown separated by `---`, rendered live in the terminal with syntax-highlighted code blocks. The format keeps decks diff-friendly in git and avoids the GUI tooling that usually surrounds conference slides."
+    },
+    {
+      "order": 10,
+      "title": "Future-Work Arc",
+      "description": "Close on the questions Stage 0 deliberately did not answer. open-questions.md catalogues the empirical work that follows: Cactus iOS/Android determinism parity, larger corpora, richer merge semantics, and the leap from this generalist-on-device demo to the specialist-small-model destination the broader Mesh RAG thesis points toward. This is the bridge from 'we proved it can work' to 'here is what it could become'.",
+      "nodeIds": [
+        "document:docs/research/index/open-questions.md"
+      ]
+    }
+  ]
+}

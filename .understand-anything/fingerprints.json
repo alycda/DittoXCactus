@@ -1,0 +1,1904 @@
+{
+  "version": "1.0.0",
+  "gitCommitHash": "5c269e370b9fad434eaf866a91c057e88ceca33d",
+  "generatedAt": "2026-05-22T07:12:57.424Z",
+  "files": {
+    ".claude/workers/codex-prompt.txt": {
+      "filePath": ".claude/workers/codex-prompt.txt",
+      "contentHash": "77deabbca0a231f1b1bf0459bf34c7a0599a3c6e1b162a1ede7c5885333815fa",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 27,
+      "hasStructuralAnalysis": false
+    },
+    ".claude/workers/dl-bucket-1.json": {
+      "filePath": ".claude/workers/dl-bucket-1.json",
+      "contentHash": "eecf24183179ab3c4f3ca12bcbe17779522b33c4c0ab2341e5c515c8ea6f6c24",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 97,
+      "hasStructuralAnalysis": true
+    },
+    ".claude/workers/dl-bucket-1.results.yaml": {
+      "filePath": ".claude/workers/dl-bucket-1.results.yaml",
+      "contentHash": "c368926f7b90ef5788fc024e9a5457bce86c992afb34e4be79366596cf114939",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 80,
+      "hasStructuralAnalysis": true
+    },
+    ".claude/workers/dl-bucket-2.json": {
+      "filePath": ".claude/workers/dl-bucket-2.json",
+      "contentHash": "03a6a9eec3e732d6cd577733a33e2bfa74f9a484ad8a40a11654a34bd6999cb5",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 97,
+      "hasStructuralAnalysis": true
+    },
+    ".claude/workers/dl-bucket-2.results.yaml": {
+      "filePath": ".claude/workers/dl-bucket-2.results.yaml",
+      "contentHash": "7bf83a22ea1ab70157beb18713abd0203bcaaa2dc46ac4fdbaec96187ca72dfd",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 80,
+      "hasStructuralAnalysis": true
+    },
+    ".claude/workers/dl-bucket-3.json": {
+      "filePath": ".claude/workers/dl-bucket-3.json",
+      "contentHash": "a65a5bf054046430c7eb30fd278369ccea61ed0504e07f967d55fb9fbe9e5ee7",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 97,
+      "hasStructuralAnalysis": true
+    },
+    ".claude/workers/dl-bucket-3.results.yaml": {
+      "filePath": ".claude/workers/dl-bucket-3.results.yaml",
+      "contentHash": "2e22898623d78ad09b7d13586da8c65b32d557ea171634cd547fd18a245c2078",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 80,
+      "hasStructuralAnalysis": true
+    },
+    ".claude/workers/dl-bucket-4.json": {
+      "filePath": ".claude/workers/dl-bucket-4.json",
+      "contentHash": "dc6af72d08fb5aad4f4ed1519778bb008efbde65ccbe3c765d764330b27ae356",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 92,
+      "hasStructuralAnalysis": true
+    },
+    ".claude/workers/dl-bucket-4.results.yaml": {
+      "filePath": ".claude/workers/dl-bucket-4.results.yaml",
+      "contentHash": "0db7784d83e4865bf66eaee28df4405bbe871a08a00bce7580d073aa85749318",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 76,
+      "hasStructuralAnalysis": true
+    },
+    ".claude/workers/dl-bucket-5.json": {
+      "filePath": ".claude/workers/dl-bucket-5.json",
+      "contentHash": "21ccb3aba7d565d3d285e90e4e9cd306798cc25a87aed2904a03d84a58e353f2",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 92,
+      "hasStructuralAnalysis": true
+    },
+    ".claude/workers/dl-bucket-5.results.yaml": {
+      "filePath": ".claude/workers/dl-bucket-5.results.yaml",
+      "contentHash": "f45296710b23c5becabf7afbd18116ffe0d4f18877c871d3768eccca5c2c801b",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 60,
+      "hasStructuralAnalysis": true
+    },
+    ".claude/workers/index/map-batch-1.json": {
+      "filePath": ".claude/workers/index/map-batch-1.json",
+      "contentHash": "ab9c964874f2d6d0fac22a1556fac87f6e7d1de628e60b1669caadb423dd0dee",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 52,
+      "hasStructuralAnalysis": true
+    },
+    ".claude/workers/index/map-batch-2.json": {
+      "filePath": ".claude/workers/index/map-batch-2.json",
+      "contentHash": "e92a5e1c7e6710bdb5d50e5854e1d43b158c684ee5dba640b02bb1d3813ad293",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 47,
+      "hasStructuralAnalysis": true
+    },
+    ".claude/workers/index/map-batch-3.json": {
+      "filePath": ".claude/workers/index/map-batch-3.json",
+      "contentHash": "0b9b6a5a08c27c6285cf733eb223a8ba82eac1d3a4d03aabcbb1c9bfa1a6c093",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 47,
+      "hasStructuralAnalysis": true
+    },
+    ".claude/workers/index/map-batch-4.json": {
+      "filePath": ".claude/workers/index/map-batch-4.json",
+      "contentHash": "cba0eb9184ac2e5590bd1132dc9bd4721ecbd42f91bb88a51e63c68ff5ab4258",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 47,
+      "hasStructuralAnalysis": true
+    },
+    ".claude/workers/index/map-batch-5.json": {
+      "filePath": ".claude/workers/index/map-batch-5.json",
+      "contentHash": "326fc18def7a422187632ab416de1334b16d48fa75deebafee8587b32b6d3635",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 47,
+      "hasStructuralAnalysis": true
+    },
+    ".claude/workers/index/map-batch-6.json": {
+      "filePath": ".claude/workers/index/map-batch-6.json",
+      "contentHash": "6a03ce47e88409800f3261d3d75c148a0602bebdff2d7d72a7148fcc2acf2deb",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 47,
+      "hasStructuralAnalysis": true
+    },
+    ".claude/workers/index/map-batch-7.json": {
+      "filePath": ".claude/workers/index/map-batch-7.json",
+      "contentHash": "d7377f1f2e61c9d45f4b8a689dbd92d87674e0920dbb674867e85bd57c34d1fe",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 47,
+      "hasStructuralAnalysis": true
+    },
+    ".claude/workers/index/map-batch-8.json": {
+      "filePath": ".claude/workers/index/map-batch-8.json",
+      "contentHash": "f0cee6d4f9581646b31f246f66858ac17faf6de69ec55180a02bb383d209f5d7",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 47,
+      "hasStructuralAnalysis": true
+    },
+    ".claude/workers/index/worksheet.json": {
+      "filePath": ".claude/workers/index/worksheet.json",
+      "contentHash": "9ee892bd444fc8b7403c556efa4761fd61c1640bb96f5fc8f5f59969688574ff",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 1360,
+      "hasStructuralAnalysis": true
+    },
+    ".understand-anything/.understandignore": {
+      "filePath": ".understand-anything/.understandignore",
+      "contentHash": "e2ea545d95cb448f3400b382d89da2ee40bd98ba0fb327460ba4389dbf26857f",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 93,
+      "hasStructuralAnalysis": false
+    },
+    ".understand-anything/intermediate/scan-result.json": {
+      "filePath": ".understand-anything/intermediate/scan-result.json",
+      "contentHash": "47ae8f84ba39e6d625ca68d7efa5b2c78428ed5bb3a7ed65afa45577b7a2b899",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 1331,
+      "hasStructuralAnalysis": true
+    },
+    ".understand-anything/tmp/ua-assemble.js": {
+      "filePath": ".understand-anything/tmp/ua-assemble.js",
+      "contentHash": "3f3b308b1b83d7dd37caf833b8872c3ff727ac79843d35c317a08acc5f19c367",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 22,
+      "hasStructuralAnalysis": true
+    },
+    ".understand-anything/tmp/ua-project-scan.js": {
+      "filePath": ".understand-anything/tmp/ua-project-scan.js",
+      "contentHash": "f80f1090a0229127f7a4b47b6939e0524c1f17a0aecada89f911f227b306fa92",
+      "functions": [
+        {
+          "name": "discoverFiles",
+          "params": [],
+          "exported": false,
+          "lineCount": 31
+        },
+        {
+          "name": "hardcodedExclude",
+          "params": [
+            "p"
+          ],
+          "exported": false,
+          "lineCount": 19
+        },
+        {
+          "name": "loadIgnore",
+          "params": [],
+          "exported": false,
+          "lineCount": 18
+        },
+        {
+          "name": "makeIgnoreMatcher",
+          "params": [
+            "patterns"
+          ],
+          "exported": false,
+          "lineCount": 47
+        },
+        {
+          "name": "detectLanguage",
+          "params": [
+            "p"
+          ],
+          "exported": false,
+          "lineCount": 8
+        },
+        {
+          "name": "detectCategory",
+          "params": [
+            "p"
+          ],
+          "exported": false,
+          "lineCount": 39
+        },
+        {
+          "name": "countLines",
+          "params": [
+            "files"
+          ],
+          "exported": false,
+          "lineCount": 55
+        },
+        {
+          "name": "detectFrameworks",
+          "params": [
+            "files"
+          ],
+          "exported": false,
+          "lineCount": 83
+        },
+        {
+          "name": "detectName",
+          "params": [
+            "files"
+          ],
+          "exported": false,
+          "lineCount": 45
+        },
+        {
+          "name": "readmeHead",
+          "params": [],
+          "exported": false,
+          "lineCount": 13
+        },
+        {
+          "name": "rawDescription",
+          "params": [
+            "files"
+          ],
+          "exported": false,
+          "lineCount": 17
+        },
+        {
+          "name": "buildImportMap",
+          "params": [
+            "files",
+            "categoryMap"
+          ],
+          "exported": false,
+          "lineCount": 12
+        },
+        {
+          "name": "resolveImports",
+          "params": [
+            "file",
+            "fileSet"
+          ],
+          "exported": false,
+          "lineCount": 124
+        },
+        {
+          "name": "main",
+          "params": [],
+          "exported": false,
+          "lineCount": 95
+        }
+      ],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 713,
+      "hasStructuralAnalysis": true
+    },
+    ".understand-anything/tmp/ua-scan-results.json": {
+      "filePath": ".understand-anything/tmp/ua-scan-results.json",
+      "contentHash": "5905823bf4bae0faf17faaf20c63c685b05b732437c16337b3ba197458fc6b49",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 1333,
+      "hasStructuralAnalysis": true
+    },
+    "CLAUDE.md": {
+      "filePath": "CLAUDE.md",
+      "contentHash": "c2ce4b6e27de6434ae420930794ede5b629bacd339eab8e4dfc9243e3ab42304",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 7,
+      "hasStructuralAnalysis": true
+    },
+    "IDEA-A.md": {
+      "filePath": "IDEA-A.md",
+      "contentHash": "b5e66dc32bbd6c1440900ef2ec62bc887db64955b31adb5314fe6801cd34e097",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 79,
+      "hasStructuralAnalysis": true
+    },
+    "README.md": {
+      "filePath": "README.md",
+      "contentHash": "7ccd3a27a913bbb850b5f257c5c1b5f01a7a88484f854ab9297cd94d376ad195",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 36,
+      "hasStructuralAnalysis": true
+    },
+    "RESEARCH-BRIEF.md": {
+      "filePath": "RESEARCH-BRIEF.md",
+      "contentHash": "df4cfbde06b52e3a62ea2e22334f81caaf6196f4f76a19dad46f1ff86b47cfce",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 179,
+      "hasStructuralAnalysis": true
+    },
+    "SEED.md": {
+      "filePath": "SEED.md",
+      "contentHash": "c054b0d5fc6e4879bda44931fe8612b7b6aac538a24bd0b52006595130f4b106",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 136,
+      "hasStructuralAnalysis": true
+    },
+    "WEB-PROMPT.md": {
+      "filePath": "WEB-PROMPT.md",
+      "contentHash": "832991a304668a9d7607519a66909306145560c2cbecf0a4025d1782ed7f9b0a",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 204,
+      "hasStructuralAnalysis": true
+    },
+    "analysis_options.yaml": {
+      "filePath": "analysis_options.yaml",
+      "contentHash": "be2790fb6d031a16d6059503bfe11221bf68b13f1801899d0595cb4de93af227",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 37,
+      "hasStructuralAnalysis": true
+    },
+    "android/app/build.gradle.kts": {
+      "filePath": "android/app/build.gradle.kts",
+      "contentHash": "a0b2b0e07cf03ef36e667be39f17ff40e4424e2a5b3ca55772e1f2b5b02d743c",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 46,
+      "hasStructuralAnalysis": false
+    },
+    "android/app/src/debug/AndroidManifest.xml": {
+      "filePath": "android/app/src/debug/AndroidManifest.xml",
+      "contentHash": "30b0832ed8b92dfbd6ae2abfa939ccf26333d37600056b1572bd4a397a18a74b",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 8,
+      "hasStructuralAnalysis": false
+    },
+    "android/app/src/main/AndroidManifest.xml": {
+      "filePath": "android/app/src/main/AndroidManifest.xml",
+      "contentHash": "4901a8dc895203289a9508c8cbd00371dcc29e2670887f0d4940528cddf418f9",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 74,
+      "hasStructuralAnalysis": false
+    },
+    "android/app/src/main/kotlin/com/ditto/meshrag/mesh_rag_demo/MainActivity.kt": {
+      "filePath": "android/app/src/main/kotlin/com/ditto/meshrag/mesh_rag_demo/MainActivity.kt",
+      "contentHash": "2b84d7ecf671ff71363e54fbfbe8ca9afab5a058faf32881f979094e047dcdbc",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 6,
+      "hasStructuralAnalysis": false
+    },
+    "android/app/src/main/res/drawable-v21/launch_background.xml": {
+      "filePath": "android/app/src/main/res/drawable-v21/launch_background.xml",
+      "contentHash": "7ca6d5cec2169c5a98661a119db23a6f3399c8fef2256ff04f3a642831282478",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 13,
+      "hasStructuralAnalysis": false
+    },
+    "android/app/src/main/res/drawable/launch_background.xml": {
+      "filePath": "android/app/src/main/res/drawable/launch_background.xml",
+      "contentHash": "94433756fe10005ddd6fc55cc5c0b1e9f3c10b66a08ceac795ece6713d34e28a",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 13,
+      "hasStructuralAnalysis": false
+    },
+    "android/app/src/main/res/values-night/styles.xml": {
+      "filePath": "android/app/src/main/res/values-night/styles.xml",
+      "contentHash": "8c5bad5152f217e837519f9c15211d19f39bd45f5f67faf6dd81cb4b299e518f",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 19,
+      "hasStructuralAnalysis": false
+    },
+    "android/app/src/main/res/values/styles.xml": {
+      "filePath": "android/app/src/main/res/values/styles.xml",
+      "contentHash": "937d7c82f539c72eb94fd3a3773f29b3d3fef1997213c92cb632298cedf4bda9",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 19,
+      "hasStructuralAnalysis": false
+    },
+    "android/app/src/profile/AndroidManifest.xml": {
+      "filePath": "android/app/src/profile/AndroidManifest.xml",
+      "contentHash": "30b0832ed8b92dfbd6ae2abfa939ccf26333d37600056b1572bd4a397a18a74b",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 8,
+      "hasStructuralAnalysis": false
+    },
+    "android/build.gradle.kts": {
+      "filePath": "android/build.gradle.kts",
+      "contentHash": "e704c38144ab59a5b51375447918d81d386d9ff49afd6c648b233bca8d759ed2",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 22,
+      "hasStructuralAnalysis": false
+    },
+    "android/gradle.properties": {
+      "filePath": "android/gradle.properties",
+      "contentHash": "20c411ebbe5162992d16d170656ee19a9ffe0571e6c4d4c5a5314bb06da0a672",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 4,
+      "hasStructuralAnalysis": false
+    },
+    "android/gradle/wrapper/gradle-wrapper.properties": {
+      "filePath": "android/gradle/wrapper/gradle-wrapper.properties",
+      "contentHash": "4f0df93978f8c53f8995c6afcdecd9d290b5df35fa08f236163e8e5df8557c8e",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 6,
+      "hasStructuralAnalysis": false
+    },
+    "android/settings.gradle.kts": {
+      "filePath": "android/settings.gradle.kts",
+      "contentHash": "7c814c3f84659358f4ec43f9779fa6b8f9ca07e47958eb3c8671fa924d2fbbba",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 26,
+      "hasStructuralAnalysis": false
+    },
+    "assets/.gitkeep": {
+      "filePath": "assets/.gitkeep",
+      "contentHash": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 1,
+      "hasStructuralAnalysis": false
+    },
+    "assets/seed_recipes_a.json": {
+      "filePath": "assets/seed_recipes_a.json",
+      "contentHash": "9dfc7a62a951a5f82b1e37bb327d219d8bbd7b31b2eb92a23ee00a2b858fda27",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 135,
+      "hasStructuralAnalysis": true
+    },
+    "assets/seed_recipes_b.json": {
+      "filePath": "assets/seed_recipes_b.json",
+      "contentHash": "b0fc4d3faa0a7aeac4dfb32705178e9815b3d080089568d88d15cb8c42a5b43b",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 135,
+      "hasStructuralAnalysis": true
+    },
+    "docs/architecture-vs-flutter-skills.md": {
+      "filePath": "docs/architecture-vs-flutter-skills.md",
+      "contentHash": "c4f80728add2f2a314e211e47dfccd66939f11bdd6d4b5d16a23231617186f29",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 94,
+      "hasStructuralAnalysis": true
+    },
+    "docs/c4-vs-code-drift.md": {
+      "filePath": "docs/c4-vs-code-drift.md",
+      "contentHash": "1f1ac3188d7f535aa19d6cb56cc0cce5fd6f2280cf20623bdcb50d30d03a30eb",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 114,
+      "hasStructuralAnalysis": true
+    },
+    "docs/c4/model.c4": {
+      "filePath": "docs/c4/model.c4",
+      "contentHash": "d7a9a2f065f46ce3084bf56ac7460d39e49a630072002508e5a5e6c9df76c9ef",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 230,
+      "hasStructuralAnalysis": false
+    },
+    "docs/plans/2026-05-21-001-feat-mesh-rag-stage-0-implementation-plan.md": {
+      "filePath": "docs/plans/2026-05-21-001-feat-mesh-rag-stage-0-implementation-plan.md",
+      "contentHash": "1129db78bcbf25c2002695af6b7d4c401ecb1ce9b3027a2571a61e09417ee855",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 600,
+      "hasStructuralAnalysis": true
+    },
+    "docs/research/chatgpt-deep-research.md": {
+      "filePath": "docs/research/chatgpt-deep-research.md",
+      "contentHash": "46a3a2f88d55e3c0cdf842acdaba865f5f89fbde2b0c53dc030e09e0d1ee547a",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 245,
+      "hasStructuralAnalysis": true
+    },
+    "docs/research/claude-deep-research.md": {
+      "filePath": "docs/research/claude-deep-research.md",
+      "contentHash": "b75e41417368a87551efe8490945bd1490cff88916dcd4d81e71946bedf8885c",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 316,
+      "hasStructuralAnalysis": true
+    },
+    "docs/research/claude.md": {
+      "filePath": "docs/research/claude.md",
+      "contentHash": "8b5d80d8034b1847bafef52de46e558e7ff967630705404e781576dfb16dc817",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 426,
+      "hasStructuralAnalysis": true
+    },
+    "docs/research/codex.md": {
+      "filePath": "docs/research/codex.md",
+      "contentHash": "684cf5501b10ecede3c21186253ebf642dd41a321980a5c5c783abc07c5d7c8e",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 392,
+      "hasStructuralAnalysis": true
+    },
+    "docs/research/downloads.yaml": {
+      "filePath": "docs/research/downloads.yaml",
+      "contentHash": "1d5e849baf50bba3ff796bbbf5e6d3d078a2bdb22135232e3e9b23e046892a06",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 1350,
+      "hasStructuralAnalysis": true
+    },
+    "docs/research/future-work-research.md": {
+      "filePath": "docs/research/future-work-research.md",
+      "contentHash": "16507e8d6b675079c22ba825c198d1cccf12090aaa8b89cafea212f007b91182",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 140,
+      "hasStructuralAnalysis": true
+    },
+    "docs/research/gemini-deep-research.md": {
+      "filePath": "docs/research/gemini-deep-research.md",
+      "contentHash": "037f2d14de916314f866c35f54f060f8761f835faf26275cffd7e24fc086248f",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 348,
+      "hasStructuralAnalysis": true
+    },
+    "docs/research/gemini.md": {
+      "filePath": "docs/research/gemini.md",
+      "contentHash": "88a1687655e55045af35944c28c07a28d5f6f4e54f6c110fd1cd93c6c1da549f",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 92,
+      "hasStructuralAnalysis": true
+    },
+    "docs/research/index/README.md": {
+      "filePath": "docs/research/index/README.md",
+      "contentHash": "897de935bf7b9703492d2f992cce72725a7df353ebb00277443fa8e3cae9f73f",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 40,
+      "hasStructuralAnalysis": true
+    },
+    "docs/research/index/_per_source/docs-bridgefy-sdk.md": {
+      "filePath": "docs/research/index/_per_source/docs-bridgefy-sdk.md",
+      "contentHash": "605c5eb9eb573a737f83fe3df98d33bb3f3b493d3c2657f27241bd99775b4fb8",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 34,
+      "hasStructuralAnalysis": true
+    },
+    "docs/research/index/_per_source/docs-developer-apple-com.md": {
+      "filePath": "docs/research/index/_per_source/docs-developer-apple-com.md",
+      "contentHash": "c92437f3468dce6e819fc8f5cc1cc7d189db9669ab7e22dbfd64755d53d16e9e",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 34,
+      "hasStructuralAnalysis": true
+    },
+    "docs/research/index/_per_source/docs-ditto-live.md": {
+      "filePath": "docs/research/index/_per_source/docs-ditto-live.md",
+      "contentHash": "896a8661ffd7725cfc94f22b507955cd2e91fcd17a6d7c129e212f8f932c4bc7",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 37,
+      "hasStructuralAnalysis": true
+    },
+    "docs/research/index/_per_source/docs-docs-ditto-live-dql.md": {
+      "filePath": "docs/research/index/_per_source/docs-docs-ditto-live-dql.md",
+      "contentHash": "b59129b08ffeed3775cf9f0a893a0e0e94b0c1ca812767b09fc4f062869c146e",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 35,
+      "hasStructuralAnalysis": true
+    },
+    "docs/research/index/_per_source/docs-docs-ditto-live-transports.md": {
+      "filePath": "docs/research/index/_per_source/docs-docs-ditto-live-transports.md",
+      "contentHash": "ab62fbfa7501ba6eaa452ad4c0bb6bc8bc668fdb6062eb198efecc119040acd0",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 36,
+      "hasStructuralAnalysis": true
+    },
+    "docs/research/index/_per_source/docs-docs-ditto-live.md": {
+      "filePath": "docs/research/index/_per_source/docs-docs-ditto-live.md",
+      "contentHash": "f7eb86e77cbd4458d89c5385bcad166f1cd9b928eaeb8bad542f7ae47486843a",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 36,
+      "hasStructuralAnalysis": true
+    },
+    "docs/research/index/_per_source/docs-docs-pytorch-org.md": {
+      "filePath": "docs/research/index/_per_source/docs-docs-pytorch-org.md",
+      "contentHash": "12608bdd1a34b8e6c672b84040b544d149cceb6e30cbfd998c0a9f0da25c9a63",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 34,
+      "hasStructuralAnalysis": true
+    },
+    "docs/research/index/_per_source/docs-mesh-networking-101.md": {
+      "filePath": "docs/research/index/_per_source/docs-mesh-networking-101.md",
+      "contentHash": "a2693dd3e616791c616015216b052cb72f01f87ebf3f349156a22a75a24f1c6a",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 32,
+      "hasStructuralAnalysis": true
+    },
+    "docs/research/index/_per_source/paper-1106.4374.md": {
+      "filePath": "docs/research/index/_per_source/paper-1106.4374.md",
+      "contentHash": "b4477401afa41ce011b6effe6dff016f3176b2d3ad331a8a7f870e805b8d9210",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 32,
+      "hasStructuralAnalysis": true
+    },
+    "docs/research/index/_per_source/paper-1908.10084.md": {
+      "filePath": "docs/research/index/_per_source/paper-1908.10084.md",
+      "contentHash": "92aceb9c4a3897cc43f090b7a3329c65a183bfbb6ee4e7c70903d222ac80280d",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 34,
+      "hasStructuralAnalysis": true
+    },
+    "docs/research/index/_per_source/paper-1910.01108.md": {
+      "filePath": "docs/research/index/_per_source/paper-1910.01108.md",
+      "contentHash": "8c620215d77b6cc29c9f2ab7f75bfc11a3526a5bcd7e0c2be1f73b23f2d16dc9",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 33,
+      "hasStructuralAnalysis": true
+    },
+    "docs/research/index/_per_source/paper-2106.09685.md": {
+      "filePath": "docs/research/index/_per_source/paper-2106.09685.md",
+      "contentHash": "7463601d1fa494ca9b39021e066e9f74340b4195704bc3bc3d5dcc690e09c1b8",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 32,
+      "hasStructuralAnalysis": true
+    },
+    "docs/research/index/_per_source/paper-2301.07788.md": {
+      "filePath": "docs/research/index/_per_source/paper-2301.07788.md",
+      "contentHash": "29f1c32229bc47dd14c6a82a129ab1ad4174dc3b3773442340e1ec585d77d2fa",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 34,
+      "hasStructuralAnalysis": true
+    },
+    "docs/research/index/_per_source/paper-2305.14314.md": {
+      "filePath": "docs/research/index/_per_source/paper-2305.14314.md",
+      "contentHash": "307a084ceee689b5025fd70bd6a83ee36b24901f66c2a7e68779759b1823a0d9",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 23,
+      "hasStructuralAnalysis": true
+    },
+    "docs/research/index/_per_source/paper-2308.14963.md": {
+      "filePath": "docs/research/index/_per_source/paper-2308.14963.md",
+      "contentHash": "9b2dad12c9cf18b5c94988b24f9c2d9919a038b310e5e1bc38318c3e51746671",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 34,
+      "hasStructuralAnalysis": true
+    },
+    "docs/research/index/_per_source/paper-2401.02385.md": {
+      "filePath": "docs/research/index/_per_source/paper-2401.02385.md",
+      "contentHash": "2655a092a5a564518535ca15f85e2775699d4be0143ce48af66594de1a7cb995",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 35,
+      "hasStructuralAnalysis": true
+    },
+    "docs/research/index/_per_source/paper-2402.00841.md": {
+      "filePath": "docs/research/index/_per_source/paper-2402.00841.md",
+      "contentHash": "a55dfdd9a7d5f18b7125a21c46295d1038b578d90509846ffaff58897045524c",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 33,
+      "hasStructuralAnalysis": true
+    },
+    "docs/research/index/_per_source/paper-2402.01613.md": {
+      "filePath": "docs/research/index/_per_source/paper-2402.01613.md",
+      "contentHash": "b1020faf1a45545858e412a7ab8003d123908abdaaae4b1e6750e918f5311470",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 34,
+      "hasStructuralAnalysis": true
+    },
+    "docs/research/index/_per_source/paper-2402.04351.md": {
+      "filePath": "docs/research/index/_per_source/paper-2402.04351.md",
+      "contentHash": "1f3fa2fcd8c3b6de16eb2dc6ccfb87c6004486b2349517cf038c4b334fce431a",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 32,
+      "hasStructuralAnalysis": true
+    },
+    "docs/research/index/_per_source/paper-2403.12844.md": {
+      "filePath": "docs/research/index/_per_source/paper-2403.12844.md",
+      "contentHash": "9206befb825a79fbf1bd0a04b5c95a8621992b6b17b7ef945325dd805eac9ce7",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 34,
+      "hasStructuralAnalysis": true
+    },
+    "docs/research/index/_per_source/paper-2404.14219.md": {
+      "filePath": "docs/research/index/_per_source/paper-2404.14219.md",
+      "contentHash": "2cf7d60bdaedc5277ad859e274b8483c1ce5efff1b52f3416092c11412a42a17",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 33,
+      "hasStructuralAnalysis": true
+    },
+    "docs/research/index/_per_source/paper-2405.00732.md": {
+      "filePath": "docs/research/index/_per_source/paper-2405.00732.md",
+      "contentHash": "0cd02c3262648f01af9b0b658f7feae7ca40134fb677b272f7f86e841f502ddc",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 32,
+      "hasStructuralAnalysis": true
+    },
+    "docs/research/index/_per_source/paper-2406.10290.md": {
+      "filePath": "docs/research/index/_per_source/paper-2406.10290.md",
+      "contentHash": "c9fcee6f8fa0dbd77c650155486c82e9e647bced00800ee2f2a63d59e2bc1937",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 37,
+      "hasStructuralAnalysis": true
+    },
+    "docs/research/index/_per_source/paper-2407.07871.md": {
+      "filePath": "docs/research/index/_per_source/paper-2407.07871.md",
+      "contentHash": "9506d345a34040fb7f81ab780b44efba968cdc1148626f92263ab803285ad772",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 34,
+      "hasStructuralAnalysis": true
+    },
+    "docs/research/index/_per_source/paper-2409.00088.md": {
+      "filePath": "docs/research/index/_per_source/paper-2409.00088.md",
+      "contentHash": "b3ef4594add9102aaab1ded22957f4f7410a4b8c167f861d1e5d6a0d420347e8",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 32,
+      "hasStructuralAnalysis": true
+    },
+    "docs/research/index/_per_source/paper-2412.04922.md": {
+      "filePath": "docs/research/index/_per_source/paper-2412.04922.md",
+      "contentHash": "b39fbd5148a2dfc3bb147d46348accedb76125cd8f6f43697fdea2a6c488b2ae",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 33,
+      "hasStructuralAnalysis": true
+    },
+    "docs/research/index/_per_source/paper-2412.21023.md": {
+      "filePath": "docs/research/index/_per_source/paper-2412.21023.md",
+      "contentHash": "1fe602138582331371a4066d26c9831276bc5a9c4547494195319c85d80b10c7",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 33,
+      "hasStructuralAnalysis": true
+    },
+    "docs/research/index/_per_source/paper-2504.06135.md": {
+      "filePath": "docs/research/index/_per_source/paper-2504.06135.md",
+      "contentHash": "0c72d4c4c452d059301d8cefa305d4cb6e0e58a31d37c714210db02e51b35258",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 35,
+      "hasStructuralAnalysis": true
+    },
+    "docs/research/index/_per_source/paper-2505.00443.md": {
+      "filePath": "docs/research/index/_per_source/paper-2505.00443.md",
+      "contentHash": "c8fcc1646b720ea0e8e44dc0edb7bb83321508ab1b61f08b9c5e16b6dbbde680",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 33,
+      "hasStructuralAnalysis": true
+    },
+    "docs/research/index/_per_source/paper-2505.09388.md": {
+      "filePath": "docs/research/index/_per_source/paper-2505.09388.md",
+      "contentHash": "30be65bfe79a165e0a17495ddf0b3ea015a67f19a62974d64f08ad4a16cdf930",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 35,
+      "hasStructuralAnalysis": true
+    },
+    "docs/research/index/_per_source/paper-2505.11783.md": {
+      "filePath": "docs/research/index/_per_source/paper-2505.11783.md",
+      "contentHash": "da801715f165613845c5983a028b1f2bf17571b43ff7624bd87c7f5f82529030",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 34,
+      "hasStructuralAnalysis": true
+    },
+    "docs/research/index/_per_source/paper-2505.14992.md": {
+      "filePath": "docs/research/index/_per_source/paper-2505.14992.md",
+      "contentHash": "262a06f3e298ba3e4059b2c3d5061daeeb9505ffdc1af040b51d05e75af9aa55",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 34,
+      "hasStructuralAnalysis": true
+    },
+    "docs/research/index/_per_source/paper-2506.05176.md": {
+      "filePath": "docs/research/index/_per_source/paper-2506.05176.md",
+      "contentHash": "38a9e9d7dd856fa64350346e47b060fc350dff6db59eb667147288c96f537902",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 33,
+      "hasStructuralAnalysis": true
+    },
+    "docs/research/index/_per_source/paper-2506.09501.md": {
+      "filePath": "docs/research/index/_per_source/paper-2506.09501.md",
+      "contentHash": "a61021474fc7a3ce28c6b04af6ff4449eea7232386a7a3887f0394ad01e7eba4",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 33,
+      "hasStructuralAnalysis": true
+    },
+    "docs/research/index/_per_source/paper-2507.01079.md": {
+      "filePath": "docs/research/index/_per_source/paper-2507.01079.md",
+      "contentHash": "453c3e2e512507ec6b3152157d03ff6bf1da5b18b9c4aafb643c10ff8c48b010",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 34,
+      "hasStructuralAnalysis": true
+    },
+    "docs/research/index/_per_source/paper-2507.17647.md": {
+      "filePath": "docs/research/index/_per_source/paper-2507.17647.md",
+      "contentHash": "2a9b89efad22d5b0fb68f0bfe490ff8dbcf6c0497611eda353e45a16a6b3b208",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 35,
+      "hasStructuralAnalysis": true
+    },
+    "docs/research/index/_per_source/paper-2509.20354.md": {
+      "filePath": "docs/research/index/_per_source/paper-2509.20354.md",
+      "contentHash": "39b597759aff07d1510f7f16a7efd1be3f5cba4b3d361869022c9cedcaa83a4f",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 33,
+      "hasStructuralAnalysis": true
+    },
+    "docs/research/index/_per_source/paper-2602.17099.md": {
+      "filePath": "docs/research/index/_per_source/paper-2602.17099.md",
+      "contentHash": "8dc2ce504bb1e4fe4ae10e0de686217804a0dc9437b2cab5cdab2f17154f42c8",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 34,
+      "hasStructuralAnalysis": true
+    },
+    "docs/research/index/_per_source/repo-asg017-sqlite-vec.md": {
+      "filePath": "docs/research/index/_per_source/repo-asg017-sqlite-vec.md",
+      "contentHash": "bf3d136fdbe3c232c20f420664af86c84ed767dd9ab1f1ed3a169ff908ab70a2",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 36,
+      "hasStructuralAnalysis": true
+    },
+    "docs/research/index/_per_source/repo-deepsense-ai-edge-slm.md": {
+      "filePath": "docs/research/index/_per_source/repo-deepsense-ai-edge-slm.md",
+      "contentHash": "b7fdaf5924c955e68036c1bc7edf10ca42c08f7259e43ddfaf6528073019c4ec",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 36,
+      "hasStructuralAnalysis": true
+    },
+    "docs/research/index/_per_source/repo-developermindset-com-faiss-mobile.md": {
+      "filePath": "docs/research/index/_per_source/repo-developermindset-com-faiss-mobile.md",
+      "contentHash": "0a97924555b4275fc6cedf3c2496651693b9a2c2bc587b3fa301d98da0c47739",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 34,
+      "hasStructuralAnalysis": true
+    },
+    "docs/research/index/_per_source/repo-earthstar-project-earthstar.md": {
+      "filePath": "docs/research/index/_per_source/repo-earthstar-project-earthstar.md",
+      "contentHash": "5ce229ac16041b1a975056225b993fcc9ee1b6f56a256c3f5821208d7413e708",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 34,
+      "hasStructuralAnalysis": true
+    },
+    "docs/research/index/_per_source/repo-earthstar-project-willow-rs.md": {
+      "filePath": "docs/research/index/_per_source/repo-earthstar-project-willow-rs.md",
+      "contentHash": "f44daeb5ea7bfaf5ddd4bf486a00d3cc4dab701aee3a1be5f40f54af4924167d",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 35,
+      "hasStructuralAnalysis": true
+    },
+    "docs/research/index/_per_source/repo-facebookresearch-faiss.md": {
+      "filePath": "docs/research/index/_per_source/repo-facebookresearch-faiss.md",
+      "contentHash": "985cacc5b9915a714d7c9fcfe14b6bbfe09b70f53e22775745b5b5eb49c2b087",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 35,
+      "hasStructuralAnalysis": true
+    },
+    "docs/research/index/_per_source/repo-getditto-demoapp-chat.md": {
+      "filePath": "docs/research/index/_per_source/repo-getditto-demoapp-chat.md",
+      "contentHash": "33176da8ca2a8df25acc5a9958cf135b062ecfe8e111fb0e61eba41c29078267",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 33,
+      "hasStructuralAnalysis": true
+    },
+    "docs/research/index/_per_source/repo-getditto-demoapp-inventory.md": {
+      "filePath": "docs/research/index/_per_source/repo-getditto-demoapp-inventory.md",
+      "contentHash": "855212d63f25339d1f317d5a6e768a0cbafefad8ade2419bdbb70887a9f925e9",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 36,
+      "hasStructuralAnalysis": true
+    },
+    "docs/research/index/_per_source/repo-getditto-demoapp-pos-kds.md": {
+      "filePath": "docs/research/index/_per_source/repo-getditto-demoapp-pos-kds.md",
+      "contentHash": "1c38b8d89bf239be6719413706a680ac6daafffd1450a1c6dd6374e565d90b01",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 35,
+      "hasStructuralAnalysis": true
+    },
+    "docs/research/index/_per_source/repo-getditto-samples.md": {
+      "filePath": "docs/research/index/_per_source/repo-getditto-samples.md",
+      "contentHash": "ddd8094b4616c33d4c45dcc7982657ad4f39a75a40bb0e31a484da1fba36a6eb",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 35,
+      "hasStructuralAnalysis": true
+    },
+    "docs/research/index/_per_source/repo-ggml-org-ggml.md": {
+      "filePath": "docs/research/index/_per_source/repo-ggml-org-ggml.md",
+      "contentHash": "3c8ffb232f53a6540908dacf57722a83cbf586826152e94644475a182032f7b5",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 35,
+      "hasStructuralAnalysis": true
+    },
+    "docs/research/index/_per_source/repo-google-ai-edge-gallery.md": {
+      "filePath": "docs/research/index/_per_source/repo-google-ai-edge-gallery.md",
+      "contentHash": "cf2761facf6ae86906e6f89f48a49b058dc9fe592a6b1c5baea4fb6a4e9107f8",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 34,
+      "hasStructuralAnalysis": true
+    },
+    "docs/research/index/_per_source/repo-hakimel-reveal-js.md": {
+      "filePath": "docs/research/index/_per_source/repo-hakimel-reveal-js.md",
+      "contentHash": "f967ffb96ca0215a8658e4507dcbb740090dfe5fcd0c29c905508ecf84539f9c",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 33,
+      "hasStructuralAnalysis": true
+    },
+    "docs/research/index/_per_source/repo-libp2p-go-libp2p.md": {
+      "filePath": "docs/research/index/_per_source/repo-libp2p-go-libp2p.md",
+      "contentHash": "1c36d89756a4fe1a17e5b894de4925b26a97996376128faa6b14025337d98462",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 34,
+      "hasStructuralAnalysis": true
+    },
+    "docs/research/index/_per_source/repo-loro-dev-loro.md": {
+      "filePath": "docs/research/index/_per_source/repo-loro-dev-loro.md",
+      "contentHash": "ada48dfd0feaebc5729278f804bccbe18011b831c820d583ce6aa7cef37d1ce9",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 33,
+      "hasStructuralAnalysis": true
+    },
+    "docs/research/index/_per_source/repo-mfontanini-presenterm.md": {
+      "filePath": "docs/research/index/_per_source/repo-mfontanini-presenterm.md",
+      "contentHash": "c3c3a1c45b6d28f9bbd655007ec72a6dbc10ceee437395ae1a240acd42aaa4f0",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 29,
+      "hasStructuralAnalysis": true
+    },
+    "docs/research/index/_per_source/repo-mlc-ai-mlc-llm.md": {
+      "filePath": "docs/research/index/_per_source/repo-mlc-ai-mlc-llm.md",
+      "contentHash": "54665a5f080682c4c492e469b53b62d611a80a526fa013ed2da5df901b7f4bf8",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 35,
+      "hasStructuralAnalysis": true
+    },
+    "docs/research/index/_per_source/repo-n0-computer-iroh.md": {
+      "filePath": "docs/research/index/_per_source/repo-n0-computer-iroh.md",
+      "contentHash": "f6ff740605f1cc6cebcb03f71418c48633b7fa7ede9ad8a5644b638790665aea",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 38,
+      "hasStructuralAnalysis": true
+    },
+    "docs/research/index/_per_source/repo-orbitdb-orbitdb.md": {
+      "filePath": "docs/research/index/_per_source/repo-orbitdb-orbitdb.md",
+      "contentHash": "0af16bca95422d477b467b8a2715ae034a59f2f2e60027acffa42309802b6803",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 35,
+      "hasStructuralAnalysis": true
+    },
+    "docs/research/index/_per_source/repo-permissionlesstech-bitchat-android.md": {
+      "filePath": "docs/research/index/_per_source/repo-permissionlesstech-bitchat-android.md",
+      "contentHash": "709743a15df90decf0e396a52666dd47a2810291bc4c1d9adb8768f6e9dec8dc",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 37,
+      "hasStructuralAnalysis": true
+    },
+    "docs/research/index/_per_source/repo-permissionlesstech-bitchat.md": {
+      "filePath": "docs/research/index/_per_source/repo-permissionlesstech-bitchat.md",
+      "contentHash": "ee82d8fe6c1cb83e4f4b797b95d32ebcaadac3de0daa5411829f4bd23647f730",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 34,
+      "hasStructuralAnalysis": true
+    },
+    "docs/research/index/_per_source/repo-qwenlm-qwen3-embedding.md": {
+      "filePath": "docs/research/index/_per_source/repo-qwenlm-qwen3-embedding.md",
+      "contentHash": "38145fa5ddf294cbd252edb7ebc78f864e845a459d31ddb59b2a811fc9e734e0",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 33,
+      "hasStructuralAnalysis": true
+    },
+    "docs/research/index/_per_source/repo-ramanujammv1988-edge-veda.md": {
+      "filePath": "docs/research/index/_per_source/repo-ramanujammv1988-edge-veda.md",
+      "contentHash": "4d7e9dc4587e42cc6765e16309e5602893ea74fad1c7f49b0e8e840bcc1d5368",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 38,
+      "hasStructuralAnalysis": true
+    },
+    "docs/research/index/_per_source/repo-slidevjs-slidev.md": {
+      "filePath": "docs/research/index/_per_source/repo-slidevjs-slidev.md",
+      "contentHash": "e3d683f3610a6f4020ca60586bc28acfa5f717078a732ee831e951623503eff0",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 32,
+      "hasStructuralAnalysis": true
+    },
+    "docs/research/index/_per_source/repo-software-mansion-labs-react-native-rag.md": {
+      "filePath": "docs/research/index/_per_source/repo-software-mansion-labs-react-native-rag.md",
+      "contentHash": "23b45c4b919707fba8b45221fca2bb393b00d7d721eb836a7de6a694095516be",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 38,
+      "hasStructuralAnalysis": true
+    },
+    "docs/research/index/_per_source/repo-spotify-annoy.md": {
+      "filePath": "docs/research/index/_per_source/repo-spotify-annoy.md",
+      "contentHash": "c84f62b948c888138856aa73e420655fcf9577a3aa5250588218d876ce9f9a28",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 33,
+      "hasStructuralAnalysis": true
+    },
+    "docs/research/index/_per_source/repo-thinking-machines-lab-batch-invariant-ops.md": {
+      "filePath": "docs/research/index/_per_source/repo-thinking-machines-lab-batch-invariant-ops.md",
+      "contentHash": "187bf3bb992098ac6a272ceb630f29f0ff02b54759ea7b38284093b54fb8f9a3",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 37,
+      "hasStructuralAnalysis": true
+    },
+    "docs/research/index/_per_source/repo-ukplab-sentence-transformers.md": {
+      "filePath": "docs/research/index/_per_source/repo-ukplab-sentence-transformers.md",
+      "contentHash": "9f4429a082587f0315456fb54cd2e294970a75449449f42c0b4367143d635ec4",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 36,
+      "hasStructuralAnalysis": true
+    },
+    "docs/research/index/_per_source/repo-unickcheng-logseq-ai-assistant.md": {
+      "filePath": "docs/research/index/_per_source/repo-unickcheng-logseq-ai-assistant.md",
+      "contentHash": "8c389f381bd57d65b54bdbca243b226c2e7d2dd2f6eb42224f8038f7de6d9cc8",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 32,
+      "hasStructuralAnalysis": true
+    },
+    "docs/research/index/_per_source/repo-unum-cloud-usearch.md": {
+      "filePath": "docs/research/index/_per_source/repo-unum-cloud-usearch.md",
+      "contentHash": "ff58d4b7d470042997b84a7297d0918aa6af3ecae10581137d0671e8a4272e1f",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 37,
+      "hasStructuralAnalysis": true
+    },
+    "docs/research/index/_per_source/repo-yjs-yjs.md": {
+      "filePath": "docs/research/index/_per_source/repo-yjs-yjs.md",
+      "contentHash": "2adb6641351d92802dab607256aec1117bea28ff88f85d89d155cf8512f18d33",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 34,
+      "hasStructuralAnalysis": true
+    },
+    "docs/research/index/by-tag.md": {
+      "filePath": "docs/research/index/by-tag.md",
+      "contentHash": "e81ff7bcbaf7b4407e9eff91077b836cf9240ecaa8a33b30aa4f4ced123a45b2",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 409,
+      "hasStructuralAnalysis": true
+    },
+    "docs/research/index/by-topic.md": {
+      "filePath": "docs/research/index/by-topic.md",
+      "contentHash": "97606f03a03cf63642e34615d1eb6da67e18cc421d2c1d3783bc6eca753016d5",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 69,
+      "hasStructuralAnalysis": true
+    },
+    "docs/research/index/clusters.md": {
+      "filePath": "docs/research/index/clusters.md",
+      "contentHash": "7e02090455106be0cf608b88795e877876f1f7d82d42b79626ece0d2c1dd6ba6",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 121,
+      "hasStructuralAnalysis": true
+    },
+    "docs/research/index/cross-references.md": {
+      "filePath": "docs/research/index/cross-references.md",
+      "contentHash": "ad5501f0eeaa7019ac5b146402016bcaa2b37838bbacb2aa6e071bd510f59285",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 223,
+      "hasStructuralAnalysis": true
+    },
+    "docs/research/index/open-questions.md": {
+      "filePath": "docs/research/index/open-questions.md",
+      "contentHash": "8301a83e5707e2f31d8a849a6bebbbd1e06825036d16c165302ab250df51015d",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 139,
+      "hasStructuralAnalysis": true
+    },
+    "docs/research/index/top-N.md": {
+      "filePath": "docs/research/index/top-N.md",
+      "contentHash": "6ac14add24cefa865c933ba0384ca957d02b1d1946d25b85931f95f41193909d",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 65,
+      "hasStructuralAnalysis": true
+    },
+    "docs/spikes/README.md": {
+      "filePath": "docs/spikes/README.md",
+      "contentHash": "0ff9b0ba91c53d9634a7a24ae6749fb9d71e9266c205c0682727f5d68e1dd481",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 42,
+      "hasStructuralAnalysis": true
+    },
+    "docs/spikes/U2-determinism-results.md": {
+      "filePath": "docs/spikes/U2-determinism-results.md",
+      "contentHash": "9ad15f48e24e8df85deb54751507f5c694746dac6cb19e2025937a076078c120",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 53,
+      "hasStructuralAnalysis": true
+    },
+    "docs/spikes/U3-recipe-merge-eval.md": {
+      "filePath": "docs/spikes/U3-recipe-merge-eval.md",
+      "contentHash": "6dc9ff8a43c8d6c14c906dc70e66857ed87409365f8144b971d16705bfe1c9a7",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 59,
+      "hasStructuralAnalysis": true
+    },
+    "docs/spikes/U7-sync-verification.md": {
+      "filePath": "docs/spikes/U7-sync-verification.md",
+      "contentHash": "147b63f2dcdc91bbacfe18b69380812d77ece6ac702f96acf65696838b6444dc",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 68,
+      "hasStructuralAnalysis": true
+    },
+    "docs/spikes/U9-demo-rehearsal.md": {
+      "filePath": "docs/spikes/U9-demo-rehearsal.md",
+      "contentHash": "956573a75533c59392c1cf66707d21de6d9d52f71f43889d573b3baaa765ead3",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 46,
+      "hasStructuralAnalysis": true
+    },
+    "ios/Flutter/AppFrameworkInfo.plist": {
+      "filePath": "ios/Flutter/AppFrameworkInfo.plist",
+      "contentHash": "4844be22b72d16d6f6013ce5a2240728c730ef1fef9cf43a5c55198b18614802",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 27,
+      "hasStructuralAnalysis": false
+    },
+    "ios/Flutter/Debug.xcconfig": {
+      "filePath": "ios/Flutter/Debug.xcconfig",
+      "contentHash": "690b8a8b1ae15ddd29b241429963e971bbc6720ab22f154cf8cf6b085b6d4925",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 3,
+      "hasStructuralAnalysis": false
+    },
+    "ios/Flutter/Release.xcconfig": {
+      "filePath": "ios/Flutter/Release.xcconfig",
+      "contentHash": "75abb819a9de1e0e41c835e7307bc64a506cac25a9a5c0b0d8253fa1c3d5d422",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 3,
+      "hasStructuralAnalysis": false
+    },
+    "ios/Podfile": {
+      "filePath": "ios/Podfile",
+      "contentHash": "e6187ff511609c0e7d218f69fd10afd9d1dffbc4b77331f67e94235a198bb511",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 44,
+      "hasStructuralAnalysis": false
+    },
+    "ios/Runner.xcodeproj/project.pbxproj": {
+      "filePath": "ios/Runner.xcodeproj/project.pbxproj",
+      "contentHash": "59f0d6935f7aa1b2920352a16dd5fc8ec626b63b3a4763c2185823e3501f3531",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 750,
+      "hasStructuralAnalysis": false
+    },
+    "ios/Runner.xcodeproj/project.xcworkspace/contents.xcworkspacedata": {
+      "filePath": "ios/Runner.xcodeproj/project.xcworkspace/contents.xcworkspacedata",
+      "contentHash": "7f3b00b5c3fdb45242d7b87e1e5c4e25d1fa8129a16c94295ecc4e8ea2235c5f",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 8,
+      "hasStructuralAnalysis": false
+    },
+    "ios/Runner.xcodeproj/project.xcworkspace/xcshareddata/IDEWorkspaceChecks.plist": {
+      "filePath": "ios/Runner.xcodeproj/project.xcworkspace/xcshareddata/IDEWorkspaceChecks.plist",
+      "contentHash": "dfa0f9bb85b95ccba9c6811adadf8cb407fb5d52088e89db83ebc308ec448542",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 9,
+      "hasStructuralAnalysis": false
+    },
+    "ios/Runner.xcodeproj/project.xcworkspace/xcshareddata/WorkspaceSettings.xcsettings": {
+      "filePath": "ios/Runner.xcodeproj/project.xcworkspace/xcshareddata/WorkspaceSettings.xcsettings",
+      "contentHash": "11b247bc6796892d67c9a821d18604db4dd6a880981b34f38460b9866e6b247f",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 9,
+      "hasStructuralAnalysis": false
+    },
+    "ios/Runner.xcodeproj/xcshareddata/xcschemes/Runner.xcscheme": {
+      "filePath": "ios/Runner.xcodeproj/xcshareddata/xcschemes/Runner.xcscheme",
+      "contentHash": "2dd28b879e66081e28a3324cf2bee7ab2f70be9a3e50e08926b7366dadff7d6e",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 102,
+      "hasStructuralAnalysis": false
+    },
+    "ios/Runner.xcworkspace/contents.xcworkspacedata": {
+      "filePath": "ios/Runner.xcworkspace/contents.xcworkspacedata",
+      "contentHash": "465e6de5660384eb6832e8078920ba6cd5305c445cb29a24a86a2fda4aa6b67e",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 11,
+      "hasStructuralAnalysis": false
+    },
+    "ios/Runner.xcworkspace/xcshareddata/IDEWorkspaceChecks.plist": {
+      "filePath": "ios/Runner.xcworkspace/xcshareddata/IDEWorkspaceChecks.plist",
+      "contentHash": "dfa0f9bb85b95ccba9c6811adadf8cb407fb5d52088e89db83ebc308ec448542",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 9,
+      "hasStructuralAnalysis": false
+    },
+    "ios/Runner.xcworkspace/xcshareddata/WorkspaceSettings.xcsettings": {
+      "filePath": "ios/Runner.xcworkspace/xcshareddata/WorkspaceSettings.xcsettings",
+      "contentHash": "11b247bc6796892d67c9a821d18604db4dd6a880981b34f38460b9866e6b247f",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 9,
+      "hasStructuralAnalysis": false
+    },
+    "ios/Runner/AppDelegate.swift": {
+      "filePath": "ios/Runner/AppDelegate.swift",
+      "contentHash": "9418c676adebac7e3f04daa80a7db62066e77f9766c804fd3e5e264124a31f80",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 14,
+      "hasStructuralAnalysis": false
+    },
+    "ios/Runner/Assets.xcassets/AppIcon.appiconset/Contents.json": {
+      "filePath": "ios/Runner/Assets.xcassets/AppIcon.appiconset/Contents.json",
+      "contentHash": "3b1e214f466ffedff74baa5598ad5c4421130eea6bc8d57b8fe23435e8280ae4",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 123,
+      "hasStructuralAnalysis": true
+    },
+    "ios/Runner/Assets.xcassets/LaunchImage.imageset/Contents.json": {
+      "filePath": "ios/Runner/Assets.xcassets/LaunchImage.imageset/Contents.json",
+      "contentHash": "ccc7950fd5f5b82067c85f667940a9d59189151460761ece8098ca78daa19469",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 24,
+      "hasStructuralAnalysis": true
+    },
+    "ios/Runner/Assets.xcassets/LaunchImage.imageset/README.md": {
+      "filePath": "ios/Runner/Assets.xcassets/LaunchImage.imageset/README.md",
+      "contentHash": "a985b626c4f7546a8ba392d135e9226c3547c8e2b46895f5f2bdf40d7b14ef9f",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 5,
+      "hasStructuralAnalysis": true
+    },
+    "ios/Runner/Base.lproj/LaunchScreen.storyboard": {
+      "filePath": "ios/Runner/Base.lproj/LaunchScreen.storyboard",
+      "contentHash": "857e61203b3deafb05766d8fcda898b86a7cb6f3d5e385ecc9926c4d698215e9",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 38,
+      "hasStructuralAnalysis": false
+    },
+    "ios/Runner/Base.lproj/Main.storyboard": {
+      "filePath": "ios/Runner/Base.lproj/Main.storyboard",
+      "contentHash": "fd367b6c43006d61b730f674970dd48b9f662c8f2264e52ffc1558102a2c9f2d",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 27,
+      "hasStructuralAnalysis": false
+    },
+    "ios/Runner/Info.plist": {
+      "filePath": "ios/Runner/Info.plist",
+      "contentHash": "3c96f4211ac6df7558bf5015da719ebcf8dbebaa5dcf7fd033a293c44ef61804",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 60,
+      "hasStructuralAnalysis": false
+    },
+    "ios/Runner/Runner-Bridging-Header.h": {
+      "filePath": "ios/Runner/Runner-Bridging-Header.h",
+      "contentHash": "1a8d11d01d1cc92c650c9c9ed35299240052d4683a15a719a2315ef44185e074",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 2,
+      "hasStructuralAnalysis": true
+    },
+    "ios/RunnerTests/RunnerTests.swift": {
+      "filePath": "ios/RunnerTests/RunnerTests.swift",
+      "contentHash": "5e8f4908dacea6f29b2a790e4d38bf5fded69096063f9a27a2f21584d62b30c0",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 13,
+      "hasStructuralAnalysis": false
+    },
+    "justfile": {
+      "filePath": "justfile",
+      "contentHash": "3cb08f78af1cb5caf82c9bbd04163ef759da606bff27fcf09ab9c944d8b34c7f",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 23,
+      "hasStructuralAnalysis": false
+    },
+    "lib/main.dart": {
+      "filePath": "lib/main.dart",
+      "contentHash": "1f237c33075ad7087c9801b3d8d16d91e4c03bb16c7143c8c3abb36d28dac0f1",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 163,
+      "hasStructuralAnalysis": false
+    },
+    "lib/models/recipe_tuple.dart": {
+      "filePath": "lib/models/recipe_tuple.dart",
+      "contentHash": "d1e98205c1cb7306415195d38c42e6a427483d4ff659fcb86b6400e86479689a",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 84,
+      "hasStructuralAnalysis": false
+    },
+    "lib/prompts/dql_queries.dart": {
+      "filePath": "lib/prompts/dql_queries.dart",
+      "contentHash": "decf3c6fcbe43ecb1cfae4b459cf51ae189cc071d1edf5c5fca4e0cee4ffea3c",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 28,
+      "hasStructuralAnalysis": false
+    },
+    "lib/prompts/recipe_merge.dart": {
+      "filePath": "lib/prompts/recipe_merge.dart",
+      "contentHash": "816627aa78c15b0404fa5bd8e313309ce569cb3c715462678881229345c4e5f8",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 52,
+      "hasStructuralAnalysis": false
+    },
+    "lib/services/cactus_service.dart": {
+      "filePath": "lib/services/cactus_service.dart",
+      "contentHash": "6b71e9b7b6360866951276cb25ad7e981237b90d8c0a0d1a2d2dc6d7392bef99",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 101,
+      "hasStructuralAnalysis": false
+    },
+    "lib/services/ditto_service.dart": {
+      "filePath": "lib/services/ditto_service.dart",
+      "contentHash": "cd3fb3cec33f9410d90abc22ae99351a9a2190e2753bab09d89300263faaf492",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 157,
+      "hasStructuralAnalysis": false
+    },
+    "lib/services/retrieval_service.dart": {
+      "filePath": "lib/services/retrieval_service.dart",
+      "contentHash": "8fcf6245f4a594ece72ab59da3fc1026970ddfa2fa61300f16f7c12fa634c46b",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 128,
+      "hasStructuralAnalysis": false
+    },
+    "lib/services/seed_loader.dart": {
+      "filePath": "lib/services/seed_loader.dart",
+      "contentHash": "3b70189d0416d8c6c96594f65acea3d7280c65ada966c62b530d88fe3ae68568",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 50,
+      "hasStructuralAnalysis": false
+    },
+    "lib/widgets/mesh_status_widget.dart": {
+      "filePath": "lib/widgets/mesh_status_widget.dart",
+      "contentHash": "b6ea4ff5cbc4917527c1db86422d355ca64415be439a069da8b0bd9421810a48",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 61,
+      "hasStructuralAnalysis": false
+    },
+    "lib/widgets/query_screen.dart": {
+      "filePath": "lib/widgets/query_screen.dart",
+      "contentHash": "991619e49275406c0390b3541e31cb6fc1a87cbd08519ac1a4eee1f33923137b",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 144,
+      "hasStructuralAnalysis": false
+    },
+    "pubspec.yaml": {
+      "filePath": "pubspec.yaml",
+      "contentHash": "1bbd80d1b90838a7c6be517a500d7b34f7a70668be45f80735f9ee4f85873c0e",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 37,
+      "hasStructuralAnalysis": true
+    },
+    "slides/deck.md": {
+      "filePath": "slides/deck.md",
+      "contentHash": "cf264221924b699bd9aaa28bda405b4df4e225a103192bae1d2e0420fbb9037d",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 169,
+      "hasStructuralAnalysis": true
+    },
+    "slides/notes.md": {
+      "filePath": "slides/notes.md",
+      "contentHash": "f740e0ed972a7e971319891ba4439af12efaecb3fa72f9accdab5bceb91ae458",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 70,
+      "hasStructuralAnalysis": true
+    },
+    "test/recipe_merge_prompt_test.dart": {
+      "filePath": "test/recipe_merge_prompt_test.dart",
+      "contentHash": "531a037a9cb36a11c3e85162749668d2a15c0ee429b04b3a65b1b16cebf30815",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 44,
+      "hasStructuralAnalysis": false
+    },
+    "test/recipe_tuple_test.dart": {
+      "filePath": "test/recipe_tuple_test.dart",
+      "contentHash": "8e3e76e94eea36b454553c4656c297ec41b1f7274f3622d1663b72cae8abd85d",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 80,
+      "hasStructuralAnalysis": false
+    },
+    "test/retrieval_service_test.dart": {
+      "filePath": "test/retrieval_service_test.dart",
+      "contentHash": "49f954db3e4c15c33b9bbe411beb790a0cc9633a8730a90cb3e43e349b486609",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 50,
+      "hasStructuralAnalysis": false
+    }
+  }
+}

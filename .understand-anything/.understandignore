@@ -1,0 +1,92 @@
+# .understandignore — patterns for files/dirs to exclude from analysis
+# Syntax: same as .gitignore
+#
+# --- From .gitignore (uncomment to exclude) ---
+
+# .DS_Store
+# .localized
+# __MACOSX/
+# .AppleDouble
+# .LSOverride
+# Icon[
+# ]
+# ._*
+# .DocumentRevisions-V100
+# .fseventsd
+# .Spotlight-V100
+# .TemporaryItems
+# .Trashes
+# .VolumeIcon.icns
+# .com.apple.timemachine.donotpresent
+# .com.apple.timemachine.supported
+# .PKInstallSandboxManager
+# .PKInstallSandboxManager-SystemSoftware
+# .hotfiles.btree
+# .vol
+# .file
+# .disk_label*
+# lost+found
+# .HFS+ Private Directory Data[
+# ]
+# .AppleDB
+# .AppleDesktop
+# Network Trash Folder
+# Temporary Items
+# .apdisk
+# Desktop DB
+# Desktop DF
+# TheFindByContentFolder
+# TheVolumeSettingsFolder
+# .FBCIndex
+# .FBCSemaphoreFile
+# .FBCLockFolder
+# .quota.group
+# .quota.user
+# .quota.ops.group
+# .quota.ops.user
+# Backups.backupdb
+# .MobileBackups
+# .MobileBackups.trash
+# MobileBackups.trash
+# tmbootpicker.efi
+# inspiration/
+# docs/c4/dashboard/
+# .dart_tool/
+# .flutter-plugins
+# .flutter-plugins-dependencies
+# .packages
+# .pub-cache/
+# .pub/
+# .metadata
+# *.iml
+# ios/Pods/
+# ios/.symlinks/
+# ios/Flutter/Flutter.framework
+# ios/Flutter/Flutter.podspec
+# ios/Flutter/flutter_export_environment.sh
+# android/.gradle/
+# android/captures/
+# android/gradlew
+# android/gradlew.bat
+# android/gradle/
+# android/local.properties
+# android/key.properties
+# **/GeneratedPluginRegistrant.*
+# .env
+# .env.local
+
+# --- Detected directories (uncomment to exclude) ---
+
+# test/
+# docs/
+# inspiration/
+
+# --- Project-specific (force-enabled here) ---
+inspiration/
+ios/Pods/
+ios/.symlinks/
+.dart_tool/
+.flutter-plugins-dependencies
+.metadata
+*.iml
+.idea/
