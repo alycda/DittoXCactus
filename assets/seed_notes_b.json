@@ -1,0 +1,37 @@
+[
+  {
+    "topic": "the solar system",
+    "contributor": "phone-b",
+    "createdAt": "2026-05-21T00:00:11Z",
+    "tags": ["ice-giants", "uranus", "neptune"],
+    "body": "Uranus and Neptune are ice giants, not gas giants — the distinction is they have more water, methane, and ammonia ices than Jupiter and Saturn do. Uranus rotates on its side (axial tilt about 98°), probably from an ancient collision with something big. Neptune has the strongest winds anywhere in the solar system — up to around 2,100 km/h."
+  },
+  {
+    "topic": "the solar system",
+    "contributor": "phone-b",
+    "createdAt": "2026-05-21T00:00:12Z",
+    "tags": ["dwarf-planets", "pluto", "iau"],
+    "body": "Pluto got reclassified as a dwarf planet in 2006 because it hasn't 'cleared its neighborhood' in the Kuiper Belt. Other dwarf planets: Ceres (in the asteroid belt), Eris, Haumea, Makemake. The IAU definition needs three things: orbits the sun, hydrostatic equilibrium (round under its own gravity), and has cleared its orbital path. Pluto fails the third one."
+  },
+  {
+    "topic": "the solar system",
+    "contributor": "phone-b",
+    "createdAt": "2026-05-21T00:00:13Z",
+    "tags": ["heliopause", "voyager", "oort-cloud"],
+    "body": "The heliopause is the boundary where the solar wind slows down to match the interstellar medium — roughly 120 AU from the sun. Voyager 1 crossed it in 2012; it's the only man-made object to leave the heliosphere. Beyond that the Oort Cloud (still theoretical, never directly observed) is thought to extend out to about 100,000 AU and is the source of long-period comets."
+  },
+  {
+    "topic": "the solar system",
+    "contributor": "phone-b",
+    "createdAt": "2026-05-21T00:00:14Z",
+    "tags": ["comets", "kuiper-belt"],
+    "body": "Comets have two tails. The dust tail curves along the comet's path. The plasma / ion tail points directly away from the sun no matter which way the comet is moving, because the solar wind pushes it. Short-period comets (under 200 years) come from the Kuiper Belt; long-period ones come from the Oort Cloud."
+  },
+  {
+    "topic": "the solar system",
+    "contributor": "phone-b",
+    "createdAt": "2026-05-21T00:00:15Z",
+    "tags": ["satellites", "sputnik", "iss", "voyager"],
+    "body": "Sputnik 1 was the first artificial satellite — USSR, October 1957. There are now over 10,000 active satellites in orbit, most launched in the last decade and dominated by Starlink. The International Space Station has been continuously occupied since November 2000. Voyager 1 launched in 1977 and is now over 24 billion km from Earth, still sending back faint signals."
+  }
+]

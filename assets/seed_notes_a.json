@@ -1,0 +1,37 @@
+[
+  {
+    "topic": "the solar system",
+    "contributor": "phone-a",
+    "createdAt": "2026-05-21T00:00:01Z",
+    "tags": ["sun", "star"],
+    "body": "The sun is a yellow dwarf star, about 4.6 billion years old. It holds 99.86% of all the mass in the solar system. Surface temperature is around 5,500°C; core is closer to 15 million°C. The energy comes from hydrogen fusing into helium in the core — that's what drives everything else in the system."
+  },
+  {
+    "topic": "the solar system",
+    "contributor": "phone-a",
+    "createdAt": "2026-05-21T00:00:02Z",
+    "tags": ["planets", "terrestrial", "venus"],
+    "body": "Four inner planets are rocky / terrestrial: Mercury, Venus, Earth, Mars. Mercury is smallest and closest to the sun. Almost no atmosphere, so day-night temperature swings are extreme — surface goes from about 430°C to -180°C. Venus is actually the hottest planet even though it's further out — runaway greenhouse from a dense CO2 atmosphere."
+  },
+  {
+    "topic": "the solar system",
+    "contributor": "phone-a",
+    "createdAt": "2026-05-21T00:00:03Z",
+    "tags": ["asteroid-belt", "ceres"],
+    "body": "Asteroid belt sits between Mars and Jupiter. Most asteroids are small (a few km across). Ceres is the largest and is now classified as a dwarf planet. Total mass of the whole belt is only about 4% of the Moon's mass — way less than the sci-fi version suggests."
+  },
+  {
+    "topic": "the solar system",
+    "contributor": "phone-a",
+    "createdAt": "2026-05-21T00:00:04Z",
+    "tags": ["gas-giants", "jupiter", "saturn", "moons"],
+    "body": "Jupiter and Saturn are the gas giants. Jupiter is the biggest planet — at least 95 known moons. The four largest are the Galilean moons (Io, Europa, Ganymede, Callisto), discovered by Galileo in 1610. Saturn's rings are mostly water ice and chunks of rock, surprisingly thin — only tens of meters thick in most places."
+  },
+  {
+    "topic": "the solar system",
+    "contributor": "phone-a",
+    "createdAt": "2026-05-21T00:00:05Z",
+    "tags": ["moons", "earth-moon", "titan"],
+    "body": "Earth's moon formed about 4.5 billion years ago, probably from a giant impact with a Mars-sized body (Theia). It's tidally locked, so we always see the same face. Some moons elsewhere in the system are bigger than Mercury — Ganymede (Jupiter) and Titan (Saturn). Titan has a thick nitrogen atmosphere and liquid methane lakes on the surface."
+  }
+]
