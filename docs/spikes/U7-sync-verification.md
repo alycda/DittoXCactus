@@ -12,6 +12,18 @@ idempotently, and queries reflect that union.
 - Both apps pre-warmed (model cached).
 - Both in airplane mode.
 
+### Bring-up status (2026-05-21)
+
+- **Pixel 6a (role=b): verified end-to-end.** Full pipeline runs — Ditto init →
+  seed upsert → Cactus model download (qwen3-0.6, 1024-dim) → ensureEmbeddings
+  UPDATE loop → query → embed → cosine top-k → LLM completion.
+- **iPhone (role=a): blocked on Xcode device-prep.** Xcode build succeeds in
+  ~60s, but flutter run fails with `Device is busy (Preparing iPhone)`. To
+  unblock: open **Xcode → Window → Devices and Simulators**, wait for the
+  iPhone's "Preparing..." progress bar to finish (first-time debug prep for
+  iOS 18.6.2 can take 10-30 min), then re-run:
+  `flutter run -d 00008110-00110CEC1AEB601E --dart-define-from-file=.env --dart-define=PHONE_ROLE=a`
+
 ## Procedure
 
 1. **Alone state.** Confirm both phones show `mesh: alone` (gray pill) and
