@@ -127,3 +127,109 @@ they're playing parallel-to each other in a shared physical room
 
 But all three are still seeds. The right move is a `/ce-brainstorm`
 pass that interrogates assumptions across all three before picking.
+
+---
+
+## Update — 2026-05-22 (later same day): bar Clue / social deduction
+
+(Still appending, still not rewriting. Evolution visible.)
+
+### d) Bar Clue (mesh-private hand deduction)
+
+Alyssa's framing: *"another idea, bar Clue. you 'sign up' when you walk
+in the door (qr code or something) and your phone has some clues that
+you can decide to share? i don't really know the game clue that well
+but i think there's an idea here."*
+
+The intuition is correct: Clue's mechanic and a mesh substrate are
+nearly isomorphic.
+
+**How Clue actually works (for reference):**
+
+- A scenario is sealed — typically "who killed Mr. Boddy, with what
+  weapon, in what room?" — and that sealed answer is the goal.
+- The remaining suspect/weapon/room cards are dealt as private hands
+  to each player. Every player holds a subset; the union of hands
+  excludes the answer cards (by construction).
+- Players move around the board making **suggestions** ("I think
+  Colonel Mustard in the library with the candlestick"). Other players
+  who hold *any* of those cards must privately show *one* to the
+  suggester. The room sees that a card was shown, but not which one.
+- Deduction unfolds across rounds. The first player to make a correct
+  **accusation** wins; a wrong accusation eliminates them.
+
+**Mapping board Clue → mesh substrate:**
+
+| Board Clue                           | Mesh equivalent                              |
+| ------------------------------------ | -------------------------------------------- |
+| Player's hand of cards               | Encrypted local state on phone               |
+| Showing one card to one other player | BLE point-to-point reveal (private channel)  |
+| Walking around the board             | Walking around the bar physically            |
+| Murder + weapon + location cards     | LLM-generated cast: regulars, drinks, spots in the bar |
+| Sealed case file                     | Commit-then-reveal value all phones can verify but none can read until accusation |
+| Correct-accuser wins                 | Free drink / appetizer for the deducer       |
+
+**Why this is the most mesh-load-bearing direction yet:**
+
+The other three directions (Jeopardy-Together, CAH-style, trivia night)
+use the mesh as a *convenience* — they could work, awkwardly, with
+WiFi + a server. Clue's mechanic is *fundamentally* about selective
+private reveals to specific other players. Take the proximity away and
+you take the game away. That's the strongest "why must players be near
+each other?" answer in this document.
+
+**Bar-specific framings the user gestured at:**
+
+- **QR-on-the-door onboarding.** Scan when you walk in, get dealt a
+  hand, you're in. No app pre-install needed if the QR launches the
+  PWA / app store flow. New players can join an in-progress game.
+- **"clues you can decide to share."** This IS Clue's mechanic — the
+  player chooses which card to reveal in response to a suggestion.
+  Bluffing, withholding, strategic reveals — all in-person dynamics.
+
+**What the LLM uniquely buys here (vs. board Clue):**
+
+- **Fresh scenarios every night.** Board Clue has six suspects, six
+  weapons, nine rooms — it gets old. An LLM generating the cast from
+  the bar's house corpus (regulars, drinks, named seats, this week's
+  events) means tonight's mystery has never been played before.
+- **Topical variants.** Halloween night: ghost stories. Sports night:
+  who broke the trophy case? St. Patrick's Day: who drank the lucky pint?
+  Same mechanic, fresh scaffold.
+- **Adaptive difficulty.** First-time players get smaller hands and
+  more obvious cards; regulars get tighter information. The LLM can
+  generate distractor cards calibrated to the table.
+
+**Open questions specific to this direction:**
+
+- **Game length.** Board Clue is 30-60 min. Bar Clue probably wants 15-
+  30 min so it fits a drink cycle. Round structure TBD.
+- **Game master.** Is the bartender's phone a non-player observer
+  (verifies the accusation, dispenses prizes)? Or fully decentralized
+  (every phone holds a shard of the sealed answer)?
+- **Drop-in / drop-out.** Bars are open all night and people come and
+  go. Does a single mystery run all night with rolling players, or do
+  short matches reset every 20 min?
+- **Cheat resistance.** Phones are private but the player isn't —
+  someone could walk to the bathroom and screenshot their hand to a
+  friend. Probably not a problem at the "free appetizer" stakes level,
+  but worth flagging.
+- **Liability for bartender.** If the LLM generates a scenario that
+  implicates a real regular ("Brenda was in the bathroom with the
+  knife"), does the bar want that? Probably needs corpus curation /
+  a "fictional-cast" toggle.
+
+**Ranking against the other directions:**
+
+- (a) Jeopardy-Together (learning): niche audience.
+- (b) CAH-style: content moderation liability for the venue.
+- (c) Trivia night: cleanest cultural slot, but mesh is a convenience
+  not a necessity.
+- (d) Bar Clue: **mesh is the entire point of the mechanic.** Strongest
+  technical fit and most novel game proposition. Slightly higher design
+  burden (a Clue-like format isn't as well-known as trivia night), but
+  could be the differentiator.
+
+Probably bumps to the new lead, displacing (c). Both still seeds —
+the `/ce-brainstorm` pass should interrogate (c) vs (d) on
+adoptability vs. defensibility.
