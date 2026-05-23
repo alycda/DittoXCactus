@@ -1,0 +1,1203 @@
+# docs/research/downloads.yaml
+# Idempotent-upsert format. The `url` field is the unique key.
+
+version: 1
+entries:
+- url: https://adityakarnam.com/mlx-non-determinism-apple-silicon
+  kind: other
+  title: adityakarnam.com
+  cited_in:
+  - claude
+  status: pending
+  path: null
+- url: https://ai.google.dev/edge/litert/performance/delegates
+  kind: article
+  title: ai.google.dev
+  cited_in:
+  - codex
+  status: pending
+  path: null
+- url: https://ai.google.dev/edge/mediapipe/solutions/genai/llm_inference
+  kind: article
+  title: ai.google.dev
+  cited_in:
+  - codex
+  status: pending
+  path: null
+- url: https://ai.google.dev/edge/mediapipe/solutions/genai/llm_inference/android
+  kind: article
+  title: ai.google.dev
+  cited_in:
+  - claude
+  status: pending
+  path: null
+- url: https://ai.google.dev/edge/mediapipe/solutions/genai/llm_inference/ios
+  kind: article
+  title: ai.google.dev
+  cited_in:
+  - claude
+  status: pending
+  path: null
+- url: https://ai.google.dev/gemma/terms
+  kind: article
+  title: ai.google.dev
+  cited_in:
+  - claude
+  - codex
+  status: pending
+  path: null
+- url: https://ai.meta.com/blog/llama-3-2-connect-2024-vision-edge-mobile-devices
+  kind: article
+  title: ai.meta.com
+  cited_in:
+  - gemini
+  status: pending
+  path: null
+- url: https://aihub.qualcomm.com/models/nomic_embed_text
+  kind: other
+  title: aihub.qualcomm.com
+  cited_in:
+  - claude
+  status: pending
+  path: null
+- url: https://alexgarcia.xyz/sqlite-vec/android-ios.html
+  kind: other
+  title: alexgarcia.xyz
+  cited_in:
+  - claude
+  status: pending
+  path: null
+- url: https://anytype.io
+  kind: other
+  title: anytype.io
+  cited_in:
+  - claude
+  status: pending
+  path: null
+- url: https://app.aihub.qualcomm.com/docs/hub/quantize_examples.html
+  kind: other
+  title: app.aihub.qualcomm.com
+  cited_in:
+  - codex
+  status: pending
+  path: null
+- url: https://arxiv.org/abs/1106.4374
+  kind: paper
+  title: arXiv 1106.4374
+  cited_in:
+  - gemini
+  status: pending
+  path: null
+- url: https://arxiv.org/abs/1908.10084
+  kind: paper
+  title: arXiv 1908.10084
+  cited_in:
+  - codex
+  status: pending
+  path: null
+- url: https://arxiv.org/abs/1910.01108
+  kind: paper
+  title: arXiv 1910.01108
+  cited_in:
+  - claude
+  status: pending
+  path: null
+- url: https://arxiv.org/abs/2106.09685
+  kind: paper
+  title: arXiv 2106.09685
+  cited_in:
+  - codex
+  status: pending
+  path: null
+- url: https://arxiv.org/abs/2301.07788
+  kind: paper
+  title: arXiv 2301.07788
+  cited_in:
+  - claude
+  status: pending
+  path: null
+- url: https://arxiv.org/abs/2305.14314
+  kind: paper
+  title: arXiv 2305.14314
+  cited_in:
+  - codex
+  status: pending
+  path: null
+- url: https://arxiv.org/abs/2308.14963
+  kind: paper
+  title: arXiv 2308.14963
+  cited_in:
+  - codex
+  status: pending
+  path: null
+- url: https://arxiv.org/abs/2401.02385
+  kind: paper
+  title: arXiv 2401.02385
+  cited_in:
+  - codex
+  status: pending
+  path: null
+- url: https://arxiv.org/abs/2402.00841
+  kind: paper
+  title: arXiv 2402.00841
+  cited_in:
+  - claude
+  status: pending
+  path: null
+- url: https://arxiv.org/abs/2402.01613
+  kind: paper
+  title: arXiv 2402.01613
+  cited_in:
+  - claude
+  - codex
+  status: pending
+  path: null
+- url: https://arxiv.org/abs/2402.04351
+  kind: paper
+  title: arXiv 2402.04351
+  cited_in:
+  - gemini
+  status: pending
+  path: null
+- url: https://arxiv.org/abs/2403.12844
+  kind: paper
+  title: arXiv 2403.12844
+  cited_in:
+  - claude
+  status: pending
+  path: null
+- url: https://arxiv.org/abs/2404.14219
+  kind: paper
+  title: arXiv 2404.14219
+  cited_in:
+  - claude
+  status: pending
+  path: null
+- url: https://arxiv.org/abs/2405.00732
+  kind: paper
+  title: arXiv 2405.00732
+  cited_in:
+  - claude
+  status: pending
+  path: null
+- url: https://arxiv.org/abs/2406.10290
+  kind: paper
+  title: arXiv 2406.10290
+  cited_in:
+  - claude
+  status: pending
+  path: null
+- url: https://arxiv.org/abs/2407.07871
+  kind: paper
+  title: arXiv 2407.07871
+  cited_in:
+  - claude
+  status: pending
+  path: null
+- url: https://arxiv.org/abs/2409.00088
+  kind: paper
+  title: arXiv 2409.00088
+  cited_in:
+  - claude
+  status: pending
+  path: null
+- url: https://arxiv.org/abs/2412.04922
+  kind: paper
+  title: arXiv 2412.04922
+  cited_in:
+  - claude
+  status: pending
+  path: null
+- url: https://arxiv.org/abs/2412.21023
+  kind: paper
+  title: arXiv 2412.21023
+  cited_in:
+  - claude
+  status: pending
+  path: null
+- url: https://arxiv.org/abs/2504.06135
+  kind: paper
+  title: arXiv 2504.06135
+  cited_in:
+  - claude
+  status: pending
+  path: null
+- url: https://arxiv.org/abs/2505.00443
+  kind: paper
+  title: arXiv 2505.00443
+  cited_in:
+  - claude
+  status: pending
+  path: null
+- url: https://arxiv.org/abs/2505.09388
+  kind: paper
+  title: arXiv 2505.09388
+  cited_in:
+  - codex
+  status: pending
+  path: null
+- url: https://arxiv.org/abs/2505.11783
+  kind: paper
+  title: arXiv 2505.11783
+  cited_in:
+  - codex
+  status: pending
+  path: null
+- url: https://arxiv.org/abs/2505.14992
+  kind: paper
+  title: arXiv 2505.14992
+  cited_in:
+  - claude
+  status: pending
+  path: null
+- url: https://arxiv.org/abs/2506.05176
+  kind: paper
+  title: arXiv 2506.05176
+  cited_in:
+  - codex
+  status: pending
+  path: null
+- url: https://arxiv.org/abs/2506.09501
+  kind: paper
+  title: arXiv 2506.09501
+  cited_in:
+  - claude
+  status: pending
+  path: null
+- url: https://arxiv.org/abs/2507.01079
+  kind: paper
+  title: arXiv 2507.01079
+  cited_in:
+  - claude
+  status: pending
+  path: null
+- url: https://arxiv.org/abs/2507.17647
+  kind: paper
+  title: arXiv 2507.17647
+  cited_in:
+  - codex
+  status: pending
+  path: null
+- url: https://arxiv.org/abs/2509.20354
+  kind: paper
+  title: arXiv 2509.20354
+  cited_in:
+  - claude
+  status: pending
+  path: null
+- url: https://arxiv.org/abs/2602.17099
+  kind: paper
+  title: arXiv 2602.17099
+  cited_in:
+  - codex
+  status: pending
+  path: null
+- url: https://arxiv.org/abs/2604.15484
+  kind: paper
+  title: arXiv 2604.15484
+  cited_in:
+  - codex
+  status: pending
+  path: null
+- url: https://automerge.org
+  kind: other
+  title: automerge.org
+  cited_in:
+  - claude
+  - codex
+  status: pending
+  path: null
+- url: https://blog.cloudflare.com/the-speed-of-light-on-the-internet
+  kind: article
+  title: blog.cloudflare.com
+  cited_in:
+  - codex
+  status: pending
+  path: null
+- url: https://blog.swmansion.com/building-an-ai-powered-note-taking-app-in-react-native-part-3-local-rag-868ba75f818b
+  kind: article
+  title: blog.swmansion.com
+  cited_in:
+  - claude
+  status: pending
+  path: null
+- url: https://blog.swmansion.com/introducing-react-native-rag-fbb62efa4991
+  kind: article
+  title: blog.swmansion.com
+  cited_in:
+  - claude
+  status: pending
+  path: null
+- url: https://bridgefy.me/sdk
+  kind: docs
+  title: bridgefy.me
+  cited_in:
+  - claude
+  - codex
+  status: pending
+  path: null
+- url: https://cactuscompute.com/docs/v1.7
+  kind: other
+  title: cactuscompute.com
+  cited_in:
+  - claude
+  - codex
+  status: pending
+  path: null
+- url: https://cactuscompute.com/docs/v1.7/rag
+  kind: other
+  title: cactuscompute.com
+  cited_in:
+  - codex
+  status: pending
+  path: null
+- url: https://deepsense.ai/blog/implementing-small-language-models-slms-with-rag-on-embedded-devices-leading-to-cost-reduction-data-privacy-and-offline-use
+  kind: article
+  title: deepsense.ai
+  cited_in:
+  - claude
+  status: pending
+  path: null
+- url: https://developer.apple.com/documentation/coreml/mlcomputeunits
+  kind: docs
+  title: developer.apple.com
+  cited_in:
+  - codex
+  status: pending
+  path: null
+- url: https://developer.apple.com/documentation/foundationmodels
+  kind: docs
+  title: developer.apple.com
+  cited_in:
+  - codex
+  status: pending
+  path: null
+- url: https://developer.apple.com/documentation/multipeerconnectivity
+  kind: docs
+  title: developer.apple.com
+  cited_in:
+  - claude
+  - codex
+  status: pending
+  path: null
+- url: https://developer.apple.com/videos/play/wwdc2025/248
+  kind: other
+  title: developer.apple.com
+  cited_in:
+  - claude
+  status: pending
+  path: null
+- url: https://developers.google.com/nearby/connections/overview
+  kind: other
+  title: developers.google.com
+  cited_in:
+  - codex
+  status: pending
+  path: null
+- url: https://dl.acm.org/doi/abs/10.1145/3565383.3566110
+  kind: paper
+  title: dl.acm.org
+  cited_in:
+  - claude
+  status: pending
+  path: null
+- url: https://docs.ditto.live
+  kind: docs
+  title: docs.ditto.live
+  cited_in:
+  - claude
+  - gemini
+  status: pending
+  path: null
+- url: https://docs.ditto.live/dql/dql
+  kind: docs
+  title: docs.ditto.live
+  cited_in:
+  - claude
+  status: pending
+  path: null
+- url: https://docs.ditto.live/home/about-ditto
+  kind: docs
+  title: docs.ditto.live
+  cited_in:
+  - claude
+  - codex
+  status: pending
+  path: null
+- url: https://docs.ditto.live/key-concepts/mesh-networking
+  kind: docs
+  title: docs.ditto.live
+  cited_in:
+  - codex
+  status: pending
+  path: null
+- url: https://docs.ditto.live/key-concepts/syncing-data
+  kind: docs
+  title: docs.ditto.live
+  cited_in:
+  - codex
+  status: pending
+  path: null
+- url: https://docs.ditto.live/sdk/v4-7/basic/mesh-networking-101
+  kind: docs
+  title: docs.ditto.live
+  cited_in:
+  - claude
+  status: pending
+  path: null
+- url: https://docs.ditto.live/sdk/v4-8/sync/concepts/transports-overview
+  kind: docs
+  title: docs.ditto.live
+  cited_in:
+  - claude
+  status: pending
+  path: null
+- url: https://docs.pytorch.org/docs/2.12/notes/numerical_accuracy.html
+  kind: docs
+  title: docs.pytorch.org
+  cited_in:
+  - codex
+  status: pending
+  path: null
+- url: https://docs.pytorch.org/docs/2.12/notes/randomness.html
+  kind: docs
+  title: docs.pytorch.org
+  cited_in:
+  - codex
+  status: pending
+  path: null
+- url: https://geoffreylitt.com/2025/01/01/the-window-for-local-first-ai.html
+  kind: other
+  title: geoffreylitt.com
+  cited_in:
+  - gemini
+  status: pending
+  path: null
+- url: https://github.com/DeveloperMindset-com/faiss-mobile
+  kind: repo
+  title: DeveloperMindset-com/faiss-mobile
+  cited_in:
+  - claude
+  status: pending
+  path: null
+- url: https://github.com/FlagOpen/FlagEmbedding
+  kind: repo
+  title: FlagOpen/FlagEmbedding
+  cited_in:
+  - codex
+  status: pending
+  path: null
+- url: https://github.com/QwenLM/Qwen3-Embedding
+  kind: repo
+  title: QwenLM/Qwen3-Embedding
+  cited_in:
+  - codex
+  status: pending
+  path: null
+- url: https://github.com/UKPLab/sentence-transformers
+  kind: repo
+  title: UKPLab/sentence-transformers
+  cited_in:
+  - codex
+  status: pending
+  path: null
+- url: https://github.com/UNICKCHENG/logseq-ai-assistant
+  kind: repo
+  title: UNICKCHENG/logseq-ai-assistant
+  cited_in:
+  - claude
+  status: pending
+  path: null
+- url: https://github.com/anyproto/anytype-ts
+  kind: repo
+  title: anyproto/anytype-ts
+  cited_in:
+  - codex
+  status: pending
+  path: null
+- url: https://github.com/asg017/sqlite-vec
+  kind: repo
+  title: asg017/sqlite-vec
+  cited_in:
+  - claude
+  - codex
+  status: pending
+  path: null
+- url: https://github.com/brianpetro/obsidian-smart-connections
+  kind: repo
+  title: brianpetro/obsidian-smart-connections
+  cited_in:
+  - codex
+  status: pending
+  path: null
+- url: https://github.com/cactus-compute/cactus
+  kind: repo
+  title: cactus-compute/cactus
+  cited_in:
+  - claude
+  - codex
+  - gemini
+  status: pending
+  path: null
+- url: https://github.com/cactus-compute/cactus-kotlin
+  kind: repo
+  title: cactus-compute/cactus-kotlin
+  cited_in:
+  - claude
+  status: pending
+  path: null
+- url: https://github.com/cactus-compute/cactus-react-native
+  kind: repo
+  title: cactus-compute/cactus-react-native
+  cited_in:
+  - claude
+  - codex
+  status: pending
+  path: null
+- url: https://github.com/cactus-compute/cactus/blob/main/docs/cactus_engine.md
+  kind: repo
+  title: github.com
+  cited_in:
+  - claude
+  status: pending
+  path: null
+- url: https://github.com/cactus-compute/example-react-agents
+  kind: repo
+  title: cactus-compute/example-react-agents
+  cited_in:
+  - claude
+  status: pending
+  path: null
+- url: https://github.com/deepsense-ai/edge-slm
+  kind: repo
+  title: deepsense-ai/edge-slm
+  cited_in:
+  - claude
+  status: pending
+  path: null
+- url: https://github.com/earthstar-project/earthstar
+  kind: repo
+  title: earthstar-project/earthstar
+  cited_in:
+  - codex
+  status: pending
+  path: null
+- url: https://github.com/earthstar-project/willow-rs
+  kind: repo
+  title: earthstar-project/willow-rs
+  cited_in:
+  - claude
+  status: pending
+  path: null
+- url: https://github.com/facebookresearch/faiss
+  kind: repo
+  title: facebookresearch/faiss
+  cited_in:
+  - codex
+  status: pending
+  path: null
+- url: https://github.com/getditto/demoapp-chat
+  kind: repo
+  title: getditto/demoapp-chat
+  cited_in:
+  - codex
+  status: pending
+  path: null
+- url: https://github.com/getditto/demoapp-inventory
+  kind: repo
+  title: getditto/demoapp-inventory
+  cited_in:
+  - codex
+  status: pending
+  path: null
+- url: https://github.com/getditto/demoapp-pos-kds
+  kind: repo
+  title: getditto/demoapp-pos-kds
+  cited_in:
+  - codex
+  status: pending
+  path: null
+- url: https://github.com/getditto/samples
+  kind: repo
+  title: getditto/samples
+  cited_in:
+  - gemini
+  status: pending
+  path: null
+- url: https://github.com/ggml-org/ggml/blob/master/docs/gguf.md
+  kind: repo
+  title: github.com
+  cited_in:
+  - codex
+  status: pending
+  path: null
+- url: https://github.com/ggml-org/llama.cpp
+  kind: repo
+  title: ggml-org/llama.cpp
+  cited_in:
+  - codex
+  status: pending
+  path: null
+- url: https://github.com/ggml-org/llama.cpp/blob/master/docs/build.md
+  kind: repo
+  title: github.com
+  cited_in:
+  - claude
+  status: pending
+  path: null
+- url: https://github.com/google-ai-edge/gallery
+  kind: repo
+  title: google-ai-edge/gallery
+  cited_in:
+  - codex
+  status: pending
+  path: null
+- url: https://github.com/google/nearby
+  kind: repo
+  title: google/nearby
+  cited_in:
+  - claude
+  status: pending
+  path: null
+- url: https://github.com/hakimel/reveal.js
+  kind: repo
+  title: hakimel/reveal.js
+  cited_in:
+  - codex
+  status: pending
+  path: null
+- url: https://github.com/khoj-ai/khoj
+  kind: repo
+  title: khoj-ai/khoj
+  cited_in:
+  - codex
+  status: pending
+  path: null
+- url: https://github.com/libp2p/go-libp2p
+  kind: repo
+  title: libp2p/go-libp2p
+  cited_in:
+  - codex
+  status: pending
+  path: null
+- url: https://github.com/loro-dev/loro
+  kind: repo
+  title: loro-dev/loro
+  cited_in:
+  - claude
+  status: pending
+  path: null
+- url: https://github.com/mfontanini/presenterm
+  kind: repo
+  title: mfontanini/presenterm
+  cited_in:
+  - claude
+  - codex
+  - gemini
+  status: pending
+  path: null
+- url: https://github.com/mfontanini/presenterm/blob/master/examples/demo.md
+  kind: repo
+  title: github.com
+  cited_in:
+  - claude
+  status: pending
+  path: null
+- url: https://github.com/microsoft/onnxruntime-genai
+  kind: repo
+  title: microsoft/onnxruntime-genai
+  cited_in:
+  - codex
+  status: pending
+  path: null
+- url: https://github.com/mlc-ai/mlc-llm
+  kind: repo
+  title: mlc-ai/mlc-llm
+  cited_in:
+  - claude
+  - codex
+  status: pending
+  path: null
+- url: https://github.com/n0-computer/iroh
+  kind: repo
+  title: n0-computer/iroh
+  cited_in:
+  - claude
+  - codex
+  status: pending
+  path: null
+- url: https://github.com/orbitdb/orbitdb
+  kind: repo
+  title: orbitdb/orbitdb
+  cited_in:
+  - codex
+  status: pending
+  path: null
+- url: https://github.com/ostafen/a556180db7d4c41abb325b5ae5e13ca4
+  kind: repo
+  title: ostafen/a556180db7d4c41abb325b5ae5e13ca4
+  cited_in:
+  - claude
+  status: pending
+  path: null
+- url: https://github.com/permissionlesstech/bitchat
+  kind: repo
+  title: permissionlesstech/bitchat
+  cited_in:
+  - claude
+  status: pending
+  path: null
+- url: https://github.com/permissionlesstech/bitchat-android
+  kind: repo
+  title: permissionlesstech/bitchat-android
+  cited_in:
+  - claude
+  status: pending
+  path: null
+- url: https://github.com/pytorch/executorch
+  kind: repo
+  title: pytorch/executorch
+  cited_in:
+  - claude
+  - codex
+  status: pending
+  path: null
+- url: https://github.com/ramanujammv1988/edge-veda
+  kind: repo
+  title: ramanujammv1988/edge-veda
+  cited_in:
+  - claude
+  status: pending
+  path: null
+- url: https://github.com/slidevjs/slidev
+  kind: repo
+  title: slidevjs/slidev
+  cited_in:
+  - claude
+  - codex
+  status: pending
+  path: null
+- url: https://github.com/software-mansion-labs/react-native-rag
+  kind: repo
+  title: software-mansion-labs/react-native-rag
+  cited_in:
+  - claude
+  status: pending
+  path: null
+- url: https://github.com/software-mansion/react-native-executorch
+  kind: repo
+  title: software-mansion/react-native-executorch
+  cited_in:
+  - claude
+  status: pending
+  path: null
+- url: https://github.com/spotify/annoy
+  kind: repo
+  title: spotify/annoy
+  cited_in:
+  - codex
+  status: pending
+  path: null
+- url: https://github.com/thinking-machines-lab/batch_invariant_ops
+  kind: repo
+  title: thinking-machines-lab/batch_invariant_ops
+  cited_in:
+  - claude
+  status: pending
+  path: null
+- url: https://github.com/unum-cloud/usearch
+  kind: repo
+  title: unum-cloud/usearch
+  cited_in:
+  - claude
+  - codex
+  - gemini
+  status: pending
+  path: null
+- url: https://github.com/yjs/yjs
+  kind: repo
+  title: yjs/yjs
+  cited_in:
+  - claude
+  - codex
+  status: pending
+  path: null
+- url: https://hpbn.co/primer-on-latency-and-bandwidth
+  kind: other
+  title: hpbn.co
+  cited_in:
+  - claude
+  status: pending
+  path: null
+- url: https://huggingface.co/BAAI/bge-small-en-v1.5
+  kind: other
+  title: BAAI/bge-small-en-v1.5
+  cited_in:
+  - claude
+  - codex
+  - gemini
+  status: pending
+  path: null
+  notes: HuggingFace model card; single-file/model-card download expected, not clone
+- url: https://huggingface.co/Cactus-Compute
+  kind: other
+  title: huggingface.co/Cactus-Compute
+  cited_in:
+  - claude
+  status: pending
+  path: null
+  notes: HuggingFace model card; single-file/model-card download expected, not clone
+- url: https://huggingface.co/HuggingFaceTB/SmolLM2-1.7B
+  kind: other
+  title: HuggingFaceTB/SmolLM2-1.7B
+  cited_in:
+  - claude
+  status: pending
+  path: null
+  notes: HuggingFace model card; single-file/model-card download expected, not clone
+- url: https://huggingface.co/HuggingFaceTB/SmolLM2-1.7B-Instruct
+  kind: other
+  title: HuggingFaceTB/SmolLM2-1.7B-Instruct
+  cited_in:
+  - claude
+  status: pending
+  path: null
+  notes: HuggingFace model card; single-file/model-card download expected, not clone
+- url: https://huggingface.co/LiquidAI
+  kind: other
+  title: huggingface.co/LiquidAI
+  cited_in:
+  - codex
+  status: pending
+  path: null
+  notes: HuggingFace model card; single-file/model-card download expected, not clone
+- url: https://huggingface.co/Qwen/Qwen2.5-1.5B-Instruct
+  kind: other
+  title: Qwen/Qwen2.5-1.5B-Instruct
+  cited_in:
+  - claude
+  status: pending
+  path: null
+  notes: HuggingFace model card; single-file/model-card download expected, not clone
+- url: https://huggingface.co/Qwen/Qwen3-1.7B
+  kind: other
+  title: Qwen/Qwen3-1.7B
+  cited_in:
+  - codex
+  status: pending
+  path: null
+  notes: HuggingFace model card; single-file/model-card download expected, not clone
+- url: https://huggingface.co/Qwen/Qwen3-Embedding-0.6B
+  kind: other
+  title: Qwen/Qwen3-Embedding-0.6B
+  cited_in:
+  - codex
+  status: pending
+  path: null
+  notes: HuggingFace model card; single-file/model-card download expected, not clone
+- url: https://huggingface.co/google/embeddinggemma-300m
+  kind: other
+  title: google/embeddinggemma-300m
+  cited_in:
+  - claude
+  status: pending
+  path: null
+  notes: HuggingFace model card; single-file/model-card download expected, not clone
+- url: https://huggingface.co/google/gemma-2-2b-it
+  kind: other
+  title: google/gemma-2-2b-it
+  cited_in:
+  - claude
+  status: pending
+  path: null
+  notes: HuggingFace model card; single-file/model-card download expected, not clone
+- url: https://huggingface.co/google/gemma-3-1b-it
+  kind: other
+  title: google/gemma-3-1b-it
+  cited_in:
+  - claude
+  status: pending
+  path: null
+  notes: HuggingFace model card; single-file/model-card download expected, not clone
+- url: https://huggingface.co/litert-community/Gemma2-2B-IT
+  kind: other
+  title: litert-community/Gemma2-2B-IT
+  cited_in:
+  - claude
+  status: pending
+  path: null
+  notes: HuggingFace model card; single-file/model-card download expected, not clone
+- url: https://huggingface.co/litert-community/Gemma3-1B-IT
+  kind: other
+  title: litert-community/Gemma3-1B-IT
+  cited_in:
+  - claude
+  status: pending
+  path: null
+  notes: HuggingFace model card; single-file/model-card download expected, not clone
+- url: https://huggingface.co/meta-llama/Llama-3.2-1B-Instruct
+  kind: other
+  title: meta-llama/Llama-3.2-1B-Instruct
+  cited_in:
+  - claude
+  status: pending
+  path: null
+  notes: HuggingFace model card; single-file/model-card download expected, not clone
+- url: https://huggingface.co/nomic-ai/nomic-embed-text-v1.5
+  kind: other
+  title: nomic-ai/nomic-embed-text-v1.5
+  cited_in:
+  - claude
+  - codex
+  status: pending
+  path: null
+  notes: HuggingFace model card; single-file/model-card download expected, not clone
+- url: https://huggingface.co/sentence-transformers/all-MiniLM-L6-v2
+  kind: other
+  title: sentence-transformers/all-MiniLM-L6-v2
+  cited_in:
+  - claude
+  - codex
+  status: pending
+  path: null
+  notes: HuggingFace model card; single-file/model-card download expected, not clone
+- url: https://llm.mlc.ai/docs/deploy/android.html
+  kind: other
+  title: llm.mlc.ai
+  cited_in:
+  - codex
+  status: pending
+  path: null
+- url: https://llm.mlc.ai/docs/deploy/ios.html
+  kind: other
+  title: llm.mlc.ai
+  cited_in:
+  - codex
+  status: pending
+  path: null
+- url: https://maggieappleton.com/home-cooked-software
+  kind: other
+  title: maggieappleton.com
+  cited_in:
+  - claude
+  status: pending
+  path: null
+- url: https://martin.kleppmann.com/2024/05/30/local-first-conference.html
+  kind: other
+  title: martin.kleppmann.com
+  cited_in:
+  - claude
+  status: pending
+  path: null
+- url: https://mfontanini.github.io/presenterm
+  kind: other
+  title: mfontanini.github.io
+  cited_in:
+  - claude
+  status: pending
+  path: null
+- url: https://neuropilot.mediatek.com
+  kind: other
+  title: neuropilot.mediatek.com
+  cited_in:
+  - codex
+  status: pending
+  path: null
+- url: https://onnxruntime.ai/docs/execution-providers/NNAPI-ExecutionProvider.html
+  kind: other
+  title: onnxruntime.ai
+  cited_in:
+  - codex
+  status: pending
+  path: null
+- url: https://onnxruntime.ai/docs/tutorials/mobile
+  kind: other
+  title: onnxruntime.ai
+  cited_in:
+  - codex
+  status: pending
+  path: null
+- url: https://pytorch.org/blog/executorch-beta
+  kind: article
+  title: pytorch.org
+  cited_in:
+  - claude
+  status: pending
+  path: null
+- url: https://qdrant.tech/benchmarks
+  kind: other
+  title: qdrant.tech
+  cited_in:
+  - claude
+  - codex
+  status: pending
+  path: null
+- url: https://revealjs.com
+  kind: other
+  title: revealjs.com
+  cited_in:
+  - claude
+  status: pending
+  path: null
+- url: https://rxdb.info/vector-search.html
+  kind: other
+  title: rxdb.info
+  cited_in:
+  - gemini
+  status: pending
+  path: null
+- url: https://sli.dev/guide
+  kind: article
+  title: sli.dev
+  cited_in:
+  - claude
+  status: pending
+  path: null
+- url: https://support.apple.com/en-us/102647
+  kind: other
+  title: support.apple.com
+  cited_in:
+  - codex
+  status: pending
+  path: null
+- url: https://thinkingmachines.ai/blog/defeating-nondeterminism-in-llm-inference
+  kind: article
+  title: thinkingmachines.ai
+  cited_in:
+  - claude
+  status: pending
+  path: null
+- url: https://willowprotocol.org/earthstar/spec
+  kind: other
+  title: willowprotocol.org
+  cited_in:
+  - claude
+  status: pending
+  path: null
+- url: https://www.ditto.com/blog/dittos-delta-state-crdts
+  kind: article
+  title: www.ditto.com
+  cited_in:
+  - claude
+  status: pending
+  path: null
+- url: https://www.ditto.com/demo-apps
+  kind: other
+  title: www.ditto.com
+  cited_in:
+  - codex
+  status: pending
+  path: null
+- url: https://www.fcc.gov/reports-research/reports/measuring-broadband-america/measuring-broadband-america-mobile-data
+  kind: other
+  title: www.fcc.gov
+  cited_in:
+  - codex
+  status: pending
+  path: null
+- url: https://www.ingonyama.com/post/solving-reproducibility-challenges-in-deep-learning-and-llms-our-journey
+  kind: other
+  title: www.ingonyama.com
+  cited_in:
+  - claude
+  status: pending
+  path: null
+- url: https://www.inkandswitch.com/essay/local-first
+  kind: other
+  title: www.inkandswitch.com
+  cited_in:
+  - claude
+  status: pending
+  path: null
+- url: https://www.inkandswitch.com/local-first
+  kind: other
+  title: www.inkandswitch.com
+  cited_in:
+  - codex
+  - gemini
+  status: pending
+  path: null
+- url: https://www.inkandswitch.com/malleable-software
+  kind: other
+  title: www.inkandswitch.com
+  cited_in:
+  - gemini
+  status: pending
+  path: null
+- url: https://www.iroh.computer/blog/comparing-iroh-and-libp2p
+  kind: article
+  title: www.iroh.computer
+  cited_in:
+  - claude
+  status: pending
+  path: null
+- url: https://www.llama.com/llama3_1/license
+  kind: other
+  title: www.llama.com
+  cited_in:
+  - claude
+  status: pending
+  path: null
+- url: https://www.llama.com/llama3_2/license
+  kind: other
+  title: www.llama.com
+  cited_in:
+  - codex
+  status: pending
+  path: null
+- url: https://www.lmsys.org/blog/2025-09-22-sglang-deterministic
+  kind: article
+  title: www.lmsys.org
+  cited_in:
+  - claude
+  status: pending
+  path: null
+- url: https://www.localfirst.fm/13
+  kind: other
+  title: www.localfirst.fm
+  cited_in:
+  - claude
+  status: pending
+  path: null
+- url: https://www.localfirstconf.com/local-first-conf-2024
+  kind: other
+  title: www.localfirstconf.com
+  cited_in:
+  - claude
+  status: pending
+  path: null
+- url: https://www.loro.dev
+  kind: other
+  title: www.loro.dev
+  cited_in:
+  - codex
+  status: pending
+  path: null
+- url: https://www.pinecone.io/product
+  kind: other
+  title: www.pinecone.io
+  cited_in:
+  - codex
+  status: pending
+  path: null
+- url: https://www.salttechno.ai/datasets/vector-database-performance-benchmark-2026
+  kind: other
+  title: www.salttechno.ai
+  cited_in:
+  - claude
+  status: pending
+  path: null
+- url: https://www.stuartcheshire.org/rants/Latency.html
+  kind: other
+  title: www.stuartcheshire.org
+  cited_in:
+  - codex
+  status: pending
+  path: null
+- url: https://www.youtube.com/watch?v=qo5m92-9_QI
+  kind: other
+  title: www.youtube.com
+  cited_in:
+  - claude
+  status: pending
+  path: null
