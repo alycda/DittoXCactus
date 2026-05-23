@@ -27,14 +27,20 @@ class CactusService {
   /// Cactus exposes models by slug from a built-in catalog; the spike step
   /// (U2) picks the slug that hits cosine ≥ 0.999 across iOS+Android.
   ///
-  /// 2026-05-22: First swap moved both slugs from `qwen3-0.6` (~600M) to
-  /// `qwen3-1.7` (~1.7B) after the on-device dogfood produced incoherent
-  /// flashcards. On second device run, `qwen3-1.7` returned result code
-  /// `-2` on `generateEmbedding` — it doesn't ship an embedding head.
-  /// Split the slugs: completion stays at `qwen3-1.7`, embedding moves to
-  /// the purpose-built `qwen3-embedding-0.6`. First launch now downloads
-  /// two models (~1.7B + ~0.6B params total).
-  static const String preferredEmbeddingSlug = 'qwen3-embedding-0.6';
+  /// 2026-05-22 — slug archaeology:
+  ///   * Swap 1: both → `qwen3-1.7` (incoherent cards on `qwen3-0.6` ~600M).
+  ///   * Swap 2: embedding → `qwen3-embedding-0.6` after `qwen3-1.7` returned
+  ///     result code `-2` on `generateEmbedding` (no embedding head). The
+  ///     purpose-built slug is listed in the cactus engine README but the
+  ///     Flutter SDK 1.3.0 catalog couldn't resolve it: download failed
+  ///     with "Failed to get model qwen3-embedding-0.6".
+  ///   * Swap 3 (current): embedding falls back to `qwen3-0.6` — the
+  ///     original known-working slug. It's chat-tuned but exposes the
+  ///     embedding head, and we already validated cosine on it.
+  /// First-launch download budget: `qwen3-1.7` (~1.7B) + `qwen3-0.6` (~0.6B).
+  /// TODO: call `_lm.getModels()` to dump the SDK's actual catalog and see
+  /// what embedding-only slugs (if any) the Flutter SDK can fetch.
+  static const String preferredEmbeddingSlug = 'qwen3-0.6';
   static const String preferredCompletionSlug = 'qwen3-1.7';
 
   bool get isReady => _initialized;
