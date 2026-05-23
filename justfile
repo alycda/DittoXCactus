@@ -41,6 +41,14 @@ android:
       --dart-define-from-file=.env \
       --dart-define=PHONE_ROLE=b
 
+# Run on the Pixel 6a in release mode — AOT-compiled Dart, optimized
+# native. Use for measuring real inference latency; debug mode adds 2-4×
+# overhead that masks the model's actual decode speed.
+android-release:
+    flutter run --release -d {{android_device}} \
+      --dart-define-from-file=.env \
+      --dart-define=PHONE_ROLE=b
+
 # Run in the iOS simulator as phone-a — fastest debug loop (host CPU decode,
 # hot reload, no signing dance).
 sim role="a":
