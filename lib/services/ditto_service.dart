@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import '../models/study_note.dart';
 
 /// Owns persistence + P2P sync for RecipeTuple documents.
@@ -7,6 +9,13 @@ class DittoService {
   static final DittoService instance = DittoService._();
 
   bool _initialized = false;
+
+  final _peerCountController = StreamController<int>.broadcast();
+
+  /// Broadcasts the current mesh peer count whenever Ditto's presence
+  /// observer fires. UI surfaces (e.g. MeshStatusWidget) listen here to
+  /// render the "alone → connected" transition.
+  Stream<int> get peerCount => _peerCountController.stream;
 
   /// Initializes the local Ditto store, configures BLE/LAN transports,
   /// and calls sync.start. Eager-called on app start.
