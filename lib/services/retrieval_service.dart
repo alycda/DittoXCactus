@@ -1,7 +1,10 @@
 import 'dart:math' as math;
 import 'dart:typed_data';
 
+import 'package:flutter/foundation.dart' show debugPrint;
+
 import '../models/study_note.dart';
+import '../prompts/flashcard_gen.dart';
 import '../prompts/recipe_merge.dart';
 import 'cactus_service.dart';
 import 'ditto_service.dart';
@@ -13,6 +16,27 @@ class RetrievedNote {
   final double score;
 
   const RetrievedNote(this.note, this.score);
+}
+
+/// Discriminated union over events emitted by the flashcard pipeline.
+/// UI listens on this stream to render the loading state and final stack.
+class FlashcardEvent {
+  final List<RetrievedNote>? retrieved;
+  final String? partial;
+  final List<Flashcard>? cards;
+  final bool isDone;
+
+  const FlashcardEvent._({
+    this.retrieved,
+    this.partial,
+    this.cards,
+    this.isDone = false,
+  });
+
+  const FlashcardEvent.retrieved(List<RetrievedNote> r) : this._(retrieved: r);
+  const FlashcardEvent.partial(String chunk) : this._(partial: chunk);
+  const FlashcardEvent.cards(List<Flashcard> c) : this._(cards: c);
+  const FlashcardEvent.done() : this._(isDone: true);
 }
 
 /// Cosine top-k over a flat float32 array materialized from Ditto. Stage 0 is
@@ -29,6 +53,17 @@ class RetrievalService {
   /// Stage-0 maxTokens for streamed synthesis. Bumped from 384 → 768 after
   /// early multi-note runs got hard-truncated mid-paragraph.
   static const int defaultMaxTokens = 768;
+
+  /// Default number of flashcards to generate per request. Tuned down from
+  /// 5 → 3 because 1.5B Qwen on a Pixel 6a in debug mode decodes at ~6
+  /// chars/s; 3 cards in Q/A line format fit in ~25 lines and decode in
+  /// roughly half the time 5 JSON cards took.
+  static const int defaultN = 3;
+
+  /// Token budget per card. Q/A plain-text format is compact; 160 tokens
+  /// cover Q + A + NOTES. Total = thinkBudget + n × maxTokensPerCard.
+  static const int maxTokensPerCard = 160;
+  static const int thinkBudget = 512;
 
   /// Encode a study note as the short text we hand to `cactus_embed`.
   /// Keeps it short on purpose — embedding context budgets are tight, and
@@ -110,6 +145,43 @@ class RetrievalService {
     )) {
       yield chunk;
     }
+  }
+
+  /// End-to-end flashcard pipeline: embed topic → top-k notes → prompt →
+  /// streaming completion → parse Q/A lines → emit cards. Yields the top-k
+  /// retrieval marker first (so UI can render attribution while the LLM is
+  /// still streaming), then per-chunk partial markers, then parsed cards.
+  Stream<FlashcardEvent> generateFlashcards(
+    String topic, {
+    int k = defaultK,
+    int n = defaultN,
+    List<Flashcard> savedExamples = const [],
+  }) async* {
+    final retrieved = await topK(topic, k: k);
+    yield FlashcardEvent.retrieved(retrieved);
+    debugPrint(
+      '[flashcards] topic="$topic" n=$n k=$k retrieved=${retrieved.length} '
+      'maxTokens=${maxTokensPerCard * n}',
+    );
+
+    final messages = FlashcardGenPrompt.build(
+      topic: topic,
+      n: n,
+      retrieved: retrieved,
+    );
+    final buffer = StringBuffer();
+    await for (final chunk in CactusService.instance.complete(
+      messages,
+      maxTokens: thinkBudget + maxTokensPerCard * n,
+    )) {
+      buffer.write(chunk);
+      yield FlashcardEvent.partial(chunk);
+    }
+
+    final cards = FlashcardGenPrompt.parse(buffer.toString());
+    debugPrint('[flashcards] parsed ${cards.length} card(s)');
+    yield FlashcardEvent.cards(cards);
+    yield const FlashcardEvent.done();
   }
 
   // ---------------------------------------------------------------------------
