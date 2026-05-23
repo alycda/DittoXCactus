@@ -36,6 +36,17 @@ android {
             // TODO: Add your own signing config for the release build.
             // Signing with the debug keys for now, so `flutter run --release` works.
             signingConfig = signingConfigs.getByName("debug")
+            // ditto_live 5.0.0 dropped the consumer-proguard-rules.pro that v4
+            // shipped (KMP rewrite). Without keep rules, R8 strips the classes
+            // libdittoffi.so reflects on during rustls init; the app aborts
+            // pre-main with "Cannot initialize rustls without SDK class loader"
+            // → SIGABRT. Workaround per Sergiu Bulzan in #docs (2026-05-08).
+            // See SDKS-3594 (workaround), SDKS-2626 (long-term: ship the
+            // rules with the SDK so apps don't need this file).
+            proguardFiles(
+                getDefaultProguardFile("proguard-android-optimize.txt"),
+                "proguard-rules.pro"
+            )
         }
     }
 }
