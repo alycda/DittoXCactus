@@ -60,7 +60,10 @@ class RetrievalService {
   /// Add a reasoning-leak slush so `<think>` blocks (Qwen 2.5 emits them
   /// despite the `/no_think` directive being Qwen3-only) don't starve the
   /// real output of tokens. Total = thinkBudget + n × maxTokensPerCard.
-  static const int maxTokensPerCard = 160;
+  /// 2026-05-22: dropped 160 → 80 after tightening the prompt to one-
+  /// sentence (≤15 word) answers. Was leaving ~half the per-card budget
+  /// on the floor and slowing decode.
+  static const int maxTokensPerCard = 80;
   static const int thinkBudget = 512;
 
   /// Encode a study note as the short text we hand to `cactus_embed`.
