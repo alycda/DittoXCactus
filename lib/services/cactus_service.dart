@@ -18,8 +18,16 @@ class CactusService {
   /// Slug pin: see plan U1/U2. Locked here for reproducibility on demo day.
   /// Cactus exposes models by slug from a built-in catalog; the spike step
   /// (U2) picks the slug that hits cosine ≥ 0.999 across iOS+Android.
-  static const String preferredEmbeddingSlug = 'qwen3-0.6';
-  static const String preferredCompletionSlug = 'qwen3-0.6';
+  ///
+  /// 2026-05-22: Bumped from `qwen3-0.6` (~600M) to `qwen3-1.7` (~1.7B) after
+  /// the on-device dogfood produced incoherent flashcards. The prompts in
+  /// `flashcard_gen.dart` were tuned for Qwen 2.5 1.5B; `qwen3-0.6` is below
+  /// the size where structured Q/A from passages becomes reliable.
+  /// Future axis to consider: split embedding to the purpose-built
+  /// `qwen3-embedding-0.6` slug (would double the first-launch download,
+  /// but the embedding model is tuned for similarity rather than chat).
+  static const String preferredEmbeddingSlug = 'qwen3-1.7';
+  static const String preferredCompletionSlug = 'qwen3-1.7';
 
   bool get isReady => _initialized;
   String? get modelSlug => _resolvedModelSlug;
