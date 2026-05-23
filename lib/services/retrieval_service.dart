@@ -2,6 +2,7 @@ import 'dart:math' as math;
 import 'dart:typed_data';
 
 import '../models/study_note.dart';
+import '../prompts/recipe_merge.dart';
 import 'cactus_service.dart';
 import 'ditto_service.dart';
 
@@ -24,6 +25,10 @@ class RetrievalService {
 
   /// Default k for Stage 0.
   static const int defaultK = 5;
+
+  /// Stage-0 maxTokens for streamed synthesis. Bumped from 384 → 768 after
+  /// early multi-note runs got hard-truncated mid-paragraph.
+  static const int defaultMaxTokens = 768;
 
   /// Encode a study note as the short text we hand to `cactus_embed`.
   /// Keeps it short on purpose — embedding context budgets are tight, and
@@ -76,6 +81,35 @@ class RetrievalService {
       return s != 0 ? s : a.note.id.compareTo(b.note.id); // tie-break by _id
     });
     return scored.take(k).toList();
+  }
+
+  /// End-to-end synthesis: retrieve top-k notes for `topic`, build the
+  /// recipe_merge prompt, stream the answer chunks from Cactus. Caller
+  /// concatenates the chunks for the final paragraph. The first event in
+  /// the stream is the retrieved set itself (carried via [onRetrieved]) so
+  /// UIs can render an attribution footer while the LLM is still decoding.
+  Stream<String> answerQuery(
+    String topic, {
+    int k = defaultK,
+    int maxTokens = defaultMaxTokens,
+    void Function(List<RetrievedNote>)? onRetrieved,
+  }) async* {
+    final retrieved = await topK(topic, k: k);
+    onRetrieved?.call(retrieved);
+    if (retrieved.isEmpty) {
+      yield '(no relevant notes found for "$topic")';
+      return;
+    }
+    final messages = RecipeMergePrompt.build(
+      topic: topic,
+      retrieved: retrieved,
+    );
+    await for (final chunk in CactusService.instance.complete(
+      messages,
+      maxTokens: maxTokens,
+    )) {
+      yield chunk;
+    }
   }
 
   // ---------------------------------------------------------------------------
