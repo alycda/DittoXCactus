@@ -80,6 +80,7 @@ class _FlashcardsTabState extends State<FlashcardsTab> {
   bool _busy = false;
   String? _error;
   bool _showDiff = false;
+  bool _jeopardyMode = false;
   FlashcardsMode _mode = FlashcardsMode.view;
 
   @override
@@ -328,26 +329,40 @@ class _FlashcardsTabState extends State<FlashcardsTab> {
           ],
         ),
         const SizedBox(height: 8),
-        SegmentedButton<FlashcardsMode>(
-          segments: const [
-            ButtonSegment(
-              value: FlashcardsMode.view,
-              label: Text('View'),
-              icon: Icon(Icons.style_outlined),
+        Row(
+          children: [
+            Expanded(
+              child: SegmentedButton<FlashcardsMode>(
+                segments: const [
+                  ButtonSegment(
+                    value: FlashcardsMode.view,
+                    label: Text('View'),
+                    icon: Icon(Icons.style_outlined),
+                  ),
+                  ButtonSegment(
+                    value: FlashcardsMode.rate,
+                    label: Text('Rate'),
+                    icon: Icon(Icons.swipe),
+                  ),
+                ],
+                selected: {_mode},
+                onSelectionChanged: (s) => setState(() {
+                  _mode = s.first;
+                  // Leaving diff view when entering Rate, since rate is a
+                  // single-card surface and diff is a list comparison.
+                  if (_mode == FlashcardsMode.rate) _showDiff = false;
+                }),
+              ),
             ),
-            ButtonSegment(
-              value: FlashcardsMode.rate,
-              label: Text('Rate'),
-              icon: Icon(Icons.swipe),
+            const SizedBox(width: 8),
+            FilterChip(
+              avatar: const Icon(Icons.swap_vert, size: 18),
+              label: const Text('Jeopardy'),
+              tooltip: 'Show the answer on the front, question on the back',
+              selected: _jeopardyMode,
+              onSelected: (v) => setState(() => _jeopardyMode = v),
             ),
           ],
-          selected: {_mode},
-          onSelectionChanged: (s) => setState(() {
-            _mode = s.first;
-            // Leaving diff view when entering Rate, since rate is a single-
-            // card surface and diff is a list comparison.
-            if (_mode == FlashcardsMode.rate) _showDiff = false;
-          }),
         ),
       ],
     );
@@ -442,6 +457,7 @@ class _FlashcardsTabState extends State<FlashcardsTab> {
       peerNoteIds: _history.isEmpty ? const {} : _history.last.peerNoteIds,
       notesById: _history.isEmpty ? const {} : _history.last.notesById,
       selfContributor: SeedLoader.instance.selfContributor,
+      jeopardyMode: _jeopardyMode,
     );
   }
 
@@ -466,11 +482,13 @@ class _FlashcardStack extends StatefulWidget {
   final Set<String> peerNoteIds;
   final Map<String, StudyNote> notesById;
   final String selfContributor;
+  final bool jeopardyMode;
   const _FlashcardStack({
     required this.cards,
     required this.peerNoteIds,
     required this.notesById,
     required this.selfContributor,
+    required this.jeopardyMode,
   });
 
   @override
@@ -522,6 +540,7 @@ class _FlashcardStackState extends State<_FlashcardStack> {
                       .any(widget.peerNoteIds.contains),
                   notesById: widget.notesById,
                   selfContributor: widget.selfContributor,
+                  jeopardyMode: widget.jeopardyMode,
                 ),
               );
             },
@@ -557,6 +576,7 @@ class _FlashcardTile extends StatefulWidget {
   final bool drewFromPeers;
   final Map<String, StudyNote> notesById;
   final String selfContributor;
+  final bool jeopardyMode;
   const _FlashcardTile({
     super.key,
     required this.card,
@@ -565,6 +585,7 @@ class _FlashcardTile extends StatefulWidget {
     required this.drewFromPeers,
     required this.notesById,
     required this.selfContributor,
+    required this.jeopardyMode,
   });
 
   @override
@@ -641,7 +662,13 @@ class _FlashcardTileState extends State<_FlashcardTile> {
                   child: Center(
                     child: SingleChildScrollView(
                       child: SelectableText(
-                        isFront ? widget.card.question : widget.card.answer,
+                        // Jeopardy mode swaps which text is on the front
+                        // (clue) vs back (response). isFront still tracks
+                        // tap-to-flip state; jeopardyMode XORs which face
+                        // is question vs answer.
+                        (isFront != widget.jeopardyMode)
+                            ? widget.card.question
+                            : widget.card.answer,
                         style: TextStyle(
                           fontSize: isFront
                               ? (landscape ? 32 : 24)
