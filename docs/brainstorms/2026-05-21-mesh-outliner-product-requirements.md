@@ -67,11 +67,11 @@ The intellectual lineage is Sönke Ahrens's *How to Take Smart Notes* — atomic
 
 **Outliner core (v1)**
 
-- R1. Every bullet has a stable UUID assigned at creation, preserved across saves, sync, and round-trip through markdown on disk
+- R1. Every bullet has a stable block ID (a UUID at the implementation level) assigned at creation, preserved across saves, sync, and round-trip through markdown on disk
 - R2. Bullets support hierarchy via indent/outdent and zoom-into-bullet navigation
 - R3. The default view is distraction-free bullets; no sidebar widgets, no kanban, no databases, no Notion-style block menu
 - R4. Tag syntax (`#tag`) and page-link syntax (`[[Page]]`) create outgoing links from a bullet; a backlinks pane aggregates inbound references per page and per tag
-- R5. Block-level backlinks: viewing any bullet shows every other bullet that references it by UUID
+- R5. Block-level backlinks: viewing any bullet shows every other bullet that references it by block ID
 
 **Outliner mirrors (v1)**
 
@@ -81,7 +81,7 @@ The intellectual lineage is Sönke Ahrens's *How to Take Smart Notes* — atomic
 
 **Outliner performance (v1)**
 
-- R9. The app sustains snappy interaction (capture, navigation, search, zoom) at 10k+ bullets on mobile hardware
+- R9. The app sustains snappy interaction (capture, navigation, search, zoom) at corpus sizes encountered during v1 dogfood, on the architectural trajectory toward 10k+ bullets on mobile. The 10k+ ceiling is a Stage 1 stretch test, *not* a v1 ship gate — v1 acceptance is "no perf cliff observed at the user's actual v1 corpus size."
 
 **Mesh sync (v1)**
 
@@ -131,11 +131,16 @@ The intellectual lineage is Sönke Ahrens's *How to Take Smart Notes* — atomic
 - Willow-shaped voice capture as an input modality
 - Logseq corpus import (markdown + block UUIDs + page backlinks round-trip)
 - Workflowy corpus import with mirrors round-trip — the largest deferred work; the "I trust this with my brain" gate
-- Specialist small models (writeup-thesis Stage 1): replacing the generalist on-device LLM with domain-tuned tiny models (note-curator, summarizer, retriever)
-- Preference-aware merge (writeup-thesis Stage 2): when two users' outliners mesh, the merge respects each user's preferences rather than performing a flat union
-- Adversarial filtering (writeup-thesis Stage 3): promotion of merged content into canonical form needs reputation, consensus, or provenance — not flat union
-- Generational evolution (writeup-thesis Stage 4): temporal weighting or branch-on-divergence semantics for notes that drift over time
 - App naming — deferred to a separate pass closer to v1 ship; this doc uses "the outliner" as the working reference
+
+### Writeup-thesis connection (research framing, not product roadmap)
+
+These are stages of the user's separate Mesh-RAG writeup thesis, not implementation milestones for this product. They appear here so a planning agent does not interpret them as deferred features.
+
+- Specialist small models (Stage 1): domain-tuned tiny models (note-curator, summarizer, retriever) replacing the generalist on-device LLM
+- Preference-aware merge (Stage 2): when two users' outliners mesh, the merge respects each user's preferences rather than performing a flat union
+- Adversarial filtering (Stage 3): promotion of merged content into canonical form needs reputation, consensus, or provenance
+- Generational evolution (Stage 4): temporal weighting or branch-on-divergence semantics for notes that drift over time
 
 ### Outside this product's identity
 
@@ -163,7 +168,7 @@ The intellectual lineage is Sönke Ahrens's *How to Take Smart Notes* — atomic
 
 ## Dependencies / Assumptions
 
-- Cactus and qwen3-1.7 (or comparable small model) can generate clues from a small audience-captured corpus in under ~10 seconds per clue on phone hardware in active use. Decode-speed measurement under live audience load has not yet been performed; the u10 spike measured single-phone steady-state.
+- Cactus and qwen3-1.7 (or comparable small model) can generate clues from a small audience-captured corpus in under ~10 seconds per clue on phone hardware in active use. **This is an unmeasured assumption — no spike under `docs/spikes/` has yet measured Cactus decode speed: U2 measures embedding determinism, U3 measures merge-eval quality, U7 measures sync, U9 is rehearsal, and U10 is the Presenterm slide deck.** Planning must measure decode speed under realistic clue-generation load before the demo commits to live audience capture.
 - Ditto BLE / local-wifi mesh can sustain replication across 10-30 phones in a room without dropping. The current build verifies 2-3 phone sync; demo-scale behavior is an unverified assumption that planning should measure before commit.
 - Markdown-on-disk with embedded block IDs is portable enough that the user can move bullets to Logseq or another markdown outliner without losing identity. Exact block-ID embedding convention (Logseq `id::` property syntax, HTML comments, or frontmatter) is a planning decision; this assumption depends on convergence on a format that at least one other tool can read.
 - The current `lib/models/study_note.dart` data model (stable UUID, body, tags, `acceptedBy` OR-set, clone semantics) is a near-substrate for the outliner. The gap is hierarchy (parent_id + position), mirror semantics, and outliner UI. Whether to extend `StudyNote` or replace it is a planning decision; this doc assumes meaningful reuse is possible.
@@ -173,11 +178,85 @@ The intellectual lineage is Sönke Ahrens's *How to Take Smart Notes* — atomic
 
 ## Outstanding Questions
 
+### Resolve Before Planning
+
+- [Affects R10, R17, F3, F4][Security] **Corpus isolation between demo mesh and personal mesh** — the doc currently lets both modes share the same Ditto transport with no specified partition. Without a collection-level / namespace-level boundary, audience phones in demo mode could replicate the user's personal corpus, and the demo's untrusted writes could leak into the personal corpus. Decide on the isolation mechanism (separate Ditto collections per mode, demo-session-scoped namespace, kill personal mesh during demo) before any v1 architecture work.
+- [Affects Problem Frame, Key Decisions][Strategic] **Adjacent products not surveyed** — Reflect, Tana, Capacities, RemNote, and Roam occupy adjacent UX-plus-data-ownership space with block-reference primitives. The build-vs-use justification was never tested. Resolve by surveying these tools before committing significant v1 build time; if any already meets the bar, switch the question from "build vs Logseq" to "build vs the actual incumbent."
+- [Affects R18, Dependencies][Needs research] **Cactus decode-speed baseline** — no existing spike has measured Cactus clue-generation latency under realistic load (the doc previously misattributed this to the U10 Presenterm spike, which it isn't). The live-audience demo format depends on a budget that hasn't been bounded. Resolve by running an explicit decode-speed spike before the demo locks.
+
 ### Deferred to Planning
 
-- [Affects R1, R13, R14][Technical] Block-UUID embedding convention in markdown: Logseq `id::` property syntax vs HTML comments vs YAML-frontmatter. Choose for interop with Logseq specifically vs neutral portability across markdown outliners.
-- [Affects R9][Technical] Engine architecture: Dart-only Flutter vs Flutter UI + Rust core for the corpus engine. The 10k+ bullet perf bar is the gate; measure before committing.
+- [Affects R1, R13, R14][Technical] Block-ID embedding convention in markdown: Logseq `id::` property syntax vs HTML comments vs YAML-frontmatter. Choose for interop with Logseq specifically vs neutral portability across markdown outliners.
+- [Affects R9][Technical] Engine architecture: Dart-only Flutter vs Flutter UI + Rust core for the corpus engine. The 10k+ bullet trajectory is the architectural anchor; measure first.
 - [Affects R6, R7, R11][Technical] Mirror-merge conflict semantics: when two devices concurrently edit the source of a mirror, the CRDT merge must converge predictably. Ditto's underlying CRDT primitives shape what is feasible.
 - [Affects R1-R8, R16-R20][Technical] Salvage vs rewrite of the current `lib/widgets/flashcards_tab.dart` + `lib/models/study_note.dart` layer for the outliner data model — specifically, whether to extend `StudyNote` with hierarchy + mirror semantics or replace it. Sequencing the hackathon demo build against the outliner v1 build depends on this choice.
 - [Affects R17][Needs research] Ditto mesh scale at 10-30 phones in a single room: practical replication latency, failure modes, and BLE channel contention. Measure before committing to live-audience capture as the demo format.
-- [Affects R18][Needs research] Cactus decode-speed budget for clue generation on qwen3-1.7 under live load: per-clue latency target and how to keep the demo's perceived pace if a clue takes longer than expected.
+
+### From 2026-05-21 doc review (deferred to planning)
+
+The review surfaced concerns that did not block requirements scope but should be resolved as planning proceeds. Persona attribution in brackets.
+
+**Product / strategy** [product-lens, adversarial]
+
+- Side-by-side dogfood with Logseq risks indefinite stall: new captures get stranded outside the corpus they need to link into. Surface a "switch reflex" leading indicator (e.g., percent of week's captures landing here vs Logseq) as a v1 health metric.
+- "Mesh is the transport, not the differentiator" tension: the demo stages mesh as the awe-moment, but the product treats it as plumbing. Either re-positioning or explicit acknowledgement that mesh is plural-purpose (plumbing + demo moment).
+- "Notion as anti-pattern" overstates the user's actual statement ("too many bells and whistles"). Tighten the framing so it doesn't act as a veto on legitimate features later.
+- Inversion risk: hackathon deadline can eat the product timeline. Name the explicit tiebreaker if both v1 dogfood and demo can't ship clean.
+- Mirror-merge semantics in v1 implicitly commit to Workflowy-import shape in v2. Mirror conflict resolution chosen now will constrain migration design later.
+- Competitive obsolescence: Logseq's ongoing DB rewrite could close the perf gap before v1 ships. Define a kill-switch criterion or a watch metric.
+- v1 scope bypasses the actual lived evidence (collaborative conference notes; Workflowy mirror migration). Greenfield-only is a fast-ship choice that punts both pieces of concrete evidence.
+- "No-syntax-leak mirrors at Workflowy-grade UX" asserts a UX bar Logseq has not met in years. Commit to a specific UX strategy (rendering, edit-mode, dual-shape) before treating this as solved.
+
+**Feasibility** [feasibility, adversarial]
+
+- 2-phone Ditto sync baseline is itself unrecorded (U7 results still `_todo_`). The 10-30-phone extrapolation has no measured floor.
+- Markdown-on-disk persistence is fully greenfield in this codebase — `StudyNote` is Ditto-doc only, no filesystem persistence stratum exists. Planning must scope that as net-new, not as `StudyNote` extension.
+- Flutter at 10k+ bullets on mobile is largely unprecedented — Capacities, Tana, Logseq all run on web stacks. The Dart-only path may not clear R9's trajectory bar; measure before locking architecture.
+- "Markdown portability via block IDs" is asserted but Logseq's `id::` syntax is read correctly by approximately one tool. Pick a convention with eyes open; portability may be one-way in practice.
+
+**Design / UX** [design-lens]
+
+- Mirror command invocation on mobile (gesture, slash-command, long-press menu) is unspecified — planning must pick before mirror UX can be designed.
+- Backlinks pane: trigger, location, dismissal all unspecified. Three independent UI decisions.
+- Zoom-into-bullet breadcrumb and back-affordance unnamed. Workflowy and Logseq differ; pick one.
+- Demo feedback states (mesh joined / Cactus generating / clue ready) need visual treatment sized for room-scale visibility.
+- Audience onboarding flow for the demo (first-launch, permission prompts, "you're in the mesh" confirmation) is absent.
+- Inline rendering of `#tag` and `[[Page]]` as chips vs raw syntax — not stated; "no syntax leak" only commits this for mirrors.
+- Device-presence indicator (R12) needs a UI surface compatible with R3's distraction-free constraint.
+- Empty-corpus first-launch state — what does a new user see before they have any bullets?
+- Demoer's Jeopardy-mode UI — trigger, clue advance, audience-side state — needs a screen-level spec.
+- Capture-during-talk in v1 is mobile-keyboard only (Willow voice is deferred); thumb-typing under demo time pressure is a real constraint.
+
+**Security / privacy** [security-lens]
+
+- Demo mesh has no admission control: anyone in BLE range can join, sniff, or inject bullets that flow to Cactus.
+- Bullets persist on audience phones post-demo with no stated cleanup or notice. Audience members' implicit consent boundary is unspecified.
+- No encryption / identity stated for bullets in transit on BLE / local wifi. Verify Ditto's default TLS/DTLS configuration applies.
+- At-rest encryption and device-loss posture for the personal corpus (data labeled the user's "literal brain") is unmechanized — iOS Data Protection class, file encryption, export security.
+- iCloud backup of markdown files: NSURLIsExcludedFromBackupKey decision needed, given the data-ownership posture explicitly rejects vendor exposure.
+- Prompt-injection vector: mesh-received bullets feed Cactus (R18); a crafted bullet can manipulate clue generation. Becomes a larger risk when v2 AI augmentation reads the personal corpus.
+- Multi-device personal sync has no pairing / auth ceremony — what makes a device "the user's own device"?
+
+**Scope** [scope-guardian]
+
+- The doc encodes two distinct products (outliner v1 + hackathon demo) with different timelines and actors in one requirements list. Consider splitting into two docs if planning sequencing gets tangled.
+- Mirrors-in-v1 is the hardest UX *and* CRDT requirement simultaneously. The "switch-bar" justification cites Workflowy migration which is itself deferred — reconsider whether mirrors can ship with the migration milestone instead of v1.
+- R10 names laptop and iPad in v1 mesh, but the success criterion only references mobile. Confirm whether v1 desktop client is in or out.
+- Block-level backlinks (R5) is load-bearing for mirrors more than for standalone backlinks UX at v1 corpus size; if scoped as mirror-infrastructure rather than user-facing feature, the doc text should say so.
+
+**Demo coherence** [adversarial]
+
+- R19 fallback collapses the demo's differentiation: single-phone Cactus clue gen is achievable on Logseq + Ollama or any iOS shortcut. Plan for partial-engagement scenarios, not just zero-engagement.
+- Mesh Jeopardy frame survived from the pre-reframe seed. Worth a sanity check: is a non-game demo (e.g., live two-phone conference-pair-sync) more honest about the actual product?
+- Audience-willingness assumption is the demo — TestFlight / sideload friction would force the R19 fallback to be the expected path, not the exception. Resolve install/onboarding mechanism before committing to live-capture format.
+
+### FYI observations (anchor 50, no decision required)
+
+- Terminology: "UUID" / "block ID" / "stable block IDs" now normalized to "block ID" (R1, R5, R14) [coherence]. Applied in this review pass.
+- No-AI-in-v1 may also mean no AI-relevant telemetry — if the writeup-thesis stages eventually need preference signals, v1 silently records-or-doesn't is a planning question worth flagging [product-lens].
+- The four-way fusion premise (Workflowy × Logseq × Ditto × Cactus) is asserted as a positioning summary but the *combined* product feel hasn't been articulated beyond the sum of parts [product-lens].
+- Voice capture deferral (Willow) leaves the demo's capture-during-talk surface dependent on thumbing; if voice slips earlier, it could land in the demo path itself [design-lens].
+- Multi-device personal sync (R10) doesn't specify a pairing/auth ceremony; depending on Ditto's default identity model, this may be implicit but is worth confirming [security-lens].
+- R12 device-visibility UI lacks a user-benefit framing in success criteria — useful but may be over-built for a two-device user [scope-guardian].
+- Product roadmap (v1 → v2 → vN + writeup-thesis stages) is built on what the user described as "exploratory" hackathon premise — kill criterion for the underlying probe is unnamed [adversarial].
+- "Mesh-as-transport-not-differentiator" + demo staging mesh as awe-moment is a low-severity framing tension worth resolving in marketing copy if it ever ships [adversarial].
