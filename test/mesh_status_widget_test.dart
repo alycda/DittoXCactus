@@ -93,12 +93,14 @@ void main() {
       expect(_dotColor(tester), Colors.grey.shade500);
 
       ctrl.add(1);
-      await tester.pump();
+      await tester.pump(); // delivers the stream event (microtask)
+      await tester.pump(); // rebuilds the widget with the new count
       expect(find.text('mesh: 1 peer'), findsOneWidget);
       expect(_dotColor(tester), Colors.green.shade600);
 
       ctrl.add(2);
-      await tester.pump();
+      await tester.pump(); // delivers the stream event
+      await tester.pump(); // rebuilds
       expect(find.text('mesh: 2 peers'), findsOneWidget);
       expect(_dotColor(tester), Colors.green.shade600);
     });
@@ -113,7 +115,8 @@ void main() {
       expect(find.text('mesh: 1 peer'), findsOneWidget);
 
       ctrl.add(0);
-      await tester.pump();
+      await tester.pump(); // delivers the stream event
+      await tester.pump(); // rebuilds
       expect(find.text('mesh: alone'), findsOneWidget);
       expect(_dotColor(tester), Colors.grey.shade500);
     });

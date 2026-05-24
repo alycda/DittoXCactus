@@ -58,7 +58,7 @@ class _QueryScreenState extends State<QueryScreen> {
 
   @override
   void dispose() {
-    _notesObserver?.stop();
+    _notesObserver?.cancel();
     super.dispose();
   }
 
