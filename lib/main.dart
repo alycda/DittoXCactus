@@ -22,6 +22,7 @@ import 'package:flutter/foundation.dart' show kDebugMode;
 import 'package:flutter/material.dart';
 import 'package:permission_handler/permission_handler.dart';
 
+import 'services/cactus_service.dart';
 import 'services/ditto_service.dart';
 
 /// Phone-role env var (`PHONE_ROLE=a` or `PHONE_ROLE=b`) — selects which
@@ -98,6 +99,7 @@ class BootScreen extends StatefulWidget {
 
 class _BootScreenState extends State<BootScreen> {
   _BootPhase _phase = _BootPhase.starting;
+  String? _subLabel;
   Object? _error;
 
   @override
@@ -120,9 +122,22 @@ class _BootScreenState extends State<BootScreen> {
       _advance(_BootPhase.seedLoad);
       // TODO(U8): await SeedLoader.loadAndInsert(role: kPhoneRole);
 
-      // U6: CactusService brings up the two CactusLM instances.
+      // U6: CactusService brings up the two CactusLM instances. The
+      // onProgress callback streams sub-labels like
+      //   "completion (qwen3-1.7): downloading 42%"
+      // so the BootScreen shows real download progress instead of a
+      // generic spinner during the cold-load minute.
       _advance(_BootPhase.initCactus);
-      // TODO(U6): await CactusService.instance.initialize();
+      await CactusService.instance.initialize(
+        onProgress: (progress, status, isError) {
+          if (!mounted) return;
+          final pct = progress == null
+              ? ''
+              : ' (${(progress * 100).toStringAsFixed(0)}%)';
+          setState(() => _subLabel = isError ? 'error: $status' : '$status$pct');
+        },
+      );
+      setState(() => _subLabel = null);
 
       // U8 (second pass): RetrievalService backfills embeddings for any
       // notes whose embedding column is still null.
@@ -163,7 +178,7 @@ class _BootScreenState extends State<BootScreen> {
         child: Center(
           child: _phase == _BootPhase.failed
               ? _FailedView(error: _error)
-              : _BootingView(phase: _phase),
+              : _BootingView(phase: _phase, subLabel: _subLabel),
         ),
       ),
     );
@@ -171,8 +186,9 @@ class _BootScreenState extends State<BootScreen> {
 }
 
 class _BootingView extends StatelessWidget {
-  const _BootingView({required this.phase});
+  const _BootingView({required this.phase, this.subLabel});
   final _BootPhase phase;
+  final String? subLabel;
 
   String get _label {
     switch (phase) {
@@ -207,6 +223,14 @@ class _BootingView extends StatelessWidget {
           const CircularProgressIndicator(),
           const SizedBox(height: 16),
           Text(_label, style: const TextStyle(fontSize: 15)),
+          if (subLabel != null) ...[
+            const SizedBox(height: 8),
+            Text(
+              subLabel!,
+              textAlign: TextAlign.center,
+              style: const TextStyle(fontSize: 12, color: Colors.black54),
+            ),
+          ],
         ],
       ),
     );
