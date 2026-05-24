@@ -1,0 +1,37 @@
+[
+  {
+    "topic": "The Sun",
+    "contributor": "phone-a",
+    "createdAt": "2026-05-22T19:00:00.000Z",
+    "tags": ["star", "G2V", "fusion", "mass"],
+    "body": "The Sun makes up about 99.86% of the mass of the solar system. It's a yellow dwarf star (type G2V), and its core fuses hydrogen into helium at roughly 600 million tonnes per second. Surface temperature is about 5,500°C; the core is closer to 15 million°C. The Sun's gravity is what holds every planet in orbit, and its light takes about 8 minutes and 20 seconds to reach Earth."
+  },
+  {
+    "topic": "Mercury",
+    "contributor": "phone-a",
+    "createdAt": "2026-05-22T19:08:00.000Z",
+    "tags": ["inner-planet", "smallest", "no-atmosphere", "temperature-extremes"],
+    "body": "Mercury is the smallest planet and the closest to the Sun. A Mercurian year (one full orbit) is only 88 Earth days, but a Mercurian day (one full rotation) is 59 Earth days — so each day is almost two-thirds of a year there. It has almost no atmosphere, so temperatures swing from about 430°C in sunlight to -180°C in shadow. No weather, no wind, no surface water."
+  },
+  {
+    "topic": "Venus",
+    "contributor": "phone-a",
+    "createdAt": "2026-05-22T19:15:00.000Z",
+    "tags": ["inner-planet", "hottest", "greenhouse", "retrograde-rotation"],
+    "body": "Venus is the hottest planet in the solar system — even hotter than Mercury — because its atmosphere is 96% CO₂ and traps heat in a runaway greenhouse. Surface temperature is around 465°C, hot enough to melt lead. Atmospheric pressure is about 92 times Earth's, equivalent to being 900 metres underwater. Venus also rotates backwards relative to most planets, and one Venusian day is longer than a Venusian year."
+  },
+  {
+    "topic": "Earth's Moon",
+    "contributor": "phone-a",
+    "createdAt": "2026-05-22T19:23:00.000Z",
+    "tags": ["moon", "giant-impact", "tidally-locked", "theia"],
+    "body": "Earth's Moon was likely formed when a Mars-sized body called Theia collided with the early Earth about 4.5 billion years ago — the giant-impact hypothesis. The debris from the collision coalesced into the Moon. It's tidally locked to Earth, which is why we always see the same face. Lunar gravity is about 1/6 of Earth's. The Moon is slowly moving away from us — about 3.8 cm per year."
+  },
+  {
+    "topic": "Mars",
+    "contributor": "phone-a",
+    "createdAt": "2026-05-22T19:31:00.000Z",
+    "tags": ["inner-planet", "olympus-mons", "valles-marineris", "phobos-deimos"],
+    "body": "Mars has the largest volcano in the solar system: Olympus Mons, about 22 km tall — almost three times the height of Mount Everest. It also has the largest canyon system, Valles Marineris, more than 4,000 km long. Mars has two small irregular moons, Phobos and Deimos, probably captured asteroids. A Martian day (a 'sol') is about 24 hours 37 minutes, close to Earth's. Surface dust gives the planet its red colour."
+  }
+]

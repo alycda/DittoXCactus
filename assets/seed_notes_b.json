@@ -1,0 +1,37 @@
+[
+  {
+    "topic": "Jupiter",
+    "contributor": "phone-b",
+    "createdAt": "2026-05-22T19:02:00.000Z",
+    "tags": ["outer-planet", "largest", "galilean-moons", "great-red-spot"],
+    "body": "Jupiter is the largest planet — more than twice the mass of all the other planets combined. The Great Red Spot is a storm that's been raging for at least 350 years, large enough to swallow Earth whole. Jupiter has 95 known moons; the four largest are called the Galilean moons (Io, Europa, Ganymede, and Callisto) because Galileo discovered them in 1610. Io is the most volcanically active body in the solar system; Europa probably has a liquid water ocean under its ice."
+  },
+  {
+    "topic": "Saturn",
+    "contributor": "phone-b",
+    "createdAt": "2026-05-22T19:11:00.000Z",
+    "tags": ["outer-planet", "rings", "titan", "low-density"],
+    "body": "Saturn's rings are made mostly of water ice (about 90-95%) with some rocky dust mixed in. The ring system is huge — about 280,000 km across — but very thin, only about 10 metres thick in places. Saturn has 146 confirmed moons; the biggest, Titan, has a thick nitrogen atmosphere and surface lakes of liquid methane. Saturn itself is less dense than water — if you could find a big enough bathtub, it would float."
+  },
+  {
+    "topic": "Uranus",
+    "contributor": "phone-b",
+    "createdAt": "2026-05-22T19:18:00.000Z",
+    "tags": ["outer-planet", "ice-giant", "axial-tilt", "methane-blue"],
+    "body": "Uranus is tilted on its side — its rotational axis is about 98° to its orbit, so it essentially rolls around the Sun rather than spinning upright. This is probably the result of a massive collision early in its history. Each pole gets 42 years of continuous sunlight followed by 42 years of darkness. Uranus is an ice giant: atmosphere mostly hydrogen and helium, but the interior is dominated by water, methane and ammonia ices. The methane gives it its pale blue colour."
+  },
+  {
+    "topic": "Neptune",
+    "contributor": "phone-b",
+    "createdAt": "2026-05-22T19:25:00.000Z",
+    "tags": ["outer-planet", "ice-giant", "strongest-winds", "triton-retrograde"],
+    "body": "Neptune has the strongest winds in the solar system — up to 2,100 km/h, faster than the speed of sound on Earth. Like Uranus, it's an ice giant, but its blue is deeper and more vivid, probably because of an unknown extra absorbent in the upper atmosphere. Neptune was the first planet discovered by mathematical prediction rather than observation — astronomers worked out where it had to be based on irregularities in Uranus's orbit. Its largest moon, Triton, orbits backwards."
+  },
+  {
+    "topic": "Pluto",
+    "contributor": "phone-b",
+    "createdAt": "2026-05-22T19:34:00.000Z",
+    "tags": ["dwarf-planet", "kuiper-belt", "charon", "reclassified-2006"],
+    "body": "Pluto was reclassified from a planet to a 'dwarf planet' in 2006 because it hasn't cleared its orbital neighbourhood — there are too many other Kuiper-belt objects sharing its zone. Pluto is smaller than Earth's Moon. It has five known moons; the largest, Charon, is so big relative to Pluto that the two are sometimes called a binary system — they orbit a point between them, not Pluto's centre. A 'year' on Pluto is 248 Earth years."
+  }
+]
