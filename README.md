@@ -1,8 +1,8 @@
 # Ditto × Cactus — hackathon brainstorm
 
-**Status:** pursuing A — see [docs/SEED.md](docs/SEED.md)
+**Status:** pursuing A — see [SEED.md](_docs/SEED.md) and [plan](_docs/plans/001-feat-mesh-rag-demo.md)
 **Frame:** personal weekend build, deliverable is a blog-post-shaped artifact (working demo + writeup that teaches something)
-**Date:** 2026-05-21
+**Date:** 2026-05-23
 
 ## Why this pair is interesting at all
 
@@ -21,7 +21,7 @@ Each device indexes some local material (notes, PDFs, photos with captions) into
 - **Demo:** two phones, no wifi. Each preloaded with different docs. Ask a question on one; the answer gets better the moment the second comes into range.
 - **Hard part:** keeping the embedding model identical and stable across devices so vectors are comparable. Mechanically modest at weekend scale; conceptually rich.
 - **Blog-post shape:** "Your knowledge base wants to be a CRDT."
-- **→ Pursuing this one** — see [docs/SEED.md](docs/SEED.md).
+- **→ Pursuing this one** — see [SEED.md](_docs/SEED.md).
 
 ### B. "LLM-mediated merge" — AI repairs what CRDTs can't reach
 
@@ -41,7 +41,7 @@ Don't use AI for the user feature. Use it to make the *sync itself* legible. A l
 - **Demo:** a tiny shared planner or `cars`-collection scene. Same data on both screens. One narrates itself.
 - **Hard part:** there isn't one. That's the point — and the blog post argues that's a category of usage the industry keeps skipping past.
 - **Blog-post shape:** "On-device LLMs are interfaces, not products."
-- **→ Not pursued** — kept as the fallback if A's determinism prerequisite fails (see [docs/SEED.md](docs/SEED.md) Related Tickets).
+- **→ Not pursued** — kept as the fallback if A's determinism prerequisite fails (see [SEED.md](_docs/SEED.md) Related Tickets).
 
 ### D. *Challenger:* "Model weights gossip" — federated learning over mesh
 
@@ -75,9 +75,9 @@ Riskier, higher upside. Each device collects examples (custom labels, wake words
 
 ## Open decisions
 
-- Hardware target — phones only, or include a laptop/wearable to make the heterogeneity visible? (Open Q2 in [docs/SEED.md](docs/SEED.md).)
-- Demo scenario — abstract (`cars` collection) or applied (field-ops, study notes, planner)? (Open Q1 in [docs/SEED.md](docs/SEED.md).)
-- Does the demo need to *visibly run without internet* on camera, or is that taken on faith? (Open Q3 in [docs/SEED.md](docs/SEED.md).)
+- Hardware target — phones only, or include a laptop/wearable to make the heterogeneity visible? (Open Q2 in [SEED.md](_docs/SEED.md).)
+- Demo scenario — abstract (`cars` collection) or applied (field-ops, study notes, planner)? (Open Q1 in [SEED.md](_docs/SEED.md).)
+- Does the demo need to *visibly run without internet* on camera, or is that taken on faith? (Open Q3 in [SEED.md](_docs/SEED.md).)
 
 ## Notes / scratch
 

@@ -2,9 +2,9 @@
 
 > **How to use this file**
 >
-> Three CLI deep-research workers (Claude / Codex / Gemini) have already executed this brief and dropped their findings in `docs/research/{claude,codex,gemini}.md`. This prompt is for a fourth, hosted deep-research pass in a browser — **Claude.ai Deep Research**, **ChatGPT Deep Research**, or **Gemini Deep Research** — to catch anything the CLI workers missed. Hosted Deep Research runs longer, follows more citation chains, and tends to find primary sources the CLI agents skim over.
+> Three CLI deep-research workers (Claude / Codex / Gemini) have already executed this brief and dropped their findings in `research/{claude,codex,gemini}.md`. This prompt is for a fourth, hosted deep-research pass in a browser — **Claude.ai Deep Research**, **ChatGPT Deep Research**, or **Gemini Deep Research** — to catch anything the CLI workers missed. Hosted Deep Research runs longer, follows more citation chains, and tends to find primary sources the CLI agents skim over.
 >
-> **Copy everything below the `---PROMPT START---` line. Paste into the deep-research tool of your choice. When it returns the report, save it to [docs/research/web.md](docs/research/web.md) — Step 2 will pick it up alongside the CLI workers' outputs.**
+> **Copy everything below the `---PROMPT START---` line. Paste into the deep-research tool of your choice. When it returns the report, save it to [web.md](research/web.md) — Step 2 will pick it up alongside the CLI workers' outputs.**
 
 ---PROMPT START---
 
@@ -198,6 +198,6 @@ Return a single Markdown document with these sections:
 
 ## After you receive the report
 
-1. Save it as [docs/research/web.md](docs/research/web.md). Step 2 (download manifest) will pick it up alongside `claude.md`, `codex.md`, and `gemini.md`.
+1. Save it as [web.md](research/web.md). Step 2 (download manifest) will pick it up alongside `claude.md`, `codex.md`, and `gemini.md`.
 2. If the deep-research tool returned the output split across multiple files or chats, concatenate before saving — Step 2 expects one file per researcher.
 3. The output is additive — duplicates with the CLI workers are fine, Step 2's yaml upsert deduplicates URLs.
