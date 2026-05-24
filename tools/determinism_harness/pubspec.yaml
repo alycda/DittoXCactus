@@ -1,0 +1,29 @@
+name: determinism_harness
+description: >
+  Pre-flight R2 gate for the Mesh RAG demo. Loads the same Cactus slugs the app
+  uses, embeds a fixed 20-query × 20-passage fixture on each phone, computes
+  top-k agreement rate iOS-vs-Android, and either clears the gate (≥ 0.95) or
+  surfaces the offending queries for kernel-pin triage. Standalone Dart/Flutter
+  package; deliberately not depended on by the main app.
+publish_to: 'none'
+version: 0.1.0
+
+environment:
+  sdk: '>=3.3.3 <4.0.0'
+  flutter: '>=3.10.0'
+
+dependencies:
+  flutter:
+    sdk: flutter
+  cactus: ^1.3.0
+
+dev_dependencies:
+  test: ^1.25.0
+  flutter_test:
+    sdk: flutter
+  integration_test:
+    sdk: flutter
+
+flutter:
+  assets:
+    - fixtures/queries.json
