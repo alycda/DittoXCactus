@@ -1,0 +1,59 @@
+# Runs the full Flutter test suite on every push/PR that touches Dart sources,
+# test files, or Flutter config.  The suite includes widget tests for U10
+# (MeshStatusWidget, NotesTab, FlashcardsTab, QueryScreen) and unit tests for
+# StudyNote, SeedLoader, and RetrievalService.
+#
+# boot_screen_test intentionally runs *without* --dart-define=PHONE_ROLE so
+# it exercises the failure path (PHONE_ROLE unset → StateError on screen).
+# All other tests are also run in that same invocation — none of them require
+# the dart-define.
+
+name: Flutter tests
+
+on:
+  push:
+    branches:
+      - "claude/**"
+      - main
+    paths:
+      - "lib/**"
+      - "test/**"
+      - "pubspec.yaml"
+      - "pubspec.lock"
+      - ".github/workflows/flutter-test.yml"
+  pull_request:
+    paths:
+      - "lib/**"
+      - "test/**"
+      - "pubspec.yaml"
+      - "pubspec.lock"
+      - ".github/workflows/flutter-test.yml"
+
+jobs:
+  test:
+    name: flutter test
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      # subosito/flutter-action resolves the latest stable Flutter that
+      # satisfies the channel.  pubspec.yaml requires sdk: '^3.8.0'; Flutter
+      # 3.32.x is the first stable release shipping Dart 3.8.
+      - name: Set up Flutter
+        uses: subosito/flutter-action@v2
+        with:
+          flutter-version: "3.32.x"
+          channel: stable
+          cache: true
+
+      - name: Install dependencies
+        run: flutter pub get
+
+      # Run the full suite.  boot_screen_test.dart tests the *unset* PHONE_ROLE
+      # path, so we do NOT pass --dart-define=PHONE_ROLE here — that is the
+      # intended test condition.
+      - name: Run tests
+        run: flutter test --reporter expanded
