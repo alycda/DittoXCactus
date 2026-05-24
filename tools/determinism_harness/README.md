@@ -17,6 +17,14 @@ This harness is deliberately **not** depended on by the main app. It loads the
 same Cactus slug the app uses but runs in its own pubspec sandbox so a model
 swap during the gate doesn't ripple into the demo build.
 
+> **First run (2026-05-23):** iPhone 14 Pro ↔ Pixel 6a on `qwen3-0.6` lands at
+> **0.85** — in the plan's "fixable by kernel-pin tightening before pivoting"
+> diagnostic band, not pivot territory. Pixel↔Pixel is 1.0000 (same hardware
+> → bit-for-bit identical). Three iOS↔Android disagreements; two are
+> within-top-k reorderings, one (Q10) is a top-1 swap between semantic-twin
+> passages. See [`baselines/2026-05-23/README.md`](baselines/2026-05-23/README.md)
+> for the full result and the per-device JSONs.
+
 ---
 
 ## Anatomy

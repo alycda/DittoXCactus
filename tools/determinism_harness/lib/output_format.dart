@@ -57,7 +57,7 @@ class DeviceOutput {
   factory DeviceOutput.fromJsonString(String jsonText) {
     final dynamic raw = jsonDecode(jsonText);
     if (raw is! Map<String, dynamic>) {
-      throw FormatException('DeviceOutput JSON must be a top-level object');
+      throw const FormatException('DeviceOutput JSON must be a top-level object');
     }
     return DeviceOutput(
       device: raw['device'] as String,

@@ -13,15 +13,15 @@ class _HarnessApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
+    return const MaterialApp(
       title: 'Determinism Harness',
       home: Scaffold(
         body: SafeArea(
           child: Padding(
-            padding: const EdgeInsets.all(24),
+            padding: EdgeInsets.all(24),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
-              children: const [
+              children: [
                 Text('Determinism Harness',
                     style: TextStyle(fontSize: 22, fontWeight: FontWeight.w600)),
                 SizedBox(height: 12),

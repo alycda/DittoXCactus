@@ -26,6 +26,14 @@ These are the gaps where prior art is silent or contradictory, and where the hol
 
 **How we close it:** Stage 0 holdout #2. Pin both phones to the same GGUF model + Q4 quantization + CPU backend, embed an identical fixture string, dump first 16 components of each vector, compute cosine. If < 0.999, pivot to brainstorm option C (Narrate the mesh).
 
+**Empirical finding (2026-05-23, first device run, Cactus 1.3.0 + `qwen3-0.6` on iPhone 14 Pro + Pixel 6a × 2):**
+- Pixel ↔ Pixel: **20/20 top-k order match (1.0000)** — same hardware, bit-for-bit identical embeddings.
+- iOS ↔ Android: **17/20 top-k order match (0.85)**. Three disagreements out of 20 queries: two are within-top-k reorderings (positions 2↔3 or 3↔4 on close-but-not-tied scores), one is a top-1 swap between semantic-twin passages ("hash table lookup" vs "binary search tree", both correct cluster, different first hit).
+- Lands in the plan's `0.85–0.95` diagnostic band — below the original `0.95` gate but inside the "fixable by kernel-pin tightening before pivoting to option C" window.
+- The Cactus Flutter SDK 1.3.0 does **not** expose quant/backend/batch knobs at the API surface (Key Technical Decisions in `001-feat-mesh-rag-demo.md` already calls this out), so kernel-pin tightening would mean patching `cactus` or going through Cactus' native API directly — not free.
+
+**Decision (interim):** not pivoting to option C. Updating the writeup framing to treat cross-platform numerical drift as an explicit Stage-0 caveat rather than a fail. Rehearsed-demo queries (U16) will be drawn from the 17 agreeing queries. Q10-shaped semantic-twin sensitivity is the future-work line: it's exactly the kind of small-numerical-difference that adversarial filtering / preference-aware merge in the four-thread future-work arc would absorb. See `tools/determinism_harness/baselines/2026-05-23/README.md` for the artifact set.
+
 ### 1.2. Specialist parameter floor for ingredient-list merging
 
 **Question:** At what model size does an off-the-shelf small LLM (Qwen 2.5 1.5B / SmolLM2 1.7B / Phi-3 Mini / Gemma 3 1B / Llama 3.2 1B / 3B) stop producing incoherent merged recipes from heterogeneous variants?

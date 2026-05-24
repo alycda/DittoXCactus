@@ -16,6 +16,9 @@ dependencies:
   flutter:
     sdk: flutter
   cactus: ^1.3.0
+  # path_provider comes in transitively via cactus, but we import it directly
+  # from integration_test/measure_test.dart so it needs to be declared.
+  path_provider: ^2.1.5
 
 dev_dependencies:
   test: ^1.25.0
@@ -23,6 +26,7 @@ dev_dependencies:
     sdk: flutter
   integration_test:
     sdk: flutter
+  flutter_lints: ^4.0.0
 
 flutter:
   assets:

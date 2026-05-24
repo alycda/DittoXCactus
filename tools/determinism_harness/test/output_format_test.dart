@@ -8,13 +8,13 @@ import 'package:determinism_harness/output_format.dart';
 void main() {
   group('DeviceOutput round-trip', () {
     test('encode then decode preserves all fields', () {
-      final original = DeviceOutput(
+      const original = DeviceOutput(
         device: 'ios',
         model: 'qwen3-0.6',
         dimension: 384,
         k: 5,
         timestampIso: '2026-05-23T12:00:00.000Z',
-        perQuery: const [
+        perQuery: [
           PerQueryOutput(
             queryId: 'Q01',
             topK: ['P01', 'P02', 'P03', 'P04', 'P05'],
@@ -43,13 +43,13 @@ void main() {
     });
 
     test('topKByQuery indexes by query id', () {
-      final out = DeviceOutput(
+      const out = DeviceOutput(
         device: 'android',
         model: 'qwen3-0.6',
         dimension: 384,
         k: 5,
         timestampIso: '2026-05-23T12:00:00.000Z',
-        perQuery: const [
+        perQuery: [
           PerQueryOutput(queryId: 'Q01', topK: ['P01'], scores: [0.9]),
           PerQueryOutput(queryId: 'Q02', topK: ['P02'], scores: [0.8]),
         ],
