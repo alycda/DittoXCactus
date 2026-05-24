@@ -1,0 +1,15 @@
+# Mesh RAG demo lint baseline.
+# Same lint set as tools/determinism_harness/ so the two trees stay
+# stylistically consistent.
+include: package:flutter_lints/flutter.yaml
+
+analyzer:
+  exclude:
+    # Vendored research repos. Mirrored locally for /understand and
+    # citation-resolution; never compiled by this project.
+    - _inspiration/**
+    # Generated artefacts.
+    - build/**
+    - tools/determinism_harness/build/**
+    # Standalone sub-package — analyzed via its own pubspec.
+    - tools/determinism_harness/**
