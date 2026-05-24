@@ -22,6 +22,7 @@ import 'dart:convert';
 import 'dart:io' as io;
 
 import 'package:cactus/cactus.dart';
+import 'package:flutter/foundation.dart' show debugPrint;
 import 'package:flutter/services.dart' show rootBundle;
 import 'package:flutter_test/flutter_test.dart';
 import 'package:integration_test/integration_test.dart';
@@ -31,6 +32,12 @@ import 'package:determinism_harness/agreement.dart';
 import 'package:determinism_harness/output_format.dart';
 
 const String _embeddingSlug = 'qwen3-0.6';
+
+/// Routes harness output through `debugPrint`, which integration_test
+/// forwards to the parent `flutter test` process. Direct `io.stdout` writes
+/// from inside a `testWidgets` block do not reliably appear in the test log
+/// — caught the hard way on the first device-run attempt.
+void _emit(Object line) => debugPrint(line.toString());
 
 void main() {
   IntegrationTestWidgetsFlutterBinding.ensureInitialized();
@@ -42,13 +49,13 @@ void main() {
       final fixtureJson =
           await rootBundle.loadString('fixtures/queries.json');
       final fixture = parseFixture(fixtureJson);
-      io.stdout.writeln(
+      _emit(
           'Fixture loaded: ${fixture.queries.length} queries, '
           '${fixture.passages.length} passages, k=${fixture.k}.');
 
       // 2. Bring up Cactus with the chosen embedding slug.
       final lm = CactusLM();
-      io.stdout.writeln('Downloading + initializing $_embeddingSlug ...');
+      _emit('Downloading + initializing $_embeddingSlug ...');
       await lm.downloadModel(model: _embeddingSlug);
       await lm.initializeModel(
           params: CactusInitParams(model: _embeddingSlug));
@@ -65,7 +72,7 @@ void main() {
         observedDim ??= r.dimension;
         passageEmbeddings[p.id] = r.embeddings;
       }
-      io.stdout.writeln(
+      _emit(
           'Passages embedded. dimension=${observedDim ?? 'unknown'}.');
 
       // 4. Embed every query and compute top-k for each.
@@ -104,18 +111,29 @@ void main() {
       final docsDir = await getApplicationDocumentsDirectory();
       final outFile = io.File(
           '${docsDir.path}/determinism_${out.device}_${_embeddingSlug.replaceAll('.', '_')}.json');
-      await outFile.writeAsString(out.toJsonString());
-      io.stdout.writeln('Wrote ${outFile.path}');
+      final serialized = out.toJsonString();
+      await outFile.writeAsString(serialized);
+      _emit('Wrote ${outFile.path}');
+
+      // 6b. Also dump the JSON between markers so the operator can extract it
+      // directly from the test log without pulling the file off the device.
+      // This is the supported workflow when the workstation has the phones on
+      // USB and `flutter test` output is captured in a shell.
+      _emit('--- BEGIN DETERMINISM_JSON ---');
+      for (final line in serialized.split('\n')) {
+        _emit(line);
+      }
+      _emit('--- END DETERMINISM_JSON ---');
 
       // 7. Stdout summary in the legacy TSV shape the plan describes, so a
       // human watching the test log can spot-check the result without pulling
       // the file. One line per query: <query_id>\t<top-k space-joined>.
-      io.stdout.writeln('--- BEGIN TOPK ---');
+      _emit('--- BEGIN TOPK ---');
       for (final p in perQuery) {
-        io.stdout.writeln('${p.queryId}\t${p.topK.join(' ')}\t'
+        _emit('${p.queryId}\t${p.topK.join(' ')}\t'
             'top1_cos=${p.scores.first.toStringAsFixed(6)}');
       }
-      io.stdout.writeln('--- END TOPK ---');
+      _emit('--- END TOPK ---');
 
       // 8. Cheap sanity gate — the fixture is constructed so every query has a
       // clear-cut top-1 in its own cluster. If <80% of queries land their
@@ -129,7 +147,7 @@ void main() {
         final expected = byId[p.queryId]!.expectedTop1;
         if (p.topK.take(3).contains(expected)) landedExpectedInTop3++;
       }
-      io.stdout.writeln(
+      _emit(
           'On-device sanity: $landedExpectedInTop3/${perQuery.length} '
           'queries put expectedTop1 in their top-3.');
 
