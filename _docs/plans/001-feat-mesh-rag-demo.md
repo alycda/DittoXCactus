@@ -39,7 +39,7 @@ Carried verbatim from `_docs/SEED.md` Holdout Scenarios — each is a gate the l
 
 **Origin actors:** demonstrator (single human running the demo); audience (passive viewer in Stage 0, query author in R6b stretch); reviewer (writeup pre-publish reader, gates R8).
 **Origin flows:** F1 = corpus authorship + preload; F2 = local query → embed → retrieve → answer (Stage 0); F3 = same + buffered LLM generation (Stage 1); F4 = airplane-mode + BLE-pair → mesh sync → combined-corpus re-query (R1); F5 = recorded artifact production.
-**Origin acceptance examples:** AE1 (covers R1, R4) = "Phone A queries 'tortilla soup', returns A's two notes; airplane on, BT on, B in range; A re-queries, returns A's two + B's one, citing all three IDs." AE2 (covers R2) = "identical fixture string embedded on both phones via same GGUF + Q4 + CPU backend yields top-k order match ≥95% on 20 rehearsed queries." AE3 (covers R3) = "re-meet with no edits → tuple count unchanged, top-k for fixture-query unchanged." AE4 (covers R5) = "cold start on slowest target → first answer ≤ 10s wall-clock." AE5 (covers R6a) = "rehearsed query 'what variations on tortilla soup do we have?' produces a buffered paragraph that names the note IDs A2 and B3 inline."
+**Origin acceptance examples:** AE1 (covers R1, R4) = "Phone A queries 'Jupiter's moons', returns A's two notes; airplane on, BT on, B in range; A re-queries, returns A's two + B's one, citing all three IDs." AE2 (covers R2) = "identical fixture string embedded on both phones via same GGUF + Q4 + CPU backend yields top-k order match ≥95% on 20 rehearsed queries." AE3 (covers R3) = "re-meet with no edits → tuple count unchanged, top-k for fixture-query unchanged." AE4 (covers R5) = "cold start on slowest target → first answer ≤ 10s wall-clock." AE5 (covers R6a) = "rehearsed query 'what do we know about Jupiter's moons?' produces a buffered paragraph that names the note IDs A2 and B3 inline."
 
 ---
 
@@ -223,7 +223,7 @@ The data flow is a four-layer pure pipeline with one CRDT-merge edge:
                                            │ pinned model + Q4 + CPU + batch=1
        ┌───────────────────────────────────┼───────────────────────────────────┐
        │                                   │                                   │
-   query "soup"               ingest (text)│                            tuple insert
+   query "moons"              ingest (text)│                            tuple insert
        │                                   ▼                                   │
        │                       ┌──────────────────────┐                        │
        │                       │  embedder            │                        │
@@ -285,7 +285,7 @@ sequenceDiagram
     A->>A: cactus.generateCompletionStream(prompt + α top-k) → flashcards Cα (sourceNoteIds drawn from α)
     A-->>U: Renders Cα with per-card source attribution + 'drew on N notes (0 from peers)' footer
 
-    Note over A,B: Phone B enters BLE range; mesh indicator on A flips gray → green
+    Note over A,B: Phone B enters BLE range; mesh indicator on A flips gray to green
     A->>B: Ditto BLE/LAN handshake (AWDL activates alongside on iOS)
     A->>B: Ditto delta-state sync of notes_B → A holds α ∪ β
     Note over A: Local corpus now: ~2N notes (some with contributor = phone-b)
