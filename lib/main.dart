@@ -24,6 +24,7 @@ import 'package:permission_handler/permission_handler.dart';
 
 import 'services/cactus_service.dart';
 import 'services/ditto_service.dart';
+import 'services/retrieval_service.dart';
 import 'services/seed_loader.dart';
 
 /// Phone-role env var (`PHONE_ROLE=a` or `PHONE_ROLE=b`) — selects which
@@ -148,10 +149,23 @@ class _BootScreenState extends State<BootScreen> {
       );
       setState(() => _subLabel = null);
 
-      // U8 (second pass): RetrievalService backfills embeddings for any
-      // notes whose embedding column is still null.
+      // U9: RetrievalService backfills embeddings for any note whose
+      // embedding column is still empty. Idempotent — re-boots skip
+      // already-embedded notes. The onProgress callback drives the
+      // sub-label so the boot screen shows "embedded 3/5 notes" during
+      // the cold-load minute instead of a generic spinner.
       _advance(_BootPhase.ensureEmbeddings);
-      // TODO(U8): await RetrievalService.instance.ensureEmbeddings();
+      final embedded = await RetrievalService.instance.ensureEmbeddings(
+        onProgress: (done, total) {
+          if (!mounted) return;
+          setState(() => _subLabel =
+              total == 0 ? 'no new embeddings needed' : 'embedded $done / $total notes');
+        },
+      );
+      setState(() => _subLabel = null);
+      if (kDebugMode) {
+        debugPrint('RetrievalService: backfilled $embedded embedding(s).');
+      }
 
       _advance(_BootPhase.ready);
     } catch (e, st) {
