@@ -15,6 +15,7 @@ import 'dart:async';
 import 'package:ditto_live/ditto_live.dart';
 import 'package:flutter/foundation.dart';
 
+import '../models/study_note.dart';
 import '../prompts/dql_queries.dart';
 
 /// `--dart-define=DITTO_APP_ID=…` — the database UUID from the Ditto portal
@@ -131,48 +132,52 @@ class DittoService {
     _ditto?.sync.stop();
   }
 
-  // ───── Notes CRUD ──────────────────────────────────────────────────────
-  //
-  // Stage 0 takes documents as `Map<String, dynamic>` rather than a typed
-  // `StudyNote`. U7 lands the StudyNote model and the typed wrappers
-  // (`upsertNote(StudyNote)` etc.) on top of these primitives — keeping the
-  // primitives untyped here lets U7 evolve the model without churning the
-  // CRUD surface.
+  // ───── Notes CRUD (typed against StudyNote — see U7) ──────────────────
 
-  /// Insert-or-update a note document. `doc` must contain its own `_id`
-  /// (the StudyNote.seed factory in U7 supplies a deterministic UUIDv5).
-  Future<void> upsertNote(Map<String, dynamic> doc) async {
+  /// Insert-or-update a [StudyNote]. The `_id` from `note.toDittoDoc()` is
+  /// content-addressed (UUIDv5), so re-running the seed loader is a no-op:
+  /// `ON ID CONFLICT DO UPDATE` lands the same document on top of itself.
+  Future<void> upsertNote(StudyNote note) async {
     final ditto = _requireDitto();
-    await ditto.store.execute(NotesQueries.upsert, arguments: {'doc': doc});
+    await ditto.store
+        .execute(NotesQueries.upsert, arguments: {'doc': note.toDittoDoc()});
   }
 
-  /// Materialize the full corpus. Used by retrieval (U9) before the
-  /// brute-force cosine pass. At ≤5k tuples this is sub-millisecond.
-  Future<List<Map<String, dynamic>>> queryAll() async {
+  /// Materialize the full corpus as a list of typed notes. Used by U9's
+  /// retrieval before the brute-force cosine pass. At ≤5k tuples this is
+  /// sub-millisecond.
+  Future<List<StudyNote>> queryAll() async {
     final ditto = _requireDitto();
     final result = await ditto.store.execute(NotesQueries.selectAll);
-    return result.items.map((item) => item.value).toList(growable: false);
+    return result.items
+        .map((item) => StudyNote.fromDittoValue(item.value))
+        .toList(growable: false);
   }
 
-  /// Convenience for retrieval: every row whose embedding has been
-  /// backfilled. Equivalent to `queryAll().where(row['embedding'] != null)`
-  /// but pushes the filter into DQL.
-  Future<List<Map<String, dynamic>>> queryWithEmbedding() async {
+  /// Convenience for retrieval: every note whose embedding has been
+  /// backfilled. Filtered in Dart rather than via a DQL `WHERE` because
+  /// Ditto v5's MISSING-vs-NULL semantics make embedding predicates
+  /// brittle for fresh-seeded notes (plan U9 §Approach).
+  Future<List<StudyNote>> queryWithEmbedding() async {
     final all = await queryAll();
-    return all.where((row) => row['embedding'] != null).toList(growable: false);
+    return all.where((n) => n.hasEmbedding).toList(growable: false);
   }
 
-  /// Companion to [setEmbedding]: returns rows whose embedding column is
-  /// still NULL. `RetrievalService.ensureEmbeddings` (U8) iterates this
-  /// list to backfill the corpus once Cactus is loaded.
-  Future<List<Map<String, dynamic>>> queryMissingEmbedding() async {
+  /// Companion to [setEmbedding]: notes whose embedding column is still
+  /// NULL/empty. U8's `ensureEmbeddings` iterates this list to backfill
+  /// the corpus once Cactus is loaded.
+  Future<List<StudyNote>> queryMissingEmbedding() async {
     final ditto = _requireDitto();
-    final result = await ditto.store.execute(NotesQueries.selectMissingEmbedding);
-    return result.items.map((item) => item.value).toList(growable: false);
+    final result =
+        await ditto.store.execute(NotesQueries.selectMissingEmbedding);
+    return result.items
+        .map((item) => StudyNote.fromDittoValue(item.value))
+        .toList(growable: false);
   }
 
-  /// Write `embedding` for a single existing row. Used by the backfill
-  /// loop — see [queryMissingEmbedding].
+  /// Write `embedding` for a single existing row. Used by the U8 backfill
+  /// loop (note → embed → setEmbedding). Stays untyped because it touches
+  /// one column rather than the full document.
   Future<void> setEmbedding(String id, List<double> embedding) async {
     final ditto = _requireDitto();
     await ditto.store.execute(
@@ -182,13 +187,22 @@ class DittoService {
   }
 
   /// Subscribe to changes on the full notes query for live UI updates
-  /// (U10's notes tab). Returns the [StoreObserver] so the caller can
-  /// `.stop()` it from `dispose()`.
-  StoreObserver subscribeToNotes(void Function(QueryResult) onChange) {
+  /// (U10's notes tab). The callback receives parsed [StudyNote]s rather
+  /// than raw query items so consumers don't have to repeat the parse
+  /// at every call site.
+  ///
+  /// Returns the underlying [StoreObserver] so the caller can `.stop()`
+  /// it from `dispose()`.
+  StoreObserver subscribeToNotes(void Function(List<StudyNote>) onChange) {
     final ditto = _requireDitto();
     return ditto.store.registerObserver(
       NotesQueries.selectAll,
-      onChange: onChange,
+      onChange: (result) {
+        final notes = result.items
+            .map((item) => StudyNote.fromDittoValue(item.value))
+            .toList(growable: false);
+        onChange(notes);
+      },
     );
   }
 
