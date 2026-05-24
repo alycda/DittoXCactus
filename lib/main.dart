@@ -16,20 +16,38 @@
 // is the join point — each step is a labelled future that progresses the
 // `_BootPhase` state machine.
 
+import 'dart:io' show Platform;
+
 import 'package:flutter/foundation.dart' show kDebugMode;
 import 'package:flutter/material.dart';
+import 'package:permission_handler/permission_handler.dart';
+
+import 'services/ditto_service.dart';
 
 /// Phone-role env var (`PHONE_ROLE=a` or `PHONE_ROLE=b`) — selects which
 /// seed_notes_<role>.json the SeedLoader (U8) preloads. Empty string at
 /// boot time is a fatal config error and BootScreen surfaces it.
 const String kPhoneRole = String.fromEnvironment('PHONE_ROLE');
 
-void main() {
-  // U5's `Approach` calls `permission_handler` here (bluetoothConnect,
-  // bluetoothAdvertise, bluetoothScan, nearbyWifiDevices). U4 leaves the
-  // hook explicit so U5 has an unambiguous place to wire it.
+Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  await _requestMeshPermissions();
   runApp(const MeshRagApp());
+}
+
+/// Asks for the BLE + nearby-Wi-Fi permissions Ditto needs to discover peers.
+/// Runs *before* `runApp` so the prompts don't race with the BootScreen
+/// trying to start sync. iOS doesn't use `permission_handler` for BT — the
+/// system prompt fires the first time Ditto opens a CBPeripheralManager,
+/// gated by the Info.plist usage descriptions.
+Future<void> _requestMeshPermissions() async {
+  if (!Platform.isAndroid) return;
+  await [
+    Permission.bluetoothConnect,
+    Permission.bluetoothAdvertise,
+    Permission.bluetoothScan,
+    Permission.nearbyWifiDevices,
+  ].request();
 }
 
 // ─────────────────────────────────────────────────────────────────────────────
@@ -94,10 +112,9 @@ class _BootScreenState extends State<BootScreen> {
 
       // U5: DittoService.instance.initialize() + startSync()
       _advance(_BootPhase.initDitto);
-      // TODO(U5): await DittoService.instance.initialize();
+      await DittoService.instance.initialize();
       _advance(_BootPhase.startSync);
-      // TODO(U5): await DittoService.instance.startSync(
-      //     subscriptionQuery: 'SELECT * FROM notes');
+      await DittoService.instance.startSync();
 
       // U8: SeedLoader reads assets/seed_notes_<role>.json and upserts.
       _advance(_BootPhase.seedLoad);

@@ -45,5 +45,22 @@
 	<true/>
 	<key>UIApplicationSupportsIndirectInputEvents</key>
 	<true/>
+
+	<!-- Mesh-RAG (Ditto) BLE + LAN permissions. Wording is deliberately
+	     specific: App Store review rejects vague strings like "this app uses
+	     Bluetooth". See bitchat's plist for prior art on acceptable wording. -->
+	<key>NSBluetoothAlwaysUsageDescription</key>
+	<string>Mesh RAG uses Bluetooth Low Energy to discover and sync study notes with nearby phones, with no internet required.</string>
+	<key>NSBluetoothPeripheralUsageDescription</key>
+	<string>Mesh RAG advertises over Bluetooth so other nearby phones can find this device and sync study notes peer-to-peer.</string>
+	<key>NSLocalNetworkUsageDescription</key>
+	<string>Mesh RAG uses the local network (Wi-Fi / AWDL) to sync study notes with nearby phones on the same LAN, with no internet required.</string>
+
+	<!-- Bonjour service Ditto v5 advertises for LAN discovery on iOS/macOS.
+	     A single entry is sufficient for the chosen hardware pair. -->
+	<key>NSBonjourServices</key>
+	<array>
+		<string>_http-alt._tcp.</string>
+	</array>
 </dict>
 </plist>

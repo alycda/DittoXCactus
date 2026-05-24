@@ -1,4 +1,17 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <!-- The full BLE + Wi-Fi peer-to-peer permission set Ditto v5 needs is
+         contributed by ditto_live's bundled manifest (BLUETOOTH /
+         BLUETOOTH_ADMIN with maxSdkVersion=30, BLUETOOTH_CONNECT /
+         ADVERTISE / SCAN with neverForLocation, ACCESS_FINE_LOCATION
+         maxSdkVersion=32, ACCESS_COARSE_LOCATION maxSdkVersion=30,
+         NEARBY_WIFI_DEVICES neverForLocation, plus INTERNET +
+         ACCESS_WIFI_STATE + ACCESS_NETWORK_STATE + CHANGE_WIFI_STATE +
+         CHANGE_WIFI_MULTICAST_STATE + CHANGE_NETWORK_STATE).
+         Re-declaring them here would just produce manifest-merger conflicts
+         on the maxSdkVersion values, which is exactly what the first
+         attempted U5 build hit. Trust the transitive declarations. -->
+
     <application
         android:label="mesh_rag"
         android:name="${applicationName}"
