@@ -1,0 +1,272 @@
+// docs/c4/model.c4 — Likec4 architectural model for the Mesh-RAG demo (Ditto × Cactus).
+//
+// Source of truth. Edit this file; never edit the built dashboard at docs/c4/dashboard/.
+// Rebuild with: bash ~/.claude/skills/c4-design/scripts/build-dashboard.sh
+// Validate with: npx @likec4/cli validate docs/c4/model.c4
+//
+// Drafted from docs/c4/interview.md (Step 0 output).
+// Likec4 docs: https://likec4.dev/docs/dsl
+
+specification {
+  element actor {
+    style {
+      shape person
+      color secondary
+    }
+  }
+
+  element externalSystem {
+    style {
+      shape rectangle
+      color muted
+    }
+  }
+
+  element system
+
+  element container {
+    style {
+      shape rectangle
+    }
+  }
+
+  element component {
+    style {
+      shape rectangle
+      color primary
+    }
+  }
+}
+
+model {
+  //
+  // ─── External actors (humans) ────────────────────────────────────────
+  //
+
+  demonstrator = actor 'Demonstrator' {
+    description 'Single human running the demo on camera. Toggles airplane mode, runs the rehearsed query set, narrates the moment of magic. Also the developer during the build loop.'
+  }
+
+  audience_contributor = actor 'Audience contributor' {
+    description 'Stage 1: submits a study note pre-demo into the audience-submitted corpus.'
+  }
+
+  audience_querent = actor 'Audience querent' {
+    description 'R6b stretch only: picks a free-text query during the demo. Non-exit-blocking.'
+  }
+
+  //
+  // ─── External systems ────────────────────────────────────────────────
+  //
+
+  cactus_model_registry = externalSystem 'Cactus model registry' {
+    description 'Hosts GGUF weights for qwen3-0.6 (embedding head) and qwen3-1.7 (LLM). Downloaded once pre-demo with internet on; never touched during the demo itself.'
+  }
+
+  peer_phone = externalSystem 'Peer Mesh-RAG phone' {
+    description 'Another instance of the same app on a paired phone (iOS+Android pair required by R10). Modeled as external because from any one phone the peer is a different process on a different device. Exchanges Ditto delta-state CRDT payloads over BLE/LAN/AWDL.'
+  }
+
+  //
+  // ─── The system being designed ───────────────────────────────────────
+  //
+
+  mesh_rag = system 'Mesh-RAG demo' {
+    description 'Peer-to-peer retrieval-augmented generation. Each device runs identical on-device embedding + LLM (Cactus) over a CRDT-merged vector store (Ditto). The mesh is the index.'
+
+    // ─── Containers (deployable units) ────────────────────────────────
+
+    phone_app = container 'Mesh-RAG Phone App' {
+      technology 'Flutter (Dart 3.8) on iOS + Android'
+      description 'User-facing demo binary. Hosts UI, the Dart service layer, and (in-process via FFI) the Cactus and Ditto native runtimes. Same source, two build targets.'
+
+      // ─── Components inside phone_app ─────────────────────────────
+
+      // UI layer
+      boot_screen = component 'BootScreen' {
+        description 'Splash + init flow: model presence check, Cactus warmup, Ditto identity bring-up, PHONE_ROLE detection.'
+      }
+
+      query_screen = component 'QueryScreen' {
+        description 'Top-level two-tab Scaffold (Notes, Flashcards) with the mesh-status pill in the AppBar.'
+      }
+
+      notes_tab = component 'NotesTab' {
+        description 'Live notes list grouped by contributor; long-press accepts peer notes into the local OR-Set.'
+      }
+
+      flashcards_tab = component 'FlashcardsTab' {
+        description 'Stage 1 surface: topic input, streaming flashcard generation, swipeable stack, rate mode, history.'
+      }
+
+      mesh_status_widget = component 'MeshStatusWidget' {
+        description 'Camera-legible pill: mesh alone (gray) → mesh N peers (green). The visible mesh-edge indicator on stage.'
+      }
+
+      demo_overlay = component 'DemoOverlay' {
+        description 'Optional debug HUD (peer count, note count, last-query latency). On for rehearsal, off by default.'
+      }
+
+      // Domain model
+      study_note_model = component 'StudyNote model' {
+        description 'Dart data class + UUIDv5 seed factory + Ditto round-trip + OR-Set acceptance helpers.'
+      }
+
+      // Service layer
+      ditto_service = component 'DittoService' {
+        description 'Singleton wrapping Ditto SDK: init, transport config (BLE+LAN+AWDL; no big-peer; no Wi-Fi Aware), sync subscription, presence stream, CRUD over StudyNote.'
+      }
+
+      cactus_service = component 'CactusService' {
+        description 'Singleton wrapping two CactusLM instances. Download + init, generateEmbedding, generateCompletion, generateCompletionStream.'
+      }
+
+      seed_loader = component 'SeedLoader' {
+        description 'Reads assets/seed_notes_<role>.json and idempotently UPSERTs into Ditto. UUIDv5 makes re-runs no-ops.'
+      }
+
+      retrieval_service = component 'RetrievalService' {
+        description 'Pure pipeline: ensureEmbeddings backfill, topK (flat-array cosine + (score desc, _id asc) tie-break), generateFlashcards (Stream<FlashcardEvent>).'
+      }
+
+      // Prompts / queries
+      notes_queries = component 'NotesQueries (DQL)' {
+        description 'DQL strings: selectAll, upsert, setEmbedding, syncSubscription. Single source of truth for collection name and DQL shape.'
+      }
+
+      flashcard_gen_prompt = component 'FlashcardGenPrompt' {
+        description 'System prompt + user-message builder for the flashcard LLM call; tolerant parser for Q:/A:/SOURCE: lines.'
+      }
+
+      // Holdout instruments
+      cold_load_timer = component 'cold_load_timer' {
+        description 'R5 instrument — phase-marked timing report from app launch to first answer.'
+      }
+
+      idempotence_check = component 'idempotence_check' {
+        description 'R3+R4 instrument — convergence + idempotence detection runner.'
+      }
+
+      coherence_dryrun = component 'coherence_dryrun' {
+        description 'R6a instrument — rehearsed-coherence capture runner.'
+      }
+    }
+
+    cactus_models = container 'Cactus Model Files' {
+      technology 'GGUF on-device (qwen3-0.6 + qwen3-1.7)'
+      description 'On-device persistent state Cactus mmaps at launch. Downloaded once, retained across launches, never modified at runtime.'
+    }
+
+    ditto_store = container 'Ditto Local Store' {
+      technology 'Ditto v5 on-disk store (DQL-addressable, CRDT delta-state internals)'
+      description 'On-device persistent state for the notes collection. Survives app restarts; merge-converges with peer stores under sync.'
+    }
+
+    determinism_harness = container 'Determinism Harness CLI' {
+      technology 'Dart CLI (tools/determinism_harness/)'
+      description 'Pre-flight R2 gate. Runs the 20-query x 20-passage fixture against the chosen Cactus slug pair on each device and reports top-k agreement rate iOS-vs-Android. Below 95%: SEED cut-order pivots to brainstorm option C.'
+
+      harness_fixtures = component 'fixtures/queries.json' {
+        description '20 fixture queries + 20 fixture passages; checked in.'
+      }
+
+      harness_runner = component 'run.dart' {
+        description 'Two modes: measure (produce top-k lists per device) and check (compare against baseline.json + compute agreement rate).'
+      }
+
+      harness_baseline = component 'baseline.json' {
+        description 'Checked-in top-k baseline for the locked Cactus slug pair (qwen3-0.6 + qwen3-1.7). The R2 gate compares against this.'
+      }
+    }
+  }
+
+  //
+  // ─── Relationships ───────────────────────────────────────────────────
+  //
+
+  // Actor → System edges
+  demonstrator -> mesh_rag.phone_app 'Runs the demo, toggles airplane mode'
+  demonstrator -> mesh_rag.determinism_harness 'Runs pre-flight R2 gate'
+  audience_contributor -> mesh_rag.phone_app 'Submits a study note pre-demo'
+  audience_querent -> mesh_rag.phone_app 'Picks a free-text query (R6b stretch)'
+
+  // System → external systems
+  mesh_rag.phone_app -> cactus_model_registry 'Downloads GGUF weights (pre-demo, internet on)'
+  mesh_rag.phone_app -> peer_phone 'Ditto delta-state CRDT sync over BLE / LAN / AWDL'
+  peer_phone -> mesh_rag.phone_app 'Bidirectional mesh sync'
+
+  // Inside the system — phone_app uses persistent stores
+  mesh_rag.phone_app -> mesh_rag.cactus_models 'mmaps embedding + LLM weights at launch'
+  mesh_rag.phone_app -> mesh_rag.ditto_store 'Reads/writes the notes collection'
+  mesh_rag.cactus_models -> cactus_model_registry 'Populated once on first launch'
+
+  // Inside the system — Determinism Harness exercises the same runtimes
+  mesh_rag.determinism_harness -> mesh_rag.cactus_models 'Loads same Cactus slugs as the app'
+
+  // Component-level edges inside phone_app
+  mesh_rag.phone_app.boot_screen -> mesh_rag.phone_app.cactus_service 'Warms up models on launch'
+  mesh_rag.phone_app.boot_screen -> mesh_rag.phone_app.ditto_service 'Brings up Ditto identity'
+  mesh_rag.phone_app.boot_screen -> mesh_rag.phone_app.seed_loader 'Runs role-switched seed'
+  mesh_rag.phone_app.boot_screen -> mesh_rag.phone_app.query_screen 'Hands off to main UI'
+
+  mesh_rag.phone_app.query_screen -> mesh_rag.phone_app.notes_tab 'Hosts notes tab'
+  mesh_rag.phone_app.query_screen -> mesh_rag.phone_app.flashcards_tab 'Hosts flashcards tab'
+  mesh_rag.phone_app.query_screen -> mesh_rag.phone_app.mesh_status_widget 'Renders mesh pill in AppBar'
+
+  mesh_rag.phone_app.notes_tab -> mesh_rag.phone_app.ditto_service 'Subscribes to notes stream'
+  mesh_rag.phone_app.notes_tab -> mesh_rag.phone_app.study_note_model 'Renders StudyNote rows'
+
+  mesh_rag.phone_app.flashcards_tab -> mesh_rag.phone_app.retrieval_service 'Calls generateFlashcards(topic)'
+
+  mesh_rag.phone_app.mesh_status_widget -> mesh_rag.phone_app.ditto_service 'Reads presence stream'
+
+  mesh_rag.phone_app.retrieval_service -> mesh_rag.phone_app.ditto_service 'Materializes notes via DQL'
+  mesh_rag.phone_app.retrieval_service -> mesh_rag.phone_app.cactus_service 'Embeds query + generates completion'
+  mesh_rag.phone_app.retrieval_service -> mesh_rag.phone_app.flashcard_gen_prompt 'Builds prompt + parses LLM output'
+  mesh_rag.phone_app.retrieval_service -> mesh_rag.phone_app.study_note_model 'Operates over StudyNote tuples'
+
+  mesh_rag.phone_app.ditto_service -> mesh_rag.phone_app.notes_queries 'Issues DQL'
+  mesh_rag.phone_app.ditto_service -> mesh_rag.phone_app.study_note_model 'Round-trips Ditto Documents'
+  mesh_rag.phone_app.ditto_service -> mesh_rag.ditto_store 'Reads/writes on-disk store'
+  mesh_rag.phone_app.ditto_service -> peer_phone 'Mesh sync (BLE/LAN/AWDL)'
+
+  mesh_rag.phone_app.cactus_service -> mesh_rag.cactus_models 'mmaps GGUF weights'
+  mesh_rag.phone_app.cactus_service -> cactus_model_registry 'Downloads weights on first launch'
+
+  mesh_rag.phone_app.seed_loader -> mesh_rag.phone_app.ditto_service 'Idempotent UPSERT seed notes'
+  mesh_rag.phone_app.seed_loader -> mesh_rag.phone_app.study_note_model 'Hydrates StudyNote from JSON asset'
+
+  mesh_rag.phone_app.cold_load_timer -> mesh_rag.phone_app.boot_screen 'Instruments app-launch phases'
+  mesh_rag.phone_app.idempotence_check -> mesh_rag.phone_app.ditto_service 'Drives R3+R4 sync checks'
+  mesh_rag.phone_app.coherence_dryrun -> mesh_rag.phone_app.retrieval_service 'Runs rehearsed R6a queries'
+
+  // Component-level edges inside determinism_harness
+  mesh_rag.determinism_harness.harness_runner -> mesh_rag.determinism_harness.harness_fixtures 'Loads fixture set'
+  mesh_rag.determinism_harness.harness_runner -> mesh_rag.determinism_harness.harness_baseline 'Compares against baseline'
+}
+
+views {
+  view index {
+    title 'System Context'
+    description 'Mesh-RAG demo, the humans on stage, and the only external system the design depends on (model registry, pre-demo only). The mesh edge between phones is the thesis-bearing relationship.'
+    include *
+  }
+
+  view containers of mesh_rag {
+    title 'Containers'
+    description 'Deployable units: the Phone App binary (iOS + Android), the on-device Cactus model files and Ditto local store, and the pre-flight Determinism Harness CLI.'
+    include *
+  }
+
+  view phone_app_components of mesh_rag.phone_app {
+    title 'Phone App Components'
+    description 'Inside the Flutter binary: UI layer (BootScreen, QueryScreen, Notes/Flashcards tabs, MeshStatusWidget), service layer (DittoService, CactusService, RetrievalService, SeedLoader), prompts/queries, and the three R3/R4/R5/R6a holdout instruments.'
+    include *
+  }
+
+  view determinism_harness_components of mesh_rag.determinism_harness {
+    title 'Determinism Harness Components'
+    description 'Pre-flight R2 gate: fixtures, runner, and the checked-in baseline.'
+    include *
+  }
+}
