@@ -26,6 +26,7 @@ import 'services/cactus_service.dart';
 import 'services/ditto_service.dart';
 import 'services/retrieval_service.dart';
 import 'services/seed_loader.dart';
+import 'widgets/query_screen.dart';
 
 /// Phone-role env var (`PHONE_ROLE=a` or `PHONE_ROLE=b`) — selects which
 /// seed_notes_<role>.json the SeedLoader (U8) preloads. Empty string at
@@ -285,33 +286,5 @@ class _FailedView extends StatelessWidget {
   }
 }
 
-// ─────────────────────────────────────────────────────────────────────────────
-// Query screen — placeholder; U10 ships the two-tab Scaffold + mesh status
-// pill + per-card source attribution. U4 just gives later units a real
-// destination Widget to swap to once boot completes.
-// ─────────────────────────────────────────────────────────────────────────────
-
-class QueryScreen extends StatelessWidget {
-  const QueryScreen({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: const Text('Mesh RAG'),
-        // U10 will add MeshStatusWidget (`mesh: alone` / `mesh: N peers`)
-        // here as the AppBar's trailing widget.
-      ),
-      body: const Center(
-        child: Padding(
-          padding: EdgeInsets.all(24),
-          child: Text(
-            'Boot complete.\n\nU10 will land the notes + flashcards tabs here.',
-            textAlign: TextAlign.center,
-            style: TextStyle(fontSize: 16),
-          ),
-        ),
-      ),
-    );
-  }
-}
+// QueryScreen (U10) lives in `lib/widgets/query_screen.dart`. BootScreen
+// swaps to it once `_BootPhase.ready` is reached.
