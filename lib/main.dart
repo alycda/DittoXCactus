@@ -24,6 +24,7 @@ import 'package:permission_handler/permission_handler.dart';
 
 import 'services/cactus_service.dart';
 import 'services/ditto_service.dart';
+import 'services/seed_loader.dart';
 
 /// Phone-role env var (`PHONE_ROLE=a` or `PHONE_ROLE=b`) — selects which
 /// seed_notes_<role>.json the SeedLoader (U8) preloads. Empty string at
@@ -118,9 +119,17 @@ class _BootScreenState extends State<BootScreen> {
       _advance(_BootPhase.startSync);
       await DittoService.instance.startSync();
 
-      // U8: SeedLoader reads assets/seed_notes_<role>.json and upserts.
+      // U8: SeedLoader reads assets/seed_notes_<role>.json and upserts each
+      // entry without an embedding. Re-runs are no-ops by UUIDv5 +
+      // ON ID CONFLICT DO UPDATE semantics. The embedding column is filled
+      // in below by RetrievalService.ensureEmbeddings (U9).
       _advance(_BootPhase.seedLoad);
-      // TODO(U8): await SeedLoader.loadAndInsert(role: kPhoneRole);
+      final inserted = await SeedLoader.instance.loadAndInsert();
+      if (kDebugMode) {
+        debugPrint(
+            'SeedLoader: ${SeedLoader.instance.selfContributor} '
+            'upserted $inserted notes from ${SeedLoader.instance.assetPath}.');
+      }
 
       // U6: CactusService brings up the two CactusLM instances. The
       // onProgress callback streams sub-labels like
