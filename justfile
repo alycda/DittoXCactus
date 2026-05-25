@@ -47,6 +47,8 @@ app-test:
 app-analyze:
     flutter analyze
 
+ci: app-analyze app-test
+
 # Run mesh_rag on DEVICE as phone-a. Reads DITTO_APP_ID + DITTO_LICENSE
 # from .env. Stage 0: debug mode (release mode has a known ditto_live 5.0.0
 # Android crash — see memory feedback_ditto_release_mode_bug).
