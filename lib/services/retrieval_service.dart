@@ -33,6 +33,7 @@ import 'dart:typed_data';
 import 'package:flutter/foundation.dart' show visibleForTesting;
 
 import '../models/study_note.dart';
+import '../prompts/flashcard_gen.dart';
 import 'cactus_service.dart';
 import 'ditto_service.dart';
 
@@ -110,6 +111,17 @@ class RetrievalService {
   /// Flashcard-count default. U11 §Approach: 3 cards halves wall-clock
   /// vs. 5 on the slowest target (Pixel 6a debug, ~6 chars/s decode).
   static const int defaultN = 3;
+
+  /// Token slush reserved for Qwen 2.5's `<think>` chain-of-thought leak.
+  /// `/no_think` is Qwen3-only — we can't silence it at the model, so
+  /// the parser strips it and the token budget pre-allocates space so
+  /// the visible cards don't get starved.
+  static const int _kThinkBudget = 512;
+
+  /// Per-card token allowance. The Q + A + SOURCE lines average ~100
+  /// tokens; 160 leaves a margin for verbose answers and the trailing
+  /// blank-line separator the model emits between cards.
+  static const int _kMaxTokensPerCard = 160;
 
   // ───── ensureEmbeddings (U8's phase-2) ────────────────────────────────
 
@@ -195,12 +207,25 @@ class RetrievalService {
     return scored;
   }
 
-  // ───── generateFlashcards stub — U11 lands the body ───────────────────
+  // ───── generateFlashcards — Stage 1 (U11) ─────────────────────────────
 
-  /// Stream the flashcard generation for `topic`. U9 lands the API shape
-  /// + retrieval phase so U10's `FlashcardsTab` can build against a
-  /// concrete stream type; U11 lands the prompt assembly, Cactus
-  /// streaming call, and the tolerant parser.
+  /// Stream the flashcard generation for `topic`:
+  ///   1. `topK(topic)` → emit [FlashcardEventRetrieved]
+  ///   2. build [FlashcardGenPrompt] messages
+  ///   3. open [CactusService.complete] stream → emit
+  ///      [FlashcardEventPartial] per chunk
+  ///   4. on stream end, parse the joined raw via [FlashcardGenPrompt.parse]
+  ///      → emit [FlashcardEventCards]
+  ///   5. emit [FlashcardEventDone]
+  ///
+  /// On stream error the exception propagates through the returned
+  /// stream — `FlashcardsTab._onStreamError` (U10) renders the error
+  /// banner and the prior generation history stays intact.
+  ///
+  /// Token budget: `kThinkBudget (512) + kMaxTokensPerCard (160) × n`.
+  /// The `<think>` slush exists because Qwen 2.5 leaks chain-of-thought
+  /// even when told not to; the parser strips those, but the visible
+  /// cards need pre-allocated room to land within `maxTokens`.
   Stream<FlashcardEvent> generateFlashcards(
     String topic, {
     int k = defaultK,
@@ -209,9 +234,26 @@ class RetrievalService {
   }) async* {
     final retrieved = await topK(topic, k: k);
     yield FlashcardEventRetrieved(retrieved);
-    // TODO(U11): build FlashcardGenPrompt, stream CactusService.complete,
-    // emit FlashcardEventPartial(chunk) per chunk, then parse the joined
-    // text on stream end and emit FlashcardEventCards(cards).
+
+    final messages = FlashcardGenPrompt.build(
+      topic: topic,
+      n: n,
+      retrieved: retrieved,
+      savedExamples: savedExamples,
+    );
+    final maxTokens = _kThinkBudget + _kMaxTokensPerCard * n;
+
+    final buffer = StringBuffer();
+    await for (final chunk in CactusService.instance.complete(
+      messages,
+      maxTokens: maxTokens,
+    )) {
+      buffer.write(chunk);
+      yield FlashcardEventPartial(chunk);
+    }
+
+    final cards = FlashcardGenPrompt.parse(buffer.toString());
+    yield FlashcardEventCards(cards);
     yield const FlashcardEventDone();
   }
 
