@@ -343,6 +343,52 @@ void main() {
       expect(find.text('flip-q'), findsNothing);
     });
 
+    testWidgets(
+        'no RenderFlex overflow with long answer + many source chips '
+        '(regression for the on-device overflow seen mid-stream)',
+        (tester) async {
+      // Build a card whose answer is several paragraphs and whose
+      // sourceNoteIds wrap to 3+ rows of chips. Pre-fix the column
+      // overflowed by ~220px because the chip Wrap took enough space
+      // to push Expanded(SingleChildScrollView(face)) to zero. Now the
+      // face + chips live inside one Expanded scroll region, so vertical
+      // pressure pushes the body to scroll, not to overflow.
+      const longAnswer =
+          'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do '
+          'eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut '
+          'enim ad minim veniam, quis nostrud exercitation ullamco laboris '
+          'nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor '
+          'in reprehenderit in voluptate velit esse cillum dolore eu fugiat '
+          'nulla pariatur. Excepteur sint occaecat cupidatat non proident.';
+      final manySources =
+          List.generate(12, (i) => 'note-${i.toString().padLeft(8, '0')}');
+
+      final fake = _FakeGenerator()
+        ..cardsPerCall = [
+          [
+            Flashcard(
+              question: 'A long-answer card with many sources?',
+              answer: longAnswer,
+              sourceNoteIds: manySources,
+            ),
+          ],
+        ];
+
+      await tester.pumpWidget(_wrap(FlashcardsTab(generate: fake.generate)));
+      await tester.enterText(find.byType(TextField), 'topic');
+      await tester.tap(find.text('Generate'));
+      await tester.pump();
+      await tester.pump();
+      await tester.pump();
+
+      // The body Expanded scrolls; no layout exception fires.
+      expect(tester.takeException(), isNull);
+      // Header is still on-screen (anchor at top).
+      expect(find.text('Q:'), findsOneWidget);
+      // Rate row is still on-screen (anchor at bottom).
+      expect(find.byTooltip('Keep this style'), findsOneWidget);
+    });
+
     testWidgets('0 retrieved + 0 cards renders empty-generation marker',
         (tester) async {
       final fake = _FakeGenerator()

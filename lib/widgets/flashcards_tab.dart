@@ -562,7 +562,11 @@ class _GenerationBlockState extends State<_GenerationBlock> {
               )
             else
               SizedBox(
-                height: 220,
+                // Tall enough for a full card (header + face + chips + rate
+                // row) on a Pixel 6a in portrait with default font scale.
+                // The body scrolls if content exceeds, so this height is a
+                // visual budget, not a correctness invariant.
+                height: 260,
                 child: PageView.builder(
                   controller: _pageController,
                   itemCount: generation.cards.length,
@@ -650,25 +654,38 @@ class _FlashcardView extends StatelessWidget {
               ],
             ),
             const SizedBox(height: 6),
+            // Body region: face text + (optional) source chips share one
+            // scrollable Expanded region. Previously the chip Wrap lived
+            // OUTSIDE the Expanded, so when the model returned many SOURCE
+            // ids (or the device font scale was bumped) the Wrap took
+            // enough vertical space to drive Expanded to zero, and the
+            // Column overflowed. Folding both into one SingleChildScrollView
+            // makes the body the only flexible region — the rate row is
+            // always anchored to the bottom.
             Expanded(
               child: SingleChildScrollView(
-                child: Text(
-                  face,
-                  style: const TextStyle(fontSize: 14),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      face,
+                      style: const TextStyle(fontSize: 14),
+                    ),
+                    if (card.sourceNoteIds.isNotEmpty) ...[
+                      const SizedBox(height: 8),
+                      Wrap(
+                        spacing: 4,
+                        runSpacing: 4,
+                        children: [
+                          for (final id in card.sourceNoteIds)
+                            _SourceChip(id: id),
+                        ],
+                      ),
+                    ],
+                  ],
                 ),
               ),
             ),
-            if (card.sourceNoteIds.isNotEmpty) ...[
-              const SizedBox(height: 8),
-              Wrap(
-                spacing: 4,
-                runSpacing: 4,
-                children: [
-                  for (final id in card.sourceNoteIds)
-                    _SourceChip(id: id),
-                ],
-              ),
-            ],
             const SizedBox(height: 4),
             Row(
               children: [
