@@ -214,6 +214,18 @@ Output exactly N flashcards.''';
     return cards;
   }
 
+  /// Shape an id-token must match to count as a source. Note ids in this
+  /// project are UUIDv5 strings or seed-style `note-...` slugs — both are
+  /// alphanumeric with dashes/underscores only.
+  ///
+  /// On-device U11 surfaced a model that emitted reasoning text on the
+  /// SOURCE line (something like `SOURCE: my notes are nothing, even here
+  /// are claims (i.e. unreliable), but wait...`). Comma-splitting that
+  /// without a shape filter produced 30+ "chips" of garbage. This regex
+  /// drops anything containing whitespace, parens, quotes, or other
+  /// non-id punctuation — the chip wall disappears, real ids still pass.
+  static final RegExp _idShape = RegExp(r'^[a-zA-Z0-9_-]+$');
+
   static List<String> _splitSourceList(String raw) {
     if (raw.trim().isEmpty) return const [];
     // Tolerate surrounding brackets the model sometimes emits.
@@ -225,7 +237,7 @@ Output exactly N flashcards.''';
     return inner
         .split(RegExp(r'[,;]'))
         .map((s) => s.trim())
-        .where((s) => s.isNotEmpty)
+        .where((s) => s.isNotEmpty && _idShape.hasMatch(s))
         .toList(growable: false);
   }
 

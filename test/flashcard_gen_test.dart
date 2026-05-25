@@ -334,6 +334,48 @@ SOURCE: note-1; note-2
       );
     });
 
+    test(
+        'SOURCE entries that are not id-shaped (whitespace, parens, '
+        'quotes, sentence fragments) are dropped — regression for the '
+        'on-device chip wall', () {
+      // Reproduces the on-device bug where the model emitted reasoning
+      // text on the SOURCE line and the parser comma-split it into 30+
+      // fake "ids". Real id tokens (alphanumeric + dash/underscore only)
+      // survive; everything else is filtered out.
+      const raw = '''
+Q: How many moons does Earth have?
+A: One.
+SOURCE: my own Notes: nothing, ven here are claims (i.e. unreliable"), But wait — the setup, note-001, sources?, etc.
+''';
+      final cards = FlashcardGenPrompt.parse(raw);
+      expect(cards.length, 1);
+      // Only the one well-shaped id survives the filter.
+      expect(cards.single.sourceNoteIds, ['note-001']);
+    });
+
+    test('SOURCE entries with UUIDv5-shaped ids survive the filter', () {
+      const raw = '''
+Q: Q?
+A: A.
+SOURCE: 7c2b8e4a-3d5f-4b2c-8e6d-1a4f9e8c7b30, fcd1eaff-1234-5678-9abc-def012345678
+''';
+      final cards = FlashcardGenPrompt.parse(raw);
+      expect(cards.single.sourceNoteIds, [
+        '7c2b8e4a-3d5f-4b2c-8e6d-1a4f9e8c7b30',
+        'fcd1eaff-1234-5678-9abc-def012345678',
+      ]);
+    });
+
+    test('SOURCE entries with spaces inside a token are dropped', () {
+      const raw = '''
+Q: Q?
+A: A.
+SOURCE: note 001, note-002, foo bar baz
+''';
+      final cards = FlashcardGenPrompt.parse(raw);
+      expect(cards.single.sourceNoteIds, ['note-002']);
+    });
+
     test('empty SOURCE line → sourceNoteIds is empty (not [""])', () {
       const raw = '''
 Q: Q?
