@@ -325,7 +325,7 @@ class _EmptyHistory extends StatelessWidget {
   }
 }
 
-class _GenerationBlock extends StatelessWidget {
+class _GenerationBlock extends StatefulWidget {
   const _GenerationBlock({
     super.key,
     required this.generation,
@@ -341,15 +341,61 @@ class _GenerationBlock extends StatelessWidget {
   final void Function(Flashcard card, bool up) onRate;
   final bool Function(Flashcard card) isUpRated;
 
+  @override
+  State<_GenerationBlock> createState() => _GenerationBlockState();
+}
+
+class _GenerationBlockState extends State<_GenerationBlock> {
+  // Flip state is hoisted here (keyed by card index) so that swiping
+  // far away from card N and back doesn't lose the flip. PageView.builder
+  // disposes off-screen page state by default, which would otherwise drop
+  // the user back on the question side when they return.
+  //
+  // Ported from sibling-U10 (e39e3e30). My _Generation values are immutable
+  // once inserted into _history, so didUpdateWidget on the same key won't
+  // see a deck swap in practice — but the reset guard is cheap defense in
+  // case a future change reuses the same key across decks.
+  final Set<int> _flippedIndices = <int>{};
+
+  // Hold the PageController across rebuilds so user-initiated up-rates
+  // (which trigger a rebuild via _FlashcardsTabState.setState) don't reset
+  // the scroll position. The previous Stateless implementation created a
+  // fresh `PageController(viewportFraction: 0.9)` on every build, which
+  // jumped the audience back to card 0 every time they tapped 👍.
+  late final PageController _pageController =
+      PageController(viewportFraction: 0.9);
+
+  @override
+  void didUpdateWidget(_GenerationBlock oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    if (!identical(widget.generation.cards, oldWidget.generation.cards)) {
+      setState(_flippedIndices.clear);
+    }
+  }
+
+  @override
+  void dispose() {
+    _pageController.dispose();
+    super.dispose();
+  }
+
   int get _peerCount {
-    if (selfContributor == null) return 0;
-    return generation.retrieved
-        .where((r) => r.note.contributor != selfContributor)
+    final self = widget.selfContributor;
+    if (self == null) return 0;
+    return widget.generation.retrieved
+        .where((r) => r.note.contributor != self)
         .length;
+  }
+
+  void _toggleFlip(int i) {
+    setState(() {
+      if (!_flippedIndices.remove(i)) _flippedIndices.add(i);
+    });
   }
 
   @override
   Widget build(BuildContext context) {
+    final generation = widget.generation;
     final retrievedCount = generation.retrieved.length;
     final peerCount = _peerCount;
     final footer = 'drew on $retrievedCount '
@@ -357,7 +403,7 @@ class _GenerationBlock extends StatelessWidget {
         '($peerCount from ${peerCount == 1 ? 'peer' : 'peers'})';
     return Card(
       margin: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
-      color: isLatest ? null : const Color(0xFFFAFAFA),
+      color: widget.isLatest ? null : const Color(0xFFFAFAFA),
       child: Padding(
         padding: const EdgeInsets.all(8),
         child: Column(
@@ -367,7 +413,7 @@ class _GenerationBlock extends StatelessWidget {
               padding: const EdgeInsets.fromLTRB(8, 4, 8, 4),
               child: Row(
                 children: [
-                  if (isLatest)
+                  if (widget.isLatest)
                     const Padding(
                       padding: EdgeInsets.only(right: 6),
                       child: Icon(Icons.bolt, size: 14, color: Colors.amber),
@@ -403,7 +449,7 @@ class _GenerationBlock extends StatelessWidget {
               SizedBox(
                 height: 220,
                 child: PageView.builder(
-                  controller: PageController(viewportFraction: 0.9),
+                  controller: _pageController,
                   itemCount: generation.cards.length,
                   itemBuilder: (context, i) {
                     final card = generation.cards[i];
@@ -413,8 +459,10 @@ class _GenerationBlock extends StatelessWidget {
                         card: card,
                         index: i + 1,
                         total: generation.cards.length,
-                        isUpRated: isUpRated(card),
-                        onRate: (up) => onRate(card, up),
+                        flipped: _flippedIndices.contains(i),
+                        onFlip: () => _toggleFlip(i),
+                        isUpRated: widget.isUpRated(card),
+                        onRate: (up) => widget.onRate(card, up),
                       ),
                     );
                   },
@@ -427,11 +475,15 @@ class _GenerationBlock extends StatelessWidget {
   }
 }
 
-class _FlashcardView extends StatefulWidget {
+/// Stateless — flip state lives in [_GenerationBlockState._flippedIndices]
+/// so it survives `PageView` lazy-disposal on swipe-back.
+class _FlashcardView extends StatelessWidget {
   const _FlashcardView({
     required this.card,
     required this.index,
     required this.total,
+    required this.flipped,
+    required this.onFlip,
     required this.isUpRated,
     required this.onRate,
   });
@@ -439,22 +491,17 @@ class _FlashcardView extends StatefulWidget {
   final Flashcard card;
   final int index;
   final int total;
+  final bool flipped;
+  final VoidCallback onFlip;
   final bool isUpRated;
   final void Function(bool up) onRate;
 
   @override
-  State<_FlashcardView> createState() => _FlashcardViewState();
-}
-
-class _FlashcardViewState extends State<_FlashcardView> {
-  bool _showAnswer = false;
-
-  @override
   Widget build(BuildContext context) {
-    final face = _showAnswer ? widget.card.answer : widget.card.question;
-    final faceLabel = _showAnswer ? 'A' : 'Q';
+    final face = flipped ? card.answer : card.question;
+    final faceLabel = flipped ? 'A' : 'Q';
     return GestureDetector(
-      onTap: () => setState(() => _showAnswer = !_showAnswer),
+      onTap: onFlip,
       behavior: HitTestBehavior.opaque,
       child: Container(
         padding: const EdgeInsets.all(12),
@@ -479,7 +526,7 @@ class _FlashcardViewState extends State<_FlashcardView> {
                 ),
                 const Spacer(),
                 Text(
-                  '${widget.index}/${widget.total}',
+                  '$index/$total',
                   style: const TextStyle(
                     fontSize: 11,
                     color: Colors.black45,
@@ -496,13 +543,13 @@ class _FlashcardViewState extends State<_FlashcardView> {
                 ),
               ),
             ),
-            if (widget.card.sourceNoteIds.isNotEmpty) ...[
+            if (card.sourceNoteIds.isNotEmpty) ...[
               const SizedBox(height: 8),
               Wrap(
                 spacing: 4,
                 runSpacing: 4,
                 children: [
-                  for (final id in widget.card.sourceNoteIds)
+                  for (final id in card.sourceNoteIds)
                     _SourceChip(id: id),
                 ],
               ),
@@ -513,13 +560,12 @@ class _FlashcardViewState extends State<_FlashcardView> {
                 IconButton(
                   iconSize: 18,
                   padding: EdgeInsets.zero,
-                  constraints: const BoxConstraints.tightFor(width: 32, height: 32),
-                  onPressed: () => widget.onRate(true),
+                  constraints:
+                      const BoxConstraints.tightFor(width: 32, height: 32),
+                  onPressed: () => onRate(true),
                   icon: Icon(
-                    widget.isUpRated
-                        ? Icons.thumb_up
-                        : Icons.thumb_up_outlined,
-                    color: widget.isUpRated
+                    isUpRated ? Icons.thumb_up : Icons.thumb_up_outlined,
+                    color: isUpRated
                         ? const Color(0xFF2E7D32)
                         : Colors.black54,
                   ),
@@ -528,8 +574,9 @@ class _FlashcardViewState extends State<_FlashcardView> {
                 IconButton(
                   iconSize: 18,
                   padding: EdgeInsets.zero,
-                  constraints: const BoxConstraints.tightFor(width: 32, height: 32),
-                  onPressed: () => widget.onRate(false),
+                  constraints:
+                      const BoxConstraints.tightFor(width: 32, height: 32),
+                  onPressed: () => onRate(false),
                   icon: const Icon(
                     Icons.thumb_down_outlined,
                     color: Colors.black54,
@@ -538,7 +585,7 @@ class _FlashcardViewState extends State<_FlashcardView> {
                 ),
                 const Spacer(),
                 Text(
-                  _showAnswer ? 'tap to flip → Q' : 'tap to flip → A',
+                  flipped ? 'tap to flip → Q' : 'tap to flip → A',
                   style: const TextStyle(
                     fontSize: 10,
                     color: Colors.black38,
