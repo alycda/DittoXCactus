@@ -1,0 +1,46 @@
+name: CI
+
+# Runs the same `just ci` recipe the developer runs locally
+# (justfile § `ci: app-analyze app-test`), so local-pass and CI-pass are
+# bitwise the same set of checks. No secrets are exercised — the widget
+# tests inject Streams/callbacks and the boot_screen test deliberately
+# runs without `--dart-define`, so Ditto credentials are not required.
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+
+# Cancel an in-progress run if a new commit lands on the same ref. Saves
+# Actions minutes during fast iteration without dropping the most recent
+# signal.
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  validate:
+    name: flutter analyze + test
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+
+      # Pin to the same Flutter version puro provisions locally so a
+      # `just ci` green here matches a `just ci` green on Alyssa's laptop.
+      # Bump in lockstep with `tools/determinism_harness/` if the harness
+      # SDK ever drifts.
+      - uses: subosito/flutter-action@v2
+        with:
+          flutter-version: '3.32.0'
+          channel: stable
+          cache: true
+
+      - uses: extractions/setup-just@v2
+
+      - name: flutter pub get
+        run: flutter pub get
+
+      - name: just ci
+        run: just ci
