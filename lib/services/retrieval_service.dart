@@ -30,7 +30,8 @@ import 'dart:async';
 import 'dart:math' as math;
 import 'dart:typed_data';
 
-import 'package:flutter/foundation.dart' show visibleForTesting;
+import 'package:flutter/foundation.dart'
+    show debugPrint, kDebugMode, visibleForTesting;
 
 import '../models/study_note.dart';
 import '../prompts/flashcard_gen.dart';
@@ -244,15 +245,34 @@ class RetrievalService {
     final maxTokens = _kThinkBudget + _kMaxTokensPerCard * n;
 
     final buffer = StringBuffer();
+    if (kDebugMode) {
+      debugPrint(
+        '[generateFlashcards] topic="$topic" k=$k n=$n '
+        'retrieved=${retrieved.length} maxTokens=$maxTokens',
+      );
+      debugPrint('[generateFlashcards] --- raw stream begin ---');
+    }
     await for (final chunk in CactusService.instance.complete(
       messages,
       maxTokens: maxTokens,
     )) {
       buffer.write(chunk);
+      // debugPrint with wrap:false-ish behavior — pass the chunk straight
+      // through so the logcat/DevTools console can be tail-followed and
+      // the on-stage operator can see "thinking" land in real time.
+      // Gated on kDebugMode so release builds stay quiet.
+      if (kDebugMode) debugPrint(chunk, wrapWidth: 1024);
       yield FlashcardEventPartial(chunk);
+    }
+    if (kDebugMode) {
+      debugPrint('\n[generateFlashcards] --- raw stream end '
+          '(${buffer.length} chars) ---');
     }
 
     final cards = FlashcardGenPrompt.parse(buffer.toString());
+    if (kDebugMode) {
+      debugPrint('[generateFlashcards] parsed ${cards.length} card(s)');
+    }
     yield FlashcardEventCards(cards);
     yield const FlashcardEventDone();
   }
