@@ -238,6 +238,57 @@ void main() {
       expect(find.text('second-gen-question'), findsOneWidget);
     });
 
+    testWidgets(
+        'generating indicator expands on tap to show full partial buffer',
+        (tester) async {
+      // Drive the stream from a hand-held controller so we can pause it
+      // partway through (no done event yet) and inspect the in-flight
+      // indicator while the generation is "still running."
+      final controller = StreamController<FlashcardEvent>();
+      addTearDown(controller.close);
+      Stream<FlashcardEvent> generate(
+        String topic, {
+        List<Flashcard> savedExamples = const [],
+      }) =>
+          controller.stream;
+
+      await tester.pumpWidget(_wrap(FlashcardsTab(generate: generate)));
+      await tester.enterText(find.byType(TextField), 'topic');
+      await tester.tap(find.text('Generate'));
+      await tester.pump();
+
+      controller.add(const FlashcardEventRetrieved([]));
+      await tester.pump();
+      // Stream a long-enough buffer that the collapsed preview ellipsizes.
+      const longThinking =
+          '<think>\nLet me think about this carefully. The user is asking '
+          'about a topic that requires some reasoning. I should consider '
+          'a few angles before committing to flashcards.\n</think>\n\nQ: A?\nA:';
+      controller.add(const FlashcardEventPartial(longThinking));
+      await tester.pump();
+
+      // Collapsed: indicator visible, full buffer NOT visible.
+      expect(find.byIcon(Icons.expand_more), findsOneWidget);
+      expect(find.textContaining('Let me think'), findsNothing);
+
+      // Tap to expand. Use pump() rather than pumpAndSettle() — the
+      // CircularProgressIndicator animates forever while the stream is
+      // still in flight, so the tree never quiesces.
+      await tester.tap(find.byIcon(Icons.expand_more));
+      await tester.pump();
+
+      // Expanded: full buffer is visible in the panel.
+      expect(find.byIcon(Icons.expand_less), findsOneWidget);
+      expect(find.byIcon(Icons.expand_more), findsNothing);
+      expect(find.textContaining('Let me think'), findsOneWidget);
+
+      // Tap to collapse again.
+      await tester.tap(find.byIcon(Icons.expand_less));
+      await tester.pump();
+      expect(find.byIcon(Icons.expand_more), findsOneWidget);
+      expect(find.textContaining('Let me think'), findsNothing);
+    });
+
     testWidgets('flip state survives a parent setState (rate-button tap)',
         (tester) async {
       // Locks in the flip-state-hoist port from sibling-U10. Pre-port, the

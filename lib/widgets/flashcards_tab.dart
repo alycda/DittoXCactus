@@ -235,39 +235,154 @@ class _TopicInputBar extends StatelessWidget {
   }
 }
 
-class _GeneratingIndicator extends StatelessWidget {
+/// Streaming-progress row with a tap-to-expand "show thinking" panel.
+///
+/// **Why expand:** Qwen 2.5 leaks `<think>...</think>` before the visible
+/// cards (the parser strips it from the final card stack, but the audience
+/// can watch it form in real time when the panel is expanded — which is
+/// on-narrative: "the model thinks on the device"). Collapsed by default
+/// because the demo's main beat is the card stack, not the chain-of-thought.
+///
+/// Also: each chunk is `debugPrint`-ed from `RetrievalService.generateFlashcards`
+/// so `flutter logs` / logcat / DevTools captures the raw stream even when
+/// the panel is collapsed.
+class _GeneratingIndicator extends StatefulWidget {
   const _GeneratingIndicator({required this.partial});
   final String partial;
 
   @override
+  State<_GeneratingIndicator> createState() => _GeneratingIndicatorState();
+}
+
+class _GeneratingIndicatorState extends State<_GeneratingIndicator> {
+  bool _expanded = false;
+
+  // Approximate max-height for the expanded panel — fits ~10 lines of
+  // monospace 12pt, which is enough for one <think> block on a phone
+  // screen without crowding out the card stack below.
+  static const double _expandedMaxHeight = 180;
+
+  @override
   Widget build(BuildContext context) {
+    final partial = widget.partial;
     final preview = partial.length > 120
         ? '…${partial.substring(partial.length - 120)}'
         : partial;
+    final collapsedLabel =
+        partial.isEmpty ? 'generating…' : 'generating… $preview';
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 6),
-      child: Row(
-        crossAxisAlignment: CrossAxisAlignment.start,
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
-          const SizedBox(
-            width: 14,
-            height: 14,
-            child: CircularProgressIndicator(strokeWidth: 2),
-          ),
-          const SizedBox(width: 10),
-          Expanded(
-            child: Text(
-              partial.isEmpty ? 'generating…' : 'generating… $preview',
-              style: const TextStyle(
-                fontSize: 12,
-                color: Colors.black54,
-                fontFamily: 'monospace',
+          InkWell(
+            onTap: () => setState(() => _expanded = !_expanded),
+            child: Padding(
+              padding: const EdgeInsets.symmetric(vertical: 4),
+              child: Row(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  const SizedBox(
+                    width: 14,
+                    height: 14,
+                    child: CircularProgressIndicator(strokeWidth: 2),
+                  ),
+                  const SizedBox(width: 10),
+                  Expanded(
+                    child: Text(
+                      collapsedLabel,
+                      style: const TextStyle(
+                        fontSize: 12,
+                        color: Colors.black54,
+                        fontFamily: 'monospace',
+                      ),
+                      maxLines: _expanded ? 1 : 2,
+                      overflow: TextOverflow.ellipsis,
+                    ),
+                  ),
+                  const SizedBox(width: 4),
+                  Icon(
+                    _expanded ? Icons.expand_less : Icons.expand_more,
+                    size: 16,
+                    color: Colors.black54,
+                    semanticLabel: _expanded ? 'hide thinking' : 'show thinking',
+                  ),
+                ],
               ),
-              maxLines: 2,
-              overflow: TextOverflow.ellipsis,
             ),
           ),
+          if (_expanded)
+            _ExpandedThinkingPanel(
+              partial: partial,
+              maxHeight: _expandedMaxHeight,
+            ),
         ],
+      ),
+    );
+  }
+}
+
+class _ExpandedThinkingPanel extends StatefulWidget {
+  const _ExpandedThinkingPanel({
+    required this.partial,
+    required this.maxHeight,
+  });
+
+  final String partial;
+  final double maxHeight;
+
+  @override
+  State<_ExpandedThinkingPanel> createState() =>
+      _ExpandedThinkingPanelState();
+}
+
+class _ExpandedThinkingPanelState extends State<_ExpandedThinkingPanel> {
+  final ScrollController _scroll = ScrollController();
+
+  @override
+  void dispose() {
+    _scroll.dispose();
+    super.dispose();
+  }
+
+  @override
+  void didUpdateWidget(_ExpandedThinkingPanel oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    // Auto-scroll to the tail on each new chunk so the audience tracks
+    // the streaming frontier instead of staring at the top of <think>.
+    if (widget.partial != oldWidget.partial) {
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        if (!_scroll.hasClients) return;
+        _scroll.jumpTo(_scroll.position.maxScrollExtent);
+      });
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      margin: const EdgeInsets.only(top: 4),
+      padding: const EdgeInsets.all(8),
+      decoration: BoxDecoration(
+        color: const Color(0xFFF5F5F5),
+        borderRadius: BorderRadius.circular(6),
+        border: Border.all(color: const Color(0xFFE0E0E0)),
+      ),
+      constraints: BoxConstraints(maxHeight: widget.maxHeight),
+      child: Scrollbar(
+        controller: _scroll,
+        child: SingleChildScrollView(
+          controller: _scroll,
+          child: SelectableText(
+            widget.partial.isEmpty ? '(waiting for first token…)' : widget.partial,
+            style: const TextStyle(
+              fontSize: 11,
+              fontFamily: 'monospace',
+              color: Colors.black87,
+              height: 1.35,
+            ),
+          ),
+        ),
       ),
     );
   }
