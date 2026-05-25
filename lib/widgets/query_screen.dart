@@ -60,14 +60,25 @@ class _QueryScreenState extends State<QueryScreen> {
       // Tolerate the test harness path where Ditto isn't initialized —
       // the initial paint just stays empty, the observer below is a no-op.
     }
-    try {
-      _notesObserver = DittoService.instance.subscribeToNotes((notes) {
-        if (_notesController.isClosed) return;
-        _notesController.add(notes);
-      });
-    } catch (_) {
-      // Same tolerance as above; the observer is best-effort.
-    }
+    // Defer the observer registration to the next post-frame callback.
+    // Ditto SDK versions vary on whether `registerObserver` fires its
+    // initial snapshot synchronously during registration; today my path
+    // is safe because the `_notesController.add(...)` doesn't call
+    // setState, but a future refactor that does (e.g. dropping the
+    // controller in favor of direct `setState`) would trip Flutter's
+    // "setState called during initState" assertion. Cheap defense, and
+    // it documents the invariant for the next reader.
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      if (!mounted) return;
+      try {
+        _notesObserver = DittoService.instance.subscribeToNotes((notes) {
+          if (_notesController.isClosed) return;
+          _notesController.add(notes);
+        });
+      } catch (_) {
+        // Tolerate the test harness path where Ditto isn't initialized.
+      }
+    });
   }
 
   @override
