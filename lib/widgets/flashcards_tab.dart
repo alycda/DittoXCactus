@@ -144,39 +144,46 @@ class _FlashcardsTabState extends State<FlashcardsTab> {
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.stretch,
-      children: [
-        _TopicInputBar(
-          controller: _topicController,
-          isGenerating: _isGenerating,
-          hasHistory: _history.isNotEmpty,
-          onSubmit: _onGeneratePressed,
-        ),
-        if (_isGenerating)
-          _GeneratingIndicator(partial: _partialBuffer),
-        if (_error != null)
-          _ErrorBanner(error: _error!),
-        Expanded(
-          child: _history.isEmpty
-              ? const _EmptyHistory()
-              : ListView.builder(
-                  padding: const EdgeInsets.symmetric(vertical: 8),
-                  itemCount: _history.length,
-                  itemBuilder: (context, i) {
-                    final gen = _history[i];
-                    return _GenerationBlock(
-                      key: ValueKey('gen-$i-${gen.topic}'),
-                      generation: gen,
-                      isLatest: i == 0,
-                      selfContributor: widget.selfContributor,
-                      onRate: _rateCard,
-                      isUpRated: _isUpRated,
-                    );
-                  },
-                ),
-        ),
-      ],
+    // Tap outside the topic field to dismiss the soft keyboard. On Android
+    // the keyboard otherwise traps focus until the user hits Enter — which
+    // also submits via `onSubmitted` and accidentally re-triggers
+    // generation. unfocus() releases keyboard focus without firing submit.
+    return GestureDetector(
+      behavior: HitTestBehavior.opaque,
+      onTap: () => FocusScope.of(context).unfocus(),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        children: [
+          _TopicInputBar(
+            controller: _topicController,
+            isGenerating: _isGenerating,
+            hasHistory: _history.isNotEmpty,
+            onSubmit: _onGeneratePressed,
+          ),
+          if (_isGenerating)
+            _GeneratingIndicator(partial: _partialBuffer),
+          if (_error != null) _ErrorBanner(error: _error!),
+          Expanded(
+            child: _history.isEmpty
+                ? const _EmptyHistory()
+                : ListView.builder(
+                    padding: const EdgeInsets.symmetric(vertical: 8),
+                    itemCount: _history.length,
+                    itemBuilder: (context, i) {
+                      final gen = _history[i];
+                      return _GenerationBlock(
+                        key: ValueKey('gen-$i-${gen.topic}'),
+                        generation: gen,
+                        isLatest: i == 0,
+                        selfContributor: widget.selfContributor,
+                        onRate: _rateCard,
+                        isUpRated: _isUpRated,
+                      );
+                    },
+                  ),
+          ),
+        ],
+      ),
     );
   }
 }
