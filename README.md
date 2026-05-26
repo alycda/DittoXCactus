@@ -1,4 +1,4 @@
-# Ditto × Cactus — Mesh RAG demo
+# [Ditto](https://github.com/getditto) × [Cactus](https://github.com/cactus-compute/cactus) — Mesh RAG demo
 
 **Status:** Stage 0 / 1 in flight — retrieval pipeline + determinism harness shipped, demo-day flow rehearsable.
 **Originally framed:** weekend hackathon brainstorm (Pursuing framing **A — "Mesh RAG"** of the four candidates below; see [SEED.md](_docs/SEED.md) and the [implementation plan](_docs/plans/001-feat-mesh-rag-demo.md).)
