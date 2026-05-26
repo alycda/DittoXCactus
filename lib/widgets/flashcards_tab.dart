@@ -78,6 +78,13 @@ class _FlashcardsTabState extends State<FlashcardsTab> {
   String _stagedTopic = '';
   Stopwatch? _latencyClock;
 
+  /// When true, every card's front face shows the answer (clue) and the
+  /// back shows the question (response) — the canonical Jeopardy
+  /// inversion. XOR'd with the per-card `_flippedIndices` flip state so
+  /// the tap-to-flip affordance still works orthogonally. Off by
+  /// default; cosmetic only — no model or retrieval changes.
+  bool _jeopardyMode = false;
+
   @override
   void initState() {
     super.initState();
@@ -194,6 +201,20 @@ class _FlashcardsTabState extends State<FlashcardsTab> {
             hasHistory: _history.isNotEmpty,
             onSubmit: _onGeneratePressed,
           ),
+          Padding(
+            padding: const EdgeInsets.fromLTRB(12, 0, 12, 4),
+            child: Row(
+              children: [
+                FilterChip(
+                  avatar: const Icon(Icons.swap_vert, size: 18),
+                  label: const Text('Jeopardy'),
+                  tooltip: 'Show the answer on the front, question on the back',
+                  selected: _jeopardyMode,
+                  onSelected: (v) => setState(() => _jeopardyMode = v),
+                ),
+              ],
+            ),
+          ),
           if (_isGenerating)
             _GeneratingIndicator(partial: _partialBuffer),
           if (_error != null) _ErrorBanner(error: _error!),
@@ -212,6 +233,7 @@ class _FlashcardsTabState extends State<FlashcardsTab> {
                         selfContributor: widget.selfContributor,
                         onRate: _rateCard,
                         isUpRated: _isUpRated,
+                        jeopardyMode: _jeopardyMode,
                       );
                     },
                   ),
@@ -489,6 +511,7 @@ class _GenerationBlock extends StatefulWidget {
     required this.selfContributor,
     required this.onRate,
     required this.isUpRated,
+    required this.jeopardyMode,
   });
 
   final _Generation generation;
@@ -496,6 +519,11 @@ class _GenerationBlock extends StatefulWidget {
   final String? selfContributor;
   final void Function(Flashcard card, bool up) onRate;
   final bool Function(Flashcard card) isUpRated;
+
+  /// Threaded down to [_FlashcardView] so it can XOR with the per-card
+  /// flip state. Lives at the tab level rather than per-block so the
+  /// toggle applies uniformly across all generations in history.
+  final bool jeopardyMode;
 
   @override
   State<_GenerationBlock> createState() => _GenerationBlockState();
@@ -636,6 +664,7 @@ class _GenerationBlockState extends State<_GenerationBlock> {
                         onFlip: () => _toggleFlip(i),
                         isUpRated: widget.isUpRated(card),
                         onRate: (up) => widget.onRate(card, up),
+                        jeopardyMode: widget.jeopardyMode,
                       ),
                     );
                   },
@@ -659,6 +688,7 @@ class _FlashcardView extends StatelessWidget {
     required this.onFlip,
     required this.isUpRated,
     required this.onRate,
+    required this.jeopardyMode,
   });
 
   final Flashcard card;
@@ -669,10 +699,24 @@ class _FlashcardView extends StatelessWidget {
   final bool isUpRated;
   final void Function(bool up) onRate;
 
+  /// Jeopardy inversion. XOR'd with [flipped] to pick which face shows:
+  ///
+  /// | jeopardyMode | flipped | shows  |
+  /// |--------------|---------|--------|
+  /// | false        | false   | Q      |
+  /// | false        | true    | A      |
+  /// | true         | false   | A      |
+  /// | true         | true    | Q      |
+  ///
+  /// Tap-to-flip still works orthogonally — toggling Jeopardy is a
+  /// global rotation of which side is "front," not a state reset.
+  final bool jeopardyMode;
+
   @override
   Widget build(BuildContext context) {
-    final face = flipped ? card.answer : card.question;
-    final faceLabel = flipped ? 'A' : 'Q';
+    final showAnswer = flipped != jeopardyMode; // boolean XOR
+    final face = showAnswer ? card.answer : card.question;
+    final faceLabel = showAnswer ? 'A' : 'Q';
     return GestureDetector(
       onTap: onFlip,
       behavior: HitTestBehavior.opaque,

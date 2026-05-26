@@ -448,6 +448,66 @@ void main() {
     });
 
     testWidgets(
+        'Jeopardy toggle XORs with tap-to-flip — '
+        'covers the four-state truth table', (tester) async {
+      // Jeopardy mode inverts which side is "front." Combined with the
+      // per-card tap-to-flip, it produces a 2-bit XOR truth table:
+      //
+      //   jeopardyMode | flipped | shown face
+      //   -------------|---------|-----------
+      //   false        | false   | Q  (default)
+      //   false        | true    | A
+      //   true         | false   | A  (jeopardy front)
+      //   true         | true    | Q
+      //
+      // The toggle is orthogonal to flip state (toggling Jeopardy does
+      // NOT reset the per-card flip set) — this test exercises all four
+      // corners by alternating taps on the Jeopardy chip and on the
+      // card itself.
+      final fake = _FakeGenerator()
+        ..cardsPerCall = const [
+          [
+            Flashcard(
+              question: 'jeopardy-q',
+              answer: 'jeopardy-a',
+              sourceNoteIds: ['id-1'],
+            ),
+          ],
+        ];
+
+      await tester.pumpWidget(_wrap(FlashcardsTab(generate: fake.generate)));
+      await tester.enterText(find.byType(TextField), 'topic');
+      await tester.tap(find.text('Generate'));
+      await tester.pump();
+      await tester.pump();
+      await tester.pump();
+
+      // (jeopardyMode=false, flipped=false) → Q on the front.
+      expect(find.text('jeopardy-q'), findsOneWidget);
+      expect(find.text('jeopardy-a'), findsNothing);
+
+      // Toggle Jeopardy on: (true, false) → A on the front.
+      await tester.tap(find.text('Jeopardy'));
+      await tester.pump();
+      expect(find.text('jeopardy-a'), findsOneWidget);
+      expect(find.text('jeopardy-q'), findsNothing);
+
+      // Tap the card to flip: (true, true) → Q on the front.
+      await tester.tap(find.text('jeopardy-a'));
+      await tester.pump();
+      expect(find.text('jeopardy-q'), findsOneWidget);
+      expect(find.text('jeopardy-a'), findsNothing);
+
+      // Toggle Jeopardy off WITHOUT untapping: (false, true) → A on the
+      // front. This is the load-bearing case for the toggle being
+      // orthogonal to flip state — flip survives the Jeopardy toggle.
+      await tester.tap(find.text('Jeopardy'));
+      await tester.pump();
+      expect(find.text('jeopardy-a'), findsOneWidget);
+      expect(find.text('jeopardy-q'), findsNothing);
+    });
+
+    testWidgets(
         'retrieval found notes but model produced no cards → '
         '"try regenerating" hint', (tester) async {
       // Differentiates the "model misbehaved" case from the "topic
