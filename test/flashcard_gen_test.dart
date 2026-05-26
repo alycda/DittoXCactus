@@ -376,6 +376,46 @@ SOURCE: note 001, note-002, foo bar baz
       expect(cards.single.sourceNoteIds, ['note-002']);
     });
 
+    test('CJK fullwidth colon (：) is tolerated as a label separator '
+        '(Qwen drifts mid-generation) — regression for the on-device '
+        'two-cards-instead-of-three case', () {
+      // Reproduces an actual Qwen 2.5 1.7B output: the first two cards
+      // used ASCII ":" but the third drifted to U+FF1A "：" (fullwidth).
+      // Pre-fix the parser dropped the third card — its lines fell
+      // through as continuations of the second card's SOURCE.
+      const raw = '''
+Q: What is an asteroid?
+A: A small celestial body in space made of rocky or metallic fragments.
+SOURCE: note-abc
+
+Q: What causes tides?
+A: The gravitational pull of the Moon and Sun creates tidal forces on Earth.
+SOURCE: note-def
+
+Q: How many moons does Earth have?
+A：1
+SOURCE：note-ghi
+''';
+      final cards = FlashcardGenPrompt.parse(raw);
+      expect(cards.length, 3);
+      expect(cards[2].question, 'How many moons does Earth have?');
+      expect(cards[2].answer, '1');
+      expect(cards[2].sourceNoteIds, ['note-ghi']);
+    });
+
+    test('fullwidth colon (：) tolerated on Q: label too', () {
+      const raw = '''
+Q：What is gravity?
+A：A force.
+SOURCE：note-grav
+''';
+      final cards = FlashcardGenPrompt.parse(raw);
+      expect(cards.length, 1);
+      expect(cards.single.question, 'What is gravity?');
+      expect(cards.single.answer, 'A force.');
+      expect(cards.single.sourceNoteIds, ['note-grav']);
+    });
+
     test('empty SOURCE line → sourceNoteIds is empty (not [""])', () {
       const raw = '''
 Q: Q?

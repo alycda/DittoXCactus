@@ -257,7 +257,18 @@ Output exactly N flashcards.''';
   static const _bulletPrefix = r'(?:[-*•·]\s+)?';
   static const _numberPrefix = r'(?:\d+[.):]\s+)?';
   static const _emphasisChars = r'[*_]*';
-  static const _separator = r'[:.)—–]';
+  // Separator after the label. Includes ASCII (: . )) plus CJK fullwidth
+  // variants — Qwen 2.5 sometimes drifts into fullwidth punctuation
+  // mid-generation (one card ASCII, next card fullwidth) when sampling
+  // lands on a CJK token. On-device U11 dry-run surfaced the pattern:
+  //   Q: How many moons does Earth have?
+  //   A：1                                  ← fullwidth colon (U+FF1A)
+  //   SOURCE：note-ghi                       ← fullwidth colon
+  // Without fullwidth-aware separators, the third card silently fell
+  // through to the previous card's SOURCE continuation. Em-dash /
+  // en-dash stay for the long-form 'Q — what is...' style we've seen
+  // occasionally too.
+  static const _separator = r'[:.)：．）—–]';
 
   // Anchored label match. Case-insensitive. The label group is captured
   // for kind-dispatch; the body group is the line tail.
