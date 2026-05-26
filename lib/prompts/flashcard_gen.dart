@@ -81,9 +81,15 @@ Output rules:
 - Each card has three lines in this exact format:
   Q: <a clear question>
   A: <a short answer, one sentence>
-  SOURCE: <comma-separated note ids that support the answer>
+  SOURCE: <one or more note ids, comma-separated>
+- The note ids are the bracketed strings at the start of each note line
+  (for example, `[400ba2af-...]`). Use them verbatim in SOURCE. Never
+  write labels like "Note 1" — those are not ids.
 - No markdown emphasis (no **Q:**, no italics). No JSON. No bullets. No numbering.
+- No LaTeX (no \\boxed, no \\begin{aligned}, no math-display blocks).
 - No <think> blocks. No chain-of-thought.
+- Every card must be about the Topic. Skip facts in the notes that are
+  off-topic, even if they are interesting.
 - Do not make up facts. If the notes do not support a claim, do not make the claim.
 - Avoid near-duplicate questions.
 
@@ -91,9 +97,9 @@ Example:
 
 Q: What is escape velocity?
 A: The minimum speed needed to break free of a body's gravity without further propulsion.
-SOURCE: note-abc, note-def
+SOURCE: 400ba2af-8714-5fbb-ae78-b7858c60eaf7
 
-Output exactly N flashcards.''';
+Output exactly N flashcards, each on-topic.''';
 
   static String _buildUserMessage({
     required String topic,
@@ -122,19 +128,20 @@ Output exactly N flashcards.''';
     }
 
     buf.writeln();
-    buf.writeln('Notes:');
+    buf.writeln(
+        'Notes (each line starts with [<id>] — copy these ids verbatim into SOURCE):');
     if (retrieved.isEmpty) {
       buf.write('(no notes available — output nothing.)');
       return buf.toString();
     }
-    for (var i = 0; i < retrieved.length; i++) {
-      final note = retrieved[i].note;
-      buf.writeln('Note ${i + 1} (id: ${note.id}): ${note.body}');
+    for (final r in retrieved) {
+      buf.writeln('[${r.note.id}] ${r.note.body}');
     }
     buf.writeln();
     buf.write(
-      'Now output N flashcards in the Q: / A: / SOURCE: format. '
-      'Start with "Q:" on its own line. No reasoning, no preamble.',
+      'Now output N flashcards in the Q: / A: / SOURCE: format, each '
+      'about "$topic". Start with "Q:" on its own line. No reasoning, '
+      'no preamble.',
     );
     return buf.toString();
   }

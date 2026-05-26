@@ -63,19 +63,24 @@ void main() {
       expect(sys, contains('SOURCE:'));
       expect(sys, contains('Do not make up facts'));
 
-      // User message contains the topic, N, and a numbered Note block per
-      // retrieved entry.
       final user = messages[1].content;
       expect(user, contains('Topic: the Sun'));
       expect(user, contains('Number of flashcards (N): 3'));
-      expect(user, contains('Note 1 (id: note-a): The Sun is a G-type star.'));
-      expect(user, contains('Note 2 (id: note-b): Its core fuses hydrogen.'));
-      expect(user, contains('Note 3 (id: note-c):'));
+      // Notes are presented as [<id>] <body> so the id is unambiguous —
+      // the model's natural reflex of writing "SOURCE: Note 1" (which
+      // the shape filter would drop) shouldn't fire because there's no
+      // "Note N" label to grab.
+      expect(user, contains('[note-a] The Sun is a G-type star.'));
+      expect(user, contains('[note-b] Its core fuses hydrogen.'));
+      expect(user, contains('[note-c]'));
+      expect(user, isNot(contains('Note 1 (id:')),
+          reason: 'old label-leaking format must not regress');
       expect(
         user,
         endsWith(
-          'Now output N flashcards in the Q: / A: / SOURCE: format. '
-          'Start with "Q:" on its own line. No reasoning, no preamble.',
+          'Now output N flashcards in the Q: / A: / SOURCE: format, each '
+          'about "the Sun". Start with "Q:" on its own line. No reasoning, '
+          'no preamble.',
         ),
       );
     }));

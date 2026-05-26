@@ -204,40 +204,91 @@ class RetrievalService {
 
   // ───── Generation-side contract enforcement ──────────────────────────
   //
-  // The prompt asks for exactly N flashcards, each with a SOURCE: line.
-  // A small model under leaked-`<think>` conditions can produce drafts
-  // that don't match that contract — duplicated cards across multiple
-  // "Final Answer" sections, uncited claims inside reasoning prose,
-  // verbose drift past N. The 2026-05-25 dry-run captured a 9-cards-for-
-  // a-topic-of-3 case (model never closed `<think>`, parser couldn't
-  // tell reasoning from commit).
+  // The prompt asks for exactly N flashcards, each on-topic, each with
+  // a SOURCE: line. A small model can produce drafts that don't match
+  // that contract — duplicated cards across multiple "Final Answer"
+  // sections, uncited claims inside reasoning prose, verbose drift
+  // past N, and off-topic facts when retrieval is thin (1 note about
+  // Mars retrieved for topic="moons", model dutifully makes cards
+  // about Olympus Mons and Valles Marineris too).
   //
-  // cleanCards is the post-parse cleanup pipeline. It enforces three
-  // properties the prompt already requested:
-  //   1. Citations required. Cards without `SOURCE` are dropped —
+  // cleanCards is the post-parse cleanup pipeline. Four stages, run in
+  // this order:
+  //   1. On-topic — card's Q or A must mention `topic` as a substring
+  //      (case-insensitive). Drops the off-topic fact-padding case.
+  //   2. Citations required. Cards without `SOURCE` are dropped —
   //      uncited factual sentences are the model's most likely
-  //      fabrication path, and the cited subset is verifiable.
-  //   2. Unique questions. Same Q across multiple draft passes
+  //      fabrication path; the cited subset is verifiable.
+  //   3. Unique questions. Same Q across multiple draft passes
   //      collapses to one card; the user-perceived UI is a stack of
   //      distinct facts, not the same fact thrice.
-  //   3. Cap at N. Verbose drift past the requested count is dropped
+  //   4. Cap at N. Verbose drift past the requested count is dropped
   //      after dedupe + cite-filter, so we never show more than
   //      asked.
   //
-  // Order matters: cite-filter must run before dedupe, because if the
-  // model writes an uncited Q1 followed by the same Q1 with a SOURCE,
-  // dedupe-first would pick the uncited one (first occurrence) and
-  // throw away the cited duplicate.
+  // Order matters in two places:
+  //   - On-topic runs first because the cheapest filter should run
+  //     first (no need to dedupe cards that are about to be dropped).
+  //   - Cite-filter runs before dedupe: if the model writes an
+  //     uncited Q1 followed by the same Q1 with a SOURCE, dedupe-
+  //     first would pick the uncited one (first occurrence) and
+  //     throw away the cited duplicate.
+  //
+  // Empty `topic` skips the on-topic stage — defer to upstream
+  // (`generateFlashcards` already refuses an empty-topic call before
+  // ever invoking this pipeline; this is just the degenerate guard).
+
+  /// When retrieval returned exactly one note and the model emitted a
+  /// card without a SOURCE line (truncated mid-stream, or the model
+  /// just forgot), the attribution is unambiguous — there's only one
+  /// possible source. Fill it in so [cleanCards]'s cite-required stage
+  /// doesn't drop a card that was actually grounded.
+  ///
+  /// For `retrieved.length != 1`, returns the input unchanged. Two-plus
+  /// notes can't be unambiguously attributed without the model picking;
+  /// zero would have been refused by the empty-gate upstream.
+  ///
+  /// Observed on 2026-05-25: Qwen produced a clean Q+A about Mars's
+  /// moons from one retrieved Mars note, then the stream ended before
+  /// it could write SOURCE. Pre-backfill the card got dropped; the demo
+  /// rendered nothing.
+  @visibleForTesting
+  static List<Flashcard> backfillSingleRetrievalSource(
+    List<Flashcard> cards,
+    List<RetrievedNote> retrieved,
+  ) {
+    if (retrieved.length != 1) return cards;
+    final onlyId = retrieved.single.note.id;
+    return cards.map((c) {
+      if (c.sourceNoteIds.isNotEmpty) return c;
+      return Flashcard(
+        question: c.question,
+        answer: c.answer,
+        sourceNoteIds: [onlyId],
+      );
+    }).toList();
+  }
 
   /// Post-parse cleanup for cards emitted by [generateFlashcards].
-  /// Drops uncited cards, deduplicates by normalized question, and
-  /// caps at `n`. See the section comment above for the rationale.
+  /// Drops off-topic cards, then uncited cards, then deduplicates by
+  /// normalized question, then caps at `n`. See the section comment
+  /// above for the rationale and ordering invariants.
   @visibleForTesting
-  static List<Flashcard> cleanCards(List<Flashcard> cards, int n) {
+  static List<Flashcard> cleanCards(
+    List<Flashcard> cards,
+    int n,
+    String topic,
+  ) {
     if (n <= 0) return const [];
+    final needle = topic.toLowerCase();
     final out = <Flashcard>[];
     final seenQuestions = <String>{};
     for (final card in cards) {
+      if (needle.isNotEmpty) {
+        final hayQ = card.question.toLowerCase();
+        final hayA = card.answer.toLowerCase();
+        if (!hayQ.contains(needle) && !hayA.contains(needle)) continue;
+      }
       if (card.sourceNoteIds.isEmpty) continue;
       final key = card.question
           .toLowerCase()
@@ -449,13 +500,19 @@ class RetrievalService {
       return;
     }
 
+    // Scale the requested card count to retrieval reality. With only
+    // 1 retrieved note and n=3 default, Qwen pads with off-topic facts
+    // from the same note (Olympus Mons / Valles Marineris / day-length
+    // when topic was "moons"). Asking for fewer cards lets the model
+    // commit to the on-topic subset honestly.
+    final effectiveN = retrieved.length < n ? retrieved.length : n;
     final messages = FlashcardGenPrompt.build(
       topic: topic,
-      n: n,
+      n: effectiveN,
       retrieved: retrieved,
       savedExamples: savedExamples,
     );
-    final maxTokens = _kThinkBudget + _kMaxTokensPerCard * n;
+    final maxTokens = _kThinkBudget + _kMaxTokensPerCard * effectiveN;
 
     final buffer = StringBuffer();
     // Per-line buffer for log readability. Cactus emits one chunk per
@@ -467,7 +524,8 @@ class RetrievalService {
     if (kDebugMode) {
       debugPrint(
         '[generateFlashcards] topic="$topic" k=$k n=$n '
-        'retrieved=${retrieved.length} maxTokens=$maxTokens',
+        'effectiveN=$effectiveN retrieved=${retrieved.length} '
+        'maxTokens=$maxTokens',
       );
       debugPrint('[generateFlashcards] --- raw stream begin ---');
     }
@@ -501,12 +559,23 @@ class RetrievalService {
     }
 
     final rawCards = FlashcardGenPrompt.parse(buffer.toString());
-    final cards = cleanCards(rawCards, n);
+    final attributed = backfillSingleRetrievalSource(rawCards, retrieved);
+    final cards = cleanCards(attributed, effectiveN, topic);
     if (kDebugMode) {
+      final backfilledCount =
+          attributed.where((c) => c.sourceNoteIds.isNotEmpty).length -
+              rawCards.where((c) => c.sourceNoteIds.isNotEmpty).length;
+      if (backfilledCount > 0) {
+        debugPrint(
+          '[generateFlashcards] backfilled SOURCE for $backfilledCount '
+          'card(s) (single retrieved note, model omitted SOURCE)',
+        );
+      }
       if (rawCards.length != cards.length) {
         debugPrint(
           '[generateFlashcards] parsed ${rawCards.length} raw card(s); '
-          'kept ${cards.length} after drop-uncited + dedupe + cap(n=$n)',
+          'kept ${cards.length} after on-topic + drop-uncited + dedupe '
+          '+ cap(n=$effectiveN)',
         );
       } else {
         debugPrint('[generateFlashcards] parsed ${cards.length} card(s)');

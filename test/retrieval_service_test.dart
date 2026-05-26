@@ -534,22 +534,24 @@ void main() {
   });
 
   group('RetrievalService.cleanCards', () {
-    // Generation-side contract enforcement: cite-filter → dedupe → cap.
-    // The on-device 2026-05-25 dry-run with topic="moons" captured the
-    // failure these tests pin: Qwen never closed <think>, drafted three
-    // cards three separate times inside the unclosed reasoning, and the
-    // parser emitted 9 cards. cleanCards collapses that to 3.
+    // Generation-side contract enforcement: on-topic → cite-filter →
+    // dedupe → cap. The 2026-05-25 dry-run captured the failures these
+    // tests pin: Qwen never closed <think>, drafted three cards three
+    // separate times inside the unclosed reasoning (9 raw → 3 unique),
+    // and on the moons follow-up dutifully made 4 cards from 1 Mars
+    // note, only 1 of which was actually about moons.
 
     Flashcard card(String q, String a, {List<String> sources = const ['n1']}) =>
         Flashcard(question: q, answer: a, sourceNoteIds: sources);
 
-    test('happy path: 3 unique cited cards passed through unchanged', () {
+    test('happy path: 3 unique cited on-topic cards passed through unchanged',
+        () {
       final raw = [
         card('What is Mars?', 'The fourth planet.'),
         card('What are Mars moons?', 'Phobos and Deimos.'),
-        card('How long is a Martian day?', '24 hours 37 minutes.'),
+        card('How long is a Martian day on Mars?', '24 hours 37 minutes.'),
       ];
-      final out = RetrievalService.cleanCards(raw, 3);
+      final out = RetrievalService.cleanCards(raw, 3, 'Mars');
       expect(out.length, 3);
       expect(out, equals(raw));
     });
@@ -560,7 +562,9 @@ void main() {
         card('Q2', 'A2'),
         card('Q3', 'A3', sources: const []),
       ];
-      final out = RetrievalService.cleanCards(raw, 3);
+      // Topic '' skips the on-topic stage so this test isolates the
+      // cite-filter behavior.
+      final out = RetrievalService.cleanCards(raw, 3, '');
       expect(out.length, 1);
       expect(out.single.question, 'Q2');
     });
@@ -572,7 +576,7 @@ void main() {
         card('WHAT IS MARS?', 'another duplicate'), // dup
         card('What is Earth?', 'distinct'),
       ];
-      final out = RetrievalService.cleanCards(raw, 5);
+      final out = RetrievalService.cleanCards(raw, 5, '');
       expect(out.length, 2);
       expect(out.first.answer, 'first answer'); // first occurrence wins
       expect(out.last.question, 'What is Earth?');
@@ -582,7 +586,7 @@ void main() {
       final raw = [
         for (var i = 1; i <= 6; i++) card('Q$i', 'A$i'),
       ];
-      final out = RetrievalService.cleanCards(raw, 3);
+      final out = RetrievalService.cleanCards(raw, 3, '');
       expect(out.length, 3);
       expect(out.map((c) => c.question).toList(), ['Q1', 'Q2', 'Q3']);
     });
@@ -595,7 +599,7 @@ void main() {
         card('What is Mars?', 'reasoning version', sources: const []),
         card('What is Mars?', 'final cited version'),
       ];
-      final out = RetrievalService.cleanCards(raw, 3);
+      final out = RetrievalService.cleanCards(raw, 3, '');
       expect(out.length, 1);
       expect(out.single.answer, 'final cited version');
     });
@@ -605,7 +609,7 @@ void main() {
       // Qwen drafted 3 cards three times (initial think, "**Final
       // Answer**" repeat, boxed/repeat-again partial). All cited the
       // same note. Parser returned 9 cards; cleanCards must collapse
-      // to 3.
+      // to 3. Topic '' here lets the test focus on dedupe.
       final raw = <Flashcard>[];
       const passes = 3;
       const qs = [
@@ -624,13 +628,13 @@ void main() {
         }
       }
       expect(raw.length, 9);
-      final out = RetrievalService.cleanCards(raw, 3);
+      final out = RetrievalService.cleanCards(raw, 3, '');
       expect(out.length, 3);
       expect(out.map((c) => c.question).toList(), qs);
     });
 
     test('empty input → empty output', () {
-      expect(RetrievalService.cleanCards(const [], 3), isEmpty);
+      expect(RetrievalService.cleanCards(const [], 3, ''), isEmpty);
     });
 
     test('all-uncited input → empty output (no fallback to uncited cards)',
@@ -639,12 +643,12 @@ void main() {
         for (var i = 1; i <= 3; i++)
           card('Q$i', 'A$i', sources: const []),
       ];
-      expect(RetrievalService.cleanCards(raw, 3), isEmpty);
+      expect(RetrievalService.cleanCards(raw, 3, ''), isEmpty);
     });
 
     test('n=0 returns empty regardless of input', () {
       final raw = [card('Q1', 'A1')];
-      expect(RetrievalService.cleanCards(raw, 0), isEmpty);
+      expect(RetrievalService.cleanCards(raw, 0, ''), isEmpty);
     });
 
     test('empty / whitespace-only question is dropped before dedupe', () {
@@ -656,9 +660,156 @@ void main() {
         card('   ', 'another orphan'),
         card('Q1', 'A1'),
       ];
-      final out = RetrievalService.cleanCards(raw, 3);
+      final out = RetrievalService.cleanCards(raw, 3, '');
       expect(out.length, 1);
       expect(out.single.question, 'Q1');
+    });
+
+    // ─── On-topic filter ─────────────────────────────────────────────
+
+    test('drops cards whose Q and A do not mention the topic (case-insensitive)',
+        () {
+      // The exact 2026-05-25 follow-up dry-run shape: Mars note retrieved
+      // for topic="moons"; model produced 4 cards, only one about moons.
+      final raw = [
+        card('Is Olympus Mons the largest volcano in the solar system?',
+            'Yes, it is one of the tallest mountains in Mars.'),
+        card('Is Valles Marineris the longest canyon on Mars?',
+            'Yes, it spans approximately 4000 km across.'),
+        card('What are the names of Mars\' two moons?',
+            'Phobos and Deimos.'),
+        card('How long is a day on Mars compared to Earth?',
+            'A Martian sol is about 24 hours 37 minutes.'),
+      ];
+      final out = RetrievalService.cleanCards(raw, 3, 'moons');
+      expect(out.length, 1);
+      expect(out.single.question, contains('moons'));
+    });
+
+    test('topic match in the answer alone is sufficient', () {
+      // Sometimes the Q is generic and the A names the entity.
+      final raw = [
+        card('What did NASA find?', 'Two small moons orbiting Mars.'),
+      ];
+      final out = RetrievalService.cleanCards(raw, 3, 'moons');
+      expect(out.length, 1);
+    });
+
+    test('on-topic filter is case-insensitive', () {
+      final raw = [
+        card('Mars MOONS?', 'Phobos and Deimos'),
+        card('mars moons?', 'Phobos and Deimos', sources: const ['n2']),
+      ];
+      final out = RetrievalService.cleanCards(raw, 3, 'Moons');
+      // both pass on-topic; dedupe collapses them to one
+      expect(out.length, 1);
+    });
+
+    test('empty topic skips the on-topic stage (degenerate guard)', () {
+      // generateFlashcards refuses an empty-topic call upstream; this
+      // ensures the static helper itself doesn't refuse-all on '' input.
+      final raw = [
+        card('Anything?', 'Whatever.'),
+      ];
+      final out = RetrievalService.cleanCards(raw, 3, '');
+      expect(out.length, 1);
+    });
+
+    test('on-topic stage runs first — does not waste a dedupe / cite slot '
+        'on a card that the topic filter will drop', () {
+      final raw = [
+        card('Olympus Mons height?', '22 km'),
+        card('Mars moons?', 'Phobos and Deimos'),
+      ];
+      final out = RetrievalService.cleanCards(raw, 3, 'moons');
+      expect(out.length, 1);
+      expect(out.single.question, 'Mars moons?');
+    });
+  });
+
+  group('RetrievalService.backfillSingleRetrievalSource', () {
+    // The 2026-05-25 dry-run captured this exact shape: Qwen produced
+    // a clean on-topic Q+A about Mars's moons from one retrieved Mars
+    // note, then the stream ended before it could write SOURCE. The
+    // card was real and verifiably grounded — the attribution is just
+    // implicit. Backfill makes it explicit so cleanCards keeps it.
+
+    StudyNote note(String id) => StudyNote(
+          id: id,
+          topic: 'Mars',
+          contributor: 'phone-a',
+          body: 'Mars has two small moons.',
+          tags: const [],
+          embedding: const [],
+          createdAt: DateTime.utc(2026, 5, 25),
+        );
+
+    Flashcard card(String q, String a, {List<String> sources = const []}) =>
+        Flashcard(question: q, answer: a, sourceNoteIds: sources);
+
+    test('single retrieved note + uncited card → SOURCE backfilled with '
+        'that note id', () {
+      final retrieved = [RetrievedNote(note: note('mars-1'), score: 0.4)];
+      final raw = [card('Mars moons?', 'Phobos and Deimos')];
+      final out =
+          RetrievalService.backfillSingleRetrievalSource(raw, retrieved);
+      expect(out.length, 1);
+      expect(out.single.sourceNoteIds, ['mars-1']);
+    });
+
+    test('already-cited cards are left untouched (no overwriting attribution)',
+        () {
+      final retrieved = [RetrievedNote(note: note('mars-1'), score: 0.4)];
+      final raw = [card('Mars moons?', 'Phobos and Deimos', sources: const ['model-cited-id'])];
+      final out =
+          RetrievalService.backfillSingleRetrievalSource(raw, retrieved);
+      expect(out.single.sourceNoteIds, ['model-cited-id']);
+    });
+
+    test('zero retrieved notes → input unchanged (empty-gate handles this '
+        'upstream anyway)', () {
+      final raw = [card('Q', 'A')];
+      final out =
+          RetrievalService.backfillSingleRetrievalSource(raw, const []);
+      expect(out, equals(raw));
+      expect(out.single.sourceNoteIds, isEmpty);
+    });
+
+    test('multiple retrieved notes → input unchanged (cannot disambiguate '
+        'which one to attribute to)', () {
+      final retrieved = [
+        RetrievedNote(note: note('mars-1'), score: 0.4),
+        RetrievedNote(note: note('mars-2'), score: 0.38),
+      ];
+      final raw = [card('Mars moons?', 'Phobos and Deimos')];
+      final out =
+          RetrievalService.backfillSingleRetrievalSource(raw, retrieved);
+      expect(out.single.sourceNoteIds, isEmpty,
+          reason:
+              '>1 retrieved means attribution is ambiguous — drop-uncited '
+              'should still fire downstream rather than guessing.');
+    });
+
+    test('empty input → empty output', () {
+      final retrieved = [RetrievedNote(note: note('mars-1'), score: 0.4)];
+      expect(
+          RetrievalService.backfillSingleRetrievalSource(const [], retrieved),
+          isEmpty);
+    });
+
+    test('mixed cited + uncited under single-retrieval → only uncited get '
+        'backfilled', () {
+      final retrieved = [RetrievedNote(note: note('mars-1'), score: 0.4)];
+      final raw = [
+        card('Q1', 'A1', sources: const ['existing']),
+        card('Q2', 'A2'),
+        card('Q3', 'A3', sources: const ['another']),
+      ];
+      final out =
+          RetrievalService.backfillSingleRetrievalSource(raw, retrieved);
+      expect(out[0].sourceNoteIds, ['existing']);
+      expect(out[1].sourceNoteIds, ['mars-1']);
+      expect(out[2].sourceNoteIds, ['another']);
     });
   });
 }
