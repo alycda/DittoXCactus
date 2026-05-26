@@ -13,7 +13,7 @@ c4-build:
 c4-model: c4-build
     python3 -m http.server 8000
 
-# ─── U1 determinism harness (tools/determinism_harness/) ───────────────────
+# ─── U1 / U13 determinism harness (tools/determinism_harness/) ─────────────
 
 # Run the determinism-harness unit tests (pure-Dart math; no device needed).
 [working-directory: 'tools/determinism_harness']
@@ -27,11 +27,29 @@ harness-test:
 harness-measure DEVICE:
     flutter test integration_test/measure_test.dart -d {{DEVICE}}
 
-# Compare two per-device measurement JSONs (extracted from harness-measure
-# logs or pulled off the devices). Exit 0 if R2 gate clears (>=0.95).
+# U1 cross-platform gate: compare two per-device measurement JSONs.
+# Exit 0 if R2 gate clears (>=0.95).
 [working-directory: 'tools/determinism_harness']
 harness-check A B:
     dart run run.dart check {{A}} {{B}}
+
+# U1 cross-platform gate in CI mode — emits a single JSON line on stdout.
+[working-directory: 'tools/determinism_harness']
+harness-check-ci A B:
+    dart run run.dart check {{A}} {{B}} --ci
+
+# U13 regression: compare a fresh DEVICE measurement against the canonical
+# BASELINE (typically baselines/latest/<device>.json). Same exit-code
+# semantics as harness-check.
+[working-directory: 'tools/determinism_harness']
+harness-check-baseline BASELINE DEVICE:
+    dart run run.dart check-baseline {{BASELINE}} {{DEVICE}}
+
+# U13 regression in CI mode — single JSON line on stdout; non-zero exit
+# when agreement_rate < 0.95.
+[working-directory: 'tools/determinism_harness']
+harness-check-baseline-ci BASELINE DEVICE:
+    dart run run.dart check-baseline {{BASELINE}} {{DEVICE}} --ci
 
 # ─── Main Flutter app (mesh_rag) ────────────────────────────────────────────
 #
