@@ -162,11 +162,28 @@ wipe-ditto DEVICE:
     DEV="{{DEVICE}}"
     echo "→ Force-stopping $PKG on $DEV ..."
     "$ADB" -s "$DEV" shell am force-stop "$PKG"
-    echo "→ Removing ditto-* directories and stale baked seeds ..."
-    # Use `sh -c` so the glob expands inside run-as (the app's
-    # uid context); shell globbing on the host won't see the
-    # app-private paths. `rm -rf` returns 0 even if nothing matched.
-    "$ADB" -s "$DEV" shell run-as "$PKG" sh -c 'rm -rf app_flutter/ditto-* app_flutter/seed_notes_*_baked.json'
+    # Discover the ditto-<uuid> dir(s) instead of relying on glob
+    # expansion through three nested shells (bash → adb → toybox).
+    # Android's toybox rm errors with "Needs 1 argument" when a glob
+    # has no matches; this approach calls rm only for concrete paths
+    # we've confirmed exist.
+    echo "→ Discovering ditto-* directories and stale baked seeds on $DEV ..."
+    LISTING=$("$ADB" -s "$DEV" shell run-as "$PKG" ls app_flutter 2>/dev/null \
+              | tr -d '\r' \
+              | grep -E '^(ditto-|seed_notes_.*_baked\.json$)' || true)
+    if [ -z "$LISTING" ]; then
+      echo "  (nothing to remove — app_flutter/ already clean)"
+    else
+      # `</dev/null` on the adb call: without it, adb shell consumes
+      # the here-string stdin and eats lines the while-read loop hasn't
+      # processed yet — classic subshell-eats-stdin gotcha that caused
+      # only the first entry to be removed.
+      while IFS= read -r entry; do
+        [ -z "$entry" ] && continue
+        echo "  rm -rf app_flutter/$entry"
+        "$ADB" -s "$DEV" shell run-as "$PKG" rm -rf "app_flutter/$entry" </dev/null
+      done <<<"$LISTING"
+    fi
     echo "→ Remaining contents of app_flutter/ (should be models/ + flutter_assets/ only):"
     "$ADB" -s "$DEV" shell run-as "$PKG" ls -la app_flutter/
     echo "✓ Ditto store wiped on $DEV. Next app launch will re-seed from assets/seed_notes_<role>.json."
