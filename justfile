@@ -116,3 +116,46 @@ app-run-b-demo DEVICE TOPIC="Saturn":
       --dart-define=PHONE_ROLE=b \
       --dart-define=DEMO_OVERLAY=true \
       --dart-define=INITIAL_TOPIC="{{TOPIC}}"
+
+# ─── Seed-embedding bake (R5 cold-load lever) ──────────────────────────────
+#
+# Run app with BAKE_EMBEDDINGS=true. Boots normally, runs ensureEmbeddings,
+# then writes the embedded JSON to the device's app documents directory.
+# Path is logged at the end of boot (look for "[BakeEmbeddings] wrote ...").
+#
+# Workflow:
+#   1. Edit assets/seed_notes_a.json (add / edit a note).
+#   2. just bake-seeds-a <android-device-id>
+#   3. Stop the app once you see the "[BakeEmbeddings] wrote ..." log line.
+#   4. just bake-seeds-pull-a   # adb-pulls + overwrites the asset.
+#   5. Repeat for role=b.
+#   6. Commit the asset diff.
+#
+# Drops cold-load by ~9.7s on Pixel 6a (78% of total). See
+# _docs/model-quirks.md (R5 lever §) for the deeper story.
+
+bake-seeds-a DEVICE:
+    flutter run -d {{DEVICE}} \
+      --dart-define=DITTO_APP_ID="$DITTO_APP_ID" \
+      --dart-define=DITTO_LICENSE="$DITTO_LICENSE" \
+      --dart-define=PHONE_ROLE=a \
+      --dart-define=BAKE_EMBEDDINGS=true
+
+bake-seeds-b DEVICE:
+    flutter run -d {{DEVICE}} \
+      --dart-define=DITTO_APP_ID="$DITTO_APP_ID" \
+      --dart-define=DITTO_LICENSE="$DITTO_LICENSE" \
+      --dart-define=PHONE_ROLE=b \
+      --dart-define=BAKE_EMBEDDINGS=true
+
+# Pull the baked seed JSON off Android and overwrite the asset. Uses
+# `run-as` so it works without root on debuggable builds.
+bake-seeds-pull-a:
+    adb exec-out run-as com.dittoxcactus.mesh_rag \
+      cat files/seed_notes_a_baked.json > assets/seed_notes_a.json
+    @echo "✓ assets/seed_notes_a.json updated. Diff with git diff."
+
+bake-seeds-pull-b:
+    adb exec-out run-as com.dittoxcactus.mesh_rag \
+      cat files/seed_notes_b_baked.json > assets/seed_notes_b.json
+    @echo "✓ assets/seed_notes_b.json updated. Diff with git diff."

@@ -124,6 +124,110 @@ void main() {
       expect(() => SeedLoader.parseSeedJson(bad),
           throwsA(isA<ArgumentError>()));
     });
+
+    // ─── Pre-baked embeddings (R5 cold-load lever) ───────────────────
+
+    test('embedding field absent → note has empty embedding (legacy '
+        'JSON shape, backward-compatible)', () {
+      final json = jsonEncode([
+        {
+          'topic': 'Mars',
+          'contributor': 'phone-a',
+          'createdAt': '2026-05-22T19:31:00.000Z',
+          'tags': <String>[],
+          'body': 'red planet',
+        }
+      ]);
+      final note = SeedLoader.parseSeedJson(json).single;
+      expect(note.embedding, isEmpty);
+      expect(note.hasEmbedding, isFalse);
+    });
+
+    test('embedding field present → note carries the pre-baked vector', () {
+      final embedding = List<double>.generate(1024, (i) => i.toDouble() / 1024);
+      final json = jsonEncode([
+        {
+          'topic': 'Mars',
+          'contributor': 'phone-a',
+          'createdAt': '2026-05-22T19:31:00.000Z',
+          'tags': <String>[],
+          'body': 'red planet',
+          'embedding': embedding,
+        }
+      ]);
+      final note = SeedLoader.parseSeedJson(json).single;
+      expect(note.embedding, hasLength(1024));
+      expect(note.embedding.first, closeTo(0.0, 1e-9));
+      expect(note.embedding.last, closeTo(1023 / 1024, 1e-9));
+      expect(note.hasEmbedding, isTrue);
+    });
+
+    test('embedding field with integer values is accepted (JSON numeric '
+        'tolerance — jsonDecode emits ints for 0.0)', () {
+      // Real-world: jsonEncode of [0.0, 1.0] sometimes round-trips as
+      // [0, 1] depending on the encoder. Tolerate both.
+      final json = jsonEncode([
+        {
+          'topic': 'Mars',
+          'contributor': 'phone-a',
+          'createdAt': '2026-05-22T19:31:00.000Z',
+          'tags': <String>[],
+          'body': 'red planet',
+          'embedding': [0, 1, -1, 2],
+        }
+      ]);
+      final note = SeedLoader.parseSeedJson(json).single;
+      expect(note.embedding, [0.0, 1.0, -1.0, 2.0]);
+    });
+
+    test('embedding field of wrong type (string) throws ArgumentError', () {
+      final bad = jsonEncode([
+        {
+          'topic': 'Mars',
+          'contributor': 'phone-a',
+          'createdAt': '2026-05-22T19:31:00.000Z',
+          'tags': <String>[],
+          'body': 'red planet',
+          'embedding': 'not a list',
+        }
+      ]);
+      expect(() => SeedLoader.parseSeedJson(bad),
+          throwsA(isA<ArgumentError>()));
+    });
+
+    test('embedding field explicitly null → treated as absent', () {
+      // jsonDecode preserves explicit nulls. A null embedding field
+      // should be tolerated as "not pre-baked", same as field-absent.
+      final json = jsonEncode([
+        {
+          'topic': 'Mars',
+          'contributor': 'phone-a',
+          'createdAt': '2026-05-22T19:31:00.000Z',
+          'tags': <String>[],
+          'body': 'red planet',
+          'embedding': null,
+        }
+      ]);
+      final note = SeedLoader.parseSeedJson(json).single;
+      expect(note.embedding, isEmpty);
+    });
+
+    test('empty embedding list → treated as not-pre-baked '
+        '(equivalent to field-absent)', () {
+      final json = jsonEncode([
+        {
+          'topic': 'Mars',
+          'contributor': 'phone-a',
+          'createdAt': '2026-05-22T19:31:00.000Z',
+          'tags': <String>[],
+          'body': 'red planet',
+          'embedding': <double>[],
+        }
+      ]);
+      final note = SeedLoader.parseSeedJson(json).single;
+      expect(note.embedding, isEmpty);
+      expect(note.hasEmbedding, isFalse);
+    });
   });
 
   group('SeedLoader accessors', () {

@@ -10,16 +10,18 @@ version: 0.1.0
 environment:
   sdk: '^3.8.0'
 
-# Direct dependencies kept deliberately minimal (5). device_info_plus,
-# package_info_plus, objectbox_flutter_libs, record, path_provider, and
-# shared_preferences come in transitively via cactus + ditto_live and don't
-# need re-declaring — keeping them out keeps the pubspec honest about what
-# the app actually uses directly.
+# Direct dependencies kept deliberately minimal. device_info_plus,
+# package_info_plus, objectbox_flutter_libs, record, and shared_preferences
+# come in transitively via cactus + ditto_live and don't need re-declaring
+# — keeping them out keeps the pubspec honest about what the app actually
+# uses directly. path_provider is declared explicitly because main.dart's
+# bake-embeddings mode (R5 cold-load lever) imports it directly.
 dependencies:
   flutter:
     sdk: flutter
   cactus: ^1.3.0
   ditto_live: ^5.0.0
+  path_provider: ^2.1.0
   permission_handler: ^12.0.1
   uuid: ^4.5.1
   cupertino_icons: ^1.0.8

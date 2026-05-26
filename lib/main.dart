@@ -16,10 +16,12 @@
 // is the join point — each step is a labelled future that progresses the
 // `_BootPhase` state machine.
 
-import 'dart:io' show Platform;
+import 'dart:convert' show JsonEncoder;
+import 'dart:io' show File, Platform;
 
-import 'package:flutter/foundation.dart' show kDebugMode;
+import 'package:flutter/foundation.dart' show debugPrint, kDebugMode;
 import 'package:flutter/material.dart';
+import 'package:path_provider/path_provider.dart';
 import 'package:permission_handler/permission_handler.dart';
 
 import 'holdouts/cold_load_timer.dart';
@@ -39,6 +41,20 @@ const String kPhoneRole = String.fromEnvironment('PHONE_ROLE');
 /// BootScreen-ready to Generate. Empty → no pre-fill, production launch
 /// is the default.
 const String kInitialTopic = String.fromEnvironment('INITIAL_TOPIC');
+
+/// `--dart-define=BAKE_EMBEDDINGS=true` is a developer-only mode that
+/// boots normally, runs `ensureEmbeddings` against the seed corpus,
+/// then exports the embedded JSON to the device's documents directory
+/// so the developer can `adb pull` it back into
+/// `assets/seed_notes_<role>.json`. Drops cold-load by ~9.7s on Pixel 6a
+/// (78% of total) since `ensureEmbeddings` is a no-op on pre-baked
+/// notes. See `_docs/model-quirks.md` (R5 lever §) and `just bake-seeds-*`
+/// recipes for the workflow.
+///
+/// **Not for production builds.** When this flag is set we deliberately
+/// emit the file path on every device launch so the developer notices.
+const bool kBakeEmbeddings =
+    bool.fromEnvironment('BAKE_EMBEDDINGS', defaultValue: false);
 
 Future<void> main() async {
   // U14 / R5: start cold-load instrumentation as early as possible. The
@@ -191,6 +207,15 @@ class _BootScreenState extends State<BootScreen> {
             '${ColdLoadTimer.instance.report(device: Platform.operatingSystem)}');
       }
 
+      if (kBakeEmbeddings) {
+        // R5 cold-load lever: export this device's notes (now with
+        // embeddings) so they can be pulled back into the asset bundle
+        // and skip the per-note inference cost on future cold launches.
+        setState(() => _subLabel = 'baking embeddings → file…');
+        await _exportBakedSeedNotes();
+        setState(() => _subLabel = null);
+      }
+
       _advance(_BootPhase.ready);
     } catch (e, st) {
       if (kDebugMode) debugPrint('Boot failed at $_phase: $e\n$st');
@@ -213,6 +238,49 @@ class _BootScreenState extends State<BootScreen> {
   void _advance(_BootPhase next) {
     if (!mounted) return;
     setState(() => _phase = next);
+  }
+
+  /// `--dart-define=BAKE_EMBEDDINGS=true` path: serialize the seed
+  /// notes (now with their embedding columns populated) back to a
+  /// file in the device documents directory. Output shape matches
+  /// `assets/seed_notes_<role>.json` so the developer can `adb pull`
+  /// (Android) or use Xcode → Devices → Container (iOS) and replace
+  /// the asset directly.
+  ///
+  /// Only exports notes whose `contributor` matches this device's
+  /// role — explicitly avoids touching peer notes (which on this
+  /// device would still be unembedded if peers haven't synced).
+  Future<void> _exportBakedSeedNotes() async {
+    final selfContributor = SeedLoader.instance.selfContributor;
+    // queryWithEmbedding filters out unembedded notes (these would
+    // ship as no-ops anyway); export everything from this device.
+    final allEmbedded = await DittoService.instance.queryWithEmbedding();
+    final selfEmbedded =
+        allEmbedded.where((n) => n.contributor == selfContributor).toList();
+    final asJsonList = selfEmbedded
+        .map((n) => {
+              'topic': n.topic,
+              'contributor': n.contributor,
+              'createdAt': n.createdAtIso,
+              'tags': n.tags,
+              'body': n.body,
+              'embedding': n.embedding,
+            })
+        .toList();
+
+    final docsDir = await getApplicationDocumentsDirectory();
+    final outPath =
+        '${docsDir.path}/seed_notes_${kPhoneRole}_baked.json';
+    final encoded =
+        const JsonEncoder.withIndent('  ').convert(asJsonList);
+    await File(outPath).writeAsString(encoded);
+
+    debugPrint('[BakeEmbeddings] wrote ${selfEmbedded.length} note(s) '
+        'with embeddings to:\n  $outPath');
+    debugPrint('[BakeEmbeddings] pull via:\n'
+        '  adb exec-out run-as com.dittoxcactus.mesh_rag cat '
+        'files/seed_notes_${kPhoneRole}_baked.json '
+        '> assets/seed_notes_$kPhoneRole.json');
   }
 
   @override

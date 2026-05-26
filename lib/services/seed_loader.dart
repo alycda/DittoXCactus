@@ -1,7 +1,18 @@
 /// Loads `assets/seed_notes_<role>.json` and idempotently upserts each
-/// entry into Ditto without an embedding. The embedding column is left
-/// empty here; U9's `RetrievalService.ensureEmbeddings` backfills after
-/// Cactus is ready (two-phase corpus preload — see plan §U8 Approach).
+/// entry into Ditto. If a seed row carries a pre-baked `embedding`
+/// field, it is passed through verbatim; otherwise the embedding
+/// column is left empty and U9's `RetrievalService.ensureEmbeddings`
+/// backfills it after Cactus is ready (two-phase corpus preload — see
+/// plan §U8 Approach).
+///
+/// **Pre-baked embeddings (R5 cold-load lever):** the on-device
+/// embedding-backfill of 5 short notes was clocked at ~9.7s on
+/// Pixel 6a (78% of cold-load total). Shipping the embedding bytes
+/// in the seed JSON drops that to ~0ms. Backing tool:
+/// `--dart-define=BAKE_EMBEDDINGS=true` boot mode writes the
+/// embedded JSON to the device docs dir for `adb pull` back to
+/// `assets/`. See `_docs/model-quirks.md` (R5 lever §) and
+/// `just bake-seeds-*` recipes for the workflow.
 ///
 /// Idempotence comes for free from two layers:
 ///   1. `StudyNote.seed` derives `_id` from `(contributor, topic, createdAt)`
@@ -71,6 +82,18 @@ class SeedLoader {
       if (entry is! Map<String, dynamic>) {
         throw ArgumentError('Seed entry must be an object; got $entry.');
       }
+      // Pre-baked embedding (optional). When present, U9's
+      // ensureEmbeddings becomes a no-op on this row and cold-load
+      // skips the per-note inference cost. See the library docstring.
+      final embeddingField = entry['embedding'];
+      List<double> embedding = const [];
+      if (embeddingField is List) {
+        embedding = embeddingField.map((v) => (v as num).toDouble()).toList();
+      } else if (embeddingField != null) {
+        throw ArgumentError(
+            'Seed entry "embedding" must be a list of numbers when present; '
+            'got ${embeddingField.runtimeType}.');
+      }
       return StudyNote.seed(
         contributor: _required<String>(entry, 'contributor'),
         topic: _required<String>(entry, 'topic'),
@@ -78,6 +101,7 @@ class SeedLoader {
             DateTime.parse(_required<String>(entry, 'createdAt')).toUtc(),
         tags: (_required<List>(entry, 'tags')).cast<String>(),
         body: _required<String>(entry, 'body'),
+        embedding: embedding,
       );
     }).toList(growable: false);
   }
