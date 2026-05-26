@@ -26,6 +26,8 @@ import 'dart:typed_data';
 
 import 'package:cactus/cactus.dart';
 
+import '../holdouts/cold_load_timer.dart';
+
 /// Phase label routed through [CactusService.initialize]'s `onProgress`
 /// callback. The BootScreen renders this verbatim, so phrasing should be
 /// stable enough that a screenshot of demo-day boot reads the same as a
@@ -102,6 +104,7 @@ class CactusService {
       downloadProcessCallback: (p, status, isError) =>
           onProgress?.call(p, 'completion ($cSlug): $status', isError),
     );
+    ColdLoadTimer.instance.mark('cactus_completion_downloaded');
 
     // Phase 2/4 — download embedding weights.
     await _embeddingLm.downloadModel(
@@ -109,6 +112,7 @@ class CactusService {
       downloadProcessCallback: (p, status, isError) =>
           onProgress?.call(p, 'embedding ($eSlug): $status', isError),
     );
+    ColdLoadTimer.instance.mark('cactus_embedding_downloaded');
 
     // Phase 3/4 — initialize completion context (mmaps weights into RAM).
     onProgress?.call(null, 'completion ($cSlug): initializing context', false);

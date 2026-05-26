@@ -22,6 +22,7 @@ import 'package:flutter/foundation.dart' show kDebugMode;
 import 'package:flutter/material.dart';
 import 'package:permission_handler/permission_handler.dart';
 
+import 'holdouts/cold_load_timer.dart';
 import 'services/cactus_service.dart';
 import 'services/ditto_service.dart';
 import 'services/retrieval_service.dart';
@@ -40,8 +41,14 @@ const String kPhoneRole = String.fromEnvironment('PHONE_ROLE');
 const String kInitialTopic = String.fromEnvironment('INITIAL_TOPIC');
 
 Future<void> main() async {
+  // U14 / R5: start cold-load instrumentation as early as possible. The
+  // BLE permission prompt below blocks for user interaction so its time
+  // is excluded — pre-permission setup is part of "app init", not
+  // "boot waiting on the user".
+  ColdLoadTimer.instance.start();
   WidgetsFlutterBinding.ensureInitialized();
   await _requestMeshPermissions();
+  ColdLoadTimer.instance.mark('app_init_done');
   runApp(const MeshRagApp());
 }
 
@@ -124,8 +131,10 @@ class _BootScreenState extends State<BootScreen> {
       // U5: DittoService.instance.initialize() + startSync()
       _advance(_BootPhase.initDitto);
       await DittoService.instance.initialize();
+      ColdLoadTimer.instance.mark('ditto_initialized');
       _advance(_BootPhase.startSync);
       await DittoService.instance.startSync();
+      ColdLoadTimer.instance.mark('sync_started');
 
       // U8: SeedLoader reads assets/seed_notes_<role>.json and upserts each
       // entry without an embedding. Re-runs are no-ops by UUIDv5 +
@@ -133,6 +142,7 @@ class _BootScreenState extends State<BootScreen> {
       // in below by RetrievalService.ensureEmbeddings (U9).
       _advance(_BootPhase.seedLoad);
       final inserted = await SeedLoader.instance.loadAndInsert();
+      ColdLoadTimer.instance.mark('corpus_seeded');
       if (kDebugMode) {
         debugPrint(
             'SeedLoader: ${SeedLoader.instance.selfContributor} '
@@ -154,6 +164,7 @@ class _BootScreenState extends State<BootScreen> {
           setState(() => _subLabel = isError ? 'error: $status' : '$status$pct');
         },
       );
+      ColdLoadTimer.instance.mark('cactus_initialized');
       setState(() => _subLabel = null);
 
       // U9: RetrievalService backfills embeddings for any note whose
@@ -169,9 +180,15 @@ class _BootScreenState extends State<BootScreen> {
               total == 0 ? 'no new embeddings needed' : 'embedded $done / $total notes');
         },
       );
+      ColdLoadTimer.instance.mark('embeddings_backfilled');
       setState(() => _subLabel = null);
       if (kDebugMode) {
         debugPrint('RetrievalService: backfilled $embedded embedding(s).');
+        // The R5 ≤10s bar is read in release mode only; in debug we
+        // log relative phase timing as a remediation-playbook signal
+        // (see plan §U14 H5 remediation playbook).
+        debugPrint('[ColdLoadTimer] boot complete: '
+            '${ColdLoadTimer.instance.report(device: Platform.operatingSystem)}');
       }
 
       _advance(_BootPhase.ready);
