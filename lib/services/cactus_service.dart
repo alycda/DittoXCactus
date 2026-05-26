@@ -38,6 +38,32 @@ typedef CactusProgressLabel = void Function(
   bool isError,
 );
 
+/// Stop sequences applied to every completion call. Halts generation
+/// the moment the model starts drifting into well-documented quirks
+/// that are never legitimate in our Q:/A:/SOURCE: output:
+///
+///   - `\boxed` — Qwen 2.5 was heavily trained on the MATH dataset
+///     and reaches for `\boxed{...}` as a "final answer" delimiter
+///     whenever it interprets structured-output prompts as math-mode.
+///     See `_docs/notes/model-quirks.md` LaTeX section. The prompt
+///     explicitly forbids LaTeX; the model still emits it. Stop
+///     sequences are the structural backstop the prompt rule isn't.
+///   - `\begin{aligned}` — LaTeX math-display environment opener.
+///     Same root cause as `\boxed`. Always followed by garbage.
+///   - `\text{` — math-mode text wrapper Qwen reaches for inside
+///     a `\boxed{}` body. Catching this earlier than `\boxed`
+///     covers the variants the model sometimes inverts the order on.
+///
+/// Pinned by `feedback_structural_gates`: on small-model paths, gate
+/// at the model layer (here) rather than detecting drift at the parse
+/// layer (cleanCards). Stop sequences are honored by Cactus's C++
+/// context — see cactus 1.3.0 `src/services/context.dart:421`.
+const List<String> _kDefaultStopSequences = [
+  r'\boxed',
+  r'\begin{aligned}',
+  r'\text{',
+];
+
 class CactusService {
   CactusService._();
   static final CactusService instance = CactusService._();
@@ -172,6 +198,7 @@ class CactusService {
   Stream<String> complete(
     List<ChatMessage> messages, {
     int maxTokens = 256,
+    List<String> stopSequences = const [],
   }) async* {
     _requireInitialized();
     final streamed = await _completionLm.generateCompletionStream(
@@ -179,6 +206,10 @@ class CactusService {
       params: CactusCompletionParams(
         maxTokens: maxTokens,
         completionMode: CompletionMode.local,
+        stopSequences: [
+          ..._kDefaultStopSequences,
+          ...stopSequences,
+        ],
       ),
     );
     yield* streamed.stream;
@@ -189,6 +220,7 @@ class CactusService {
   Future<String> completeAll(
     List<ChatMessage> messages, {
     int maxTokens = 256,
+    List<String> stopSequences = const [],
   }) async {
     _requireInitialized();
     final r = await _completionLm.generateCompletion(
@@ -196,6 +228,10 @@ class CactusService {
       params: CactusCompletionParams(
         maxTokens: maxTokens,
         completionMode: CompletionMode.local,
+        stopSequences: [
+          ..._kDefaultStopSequences,
+          ...stopSequences,
+        ],
       ),
     );
     if (!r.success) {

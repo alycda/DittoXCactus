@@ -66,15 +66,31 @@ your final answer", it has a math-mode habit of reaching for `\boxed`.
 
 **Mitigation, layered:**
 
-1. Explicit rule in the system prompt: *"No LaTeX (no `\boxed`, no
-   `\begin{aligned}`, no math-display blocks)."*
-2. The parser is line-based and looks for `Q:` / `A:` / `SOURCE:` labels —
-   LaTeX content that isn't shaped that way lands as no-op noise.
-3. `cleanCards` would drop the artifact card via cite-required or
-   reasoning-leak filters if any survived parse.
+1. **Stop sequences at the model layer (2026-05-26).** Cactus's
+   `CompletionParams.stopSequences` halts inference the moment `\boxed`,
+   `\begin{aligned}`, or `\text{` enters the stream. The structural
+   backstop the prompt rule couldn't be — see
+   [`lib/services/cactus_service.dart`](../../lib/services/cactus_service.dart)
+   `_kDefaultStopSequences`. Pinned by `feedback_structural_gates`: on
+   small-model paths, gate at the model layer, not at the parser.
+2. Explicit rule in the system prompt: *"No LaTeX (no `\boxed`, no
+   `\begin{aligned}`, no math-display blocks)."* Still useful as a
+   first-line nudge; ignored often enough that #1 was needed.
+3. The parser is line-based and looks for `Q:` / `A:` / `SOURCE:` labels —
+   any LaTeX content that survives the stop sequence and isn't shaped
+   that way lands as no-op noise.
+4. `cleanCards` drops the artifact card via cite-required or
+   reasoning-leak filters if any LaTeX-shaped card survives parse.
 
-Not 100% suppressed — small models leak through prompt rules. But the
-structural backstops mean the visible output stays clean.
+**Observed on 2026-05-26 moons-query dry-run:** Phone A querying
+"moons" against the merged corpus produced clean Q:/A:/SOURCE: cards
+in the first half of the stream, then drifted into:
+- `**Final Answer**\nIn boxed format:\n\\boxed{Titan}, \\boxed{Geysers}, \\boxed{Rhea}`
+- followed by `\box{}` (sic, missing the `d`) and `$\boxed{\text{Titan}}$`
+The first half's cards were structurally fine but lost downstream
+because the A field gobbled the LaTeX trail via the parser's
+multi-line continuation. Stop sequence + this writeup landed the same
+day; future runs should halt before the LaTeX section opens.
 
 ---
 
