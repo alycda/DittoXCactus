@@ -120,9 +120,17 @@ class RetrievalService {
   static const int _kThinkBudget = 512;
 
   /// Per-card token allowance. The Q + A + SOURCE lines average ~100
-  /// tokens; 160 leaves a margin for verbose answers and the trailing
-  /// blank-line separator the model emits between cards.
-  static const int _kMaxTokensPerCard = 160;
+  /// tokens; 220 leaves a margin for verbose answers, the trailing
+  /// blank-line separator the model emits between cards, AND a margin
+  /// for the model overshooting the "under 30 words" rule by 40-60%.
+  ///
+  /// **Experiment 2026-05-25:** bumped 160 → 220 to address the
+  /// atmosphere dry-run where the model produced only 1 of 2 requested
+  /// cards because a verbose Venus answer ate the full budget before
+  /// Mercury could be generated. Alternative experiment in the sibling
+  /// commit tightens the prompt instead — keep whichever produces more
+  /// usable cards on-device.
+  static const int _kMaxTokensPerCard = 220;
 
   /// Minimum cosine similarity for a note to count as a retrieved
   /// result. Notes scoring below this are dropped from `topK` even if
