@@ -169,6 +169,93 @@ retrieved entity stay uncited and drop downstream.
 
 ---
 
+## Format-collapse to "summary article" at n ≥ 3 with multiple retrievals
+
+**What you'll see in logs:**
+
+```
+[generateFlashcards] topic="moons" k=5 n=3 effectiveN=3 retrieved=3 maxTokens=1172
+[generateFlashcards] --- raw stream begin ---
+  | <think>
+  | Okay, let me try to figure out how to approach this. The user wants
+  | exactly three flashcards about moons, each following the Q:A:S format...
+  | [~2500 tokens of reasoning across multiple candidate breakdowns]
+  | </think>
+  | </system>
+  |
+  | ### Planet - Moon Relationship Summary
+  | #### **1. Planetary Moons: Pluto's Largest Moon – Charon**
+  | - **Moon Name**: *Charon* (the largest moon of Pluto)
+  | - **Size Relative to Earth**: 0.6% of Earth's diameter
+  | - **Distance from Sun**: Approximately 597 million kilometers
+  | ...
+[generateFlashcards] --- raw stream end (4550 chars) ---
+[generateFlashcards] parsed 0 card(s)
+```
+
+The model emitted 4,550 characters of markdown-headered prose — `###`
+section titles, `####` subsections, bulleted facts, and a phantom
+`</system>` tag — instead of the prompted Q:/A:/SOURCE: tuples. The
+parser correctly returned 0 cards.
+
+**Pattern across observed generations (2026-05-25):**
+
+| Topic | retrieved | effectiveN | maxTokens | Cards parsed |
+|-------|-----------|------------|-----------|--------------|
+| Saturn | 1 | 1 | 732 | 1 ✓ |
+| moons | 3 | 3 | 1172 | 0 ✗ |
+
+The format holds at `effectiveN = 1` and breaks at `effectiveN = 3` with
+multiple retrievals. Three correlated changes happen at once: more
+retrieved notes in the prompt, more cards requested, larger token budget.
+The `<think>` block grows proportionally to digest the extra context,
+and once the model exits `<think>` it picks a more familiar generation
+shape — "structured summary article" — over the few-shot Q:/A:/SOURCE:
+anchor.
+
+**Why:** Qwen 2.5 was instruction-tuned on lots of "summarize/synthesize
+across multiple sources" data, and that gradient pulls hard once N
+sources are in scope. The few-shot Q:/A:/SOURCE: example in the prompt
+demonstrates the format with **one** card; the model interprets
+"output three cards" + "three retrieved sources" as a different task
+than the example shows, and reaches for the closest matching shape from
+its training distribution. The phantom `</system>` confirms this — the
+model is rendering structure tokens it saw in mixed-shape training data,
+not following the prompt's structural constraint.
+
+**Companion artifact in the same generation:**
+
+```
+[c4539818-8885-5305-97bb-04827８７１aa３２]
+```
+
+That source citation contains **fullwidth Chinese digits** (`８７１` and
+`３２`) interleaved with the real UUID's hex chars. The Chinese-CoT
+drift (see *Bilingual chain-of-thought drift* above) didn't stay inside
+`<think>` this time — it contaminated a *structural identifier*. Any
+downstream content-matching to that source ID would miss because the
+bytes don't match the real UUID. New surface area for the bilingual-drift
+quirk: not just prose, but identifiers.
+
+**Mitigations not yet taken (the demo accepts this for now):**
+
+- Tighter prompt anchor: more Q:/A:/SOURCE: few-shot examples covering
+  the multi-source case (currently one example covers all N). Costs
+  prompt-budget tokens.
+- Stricter `effectiveN` cap: clamp at 2 even when retrieval > 2. Costs
+  card coverage when the corpus has more on-topic content.
+- Server-side enforcement: structured grammar / constrained decoding
+  (e.g., GBNF) to force Q:/A:/SOURCE: emission. Cactus 1.3.0 doesn't
+  expose this; would need an SDK upgrade or a parser rewrite.
+
+For the writeup's specialists thread: a specialist flashcard-generation
+model would have no "summary article" mode in its training distribution
+— format-collapse-under-load is the generalist tax. Three cards from
+three sources is the exact shape the demo wants, and it's the shape the
+generalist degrades on.
+
+---
+
 ## What this list is NOT
 
 These are model-side quirks that the **demo pipeline absorbs**. They're not
