@@ -86,24 +86,36 @@ jobs:
       - name: Build dashboard in demo mode with this repo's base path
         working-directory: /tmp/ua-plugin/understand-anything-plugin/packages/dashboard
         env:
-          # In demo mode, App.tsx reads VITE_GRAPH_URL etc. and fetches
-          # the static JSON files relative to the deploy. Drop them
-          # alongside the bundle below.
+          # In demo mode, App.tsx reads VITE_GRAPH_URL and fetches the
+          # static JSON file relative to the deploy. We drop the JSON
+          # next to the bundle in the next step.
           VITE_GRAPH_URL: ${{ env.BASE_PATH }}knowledge-graph.json
-        run: pnpm run build:demo -- --base="${{ env.BASE_PATH }}"
+        # Bypass the package's `build:demo` npm script. That script
+        # chains `tsc -b && vite build --config vite.config.demo.ts`,
+        # and `pnpm run X -- --base=Y` doesn't reliably propagate the
+        # flag through the && — the demo config's hardcoded
+        # `base: "/demo/"` wins and the deployed HTML ends up
+        # referencing `/demo/assets/...` instead of our base path.
+        # Invoke tsc + vite directly so the CLI --base override sticks.
+        run: |
+          pnpm exec tsc -b
+          pnpm exec vite build --config vite.config.demo.ts --base="${{ env.BASE_PATH }}"
 
       - name: Stage knowledge graph beside the built bundle
         run: |
           DIST=/tmp/ua-plugin/understand-anything-plugin/packages/dashboard/dist
-          # build:demo writes the bundle under dist/demo/ because the
-          # demo vite config pins base="/demo/" — passing --base on the
-          # CLI overrides it to our env BASE_PATH but the output dir
-          # name is still "demo" by default. Detect either layout.
-          if [ -d "$DIST/demo" ]; then
-            DIST="$DIST/demo"
-          fi
-          echo "Final dist dir: $DIST"
+          echo "Dist dir: $DIST"
           ls -la "$DIST" | head -20
+          # Sanity-check the base override actually took effect — fail
+          # loudly here if vite still wrote `/demo/...` paths, since
+          # the deployed dashboard will 404 every asset otherwise.
+          if grep -q '/demo/assets/' "$DIST/index.html"; then
+            echo "::error::HTML still references /demo/assets/ — base override failed."
+            echo "First /demo/ hit in index.html:"
+            grep -n '/demo/' "$DIST/index.html" | head -3
+            exit 1
+          fi
+          echo "Base path sanity check passed."
           cp $GITHUB_WORKSPACE/.understand-anything/knowledge-graph.json "$DIST/knowledge-graph.json"
           # The dashboard also tries meta.json + config.json; they're
           # optional (App.tsx tolerates 404s) but harmless to ship.
