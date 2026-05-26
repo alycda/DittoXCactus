@@ -124,6 +124,28 @@ class RetrievalService {
   /// blank-line separator the model emits between cards.
   static const int _kMaxTokensPerCard = 160;
 
+  /// Minimum cosine similarity for a note to count as a retrieved
+  /// result. Notes scoring below this are dropped from `topK` even if
+  /// fewer than k notes remain.
+  ///
+  /// Why: with no threshold, `topK` always returns up to k notes
+  /// regardless of how poorly they match. On phone-a with 5
+  /// inner-planet notes and a "Saturn" query, all 5 come back at low
+  /// scores (~0.1-0.25). The LLM then tries to make Saturn cards
+  /// from Mercury/Venus notes, can't, and burns the entire token
+  /// budget reasoning. The right gate is here: weak retrievals →
+  /// empty result → grounding gate fires → LLM never called → UI
+  /// shows "no notes match this topic" within milliseconds instead
+  /// of ~10s.
+  ///
+  /// **Default is a rough guess (0.3).** Empirical tuning against
+  /// real on-device cosine traces from the demo corpus is queued —
+  /// see `_docs/dry-run-findings.md`. Too high gates legitimate
+  /// semantic matches (e.g. "what has rings?" → Saturn); too low
+  /// lets garbage through (today's failure mode). 0.3 is a starting
+  /// point; bump up if Saturn-on-phone-a still gets through.
+  static const double defaultMinScore = 0.3;
+
   // ───── ensureEmbeddings (U8's phase-2) ────────────────────────────────
 
   /// Backfill embeddings for every note with `embedding.isEmpty`. Returns
@@ -172,12 +194,21 @@ class RetrievalService {
   ///
   /// Re-runs the DQL `SELECT * FROM notes` on every call (acceptable at
   /// Stage 0's ≤10 rows; future-work cache on observer).
-  Future<List<RetrievedNote>> topK(String topic, {int k = defaultK}) async {
+  ///
+  /// Notes scoring below `minScore` are filtered out — the empty-list
+  /// result then triggers `generateFlashcards`'s grounding gate, the
+  /// right place to catch "topic doesn't match corpus".
+  Future<List<RetrievedNote>> topK(
+    String topic, {
+    int k = defaultK,
+    double minScore = defaultMinScore,
+  }) async {
     if (topic.isEmpty) return const [];
     final qVecRaw = await embedQuery(topic);
     final qVec = normalize(qVecRaw);
     final notes = await DittoService.instance.queryWithEmbedding();
-    final ranked = rankTopK(queryVec: qVec, notes: notes, k: k);
+    final ranked =
+        rankTopK(queryVec: qVec, notes: notes, k: k, minScore: minScore);
     if (kDebugMode) {
       // Diagnostic shape so on-device weirdness ('retrieved=0 with 5 notes
       // visible in the Notes tab') is debuggable from logcat. The
@@ -190,12 +221,24 @@ class RetrievalService {
       for (final n in notes) {
         noteDims[n.embedding.length] = (noteDims[n.embedding.length] ?? 0) + 1;
       }
+      // Compute pre-threshold ranking too so logcat shows what the
+      // threshold dropped — invaluable for tuning `minScore`.
+      final preThreshold = rankTopK(
+        queryVec: qVec,
+        notes: notes,
+        k: k,
+        minScore: -1.0,
+      );
+      final preScores = preThreshold
+          .map((r) => r.score.toStringAsFixed(3))
+          .join(', ');
       debugPrint(
-        '[topK] topic="$topic" k=$k '
+        '[topK] topic="$topic" k=$k minScore=$minScore '
         'totalEmbedded=${notes.length} '
         'queryDim=${qVec.length} '
         'noteDims=$noteDims '
         'survivedDimFilter=${notes.where((n) => n.embedding.length == qVec.length).length} '
+        'preThresholdScores=[$preScores] '
         'ranked=${ranked.length}',
       );
     }
@@ -208,17 +251,23 @@ class RetrievalService {
   ///
   /// Notes whose embedding-length differs from `queryVec.length` are
   /// silently dropped (mid-corpus model swap guard).
+  ///
+  /// Notes scoring below `minScore` are filtered out. Use `-1.0` to
+  /// disable the threshold (cosine is bounded `[-1, 1]`, so a -1.0
+  /// floor accepts every result).
   @visibleForTesting
   static List<RetrievedNote> rankTopK({
     required Float32List queryVec,
     required List<StudyNote> notes,
     required int k,
+    double minScore = defaultMinScore,
   }) {
     final scored = <RetrievedNote>[];
     for (final note in notes) {
       if (note.embedding.length != queryVec.length) continue;
       final docVec = normalize(Float32List.fromList(note.embedding));
       final score = dot(queryVec, docVec);
+      if (score < minScore) continue;
       scored.add(RetrievedNote(note: note, score: score));
     }
     scored.sort((a, b) {

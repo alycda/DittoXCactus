@@ -110,8 +110,14 @@ void main() {
         note('A', 1.0, 0.0), // parallel → score 1
         note('C', 0.5, 0.5), // 45° → ~0.707
       ];
-      final ranked =
-          RetrievalService.rankTopK(queryVec: q, notes: notes, k: 5);
+      // Tests the pure ranking math — disable the minScore threshold
+      // with -1.0 so the orthogonal note isn't filtered out.
+      final ranked = RetrievalService.rankTopK(
+        queryVec: q,
+        notes: notes,
+        k: 5,
+        minScore: -1.0,
+      );
       expect(ranked.map((r) => r.note.id).toList(), ['A', 'C', 'B']);
       expect(ranked[0].score, closeTo(1.0, 1e-6));
       expect(ranked[1].score, closeTo(math.sqrt(0.5), 1e-6));
@@ -122,8 +128,12 @@ void main() {
       final notes = [
         for (var i = 0; i < 10; i++) note('id_$i', 1.0 - i * 0.01, 0.0),
       ];
-      final ranked =
-          RetrievalService.rankTopK(queryVec: q, notes: notes, k: 3);
+      final ranked = RetrievalService.rankTopK(
+        queryVec: q,
+        notes: notes,
+        k: 3,
+        minScore: -1.0,
+      );
       expect(ranked.length, 3);
     });
 
@@ -133,11 +143,55 @@ void main() {
         note('A', 0.5, 0.5),
         note('B', 1.0, 0.0),
       ];
-      final ranked =
-          RetrievalService.rankTopK(queryVec: q, notes: notes, k: 10);
+      final ranked = RetrievalService.rankTopK(
+        queryVec: q,
+        notes: notes,
+        k: 10,
+        minScore: -1.0,
+      );
       expect(ranked.length, 2);
       expect(ranked.first.note.id, 'B');
       expect(ranked.last.note.id, 'A');
+    });
+
+    test('minScore threshold drops weak retrievals', () {
+      final q = RetrievalService.normalize(Float32List.fromList([1.0, 0.0]));
+      final notes = [
+        note('strong', 1.0, 0.0), // score = 1.0
+        note('medium', 0.5, 0.5), // score ≈ 0.707
+        note('weak', 0.0, 1.0), // score = 0.0 (orthogonal)
+      ];
+      // With minScore=0.3 (default), the orthogonal note drops.
+      final ranked = RetrievalService.rankTopK(
+        queryVec: q,
+        notes: notes,
+        k: 5,
+      );
+      expect(ranked.map((r) => r.note.id).toList(), ['strong', 'medium']);
+      // With minScore higher, even the 45° note drops.
+      final tight = RetrievalService.rankTopK(
+        queryVec: q,
+        notes: notes,
+        k: 5,
+        minScore: 0.8,
+      );
+      expect(tight.map((r) => r.note.id).toList(), ['strong']);
+    });
+
+    test('minScore higher than any score → empty result '
+        '(grounding gate fires)', () {
+      final q = RetrievalService.normalize(Float32List.fromList([1.0, 0.0]));
+      final notes = [
+        note('weak1', 0.1, 1.0), // low cosine
+        note('weak2', 0.05, 1.0),
+      ];
+      final ranked = RetrievalService.rankTopK(
+        queryVec: q,
+        notes: notes,
+        k: 5,
+        minScore: 0.5,
+      );
+      expect(ranked, isEmpty);
     });
 
     test('empty corpus returns []', () {
@@ -282,6 +336,9 @@ void main() {
         queryVec: query,
         notes: notes,
         k: 5,
+        // Disable threshold; this test is about the ranking math
+        // surviving 5k rows, not the threshold semantics.
+        minScore: -1.0,
       );
       expect(ranked.length, 5);
       // The 3 planted notes must dominate the top of the ranking.
