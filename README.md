@@ -176,6 +176,29 @@ tightening" diagnostic band. See
 for the full result and the three disagreeing queries (Q03, Q05, Q10 — two
 within-top-k reorderings, one top-1 swap between semantic-twin passages).
 
+## Knowledge graph — interactive dashboard
+
+**[Live dashboard ↗ alycda.github.io/DittoXCactus](https://alycda.github.io/DittoXCactus/)**
+
+A browsable graph of every file in the repo, grouped into 10 architectural
+layers, with a 12-step guided tour from "The Thesis: Mesh RAG" through
+"Build, CI, and Demo Day." 202 nodes, 246 edges. Useful for new readers who
+want to orient before reading the plan, or for finding the file behind a
+specific behavior ("where does the title-case query normalization live?").
+
+Built with [Understand-Anything](https://github.com/Lum1104/Understand-Anything).
+The committed graph lives at [`.understand-anything/knowledge-graph.json`](.understand-anything/knowledge-graph.json)
+and is published to GitHub Pages by [`.github/workflows/pages.yml`](.github/workflows/pages.yml).
+
+To rebuild after structural code changes:
+
+```sh
+# In Claude Code with the Understand-Anything plugin installed:
+/understand
+# Then commit the new .understand-anything/knowledge-graph.json — the
+# Pages workflow redeploys automatically.
+```
+
 ## Deeper reading
 
 - [`_docs/IDEA-A.md`](_docs/IDEA-A.md) — the thesis essay ("Your knowledge base wants to be a CRDT").

@@ -229,7 +229,17 @@ gemini-debug.log
 # Understand-Anything (https://github.com/Lum1104/Understand-Anything)
 .understand-anything/intermediate/
 .understand-anything/tmp/
-.understand-anything/*.json
+# Per-commit-noisy machinery — regeneratable from the committed graph,
+# so keep them out of git. meta.json embeds the current commit hash;
+# fingerprints.json embeds per-file structural hashes that churn on
+# every analyzed change.
+.understand-anything/meta.json
+.understand-anything/fingerprints.json
+# knowledge-graph.json IS tracked — it's the artifact published to
+# GitHub Pages via .github/workflows/pages.yml. Regenerate with
+# `/understand` (Claude Code) when the codebase shifts; the diff in
+# this file is the meaningful one to review.
+!.understand-anything/knowledge-graph.json
 !.understand-anything/.understandignore
 
 

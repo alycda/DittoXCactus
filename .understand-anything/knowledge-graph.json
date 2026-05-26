@@ -1,0 +1,5162 @@
+{
+  "version": "1.0.0",
+  "project": {
+    "name": "mesh_rag",
+    "languages": [
+      "dart",
+      "markdown",
+      "yaml",
+      "json",
+      "kotlin",
+      "swift",
+      "cpp",
+      "xml",
+      "shell",
+      "c4",
+      "just"
+    ],
+    "frameworks": [
+      "Cactus",
+      "Dart",
+      "Ditto",
+      "Flutter",
+      "GitHub Actions",
+      "Likec4",
+      "just",
+      "path_provider",
+      "permission_handler"
+    ],
+    "description": "Mesh-RAG demo (Ditto × Cactus, iOS + Android). Two phones each hold a slice of a study-notes corpus; they meet over BLE/Wi-Fi and the vector index merges as a CRDT.",
+    "analyzedAt": "2026-05-26T15:44:36.699Z",
+    "gitCommitHash": "665c002cb0583a2a0bf00f3645defde905a15de0"
+  },
+  "nodes": [
+    {
+      "id": "document:_docs/demo-script.md",
+      "type": "document",
+      "name": "demo-script.md",
+      "filePath": "_docs/demo-script.md",
+      "summary": "Rehearsable end-to-end script for Holdout 1's airplane-mode demo: pre-flight checklist, beat-by-beat narration, and recovery branches for the two-phone Mesh RAG showcase.",
+      "tags": [
+        "documentation",
+        "demo",
+        "holdout",
+        "rehearsal",
+        "stage-0"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "document:_docs/IDEA-A.md",
+      "type": "document",
+      "name": "IDEA-A.md",
+      "filePath": "_docs/IDEA-A.md",
+      "summary": "The load-bearing idea document — frames the writeup thesis 'Your knowledge base wants to be a CRDT' and pins Mesh RAG as the chosen framing among brainstorm options A through D.",
+      "tags": [
+        "documentation",
+        "thesis",
+        "idea-doc",
+        "entry-point"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "document:_docs/notes/cactus-sdk-quirks.md",
+      "type": "document",
+      "name": "cactus-sdk-quirks.md",
+      "filePath": "_docs/notes/cactus-sdk-quirks.md",
+      "summary": "Engineering catalogue of Cactus 1.3.0 Flutter SDK behaviors the demo had to work around — including the Supabase telemetry call that pierces airplane-mode and the model-download path that ignores telemetry flags.",
+      "tags": [
+        "documentation",
+        "engineering-notes",
+        "cactus",
+        "sdk-quirks",
+        "offline-first"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "document:_docs/notes/model-quirks.md",
+      "type": "document",
+      "name": "model-quirks.md",
+      "filePath": "_docs/notes/model-quirks.md",
+      "summary": "Running catalogue of Qwen 2.5 1.7B on-device quirks (bilingual chain-of-thought drift, fabricated outputs, grounding-prompt rationalization) used as evidence in the specialists-vs-generalists writeup thread.",
+      "tags": [
+        "documentation",
+        "engineering-notes",
+        "qwen",
+        "model-quirks",
+        "specialists-thread"
+      ],
+      "complexity": "complex"
+    },
+    {
+      "id": "document:_docs/notes/thesis-framings.md",
+      "type": "document",
+      "name": "thesis-framings.md",
+      "filePath": "_docs/notes/thesis-framings.md",
+      "summary": "Stress-test memo resolving SEED.md Q4 — carries each candidate framing at 250 words, names the strongest skeptic for each, and picks the framing the writeup will lead with.",
+      "tags": [
+        "documentation",
+        "thesis",
+        "framing",
+        "decision-record"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "document:_docs/plans/001-feat-mesh-rag-demo.md",
+      "type": "document",
+      "name": "001-feat-mesh-rag-demo.md",
+      "filePath": "_docs/plans/001-feat-mesh-rag-demo.md",
+      "summary": "Authoritative implementation plan for the Mesh RAG demo — defines implementation units (U1..U14), holdout coverage, scope boundaries, and per-source citations into the 281-source research index.",
+      "tags": [
+        "documentation",
+        "implementation-plan",
+        "entry-point",
+        "holdouts",
+        "compound-engineering"
+      ],
+      "complexity": "complex"
+    },
+    {
+      "id": "document:_docs/r5-pre-baked-embeddings.md",
+      "type": "document",
+      "name": "r5-pre-baked-embeddings.md",
+      "filePath": "_docs/r5-pre-baked-embeddings.md",
+      "summary": "Engineering memo identifying that per-note Cactus embedding backfill (78% of cold-load time) is R5's missing lever — proposes shipping embedding bytes inside the seed JSON to bypass on-device inference.",
+      "tags": [
+        "documentation",
+        "performance",
+        "cold-load",
+        "holdout",
+        "remediation"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "document:_docs/RESEARCH-BRIEF.md",
+      "type": "document",
+      "name": "RESEARCH-BRIEF.md",
+      "filePath": "_docs/RESEARCH-BRIEF.md",
+      "summary": "Brief handed to deep-research agents — defines project summary, six research tasks (frameworks, embeddings, LLMs, CRDTs, mesh sync, latency framing), and the required deliverables format.",
+      "tags": [
+        "documentation",
+        "research-brief",
+        "compound-engineering",
+        "entry-point"
+      ],
+      "complexity": "complex"
+    },
+    {
+      "id": "document:_docs/research/chatgpt-deep-research.md",
+      "type": "document",
+      "name": "chatgpt-deep-research.md",
+      "filePath": "_docs/research/chatgpt-deep-research.md",
+      "summary": "Hosted ChatGPT Deep Research pass — sourcing-first memo establishing Ditto as well-supported synchronization substrate and framing cross-device embedding determinism as a validation objective rather than baseline assumption.",
+      "tags": [
+        "documentation",
+        "deep-research",
+        "prior-art",
+        "determinism",
+        "ditto"
+      ],
+      "complexity": "complex"
+    },
+    {
+      "id": "document:_docs/research/claude-deep-research.md",
+      "type": "document",
+      "name": "claude-deep-research.md",
+      "filePath": "_docs/research/claude-deep-research.md",
+      "summary": "Hosted Claude Deep Research pass — synthesizes evidence for CPU-only embedding determinism, identifies P2P RAG prior art (DRAG, DGRAG), and pins latency as the durable thesis with concrete numbers.",
+      "tags": [
+        "documentation",
+        "deep-research",
+        "prior-art",
+        "determinism",
+        "p2p-rag"
+      ],
+      "complexity": "complex"
+    },
+    {
+      "id": "document:_docs/research/claude.md",
+      "type": "document",
+      "name": "claude.md",
+      "filePath": "_docs/research/claude.md",
+      "summary": "Mode-B parallel worker output from Claude — top-10 must-read sources plus per-topic findings, framed toward the recipes-then-cars corpus and the small-specialist-models future-work angle.",
+      "tags": [
+        "documentation",
+        "research-worker",
+        "prior-art",
+        "claude-pass"
+      ],
+      "complexity": "complex"
+    },
+    {
+      "id": "document:_docs/research/codex.md",
+      "type": "document",
+      "name": "codex.md",
+      "filePath": "_docs/research/codex.md",
+      "summary": "Mode-B parallel worker output from Codex — primary-source-first survey covering Cactus, Ditto, PyTorch reproducibility, and the official Ditto sync/mesh-networking concepts.",
+      "tags": [
+        "documentation",
+        "research-worker",
+        "prior-art",
+        "codex-pass"
+      ],
+      "complexity": "complex"
+    },
+    {
+      "id": "config:_docs/research/downloads.yaml",
+      "type": "config",
+      "name": "downloads.yaml",
+      "filePath": "_docs/research/downloads.yaml",
+      "summary": "Canonical manifest of every research source downloaded into _inspiration/ — 281 entries with URL, kind, title, citing worker(s), download status, and local path; drives the research-indexer pipeline.",
+      "tags": [
+        "configuration",
+        "research-manifest",
+        "data-pipeline",
+        "compound-engineering"
+      ],
+      "complexity": "complex",
+      "languageNotes": "Single-document YAML with a flat entries[] list of ~280 source records — append-only manifest produced by the researcher skill."
+    },
+    {
+      "id": "document:_docs/research/gemini-deep-research.md",
+      "type": "document",
+      "name": "gemini-deep-research.md",
+      "filePath": "_docs/research/gemini-deep-research.md",
+      "summary": "Hosted Gemini Deep Research pass — architectural foundations memo emphasizing Valori fixed-point determinism, inference-backend reproducibility risk, and Ditto delta-state CRDT documentation.",
+      "tags": [
+        "documentation",
+        "deep-research",
+        "prior-art",
+        "determinism",
+        "fixed-point"
+      ],
+      "complexity": "complex"
+    },
+    {
+      "id": "document:_docs/research/gemini.md",
+      "type": "document",
+      "name": "gemini.md",
+      "filePath": "_docs/research/gemini.md",
+      "summary": "Mode-B parallel worker output from Gemini — compact top-10 + per-topic findings emphasizing the local-first manifesto, Cactus bit-identical kernels, and Ink & Switch malleable-software framing.",
+      "tags": [
+        "documentation",
+        "research-worker",
+        "prior-art",
+        "gemini-pass"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "document:_docs/research/index/by-tag.md",
+      "type": "document",
+      "name": "by-tag.md",
+      "filePath": "_docs/research/index/by-tag.md",
+      "summary": "Inverted tag index — 1192 distinct tags mapped to source IDs across all 281 per-source summaries, sorted by density, supporting wide-net tag-driven discovery.",
+      "tags": [
+        "documentation",
+        "research-index",
+        "inverted-index",
+        "tags"
+      ],
+      "complexity": "complex"
+    },
+    {
+      "id": "document:_docs/research/index/by-topic.md",
+      "type": "document",
+      "name": "by-topic.md",
+      "filePath": "_docs/research/index/by-topic.md",
+      "summary": "Macro-topic grouping of the research corpus into 13 buckets aligned with SEED.md and RESEARCH-BRIEF.md tasks (on-device inference, embeddings, CRDTs, mesh sync, determinism, etc.).",
+      "tags": [
+        "documentation",
+        "research-index",
+        "topic-grouping"
+      ],
+      "complexity": "complex"
+    },
+    {
+      "id": "document:_docs/research/index/clusters.md",
+      "type": "document",
+      "name": "clusters.md",
+      "filePath": "_docs/research/index/clusters.md",
+      "summary": "Thirteen thematic research narratives (case for on-device, Ditto stack, Cactus+LLM, determinism, specialists, etc.) — each cluster carries a story-shaped narrative tying its sources together.",
+      "tags": [
+        "documentation",
+        "research-index",
+        "narratives",
+        "clusters"
+      ],
+      "complexity": "complex"
+    },
+    {
+      "id": "document:_docs/research/index/cross-references.md",
+      "type": "document",
+      "name": "cross-references.md",
+      "filePath": "_docs/research/index/cross-references.md",
+      "summary": "Directed citation graph extracted from every per-source file — 541 edges across 230 sourceful nodes, with a most-cited ranking that surfaces the foundational sources of the corpus.",
+      "tags": [
+        "documentation",
+        "research-index",
+        "citation-graph",
+        "cross-references"
+      ],
+      "complexity": "complex"
+    },
+    {
+      "id": "document:_docs/research/index/open-questions.md",
+      "type": "document",
+      "name": "open-questions.md",
+      "filePath": "_docs/research/index/open-questions.md",
+      "summary": "Gaps the 281-source corpus does not answer — empirical open questions tied to Stage 0 holdouts plus the four-thread future-work arc (specialists, preference-aware merge, adversarial filtering, generational evolution) the writeup should land on.",
+      "tags": [
+        "documentation",
+        "research-index",
+        "open-questions",
+        "future-work"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "document:_docs/research/index/README.md",
+      "type": "document",
+      "name": "README.md",
+      "filePath": "_docs/research/index/README.md",
+      "summary": "Entry point for the research index — guides a downstream coding agent to start at top-N.md and branch by intent, with a density legend and pointers to clusters, by-topic, by-tag, cross-references, and open-questions.",
+      "tags": [
+        "documentation",
+        "research-index",
+        "entry-point",
+        "overview"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "document:_docs/research/index/top-N.md",
+      "type": "document",
+      "name": "top-N.md",
+      "filePath": "_docs/research/index/top-N.md",
+      "summary": "Twenty-two highest-density sources ranked with one-paragraph annotations — ~45 minutes of mandatory reading before designing anything in the Mesh RAG demo.",
+      "tags": [
+        "documentation",
+        "research-index",
+        "ranked-list",
+        "entry-point"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "document:_docs/SEED.md",
+      "type": "document",
+      "name": "SEED.md",
+      "filePath": "_docs/SEED.md",
+      "summary": "Validation harness for agentic development — defines holdout scenarios R1 through R11, threat-model bound, cut order, and the Validation → Feedback loop the implementation runs through.",
+      "tags": [
+        "documentation",
+        "validation-harness",
+        "holdouts",
+        "entry-point",
+        "compound-engineering"
+      ],
+      "complexity": "complex"
+    },
+    {
+      "id": "document:_docs/WEB-PROMPT.md",
+      "type": "document",
+      "name": "WEB-PROMPT.md",
+      "filePath": "_docs/WEB-PROMPT.md",
+      "summary": "Hosted deep-research prompt that briefs Claude.ai / ChatGPT / Gemini DR workers on the Mesh RAG thesis, holdouts, and the eight research-task tracks (determinism, CRDT vector indexes, mesh sync, on-device LLM/embeddings, local-first prior art, latency moats, demo aesthetics).",
+      "tags": [
+        "documentation",
+        "research-brief",
+        "prompt",
+        "deep-research"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "pipeline:.github/workflows/ci.yml",
+      "type": "pipeline",
+      "name": "ci.yml",
+      "filePath": ".github/workflows/ci.yml",
+      "summary": "GitHub Actions workflow that runs `just ci` (flutter analyze + test) on push to main and on pull requests, pinning Flutter 3.32.0 stable to match the local puro provisioned version so CI-green and local-green are bitwise the same set of checks.",
+      "tags": [
+        "ci-cd",
+        "github-actions",
+        "flutter",
+        "deployment",
+        "infrastructure"
+      ],
+      "complexity": "simple",
+      "languageNotes": "Uses concurrency group with cancel-in-progress to drop superseded runs on the same ref."
+    },
+    {
+      "id": "file:.understand-anything/.understandignore",
+      "type": "file",
+      "name": ".understandignore",
+      "filePath": ".understand-anything/.understandignore",
+      "summary": "Ignore-file for the Understand-Anything code-graph tool, scoping the knowledge-graph build to load-bearing source while skipping bulky research artifacts, build outputs, and per-source summaries.",
+      "tags": [
+        "configuration",
+        "tooling",
+        "ignore-list"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "config:analysis_options.yaml",
+      "type": "config",
+      "name": "analysis_options.yaml",
+      "filePath": "analysis_options.yaml",
+      "summary": "Dart analyzer configuration that pulls in flutter_lints recommended ruleset for the Mesh RAG Flutter project.",
+      "tags": [
+        "configuration",
+        "linting",
+        "dart",
+        "flutter"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:android/app/build.gradle.kts",
+      "type": "file",
+      "name": "build.gradle.kts",
+      "filePath": "android/app/build.gradle.kts",
+      "summary": "Android app module Gradle script that applies the Flutter, Android, and Kotlin plugins, pins NDK 27.0.12077973 (required by Cactus + ditto_live + record + permission_handler), sets minSdk 24, and targets Java 11.",
+      "tags": [
+        "configuration",
+        "android",
+        "gradle",
+        "build-system"
+      ],
+      "complexity": "simple",
+      "languageNotes": "NDK version is pinned identically to tools/determinism_harness/ to avoid manifest-merger conflicts."
+    },
+    {
+      "id": "config:android/app/src/debug/AndroidManifest.xml",
+      "type": "config",
+      "name": "AndroidManifest.xml (debug)",
+      "filePath": "android/app/src/debug/AndroidManifest.xml",
+      "summary": "Debug-variant Android manifest overlay; typically enables cleartext traffic and the Flutter dev tools socket while keeping the main manifest's BLE/Wi-Fi permission stack inherited from ditto_live.",
+      "tags": [
+        "configuration",
+        "android",
+        "manifest",
+        "debug"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "config:android/app/src/main/AndroidManifest.xml",
+      "type": "config",
+      "name": "AndroidManifest.xml",
+      "filePath": "android/app/src/main/AndroidManifest.xml",
+      "summary": "Primary Android manifest declaring the MainActivity launch theme, intent filters, and PROCESS_TEXT query. BLE/Wi-Fi peer-to-peer permissions are intentionally NOT re-declared here — they are contributed by ditto_live's bundled manifest to avoid maxSdkVersion merger conflicts.",
+      "tags": [
+        "configuration",
+        "android",
+        "manifest",
+        "permissions"
+      ],
+      "complexity": "simple",
+      "languageNotes": "Trusts the transitive BLUETOOTH_*/NEARBY_WIFI_DEVICES declarations from ditto_live rather than re-declaring them."
+    },
+    {
+      "id": "file:android/app/src/main/kotlin/com/dittoxcactus/mesh_rag/MainActivity.kt",
+      "type": "file",
+      "name": "MainActivity.kt",
+      "filePath": "android/app/src/main/kotlin/com/dittoxcactus/mesh_rag/MainActivity.kt",
+      "summary": "Android entry-point Activity for the Mesh RAG Flutter app; a thin subclass of FlutterActivity that defers all hosting work to the Flutter engine.",
+      "tags": [
+        "entry-point",
+        "android",
+        "kotlin",
+        "flutter"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "config:android/app/src/main/res/drawable-v21/launch_background.xml",
+      "type": "config",
+      "name": "launch_background.xml (v21)",
+      "filePath": "android/app/src/main/res/drawable-v21/launch_background.xml",
+      "summary": "API 21+ launch-background drawable shown by the Android process between activity start and Flutter engine warmup; ensures a consistent splash backdrop before the Dart side renders.",
+      "tags": [
+        "configuration",
+        "android",
+        "ui",
+        "splash"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "config:android/app/src/main/res/drawable/launch_background.xml",
+      "type": "config",
+      "name": "launch_background.xml",
+      "filePath": "android/app/src/main/res/drawable/launch_background.xml",
+      "summary": "Default launch-background drawable used by the Android process before the Flutter engine takes over rendering.",
+      "tags": [
+        "configuration",
+        "android",
+        "ui",
+        "splash"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "config:android/app/src/main/res/values-night/styles.xml",
+      "type": "config",
+      "name": "styles.xml (night)",
+      "filePath": "android/app/src/main/res/values-night/styles.xml",
+      "summary": "Dark-mode style resources defining LaunchTheme and NormalTheme used between Android process start and Flutter engine takeover.",
+      "tags": [
+        "configuration",
+        "android",
+        "theme",
+        "dark-mode"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "config:android/app/src/main/res/values/styles.xml",
+      "type": "config",
+      "name": "styles.xml",
+      "filePath": "android/app/src/main/res/values/styles.xml",
+      "summary": "Default style resources defining LaunchTheme and NormalTheme that bridge the visible UI state between Android process start and the first Flutter frame.",
+      "tags": [
+        "configuration",
+        "android",
+        "theme",
+        "ui"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "config:android/app/src/profile/AndroidManifest.xml",
+      "type": "config",
+      "name": "AndroidManifest.xml (profile)",
+      "filePath": "android/app/src/profile/AndroidManifest.xml",
+      "summary": "Profile-variant Android manifest overlay used by `flutter run --profile`; typically mirrors debug for network/dev-tools access while keeping release-like compilation.",
+      "tags": [
+        "configuration",
+        "android",
+        "manifest",
+        "profile"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:android/build.gradle.kts",
+      "type": "file",
+      "name": "build.gradle.kts (root)",
+      "filePath": "android/build.gradle.kts",
+      "summary": "Top-level Android Gradle script configuring the project-wide build directory layout and the standard Flutter `evaluationDependsOn(':app')` ordering.",
+      "tags": [
+        "configuration",
+        "android",
+        "gradle",
+        "build-system"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:android/gradle.properties",
+      "type": "file",
+      "name": "gradle.properties",
+      "filePath": "android/gradle.properties",
+      "summary": "Android Gradle properties tuning the JVM args and toggling AndroidX support for the Flutter build.",
+      "tags": [
+        "configuration",
+        "android",
+        "gradle",
+        "build-system"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:android/gradle/wrapper/gradle-wrapper.properties",
+      "type": "file",
+      "name": "gradle-wrapper.properties",
+      "filePath": "android/gradle/wrapper/gradle-wrapper.properties",
+      "summary": "Pins the Gradle distribution URL and version used by the wrapper so the Android build is reproducible across machines.",
+      "tags": [
+        "configuration",
+        "android",
+        "gradle",
+        "build-system"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:android/settings.gradle.kts",
+      "type": "file",
+      "name": "settings.gradle.kts",
+      "filePath": "android/settings.gradle.kts",
+      "summary": "Android Gradle settings script that wires in the Flutter loader, the Android Gradle Plugin, and the Kotlin plugin via the pluginManagement block; standard Flutter-template scaffolding.",
+      "tags": [
+        "configuration",
+        "android",
+        "gradle",
+        "build-system"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "document:assets/README.md",
+      "type": "document",
+      "name": "README.md (assets)",
+      "filePath": "assets/README.md",
+      "summary": "Documents the Stage 0 seed corpus: two role-scoped JSON files (`seed_notes_a.json` for the inner solar system, `seed_notes_b.json` for the outer), the on-disk schema, the UUIDv5 idempotence trick, the contrived disjoint split for R1 legibility, and the U11 anti-hallucination grounding requirement.",
+      "tags": [
+        "documentation",
+        "data",
+        "seed-corpus",
+        "schema"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "config:assets/seed_notes_a.json",
+      "type": "config",
+      "name": "seed_notes_a.json",
+      "filePath": "assets/seed_notes_a.json",
+      "summary": "Phone-A seed corpus: five study notes on the Sun and the inner solar system (Mercury, Venus, Earth's Moon, Mars). Pre-embedding; embeddings backfilled at runtime by RetrievalService.ensureEmbeddings.",
+      "tags": [
+        "data",
+        "seed-corpus",
+        "study-notes",
+        "inner-planets"
+      ],
+      "complexity": "complex",
+      "languageNotes": "5191-line JSON is wide-formatted prose bodies, not a deep tree; one entry per note."
+    },
+    {
+      "id": "config:assets/seed_notes_b.json",
+      "type": "config",
+      "name": "seed_notes_b.json",
+      "filePath": "assets/seed_notes_b.json",
+      "summary": "Phone-B seed corpus: five study notes on the outer solar system (Jupiter, Saturn, Uranus, Neptune) plus Pluto. Disjoint from seed_notes_a.json by design so R1's before/after airplane-mode demo is camera-legible.",
+      "tags": [
+        "data",
+        "seed-corpus",
+        "study-notes",
+        "outer-planets"
+      ],
+      "complexity": "complex",
+      "languageNotes": "5191-line JSON is wide-formatted prose bodies, not a deep tree; one entry per note."
+    },
+    {
+      "id": "document:CLAUDE.md",
+      "type": "document",
+      "name": "CLAUDE.md",
+      "filePath": "CLAUDE.md",
+      "summary": "Repo-level Claude Code playbook: pins the Mesh-RAG thesis-bearing constraints (cloud-not-in-trust-boundary, iOS+Android required, Holdout 7 never cut, determinism R2 pre-flight gate, study-notes corpus), describes the documentation hierarchy, and codifies jj-first VCS conventions.",
+      "tags": [
+        "documentation",
+        "agent-instructions",
+        "constraints",
+        "playbook"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "document:docs/c4/interview.md",
+      "type": "document",
+      "name": "interview.md",
+      "filePath": "docs/c4/interview.md",
+      "summary": "Step 0 of the c4-design skill: structured interview capturing external actors, system boundary, containers, component-level decomposition of phone_app and determinism_harness, and resolved/deferred open questions — the source the Likec4 model.c4 is drafted from.",
+      "tags": [
+        "documentation",
+        "architecture",
+        "c4",
+        "design"
+      ],
+      "complexity": "complex"
+    },
+    {
+      "id": "resource:docs/c4/model.c4",
+      "type": "resource",
+      "name": "model.c4",
+      "filePath": "docs/c4/model.c4",
+      "summary": "Likec4 DSL source of truth for the Mesh-RAG architecture: declares actors (demonstrator, audience contributor/querent), external systems (cactus_model_registry, peer_phone), the mesh_rag system with four containers (phone_app, cactus_models, ditto_store, determinism_harness) and all component-level relationships across UI/service/instrument layers.",
+      "tags": [
+        "infrastructure",
+        "architecture",
+        "c4",
+        "schema-definition",
+        "likec4"
+      ],
+      "complexity": "complex",
+      "languageNotes": "Likec4 specification + model + views structure; views are auto-rendered into the gitignored dashboard."
+    },
+    {
+      "id": "config:ios/Flutter/AppFrameworkInfo.plist",
+      "type": "config",
+      "name": "AppFrameworkInfo.plist",
+      "filePath": "ios/Flutter/AppFrameworkInfo.plist",
+      "summary": "Flutter-generated iOS framework metadata plist declaring bundle identifier, executable, and minimum OS version for the embedded Flutter engine.",
+      "tags": [
+        "configuration",
+        "ios",
+        "flutter",
+        "framework-metadata"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "config:ios/Flutter/Debug.xcconfig",
+      "type": "config",
+      "name": "Debug.xcconfig",
+      "filePath": "ios/Flutter/Debug.xcconfig",
+      "summary": "Xcode build settings include file that pulls in the Generated.xcconfig and Pods debug settings for the iOS debug configuration.",
+      "tags": [
+        "configuration",
+        "ios",
+        "xcode",
+        "build-settings"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "config:ios/Flutter/Release.xcconfig",
+      "type": "config",
+      "name": "Release.xcconfig",
+      "filePath": "ios/Flutter/Release.xcconfig",
+      "summary": "Xcode build settings include file pulling in Generated.xcconfig and Pods release settings for the iOS release build configuration.",
+      "tags": [
+        "configuration",
+        "ios",
+        "xcode",
+        "build-settings"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:ios/Podfile",
+      "type": "file",
+      "name": "Podfile",
+      "filePath": "ios/Podfile",
+      "summary": "CocoaPods dependency manifest for the iOS Runner target, wiring Flutter pod helpers and installing native plugin pods for the mesh_rag app.",
+      "tags": [
+        "ios",
+        "cocoapods",
+        "dependencies",
+        "build-system"
+      ],
+      "complexity": "simple",
+      "languageNotes": "Ruby DSL evaluated by CocoaPods; uses flutter_install_all_ios_pods helpers to integrate Flutter plugins."
+    },
+    {
+      "id": "file:ios/Runner.xcodeproj/project.pbxproj",
+      "type": "file",
+      "name": "project.pbxproj",
+      "filePath": "ios/Runner.xcodeproj/project.pbxproj",
+      "summary": "Xcode project descriptor in the legacy PBX archive format that defines Runner build targets, file groups, and per-configuration build settings for iOS.",
+      "tags": [
+        "ios",
+        "xcode",
+        "project-file",
+        "build-system"
+      ],
+      "complexity": "complex",
+      "languageNotes": "Generated/maintained by Xcode; merge conflicts here are notorious and usually demand a hand resolution."
+    },
+    {
+      "id": "file:ios/Runner.xcodeproj/project.xcworkspace/contents.xcworkspacedata",
+      "type": "file",
+      "name": "contents.xcworkspacedata",
+      "filePath": "ios/Runner.xcodeproj/project.xcworkspace/contents.xcworkspacedata",
+      "summary": "Implicit workspace descriptor inside the .xcodeproj that lists the single self file ref, allowing Xcode to open the project as a workspace.",
+      "tags": [
+        "ios",
+        "xcode",
+        "workspace",
+        "project-metadata"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "config:ios/Runner.xcodeproj/project.xcworkspace/xcshareddata/IDEWorkspaceChecks.plist",
+      "type": "config",
+      "name": "IDEWorkspaceChecks.plist",
+      "filePath": "ios/Runner.xcodeproj/project.xcworkspace/xcshareddata/IDEWorkspaceChecks.plist",
+      "summary": "Xcode IDE workspace-check state plist that suppresses repeated 32-bit warning prompts on workspace open.",
+      "tags": [
+        "configuration",
+        "ios",
+        "xcode",
+        "ide-state"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:ios/Runner.xcodeproj/project.xcworkspace/xcshareddata/WorkspaceSettings.xcsettings",
+      "type": "file",
+      "name": "WorkspaceSettings.xcsettings",
+      "filePath": "ios/Runner.xcodeproj/project.xcworkspace/xcshareddata/WorkspaceSettings.xcsettings",
+      "summary": "Per-workspace Xcode settings plist that disables the upgrade-check dialog and pins shared workspace preferences.",
+      "tags": [
+        "ios",
+        "xcode",
+        "workspace",
+        "ide-state"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:ios/Runner.xcodeproj/xcshareddata/xcschemes/Runner.xcscheme",
+      "type": "file",
+      "name": "Runner.xcscheme",
+      "filePath": "ios/Runner.xcodeproj/xcshareddata/xcschemes/Runner.xcscheme",
+      "summary": "Shared Xcode scheme for the Runner target defining build, test, run, profile, analyze, and archive actions for the mesh_rag iOS app.",
+      "tags": [
+        "ios",
+        "xcode",
+        "scheme",
+        "build-system"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "file:ios/Runner.xcworkspace/contents.xcworkspacedata",
+      "type": "file",
+      "name": "contents.xcworkspacedata",
+      "filePath": "ios/Runner.xcworkspace/contents.xcworkspacedata",
+      "summary": "Top-level Xcode workspace descriptor that includes the Runner.xcodeproj and the Pods.xcodeproj generated by CocoaPods so Xcode opens both together.",
+      "tags": [
+        "ios",
+        "xcode",
+        "workspace",
+        "cocoapods"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "config:ios/Runner.xcworkspace/xcshareddata/IDEWorkspaceChecks.plist",
+      "type": "config",
+      "name": "IDEWorkspaceChecks.plist",
+      "filePath": "ios/Runner.xcworkspace/xcshareddata/IDEWorkspaceChecks.plist",
+      "summary": "Xcode IDE workspace-check state for the top-level Runner.xcworkspace, suppressing the 32-bit upgrade warning on open.",
+      "tags": [
+        "configuration",
+        "ios",
+        "xcode",
+        "ide-state"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:ios/Runner.xcworkspace/xcshareddata/WorkspaceSettings.xcsettings",
+      "type": "file",
+      "name": "WorkspaceSettings.xcsettings",
+      "filePath": "ios/Runner.xcworkspace/xcshareddata/WorkspaceSettings.xcsettings",
+      "summary": "Workspace-level Xcode settings for the Runner workspace, disabling the upgrade-check dialog for the combined Runner + Pods workspace.",
+      "tags": [
+        "ios",
+        "xcode",
+        "workspace",
+        "ide-state"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:ios/Runner/AppDelegate.swift",
+      "type": "file",
+      "name": "AppDelegate.swift",
+      "filePath": "ios/Runner/AppDelegate.swift",
+      "summary": "iOS application delegate that boots the FlutterAppDelegate and registers the generated Flutter plugins on launch — the native entry point into the Flutter engine.",
+      "tags": [
+        "entry-point",
+        "ios",
+        "swift",
+        "flutter",
+        "app-delegate"
+      ],
+      "complexity": "simple",
+      "languageNotes": "Uses @main + @objc to expose the AppDelegate to UIKit; GeneratedPluginRegistrant is regenerated by `flutter pub get`."
+    },
+    {
+      "id": "class:ios/Runner/AppDelegate.swift:AppDelegate",
+      "type": "class",
+      "name": "AppDelegate",
+      "filePath": "ios/Runner/AppDelegate.swift",
+      "lineRange": [
+        5,
+        13
+      ],
+      "summary": "Subclass of FlutterAppDelegate that overrides didFinishLaunchingWithOptions to register generated Flutter plugins before delegating to the superclass.",
+      "tags": [
+        "entry-point",
+        "ios",
+        "app-delegate",
+        "flutter-plugin"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "config:ios/Runner/Assets.xcassets/AppIcon.appiconset/Contents.json",
+      "type": "config",
+      "name": "Contents.json",
+      "filePath": "ios/Runner/Assets.xcassets/AppIcon.appiconset/Contents.json",
+      "summary": "App icon asset catalog manifest enumerating the icon variants (iPhone, iPad, App Store) at every required scale and idiom for iOS.",
+      "tags": [
+        "configuration",
+        "ios",
+        "assets",
+        "app-icon"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "config:ios/Runner/Assets.xcassets/LaunchImage.imageset/Contents.json",
+      "type": "config",
+      "name": "Contents.json",
+      "filePath": "ios/Runner/Assets.xcassets/LaunchImage.imageset/Contents.json",
+      "summary": "Launch image asset catalog manifest mapping LaunchImage PNGs to 1x/2x/3x scales for the iOS launch screen.",
+      "tags": [
+        "configuration",
+        "ios",
+        "assets",
+        "launch-image"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "document:ios/Runner/Assets.xcassets/LaunchImage.imageset/README.md",
+      "type": "document",
+      "name": "README.md",
+      "filePath": "ios/Runner/Assets.xcassets/LaunchImage.imageset/README.md",
+      "summary": "Brief note explaining how to replace the launch screen images in this image set — Flutter boilerplate guidance left in place.",
+      "tags": [
+        "documentation",
+        "ios",
+        "launch-image",
+        "boilerplate"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:ios/Runner/Base.lproj/LaunchScreen.storyboard",
+      "type": "file",
+      "name": "LaunchScreen.storyboard",
+      "filePath": "ios/Runner/Base.lproj/LaunchScreen.storyboard",
+      "summary": "Interface Builder storyboard rendered while iOS loads the Flutter engine, displaying the LaunchImage asset on a single view controller.",
+      "tags": [
+        "ios",
+        "storyboard",
+        "launch-screen",
+        "ui"
+      ],
+      "complexity": "simple",
+      "languageNotes": "Edited via Xcode's Interface Builder; the XML schema is opaque and not meant for hand-editing."
+    },
+    {
+      "id": "file:ios/Runner/Base.lproj/Main.storyboard",
+      "type": "file",
+      "name": "Main.storyboard",
+      "filePath": "ios/Runner/Base.lproj/Main.storyboard",
+      "summary": "Main storyboard containing the FlutterViewController shell that hosts the Flutter UI once the engine is ready.",
+      "tags": [
+        "ios",
+        "storyboard",
+        "flutter-view-controller",
+        "ui"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "config:ios/Runner/Info.plist",
+      "type": "config",
+      "name": "Info.plist",
+      "filePath": "ios/Runner/Info.plist",
+      "summary": "iOS application Info.plist declaring bundle metadata, supported orientations, launch storyboard, and any privacy usage strings required by Apple.",
+      "tags": [
+        "configuration",
+        "ios",
+        "plist",
+        "app-metadata"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "file:ios/Runner/Runner-Bridging-Header.h",
+      "type": "file",
+      "name": "Runner-Bridging-Header.h",
+      "filePath": "ios/Runner/Runner-Bridging-Header.h",
+      "summary": "Swift-Objective-C bridging header for the Runner target — currently empty, kept in place as a hook for adding ObjC imports the Swift code needs.",
+      "tags": [
+        "ios",
+        "swift",
+        "objc-bridging",
+        "boilerplate"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:ios/RunnerTests/RunnerTests.swift",
+      "type": "file",
+      "name": "RunnerTests.swift",
+      "filePath": "ios/RunnerTests/RunnerTests.swift",
+      "summary": "Stub XCTest case for the Runner target left in place as a hook for native-side tests; contains only a placeholder testExample function.",
+      "tags": [
+        "test",
+        "ios",
+        "swift",
+        "xctest",
+        "boilerplate"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "service:justfile",
+      "type": "service",
+      "name": "justfile",
+      "filePath": "justfile",
+      "summary": "Just task runner manifest centralizing all repo workflows: C4 dashboard build, determinism harness, mesh_rag app runs (per phone role), holdout 3/4/7 runners, Ditto wipe, demo overlay flags, and seed-embedding bake/pull cycles.",
+      "tags": [
+        "infrastructure",
+        "build-system",
+        "task-runner",
+        "developer-workflow",
+        "ci-cd"
+      ],
+      "complexity": "complex",
+      "languageNotes": "Uses `set dotenv-load` so every recipe reads .env credentials; per-recipe `working-directory` attributes chdir for the harness subproject."
+    },
+    {
+      "id": "file:lib/holdouts/cold_load_timer.dart",
+      "type": "file",
+      "name": "cold_load_timer.dart",
+      "filePath": "lib/holdouts/cold_load_timer.dart",
+      "summary": "Holdout 5 (R5) cold-load instrumentation that records elapsed milliseconds at named boot-phase boundaries (Ditto init, model download, first card displayed) and emits a JSON-shaped report for the 10-second app-launch budget.",
+      "tags": [
+        "instrumentation",
+        "holdout",
+        "performance",
+        "telemetry",
+        "singleton",
+        "tested"
+      ],
+      "complexity": "moderate",
+      "languageNotes": "Idiomatic Dart singleton (`._()` + static `instance`); `@visibleForTesting` exposes `reset` and the pure `buildReport` builder so tests avoid Stopwatch flakiness."
+    },
+    {
+      "id": "class:lib/holdouts/cold_load_timer.dart:ColdLoadTimer",
+      "type": "class",
+      "name": "ColdLoadTimer",
+      "filePath": "lib/holdouts/cold_load_timer.dart",
+      "lineRange": [
+        48,
+        140
+      ],
+      "summary": "Singleton timer that tracks app-launch phases against the R5 ≤10s budget; first-mark-wins semantics keep retries from clobbering original timings, and a pure static buildReport makes the JSON shape unit-testable.",
+      "tags": [
+        "singleton",
+        "instrumentation",
+        "holdout",
+        "performance"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "file:lib/holdouts/idempotence_check.dart",
+      "type": "file",
+      "name": "idempotence_check.dart",
+      "filePath": "lib/holdouts/idempotence_check.dart",
+      "summary": "Pure-function snapshot diff that verifies Holdouts R3 (sync idempotence) and R4 (bidirectional CRDT merge) over StudyNote snapshots; returns JSON-shaped verdicts consumed by the on-device runner.",
+      "tags": [
+        "holdout",
+        "crdt-verification",
+        "utility",
+        "test-harness",
+        "tested"
+      ],
+      "complexity": "complex",
+      "languageNotes": "Math-only file — never imports ditto_live so the verdict logic stays unit-testable without a BLE handshake."
+    },
+    {
+      "id": "class:lib/holdouts/idempotence_check.dart:ConvergenceResult",
+      "type": "class",
+      "name": "ConvergenceResult",
+      "filePath": "lib/holdouts/idempotence_check.dart",
+      "lineRange": [
+        65,
+        104
+      ],
+      "summary": "Immutable R4 verdict bundle: union-size expectation, per-device sizes, missing-id lists, and content-diverged ids — serialized as JSON for CI consumption.",
+      "tags": [
+        "data-model",
+        "holdout",
+        "verdict"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "class:lib/holdouts/idempotence_check.dart:IdempotenceResult",
+      "type": "class",
+      "name": "IdempotenceResult",
+      "filePath": "lib/holdouts/idempotence_check.dart",
+      "lineRange": [
+        107,
+        146
+      ],
+      "summary": "Immutable R3 verdict bundle: id-set adds/removes, content-changed ids, and top-k drift count for the fixture query after a re-meet.",
+      "tags": [
+        "data-model",
+        "holdout",
+        "verdict"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "class:lib/holdouts/idempotence_check.dart:IdempotenceCheck",
+      "type": "class",
+      "name": "IdempotenceCheck",
+      "filePath": "lib/holdouts/idempotence_check.dart",
+      "lineRange": [
+        148,
+        276
+      ],
+      "summary": "Static facade exposing detectConvergence (R4), detectIdempotence (R3), and buildReport — all pure functions over snapshots.",
+      "tags": [
+        "utility",
+        "holdout",
+        "verdict"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "function:lib/holdouts/idempotence_check.dart:detectConvergence",
+      "type": "function",
+      "name": "detectConvergence",
+      "filePath": "lib/holdouts/idempotence_check.dart",
+      "lineRange": [
+        157,
+        202
+      ],
+      "summary": "R4 verdict: checks both post-meet snapshots contain the full pre-meet union AND that shared-id documents are structurally equal across replicas.",
+      "tags": [
+        "holdout",
+        "crdt-verification",
+        "convergence"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "function:lib/holdouts/idempotence_check.dart:detectIdempotence",
+      "type": "function",
+      "name": "detectIdempotence",
+      "filePath": "lib/holdouts/idempotence_check.dart",
+      "lineRange": [
+        216,
+        254
+      ],
+      "summary": "R3 verdict: detects whether a re-meet with no authoring changed the id-set, per-id content, or ordered top-k for a fixture query.",
+      "tags": [
+        "holdout",
+        "idempotence",
+        "drift-detection"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "file:lib/main.dart",
+      "type": "file",
+      "name": "main.dart",
+      "filePath": "lib/main.dart",
+      "summary": "Application entry point; runs the cold-load instrumentation, requests mesh permissions, and drives the BootScreen state machine through Ditto/Cactus/embedding init before swapping to QueryScreen.",
+      "tags": [
+        "entry-point",
+        "boot-sequence",
+        "ui",
+        "instrumentation",
+        "tested"
+      ],
+      "complexity": "complex",
+      "languageNotes": "Reads PHONE_ROLE, INITIAL_TOPIC, and BAKE_EMBEDDINGS via String/bool.fromEnvironment for --dart-define-driven configuration."
+    },
+    {
+      "id": "function:lib/main.dart:main",
+      "type": "function",
+      "name": "main",
+      "filePath": "lib/main.dart",
+      "lineRange": [
+        59,
+        69
+      ],
+      "summary": "Starts cold-load instrumentation early, initializes the Flutter binding, requests mesh permissions, and hands off to runApp.",
+      "tags": [
+        "entry-point",
+        "boot"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "class:lib/main.dart:MeshRagApp",
+      "type": "class",
+      "name": "MeshRagApp",
+      "filePath": "lib/main.dart",
+      "lineRange": [
+        90,
+        105
+      ],
+      "summary": "Root MaterialApp; configures Material 3 indigo theme and mounts BootScreen as the initial home.",
+      "tags": [
+        "component",
+        "ui-root",
+        "theme"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "class:lib/main.dart:BootScreen",
+      "type": "class",
+      "name": "BootScreen",
+      "filePath": "lib/main.dart",
+      "lineRange": [
+        125,
+        309
+      ],
+      "summary": "Stateful screen that walks the boot phase machine (Ditto init → sync → seed load → Cactus init → embedding backfill) and swaps in QueryScreen once ready; surfaces typed failure when PHONE_ROLE is unset.",
+      "tags": [
+        "component",
+        "boot-sequence",
+        "state-machine"
+      ],
+      "complexity": "complex"
+    },
+    {
+      "id": "file:lib/models/study_note.dart",
+      "type": "file",
+      "name": "study_note.dart",
+      "filePath": "lib/models/study_note.dart",
+      "summary": "Canonical StudyNote shape — the G-Set unit synced by Ditto, with content-addressed UUIDv5 ids and an application-layer OR-Set for acceptedBy.",
+      "tags": [
+        "data-model",
+        "crdt",
+        "type-definition",
+        "serialization",
+        "tested"
+      ],
+      "complexity": "complex",
+      "languageNotes": "All collection fields wrapped in List.unmodifiable so two replicas converging on the same set produce bitwise-identical serialization."
+    },
+    {
+      "id": "class:lib/models/study_note.dart:StudyNote",
+      "type": "class",
+      "name": "StudyNote",
+      "filePath": "lib/models/study_note.dart",
+      "lineRange": [
+        36,
+        269
+      ],
+      "summary": "Immutable study note value object; provides UUIDv5-keyed seed/clone factories, fromDittoValue/toDittoDoc round-trip, copyWith, and OR-Set add/remove on acceptedBy.",
+      "tags": [
+        "data-model",
+        "crdt",
+        "value-object",
+        "uuid"
+      ],
+      "complexity": "complex"
+    },
+    {
+      "id": "file:lib/prompts/dql_queries.dart",
+      "type": "file",
+      "name": "dql_queries.dart",
+      "filePath": "lib/prompts/dql_queries.dart",
+      "summary": "Central DQL string constants for the notes collection — subscription, selectAll/byId, upsert with ON ID CONFLICT, and per-row setEmbedding update.",
+      "tags": [
+        "utility",
+        "dql",
+        "constants",
+        "database"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "class:lib/prompts/dql_queries.dart:NotesQueries",
+      "type": "class",
+      "name": "NotesQueries",
+      "filePath": "lib/prompts/dql_queries.dart",
+      "lineRange": [
+        10,
+        48
+      ],
+      "summary": "Abstract final class holding the canonical DQL strings for the notes collection so schema migrations only need to touch this file.",
+      "tags": [
+        "utility",
+        "dql",
+        "constants"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:lib/prompts/flashcard_gen.dart",
+      "type": "file",
+      "name": "flashcard_gen.dart",
+      "filePath": "lib/prompts/flashcard_gen.dart",
+      "summary": "Builds the Q/A/SOURCE prompt for the on-device LLM and tolerantly parses streaming output back into Flashcards — absorbs Qwen 2.5 quirks like markdown emphasis, <think> blocks, fullwidth punctuation, and mid-stream truncation.",
+      "tags": [
+        "prompt-engineering",
+        "parser",
+        "small-model",
+        "utility",
+        "tested"
+      ],
+      "complexity": "complex",
+      "languageNotes": "The label regex includes CJK fullwidth punctuation because Qwen 2.5 sometimes drifts into fullwidth colons mid-generation."
+    },
+    {
+      "id": "class:lib/prompts/flashcard_gen.dart:FlashcardGenPrompt",
+      "type": "class",
+      "name": "FlashcardGenPrompt",
+      "filePath": "lib/prompts/flashcard_gen.dart",
+      "lineRange": [
+        39,
+        321
+      ],
+      "summary": "Static facade exposing build (assembles system + user ChatMessages) and parse (line-walks Q/A/SOURCE labels into Flashcards) with full small-model tolerance.",
+      "tags": [
+        "prompt-engineering",
+        "parser",
+        "utility"
+      ],
+      "complexity": "complex"
+    },
+    {
+      "id": "function:lib/prompts/flashcard_gen.dart:build",
+      "type": "function",
+      "name": "build",
+      "filePath": "lib/prompts/flashcard_gen.dart",
+      "lineRange": [
+        53,
+        71
+      ],
+      "summary": "Assembles the system + user ChatMessage pair for a flashcard generation call, including up to three up-rated few-shot exemplars.",
+      "tags": [
+        "prompt-engineering",
+        "utility"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:lib/prompts/flashcard_gen.dart:parse",
+      "type": "function",
+      "name": "parse",
+      "filePath": "lib/prompts/flashcard_gen.dart",
+      "lineRange": [
+        160,
+        228
+      ],
+      "summary": "Tolerant line-walking parser that strips <think> blocks then accumulates Q/A/SOURCE sections with multi-line continuation; drops incomplete trailing cards on truncation.",
+      "tags": [
+        "parser",
+        "small-model",
+        "tolerance"
+      ],
+      "complexity": "complex"
+    },
+    {
+      "id": "file:lib/services/cactus_service.dart",
+      "type": "file",
+      "name": "cactus_service.dart",
+      "filePath": "lib/services/cactus_service.dart",
+      "summary": "Singleton wrapping two CactusLM instances (qwen3-1.7 completion + qwen3-0.6 embedding); handles staged download/initialize with progress callbacks and gates completions with default LaTeX stop sequences.",
+      "tags": [
+        "service",
+        "singleton",
+        "llm",
+        "embedding"
+      ],
+      "complexity": "complex",
+      "languageNotes": "Stop sequences are pinned at the service layer (structural gate) rather than detected at parse — see feedback_structural_gates."
+    },
+    {
+      "id": "class:lib/services/cactus_service.dart:CactusService",
+      "type": "class",
+      "name": "CactusService",
+      "filePath": "lib/services/cactus_service.dart",
+      "lineRange": [
+        67,
+        248
+      ],
+      "summary": "Singleton facade over CactusLM completion + embedding; exposes initialize, embed/embedF32, and complete/completeAll streams with CompletionMode.local pinned for the no-cloud invariant.",
+      "tags": [
+        "service",
+        "singleton",
+        "llm",
+        "embedding"
+      ],
+      "complexity": "complex"
+    },
+    {
+      "id": "function:lib/services/cactus_service.dart:initialize",
+      "type": "function",
+      "name": "initialize",
+      "filePath": "lib/services/cactus_service.dart",
+      "lineRange": [
+        108,
+        157
+      ],
+      "summary": "Idempotently downloads and initializes the completion and embedding model contexts, marking cold-load timer phases and forwarding progress to the BootScreen.",
+      "tags": [
+        "boot",
+        "model-loading",
+        "instrumentation"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "function:lib/services/cactus_service.dart:embed",
+      "type": "function",
+      "name": "embed",
+      "filePath": "lib/services/cactus_service.dart",
+      "lineRange": [
+        167,
+        179
+      ],
+      "summary": "Embeds a non-empty text string via the qwen3-0.6 head and records the embedding dimension for downstream mid-corpus-model-swap guards.",
+      "tags": [
+        "embedding",
+        "service"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:lib/services/cactus_service.dart:complete",
+      "type": "function",
+      "name": "complete",
+      "filePath": "lib/services/cactus_service.dart",
+      "lineRange": [
+        198,
+        216
+      ],
+      "summary": "Streams a completion for the given messages with CompletionMode.local pinned and default LaTeX stop sequences merged with caller-supplied ones.",
+      "tags": [
+        "llm",
+        "streaming",
+        "service"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:lib/services/ditto_service.dart",
+      "type": "file",
+      "name": "ditto_service.dart",
+      "filePath": "lib/services/ditto_service.dart",
+      "summary": "Singleton owning the Ditto instance; wires BLE + LAN + AWDL transports in small-peers-only mode, exposes typed CRUD over StudyNote, and broadcasts remote-peer counts for the mesh-status pill.",
+      "tags": [
+        "service",
+        "singleton",
+        "crdt",
+        "ditto",
+        "data-access"
+      ],
+      "complexity": "complex"
+    },
+    {
+      "id": "class:lib/services/ditto_service.dart:DittoService",
+      "type": "class",
+      "name": "DittoService",
+      "filePath": "lib/services/ditto_service.dart",
+      "lineRange": [
+        29,
+        237
+      ],
+      "summary": "Singleton facade over the Ditto instance with initialize/startSync, typed upsertNote/queryAll/queryWithEmbedding/setEmbedding, peer-count broadcast, and a live notes observer.",
+      "tags": [
+        "service",
+        "singleton",
+        "crdt",
+        "data-access"
+      ],
+      "complexity": "complex"
+    },
+    {
+      "id": "function:lib/services/ditto_service.dart:initialize",
+      "type": "function",
+      "name": "initialize",
+      "filePath": "lib/services/ditto_service.dart",
+      "lineRange": [
+        63,
+        105
+      ],
+      "summary": "Validates DITTO_APP_ID/LICENSE env vars, opens Ditto in small-peers-only mode, configures BLE/LAN/AWDL transports, and registers the presence observer.",
+      "tags": [
+        "boot",
+        "ditto",
+        "transport"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "function:lib/services/ditto_service.dart:queryAll",
+      "type": "function",
+      "name": "queryAll",
+      "filePath": "lib/services/ditto_service.dart",
+      "lineRange": [
+        149,
+        155
+      ],
+      "summary": "Materializes the full notes collection as typed StudyNotes via SELECT * FROM notes.",
+      "tags": [
+        "query",
+        "data-access"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:lib/services/ditto_service.dart:subscribeToNotes",
+      "type": "function",
+      "name": "subscribeToNotes",
+      "filePath": "lib/services/ditto_service.dart",
+      "lineRange": [
+        202,
+        213
+      ],
+      "summary": "Registers a StoreObserver that forwards parsed StudyNote lists to the caller for live UI updates on the notes tab.",
+      "tags": [
+        "observer",
+        "data-access",
+        "ui-integration"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:lib/services/retrieval_service.dart",
+      "type": "file",
+      "name": "retrieval_service.dart",
+      "filePath": "lib/services/retrieval_service.dart",
+      "summary": "Singleton owning the retrieval hot path: ensureEmbeddings backfill, cosine top-k with deterministic tie-break, entity-mention grounding gate, and the generateFlashcards event stream that drives Stage 1 UI.",
+      "tags": [
+        "service",
+        "singleton",
+        "retrieval",
+        "rag",
+        "grounding",
+        "tested"
+      ],
+      "complexity": "complex",
+      "languageNotes": "Pure-math helpers (normalize, dot, rankTopK) are static + visibleForTesting so determinism (R2) can be re-asserted at the unit level."
+    },
+    {
+      "id": "class:lib/services/retrieval_service.dart:RetrievedNote",
+      "type": "class",
+      "name": "RetrievedNote",
+      "filePath": "lib/services/retrieval_service.dart",
+      "lineRange": [
+        42,
+        50
+      ],
+      "summary": "Lightweight ranked-result wrapper carrying a StudyNote and its cosine score.",
+      "tags": [
+        "data-model",
+        "retrieval"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "class:lib/services/retrieval_service.dart:Flashcard",
+      "type": "class",
+      "name": "Flashcard",
+      "filePath": "lib/services/retrieval_service.dart",
+      "lineRange": [
+        59,
+        68
+      ],
+      "summary": "Immutable Q/A flashcard with sourceNoteIds attribution — the contract shared by the generator and the swipeable card UI.",
+      "tags": [
+        "data-model",
+        "flashcard"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "class:lib/services/retrieval_service.dart:FlashcardEvent",
+      "type": "class",
+      "name": "FlashcardEvent",
+      "filePath": "lib/services/retrieval_service.dart",
+      "lineRange": [
+        74,
+        102
+      ],
+      "summary": "Sealed event hierarchy for the generateFlashcards stream: Retrieved, Partial, Cards, Done — enforces switch exhaustiveness at every call site.",
+      "tags": [
+        "data-model",
+        "event",
+        "sealed-class"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "class:lib/services/retrieval_service.dart:RetrievalService",
+      "type": "class",
+      "name": "RetrievalService",
+      "filePath": "lib/services/retrieval_service.dart",
+      "lineRange": [
+        104,
+        761
+      ],
+      "summary": "Singleton coordinating ensureEmbeddings, embedQuery title-casing, brute-force cosine topK with minScore + entity-mention gates, and the generateFlashcards event-stream pipeline with cleanCards post-processing.",
+      "tags": [
+        "service",
+        "singleton",
+        "rag",
+        "grounding"
+      ],
+      "complexity": "complex"
+    },
+    {
+      "id": "function:lib/services/retrieval_service.dart:mentionsEntity",
+      "type": "function",
+      "name": "mentionsEntity",
+      "filePath": "lib/services/retrieval_service.dart",
+      "lineRange": [
+        206,
+        215
+      ],
+      "summary": "Substring grounding check: returns true iff the topic appears (case-insensitively) anywhere in the note's topic/body/tags.",
+      "tags": [
+        "grounding",
+        "filter",
+        "rag"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:lib/services/retrieval_service.dart:backfillCardSources",
+      "type": "function",
+      "name": "backfillCardSources",
+      "filePath": "lib/services/retrieval_service.dart",
+      "lineRange": [
+        336,
+        368
+      ],
+      "summary": "Repairs missing SOURCE attribution on cards by either single-retrieval assignment or content-matching against retrieved note topics.",
+      "tags": [
+        "rag",
+        "attribution",
+        "post-processing"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "function:lib/services/retrieval_service.dart:cleanCards",
+      "type": "function",
+      "name": "cleanCards",
+      "filePath": "lib/services/retrieval_service.dart",
+      "lineRange": [
+        375,
+        413
+      ],
+      "summary": "Six-stage post-parse cleanup: on-topic, reasoning-leak, answer-length, citations-required, dedupe, cap-at-N — each stage absorbs a documented small-model failure mode.",
+      "tags": [
+        "rag",
+        "post-processing",
+        "small-model"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "function:lib/services/retrieval_service.dart:ensureEmbeddings",
+      "type": "function",
+      "name": "ensureEmbeddings",
+      "filePath": "lib/services/retrieval_service.dart",
+      "lineRange": [
+        424,
+        439
+      ],
+      "summary": "Idempotent backfill loop that embeds every note whose embedding column is empty, calling onProgress per-note for the BootScreen subLabel.",
+      "tags": [
+        "boot",
+        "embedding",
+        "rag"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:lib/services/retrieval_service.dart:topK",
+      "type": "function",
+      "name": "topK",
+      "filePath": "lib/services/retrieval_service.dart",
+      "lineRange": [
+        499,
+        544
+      ],
+      "summary": "Embeds the query, materializes the corpus, runs brute-force cosine ranking with minScore + dimension guard, and emits a diagnostic logcat shape in debug builds.",
+      "tags": [
+        "retrieval",
+        "cosine",
+        "rag"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "function:lib/services/retrieval_service.dart:rankTopK",
+      "type": "function",
+      "name": "rankTopK",
+      "filePath": "lib/services/retrieval_service.dart",
+      "lineRange": [
+        557,
+        578
+      ],
+      "summary": "Pure-math cosine ranker with (score desc, _id asc) tie-break — UUIDv5 lex-stable so two devices produce bitwise-identical orderings.",
+      "tags": [
+        "retrieval",
+        "cosine",
+        "determinism"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "function:lib/services/retrieval_service.dart:generateFlashcards",
+      "type": "function",
+      "name": "generateFlashcards",
+      "filePath": "lib/services/retrieval_service.dart",
+      "lineRange": [
+        599,
+        728
+      ],
+      "summary": "Async generator that runs topK + entity gate, short-circuits to empty when retrieval is empty (grounding gate), builds the prompt, streams Cactus chunks, and emits parsed/attributed/cleaned cards before Done.",
+      "tags": [
+        "rag",
+        "streaming",
+        "generation",
+        "grounding"
+      ],
+      "complexity": "complex"
+    },
+    {
+      "id": "file:lib/services/seed_loader.dart",
+      "type": "file",
+      "name": "seed_loader.dart",
+      "filePath": "lib/services/seed_loader.dart",
+      "summary": "Reads the per-role seed_notes_<role>.json asset and idempotently upserts each entry via DittoService; pre-baked embeddings are passed through verbatim to skip the cold-load backfill.",
+      "tags": [
+        "service",
+        "singleton",
+        "seed",
+        "data-loading",
+        "tested"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "class:lib/services/seed_loader.dart:SeedLoader",
+      "type": "class",
+      "name": "SeedLoader",
+      "filePath": "lib/services/seed_loader.dart",
+      "lineRange": [
+        37,
+        118
+      ],
+      "summary": "Singleton that exposes role/assetPath/selfContributor accessors plus loadAndInsert (asset → parseSeedJson → upsert loop) and the pure-function parseSeedJson helper.",
+      "tags": [
+        "service",
+        "singleton",
+        "seed"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "function:lib/services/seed_loader.dart:loadAndInsert",
+      "type": "function",
+      "name": "loadAndInsert",
+      "filePath": "lib/services/seed_loader.dart",
+      "lineRange": [
+        59,
+        66
+      ],
+      "summary": "Loads the role-specific seed asset, parses it to StudyNotes, and upserts each via DittoService — re-runs are no-ops by UUIDv5 + ON ID CONFLICT.",
+      "tags": [
+        "seed",
+        "boot",
+        "data-loading"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:lib/services/seed_loader.dart:parseSeedJson",
+      "type": "function",
+      "name": "parseSeedJson",
+      "filePath": "lib/services/seed_loader.dart",
+      "lineRange": [
+        75,
+        107
+      ],
+      "summary": "Pure JSON-to-StudyNote parser with optional pre-baked embeddings and strict required-field validation — testable without a Flutter binding.",
+      "tags": [
+        "parser",
+        "seed",
+        "validation"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "file:lib/widgets/demo_overlay.dart",
+      "type": "file",
+      "name": "demo_overlay.dart",
+      "filePath": "lib/widgets/demo_overlay.dart",
+      "summary": "Top-right demonstrator HUD showing peer count, note count, and last-query latency; gated by --dart-define=DEMO_OVERLAY=true and renders SizedBox.shrink() otherwise.",
+      "tags": [
+        "component",
+        "ui",
+        "instrumentation",
+        "demo",
+        "tested"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "class:lib/widgets/demo_overlay.dart:DemoOverlay",
+      "type": "class",
+      "name": "DemoOverlay",
+      "filePath": "lib/widgets/demo_overlay.dart",
+      "lineRange": [
+        33,
+        108
+      ],
+      "summary": "Stack-positioned overlay widget for the demonstrator-side HUD; renders peer/note/latency lines in monospace when the dart-define flag is on.",
+      "tags": [
+        "component",
+        "ui",
+        "demo"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:lib/widgets/flashcards_tab.dart",
+      "type": "file",
+      "name": "flashcards_tab.dart",
+      "filePath": "lib/widgets/flashcards_tab.dart",
+      "summary": "Topic input → streaming flashcard generation → swipeable card stack UI; consumes a Stream<FlashcardEvent>, persists generation history, and feeds up-rated cards back as few-shot exemplars.",
+      "tags": [
+        "component",
+        "ui",
+        "flashcard",
+        "streaming",
+        "tested"
+      ],
+      "complexity": "complex",
+      "languageNotes": "Largest UI file in the project (876 lines) with multiple private widget classes including TopicInputBar, GeneratingIndicator, GenerationBlock, and the per-card flip animation."
+    },
+    {
+      "id": "class:lib/widgets/flashcards_tab.dart:FlashcardsTab",
+      "type": "class",
+      "name": "FlashcardsTab",
+      "filePath": "lib/widgets/flashcards_tab.dart",
+      "lineRange": [
+        37,
+        66
+      ],
+      "summary": "Stateful widget that owns the topic field, the active FlashcardEvent subscription, generation history, and the up-rated exemplar pool.",
+      "tags": [
+        "component",
+        "ui",
+        "flashcard"
+      ],
+      "complexity": "complex"
+    },
+    {
+      "id": "file:lib/widgets/mesh_status_widget.dart",
+      "type": "file",
+      "name": "mesh_status_widget.dart",
+      "filePath": "lib/widgets/mesh_status_widget.dart",
+      "summary": "AppBar trailing pill that surfaces mesh-alone vs N-peers state to the audience — gray → green color flip is the visual signal, no pulse animation.",
+      "tags": [
+        "component",
+        "ui",
+        "mesh-status",
+        "tested"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "class:lib/widgets/mesh_status_widget.dart:MeshStatusWidget",
+      "type": "class",
+      "name": "MeshStatusWidget",
+      "filePath": "lib/widgets/mesh_status_widget.dart",
+      "lineRange": [
+        19,
+        106
+      ],
+      "summary": "Stateful pill that subscribes to a peerCount stream and re-paints with semantic label and camera-legible monospace styling.",
+      "tags": [
+        "component",
+        "ui",
+        "mesh-status",
+        "accessibility"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:lib/widgets/notes_tab.dart",
+      "type": "file",
+      "name": "notes_tab.dart",
+      "filePath": "lib/widgets/notes_tab.dart",
+      "summary": "Live notes ListView grouped by contributor (self-first), with long-press accept-peer-note that writes through the OR-Set on the underlying StudyNote.",
+      "tags": [
+        "component",
+        "ui",
+        "notes",
+        "crdt",
+        "tested"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "class:lib/widgets/notes_tab.dart:NotesTab",
+      "type": "class",
+      "name": "NotesTab",
+      "filePath": "lib/widgets/notes_tab.dart",
+      "lineRange": [
+        24,
+        114
+      ],
+      "summary": "Stateful widget subscribing to a notes stream; renders a contributor-grouped ListView with the self group pinned first.",
+      "tags": [
+        "component",
+        "ui",
+        "notes"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "file:lib/widgets/query_screen.dart",
+      "type": "file",
+      "name": "query_screen.dart",
+      "filePath": "lib/widgets/query_screen.dart",
+      "summary": "Two-tab Scaffold (Notes + Flashcards) in an IndexedStack with the mesh-status pill in the AppBar; the only place that reaches into the singleton DittoService and RetrievalService.",
+      "tags": [
+        "component",
+        "ui",
+        "screen",
+        "entry-point"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "class:lib/widgets/query_screen.dart:QueryScreen",
+      "type": "class",
+      "name": "QueryScreen",
+      "filePath": "lib/widgets/query_screen.dart",
+      "lineRange": [
+        32,
+        171
+      ],
+      "summary": "Live UI screen wiring DittoService observers, the peer-count stream, and the FlashcardsTab generation callback into a Scaffold with bottom navigation.",
+      "tags": [
+        "component",
+        "ui",
+        "screen"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "config:pubspec.yaml",
+      "type": "config",
+      "name": "pubspec.yaml",
+      "filePath": "pubspec.yaml",
+      "summary": "Flutter package manifest pinning the cactus, ditto_live, uuid, path_provider, and permission_handler dependencies plus declaring the seed asset bundle.",
+      "tags": [
+        "configuration",
+        "flutter",
+        "dependencies",
+        "build-system"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "document:README.md",
+      "type": "document",
+      "name": "README.md",
+      "filePath": "README.md",
+      "summary": "Project overview for the Ditto × Cactus Mesh RAG demo — explains the thesis, how to run it, the boot-to-query architecture, small-model quirks the pipeline absorbs, and the original 4-framing brainstorm.",
+      "tags": [
+        "documentation",
+        "entry-point",
+        "overview"
+      ],
+      "complexity": "complex"
+    },
+    {
+      "id": "file:test/boot_screen_test.dart",
+      "type": "file",
+      "name": "boot_screen_test.dart",
+      "filePath": "test/boot_screen_test.dart",
+      "summary": "Smoke test asserting MeshRagApp builds and that an empty PHONE_ROLE surfaces a StateError in the failed-view instead of crashing or silently advancing.",
+      "tags": [
+        "test",
+        "widget-test",
+        "boot"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:test/flashcard_gen_test.dart",
+      "type": "file",
+      "name": "flashcard_gen_test.dart",
+      "filePath": "test/flashcard_gen_test.dart",
+      "summary": "Unit tests covering FlashcardGenPrompt.build/parse plus the post-processing pipeline (cleanCards, backfillCardSources) — pins prompt verbatim and all documented small-model quirks.",
+      "tags": [
+        "test",
+        "unit-test",
+        "prompt-engineering"
+      ],
+      "complexity": "complex"
+    },
+    {
+      "id": "file:test/holdouts/cold_load_timer_test.dart",
+      "type": "file",
+      "name": "cold_load_timer_test.dart",
+      "filePath": "test/holdouts/cold_load_timer_test.dart",
+      "summary": "Unit tests for the ColdLoadTimer (Holdout 5) instrument — start/mark/report behavior and report-shape stability.",
+      "tags": [
+        "test",
+        "unit-test",
+        "holdout",
+        "instrumentation"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "file:test/holdouts/idempotence_check_test.dart",
+      "type": "file",
+      "name": "idempotence_check_test.dart",
+      "filePath": "test/holdouts/idempotence_check_test.dart",
+      "summary": "Unit tests for IdempotenceCheck (R3 + R4) — exercises convergence, divergence, idempotence happy/sad paths, and top-k drift counting.",
+      "tags": [
+        "test",
+        "unit-test",
+        "holdout"
+      ],
+      "complexity": "complex"
+    },
+    {
+      "id": "file:test/retrieval_service_test.dart",
+      "type": "file",
+      "name": "retrieval_service_test.dart",
+      "filePath": "test/retrieval_service_test.dart",
+      "summary": "Large unit test suite covering RetrievalService pure-math (normalize, dot, rankTopK) plus grounding gates, source backfill, and the cleanCards pipeline.",
+      "tags": [
+        "test",
+        "unit-test",
+        "rag"
+      ],
+      "complexity": "complex"
+    },
+    {
+      "id": "file:test/seed_loader_test.dart",
+      "type": "file",
+      "name": "seed_loader_test.dart",
+      "filePath": "test/seed_loader_test.dart",
+      "summary": "Unit tests for SeedLoader.parseSeedJson — round-trip stability, pre-baked embedding pass-through, missing-field errors, and malformed-JSON handling.",
+      "tags": [
+        "test",
+        "unit-test",
+        "seed"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "file:test/study_note_test.dart",
+      "type": "file",
+      "name": "study_note_test.dart",
+      "filePath": "test/study_note_test.dart",
+      "summary": "Unit tests for StudyNote covering UUIDv5 stability, fromDittoValue/toDittoDoc round-trip, OR-Set add/remove idempotence, and clone-from lineage carry-forward.",
+      "tags": [
+        "test",
+        "unit-test",
+        "data-model"
+      ],
+      "complexity": "complex"
+    },
+    {
+      "id": "file:test/widgets/demo_overlay_test.dart",
+      "type": "file",
+      "name": "demo_overlay_test.dart",
+      "filePath": "test/widgets/demo_overlay_test.dart",
+      "summary": "Widget test that locks in the production-default behavior of the U12 DemoOverlay: with the DEMO_OVERLAY dart-define unset, the HUD must render nothing so it cannot leak into audience-visible release builds.",
+      "tags": [
+        "test",
+        "widget-test",
+        "demo-overlay",
+        "release-safety"
+      ],
+      "complexity": "simple",
+      "languageNotes": "Uses `bool.fromEnvironment` semantics; the enabled branch is intentionally not exercised here because it requires a separate compile-time variant."
+    },
+    {
+      "id": "file:test/widgets/flashcards_tab_test.dart",
+      "type": "file",
+      "name": "flashcards_tab_test.dart",
+      "filePath": "test/widgets/flashcards_tab_test.dart",
+      "summary": "Comprehensive widget tests for U10's FlashcardsTab covering empty-topic no-op, happy-path generation, rate-mode history, peer-contributor counting, regenerate-with-saved-examples, flip-state persistence, initial-topic prefill, and latency callback wiring against a fake GenerateFlashcardsFn.",
+      "tags": [
+        "test",
+        "widget-test",
+        "flashcards",
+        "rate-mode",
+        "fake-generator"
+      ],
+      "complexity": "complex",
+      "languageNotes": "Injects a `_FakeGenerator` so tests never touch Cactus or Ditto; covers ~15 scenarios across the FlashcardsTab contract."
+    },
+    {
+      "id": "class:test/widgets/flashcards_tab_test.dart:_FakeGenerator",
+      "type": "class",
+      "name": "_FakeGenerator",
+      "filePath": "test/widgets/flashcards_tab_test.dart",
+      "lineRange": [
+        22,
+        65
+      ],
+      "summary": "Test double that records call count, topics, and savedExamples per invocation and emits a programmable FlashcardEvent stream so widget tests can simulate generation deterministically.",
+      "tags": [
+        "test-double",
+        "fake",
+        "stream",
+        "flashcards"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "file:test/widgets/mesh_status_widget_test.dart",
+      "type": "file",
+      "name": "mesh_status_widget_test.dart",
+      "filePath": "test/widgets/mesh_status_widget_test.dart",
+      "summary": "Widget tests pinning the MeshStatusWidget's three peer-count states (alone / 1 peer / N peers) and the gray-to-green pill color hex values, making the visual contract regression-checked rather than eyeballed.",
+      "tags": [
+        "test",
+        "widget-test",
+        "mesh-status",
+        "color-contract"
+      ],
+      "complexity": "moderate",
+      "languageNotes": "Asserts on exact Material hex colors so any visual refresh requires updating widget and test in the same diff."
+    },
+    {
+      "id": "file:test/widgets/notes_tab_test.dart",
+      "type": "file",
+      "name": "notes_tab_test.dart",
+      "filePath": "test/widgets/notes_tab_test.dart",
+      "summary": "Widget tests for U10's stream-driven NotesTab covering the two on-stage invariants: self's contributor group anchored at top with peers below, and long-press accept invoked only on unaccepted peer notes (self and already-accepted are no-ops).",
+      "tags": [
+        "test",
+        "widget-test",
+        "notes-tab",
+        "or-set"
+      ],
+      "complexity": "moderate",
+      "languageNotes": "Ported from sibling-U10 (e39e3e30); pumps with `initialNotes` populated and an inert stream so no DittoService stub is needed."
+    },
+    {
+      "id": "config:tools/determinism_harness/analysis_options.yaml",
+      "type": "config",
+      "name": "analysis_options.yaml",
+      "filePath": "tools/determinism_harness/analysis_options.yaml",
+      "summary": "Dart analyzer configuration for the determinism_harness sub-app, enabling the recommended `flutter_lints` rule set without project-specific overrides.",
+      "tags": [
+        "configuration",
+        "dart",
+        "lints",
+        "static-analysis"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:tools/determinism_harness/android/app/build.gradle.kts",
+      "type": "file",
+      "name": "build.gradle.kts",
+      "filePath": "tools/determinism_harness/android/app/build.gradle.kts",
+      "summary": "Android app-module Gradle script for the determinism harness, pinning NDK 27 and minSdk 24 to match the main app so Cactus, ditto_live, record, and permission_handler resolve identically across both binaries.",
+      "tags": [
+        "build-system",
+        "gradle",
+        "android",
+        "ndk"
+      ],
+      "complexity": "simple",
+      "languageNotes": "applicationId `com.dittoxcactus.determinism_harness`; release type currently signs with debug keys (placeholder)."
+    },
+    {
+      "id": "config:tools/determinism_harness/android/app/src/debug/AndroidManifest.xml",
+      "type": "config",
+      "name": "AndroidManifest.xml",
+      "filePath": "tools/determinism_harness/android/app/src/debug/AndroidManifest.xml",
+      "summary": "Debug-variant Android manifest overlay for the determinism harness, used by Flutter's `flutter run` flow to permit cleartext traffic and the debug socket.",
+      "tags": [
+        "configuration",
+        "android",
+        "manifest",
+        "debug"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "config:tools/determinism_harness/android/app/src/main/AndroidManifest.xml",
+      "type": "config",
+      "name": "AndroidManifest.xml",
+      "filePath": "tools/determinism_harness/android/app/src/main/AndroidManifest.xml",
+      "summary": "Main Android manifest for the determinism harness app, declaring the FlutterActivity MainActivity, launch theme, and config-change handling so the harness can run alongside the production app on a single device.",
+      "tags": [
+        "configuration",
+        "android",
+        "manifest",
+        "flutter-activity"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:tools/determinism_harness/android/app/src/main/kotlin/com/dittoxcactus/determinism_harness/MainActivity.kt",
+      "type": "file",
+      "name": "MainActivity.kt",
+      "filePath": "tools/determinism_harness/android/app/src/main/kotlin/com/dittoxcactus/determinism_harness/MainActivity.kt",
+      "summary": "Minimal FlutterActivity subclass that boots the Flutter engine for the determinism harness; no native overrides needed because Cactus and the harness itself are pure-Dart consumers of plugin channels.",
+      "tags": [
+        "entry-point",
+        "android",
+        "flutter-activity",
+        "kotlin"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "config:tools/determinism_harness/android/app/src/main/res/drawable-v21/launch_background.xml",
+      "type": "config",
+      "name": "launch_background.xml",
+      "filePath": "tools/determinism_harness/android/app/src/main/res/drawable-v21/launch_background.xml",
+      "summary": "API 21+ launch-screen drawable for the determinism harness — a layer-list backdrop shown by the LaunchTheme until the Flutter engine takes over.",
+      "tags": [
+        "configuration",
+        "android",
+        "resources",
+        "launch-screen"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "config:tools/determinism_harness/android/app/src/main/res/drawable/launch_background.xml",
+      "type": "config",
+      "name": "launch_background.xml",
+      "filePath": "tools/determinism_harness/android/app/src/main/res/drawable/launch_background.xml",
+      "summary": "Default-density launch-screen drawable for the determinism harness, mirroring the API 21+ variant so older devices show the same backdrop while Flutter boots.",
+      "tags": [
+        "configuration",
+        "android",
+        "resources",
+        "launch-screen"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "config:tools/determinism_harness/android/app/src/main/res/values-night/styles.xml",
+      "type": "config",
+      "name": "styles.xml",
+      "filePath": "tools/determinism_harness/android/app/src/main/res/values-night/styles.xml",
+      "summary": "Dark-mode style overrides for the determinism harness, defining the LaunchTheme and NormalTheme so the launch screen and post-boot window match the user's night-mode preference.",
+      "tags": [
+        "configuration",
+        "android",
+        "theme",
+        "dark-mode"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "config:tools/determinism_harness/android/app/src/main/res/values/styles.xml",
+      "type": "config",
+      "name": "styles.xml",
+      "filePath": "tools/determinism_harness/android/app/src/main/res/values/styles.xml",
+      "summary": "Default-mode styles for the determinism harness, declaring LaunchTheme (shown until Flutter initializes) and NormalTheme (shown for the rest of the activity lifetime).",
+      "tags": [
+        "configuration",
+        "android",
+        "theme",
+        "light-mode"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "config:tools/determinism_harness/android/app/src/profile/AndroidManifest.xml",
+      "type": "config",
+      "name": "AndroidManifest.xml",
+      "filePath": "tools/determinism_harness/android/app/src/profile/AndroidManifest.xml",
+      "summary": "Profile-variant Android manifest overlay for the determinism harness, used by `flutter run --profile` to permit the profiler's debug socket.",
+      "tags": [
+        "configuration",
+        "android",
+        "manifest",
+        "profile"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:tools/determinism_harness/android/build.gradle.kts",
+      "type": "file",
+      "name": "build.gradle.kts",
+      "filePath": "tools/determinism_harness/android/build.gradle.kts",
+      "summary": "Root Gradle build script for the determinism harness Android project that relocates the build output one level up and registers a clean task; mirrors the main app's layout so the two builds can coexist on disk.",
+      "tags": [
+        "build-system",
+        "gradle",
+        "android",
+        "root-build"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:tools/determinism_harness/android/gradle.properties",
+      "type": "file",
+      "name": "gradle.properties",
+      "filePath": "tools/determinism_harness/android/gradle.properties",
+      "summary": "Gradle JVM tuning and AndroidX/Jetifier flags for the determinism harness build; the 8G heap matches the main app to keep Cactus and ddito_live's transitive dependencies from OOM'ing the daemon.",
+      "tags": [
+        "configuration",
+        "gradle",
+        "jvm",
+        "androidx"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:tools/determinism_harness/android/gradle/wrapper/gradle-wrapper.properties",
+      "type": "file",
+      "name": "gradle-wrapper.properties",
+      "filePath": "tools/determinism_harness/android/gradle/wrapper/gradle-wrapper.properties",
+      "summary": "Pins the Gradle wrapper to 8.12 (all distribution) so the determinism harness and the main app share an identical build toolchain, preventing tool-chain drift from polluting the R2 cross-platform comparison.",
+      "tags": [
+        "configuration",
+        "gradle",
+        "wrapper",
+        "version-pin"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:tools/determinism_harness/android/settings.gradle.kts",
+      "type": "file",
+      "name": "settings.gradle.kts",
+      "filePath": "tools/determinism_harness/android/settings.gradle.kts",
+      "summary": "Gradle settings file that wires in the Flutter plugin loader, the Android Application Gradle plugin (8.7.3), and Kotlin (2.1.0); includes the `:app` module that hosts the harness.",
+      "tags": [
+        "build-system",
+        "gradle",
+        "android",
+        "settings"
+      ],
+      "complexity": "simple",
+      "languageNotes": "Pulls the Flutter SDK path from local.properties (required for any Flutter-on-Android build)."
+    },
+    {
+      "id": "config:tools/determinism_harness/baselines/2026-05-23/iphone.json",
+      "type": "config",
+      "name": "iphone.json",
+      "filePath": "tools/determinism_harness/baselines/2026-05-23/iphone.json",
+      "summary": "Frozen R2 baseline: per-query top-k and cosine scores from running the qwen3-0.6 embedding head on an iPhone 14 Pro (iOS 18.6.2) on 2026-05-24; serves as the iOS reference in the cross-platform parity comparison.",
+      "tags": [
+        "data",
+        "baseline",
+        "determinism",
+        "ios",
+        "qwen3"
+      ],
+      "complexity": "complex",
+      "languageNotes": "Schema: device, model, dimension=1024, k=5, timestamp, perQuery[].topK / scores. Compared against pixel-a/b via `just harness-check`."
+    },
+    {
+      "id": "config:tools/determinism_harness/baselines/2026-05-23/pixel-a.json",
+      "type": "config",
+      "name": "pixel-a.json",
+      "filePath": "tools/determinism_harness/baselines/2026-05-23/pixel-a.json",
+      "summary": "Frozen R2 baseline for Pixel 6a (Android 16 / API 36, device 23211JEGR01492); paired with pixel-b to verify same-platform agreement is bit-for-bit (1.0000 match rate).",
+      "tags": [
+        "data",
+        "baseline",
+        "determinism",
+        "android",
+        "qwen3"
+      ],
+      "complexity": "complex"
+    },
+    {
+      "id": "config:tools/determinism_harness/baselines/2026-05-23/pixel-b.json",
+      "type": "config",
+      "name": "pixel-b.json",
+      "filePath": "tools/determinism_harness/baselines/2026-05-23/pixel-b.json",
+      "summary": "Frozen R2 baseline for the second Pixel 6a (device 28191JEGR17016); paired with pixel-a as the same-platform floor and with iphone.json as one half of the diagnostic-band cross-platform comparison (0.85 match rate).",
+      "tags": [
+        "data",
+        "baseline",
+        "determinism",
+        "android",
+        "qwen3"
+      ],
+      "complexity": "complex"
+    },
+    {
+      "id": "document:tools/determinism_harness/baselines/2026-05-23/README.md",
+      "type": "document",
+      "name": "README.md",
+      "filePath": "tools/determinism_harness/baselines/2026-05-23/README.md",
+      "summary": "Walkthrough of the first three-device R2 harness run (2026-05-23) summarizing the Pixel↔Pixel perfect match, the iOS↔Pixel 0.85 diagnostic-band result, and the decision to keep tightening rather than pivot to option C.",
+      "tags": [
+        "documentation",
+        "determinism",
+        "R2",
+        "findings"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "config:tools/determinism_harness/baselines/latest/iphone.json",
+      "type": "config",
+      "name": "iphone.json",
+      "filePath": "tools/determinism_harness/baselines/latest/iphone.json",
+      "summary": "Latest-pointer copy of the iOS baseline used by `just harness-check` as the default left-hand side of cross-platform comparisons; updated when a fresh device run replaces the canonical iOS reference.",
+      "tags": [
+        "data",
+        "baseline",
+        "determinism",
+        "ios",
+        "latest-pointer"
+      ],
+      "complexity": "complex"
+    },
+    {
+      "id": "config:tools/determinism_harness/baselines/latest/pixel-a.json",
+      "type": "config",
+      "name": "pixel-a.json",
+      "filePath": "tools/determinism_harness/baselines/latest/pixel-a.json",
+      "summary": "Frozen R2 baseline measurement from Pixel 6a reference device A — captures per-query top-k IDs and cosine scores for the locked qwen3-0.6 Cactus embedding slug.",
+      "tags": [
+        "baseline",
+        "determinism",
+        "reference-data",
+        "android",
+        "holdout-r2"
+      ],
+      "complexity": "moderate",
+      "languageNotes": "Used by run.dart check-baseline as the always-current alias; intentional pin changes are the only legitimate reason to overwrite."
+    },
+    {
+      "id": "config:tools/determinism_harness/baselines/latest/pixel-b.json",
+      "type": "config",
+      "name": "pixel-b.json",
+      "filePath": "tools/determinism_harness/baselines/latest/pixel-b.json",
+      "summary": "Frozen R2 baseline measurement from Pixel 6a reference device B — second same-hardware reference used to detect same-platform drift in the qwen3-0.6 embedding pipeline.",
+      "tags": [
+        "baseline",
+        "determinism",
+        "reference-data",
+        "android",
+        "holdout-r2"
+      ],
+      "complexity": "moderate",
+      "languageNotes": "Two same-model Pixels are kept so same-hardware bit-identity (the strict R2 expectation) is itself observable."
+    },
+    {
+      "id": "document:tools/determinism_harness/baselines/latest/README.md",
+      "type": "document",
+      "name": "README.md",
+      "filePath": "tools/determinism_harness/baselines/latest/README.md",
+      "summary": "Documents the canonical R2 baseline directory — pin parameters (qwen3-0.6 / dim 1024 / k=5), regeneration procedure, and CI usage of harness-check-baseline.",
+      "tags": [
+        "documentation",
+        "determinism",
+        "baseline",
+        "operations"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "config:tools/determinism_harness/fixtures/queries.json",
+      "type": "config",
+      "name": "queries.json",
+      "filePath": "tools/determinism_harness/fixtures/queries.json",
+      "summary": "Determinism harness fixture — a 20-passage, 20-query, 5-cluster set with k=5 and per-query expectedTop1 used to drive both the cross-device parity check and the on-device sanity floor.",
+      "tags": [
+        "fixture",
+        "test-data",
+        "determinism",
+        "embedding",
+        "retrieval"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:tools/determinism_harness/integration_test/measure_test.dart",
+      "type": "file",
+      "name": "measure_test.dart",
+      "filePath": "tools/determinism_harness/integration_test/measure_test.dart",
+      "summary": "On-device measurement entry — the 'measure' half of the U1 determinism gate. Loads the qwen3-0.6 Cactus slug, embeds the fixture queries and passages, computes top-k per query, and writes a per-device JSON to the app documents directory for offline cross-device comparison.",
+      "tags": [
+        "integration-test",
+        "determinism",
+        "embedding",
+        "cactus",
+        "holdout-r2"
+      ],
+      "complexity": "moderate",
+      "languageNotes": "Lives under integration_test/ rather than as a pure-Dart CLI because Cactus is a Flutter FFI plugin needing path_provider and a live FlutterBinding."
+    },
+    {
+      "id": "function:tools/determinism_harness/integration_test/measure_test.dart:main",
+      "type": "function",
+      "name": "main",
+      "filePath": "tools/determinism_harness/integration_test/measure_test.dart",
+      "lineRange": [
+        42,
+        166
+      ],
+      "summary": "Test entry that loads the fixture, brings up Cactus, embeds passages and queries, computes top-k, writes the per-device JSON, and enforces an 80% expectedTop1-in-top-3 sanity floor before declaring the slug usable.",
+      "tags": [
+        "test-entry",
+        "embedding",
+        "topk",
+        "sanity-gate"
+      ],
+      "complexity": "complex"
+    },
+    {
+      "id": "config:tools/determinism_harness/ios/Flutter/AppFrameworkInfo.plist",
+      "type": "config",
+      "name": "AppFrameworkInfo.plist",
+      "filePath": "tools/determinism_harness/ios/Flutter/AppFrameworkInfo.plist",
+      "summary": "Standard Flutter framework Info.plist describing the embedded App.framework bundle metadata and minimum iOS version for the determinism harness host app.",
+      "tags": [
+        "ios",
+        "configuration",
+        "flutter",
+        "framework"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "config:tools/determinism_harness/ios/Flutter/Debug.xcconfig",
+      "type": "config",
+      "name": "Debug.xcconfig",
+      "filePath": "tools/determinism_harness/ios/Flutter/Debug.xcconfig",
+      "summary": "Debug-mode xcconfig include for the iOS harness target — chains in Generated.xcconfig and the Pods debug config so Flutter build settings propagate.",
+      "tags": [
+        "ios",
+        "configuration",
+        "build-system",
+        "xcode"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "config:tools/determinism_harness/ios/Flutter/Release.xcconfig",
+      "type": "config",
+      "name": "Release.xcconfig",
+      "filePath": "tools/determinism_harness/ios/Flutter/Release.xcconfig",
+      "summary": "Release-mode xcconfig include for the iOS harness target — chains in Generated.xcconfig and the Pods release config for production builds.",
+      "tags": [
+        "ios",
+        "configuration",
+        "build-system",
+        "xcode"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:tools/determinism_harness/ios/Podfile",
+      "type": "file",
+      "name": "Podfile",
+      "filePath": "tools/determinism_harness/ios/Podfile",
+      "summary": "CocoaPods configuration declaring the iOS deployment target and wiring Flutter pod_helper integration for the determinism harness Runner target.",
+      "tags": [
+        "ios",
+        "dependency-management",
+        "cocoapods",
+        "build-system"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:tools/determinism_harness/ios/Runner.xcodeproj/project.pbxproj",
+      "type": "file",
+      "name": "project.pbxproj",
+      "filePath": "tools/determinism_harness/ios/Runner.xcodeproj/project.pbxproj",
+      "summary": "Xcode project descriptor for the determinism harness iOS Runner — defines build phases, target settings, file references, and configurations linking the Flutter engine into the iOS app shell.",
+      "tags": [
+        "ios",
+        "xcode",
+        "build-system",
+        "project-config"
+      ],
+      "complexity": "complex",
+      "languageNotes": "Auto-generated by `flutter create` and Xcode; hand-edits are fragile and typically driven through Xcode's UI."
+    },
+    {
+      "id": "file:tools/determinism_harness/ios/Runner.xcodeproj/project.xcworkspace/contents.xcworkspacedata",
+      "type": "file",
+      "name": "contents.xcworkspacedata",
+      "filePath": "tools/determinism_harness/ios/Runner.xcodeproj/project.xcworkspace/contents.xcworkspacedata",
+      "summary": "Xcode project-embedded workspace descriptor pointing at the self-referencing project so xcodebuild can resolve the workspace context.",
+      "tags": [
+        "ios",
+        "xcode",
+        "workspace",
+        "build-system"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "config:tools/determinism_harness/ios/Runner.xcodeproj/project.xcworkspace/xcshareddata/IDEWorkspaceChecks.plist",
+      "type": "config",
+      "name": "IDEWorkspaceChecks.plist",
+      "filePath": "tools/determinism_harness/ios/Runner.xcodeproj/project.xcworkspace/xcshareddata/IDEWorkspaceChecks.plist",
+      "summary": "Xcode IDE workspace startup-check preferences for the harness project workspace; suppresses the 32-bit warning dialog on shared workspaces.",
+      "tags": [
+        "ios",
+        "xcode",
+        "configuration",
+        "ide"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:tools/determinism_harness/ios/Runner.xcodeproj/project.xcworkspace/xcshareddata/WorkspaceSettings.xcsettings",
+      "type": "file",
+      "name": "WorkspaceSettings.xcsettings",
+      "filePath": "tools/determinism_harness/ios/Runner.xcodeproj/project.xcworkspace/xcshareddata/WorkspaceSettings.xcsettings",
+      "summary": "Xcode project-embedded workspace settings file selecting the build-system mode for the harness project workspace.",
+      "tags": [
+        "ios",
+        "xcode",
+        "configuration",
+        "build-system"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:tools/determinism_harness/ios/Runner.xcodeproj/xcshareddata/xcschemes/Runner.xcscheme",
+      "name": "Runner.xcscheme",
+      "type": "file",
+      "filePath": "tools/determinism_harness/ios/Runner.xcodeproj/xcshareddata/xcschemes/Runner.xcscheme",
+      "summary": "Xcode scheme defining how the determinism harness Runner target is built, tested, profiled, and archived — including the Flutter-injected pre-action that surfaces build script output.",
+      "tags": [
+        "ios",
+        "xcode",
+        "scheme",
+        "build-system"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "file:tools/determinism_harness/ios/Runner.xcworkspace/contents.xcworkspacedata",
+      "type": "file",
+      "name": "contents.xcworkspacedata",
+      "filePath": "tools/determinism_harness/ios/Runner.xcworkspace/contents.xcworkspacedata",
+      "summary": "Top-level Xcode workspace descriptor for the harness — references the Runner project and the CocoaPods-generated Pods project so the integrated build resolves Flutter plugin dependencies.",
+      "tags": [
+        "ios",
+        "xcode",
+        "workspace",
+        "build-system"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "config:tools/determinism_harness/ios/Runner.xcworkspace/xcshareddata/IDEWorkspaceChecks.plist",
+      "type": "config",
+      "name": "IDEWorkspaceChecks.plist",
+      "filePath": "tools/determinism_harness/ios/Runner.xcworkspace/xcshareddata/IDEWorkspaceChecks.plist",
+      "summary": "Xcode IDE workspace startup-check preferences for the top-level harness workspace.",
+      "tags": [
+        "ios",
+        "xcode",
+        "configuration",
+        "ide"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:tools/determinism_harness/ios/Runner.xcworkspace/xcshareddata/WorkspaceSettings.xcsettings",
+      "type": "file",
+      "name": "WorkspaceSettings.xcsettings",
+      "filePath": "tools/determinism_harness/ios/Runner.xcworkspace/xcshareddata/WorkspaceSettings.xcsettings",
+      "summary": "Top-level Xcode workspace settings selecting the build-system mode used when building the harness via xcodebuild or Xcode.",
+      "tags": [
+        "ios",
+        "xcode",
+        "configuration",
+        "build-system"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:tools/determinism_harness/ios/Runner/AppDelegate.swift",
+      "type": "file",
+      "name": "AppDelegate.swift",
+      "filePath": "tools/determinism_harness/ios/Runner/AppDelegate.swift",
+      "summary": "Standard Flutter iOS AppDelegate subclassing FlutterAppDelegate and registering generated plugins so the harness app hosts the Flutter engine and Cactus FFI plugin.",
+      "tags": [
+        "ios",
+        "entry-point",
+        "swift",
+        "flutter",
+        "app-delegate"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "config:tools/determinism_harness/ios/Runner/Assets.xcassets/AppIcon.appiconset/Contents.json",
+      "type": "config",
+      "name": "Contents.json",
+      "filePath": "tools/determinism_harness/ios/Runner/Assets.xcassets/AppIcon.appiconset/Contents.json",
+      "summary": "AppIcon asset catalog manifest listing every required iOS app icon size variant for the harness Runner.",
+      "tags": [
+        "ios",
+        "assets",
+        "configuration",
+        "app-icon"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "config:tools/determinism_harness/ios/Runner/Assets.xcassets/LaunchImage.imageset/Contents.json",
+      "type": "config",
+      "name": "Contents.json",
+      "filePath": "tools/determinism_harness/ios/Runner/Assets.xcassets/LaunchImage.imageset/Contents.json",
+      "summary": "Launch image asset catalog manifest listing the 1x/2x/3x variants of the launch screen image for the harness Runner.",
+      "tags": [
+        "ios",
+        "assets",
+        "configuration",
+        "launch-image"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "document:tools/determinism_harness/ios/Runner/Assets.xcassets/LaunchImage.imageset/README.md",
+      "type": "document",
+      "name": "README.md",
+      "filePath": "tools/determinism_harness/ios/Runner/Assets.xcassets/LaunchImage.imageset/README.md",
+      "summary": "Boilerplate Flutter-generated note explaining the launch image asset set; left in place as part of the standard scaffold.",
+      "tags": [
+        "documentation",
+        "ios",
+        "assets",
+        "boilerplate"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:tools/determinism_harness/ios/Runner/Base.lproj/LaunchScreen.storyboard",
+      "type": "file",
+      "name": "LaunchScreen.storyboard",
+      "filePath": "tools/determinism_harness/ios/Runner/Base.lproj/LaunchScreen.storyboard",
+      "summary": "Interface Builder storyboard providing the initial launch screen shown while the harness Flutter engine boots.",
+      "tags": [
+        "ios",
+        "ui",
+        "storyboard",
+        "launch-screen"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:tools/determinism_harness/ios/Runner/Base.lproj/Main.storyboard",
+      "type": "file",
+      "name": "Main.storyboard",
+      "filePath": "tools/determinism_harness/ios/Runner/Base.lproj/Main.storyboard",
+      "summary": "Main interface storyboard that hosts the FlutterViewController root for the harness Runner.",
+      "tags": [
+        "ios",
+        "ui",
+        "storyboard",
+        "flutter-host"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "config:tools/determinism_harness/ios/Runner/Info.plist",
+      "type": "config",
+      "name": "Info.plist",
+      "filePath": "tools/determinism_harness/ios/Runner/Info.plist",
+      "summary": "iOS app bundle metadata for the determinism harness Runner — declares the bundle identifier, display name, and required device capabilities so the U1 measurement binary installs cleanly on a physical iPhone.",
+      "tags": [
+        "configuration",
+        "ios",
+        "bundle-metadata",
+        "infrastructure"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:tools/determinism_harness/ios/Runner/Runner-Bridging-Header.h",
+      "type": "file",
+      "name": "Runner-Bridging-Header.h",
+      "filePath": "tools/determinism_harness/ios/Runner/Runner-Bridging-Header.h",
+      "summary": "Empty Swift-to-Objective-C bridging header placeholder generated by `flutter create`; required by the Xcode build but carries no project-specific imports.",
+      "tags": [
+        "ios",
+        "bridging-header",
+        "build-artifact"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:tools/determinism_harness/ios/RunnerTests/RunnerTests.swift",
+      "type": "file",
+      "name": "RunnerTests.swift",
+      "filePath": "tools/determinism_harness/ios/RunnerTests/RunnerTests.swift",
+      "summary": "Stub XCTest target shipped by `flutter create`; left untouched because the harness's real determinism check lives in Dart (`test/`) and on-device integration tests.",
+      "tags": [
+        "test",
+        "ios",
+        "stub",
+        "boilerplate"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:tools/determinism_harness/lib/agreement.dart",
+      "type": "file",
+      "name": "agreement.dart",
+      "filePath": "tools/determinism_harness/lib/agreement.dart",
+      "summary": "Pure-Dart math kernel for the iOS↔Android embedding determinism gate (Holdout R2): cosine similarity, deterministic top-k with `(score desc, id asc)` tie-break, agreement-rate calculation, and fixture JSON parsing.",
+      "tags": [
+        "utility",
+        "vector-math",
+        "determinism",
+        "holdout-r2",
+        "fixture-parsing",
+        "tested"
+      ],
+      "complexity": "complex",
+      "languageNotes": "Dependency-free Dart by design — the R2 gate must not have its own bugs as a confound. Tie-break on id ascending is load-bearing for both R2 and R3."
+    },
+    {
+      "id": "file:tools/determinism_harness/lib/cli.dart",
+      "type": "file",
+      "name": "cli.dart",
+      "filePath": "tools/determinism_harness/lib/cli.dart",
+      "summary": "Testable CLI dispatcher for the determinism harness with two subcommands: `check` (U1 cross-platform two-device agreement) and `check-baseline` (U13 regression against a frozen baseline). Returns exit codes 0/1/2 instead of calling `exit` so tests can run in-isolate.",
+      "tags": [
+        "entry-point",
+        "cli",
+        "subcommand-dispatch",
+        "determinism",
+        "ci",
+        "tested"
+      ],
+      "complexity": "complex",
+      "languageNotes": "CliIO abstraction over stdout/stderr lets unit tests assert on output without spawning subprocesses."
+    },
+    {
+      "id": "file:tools/determinism_harness/lib/main.dart",
+      "type": "file",
+      "name": "main.dart",
+      "filePath": "tools/determinism_harness/lib/main.dart",
+      "summary": "Minimal Flutter host app whose only purpose is to provide an installable iOS/Android package so the `integration_test/measure_test.dart` harness can run on real devices.",
+      "tags": [
+        "entry-point",
+        "flutter",
+        "harness-host",
+        "stub-ui"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:tools/determinism_harness/lib/output_format.dart",
+      "type": "file",
+      "name": "output_format.dart",
+      "filePath": "tools/determinism_harness/lib/output_format.dart",
+      "summary": "Pure-Dart JSON serialization for per-device determinism measurements (`DeviceOutput` + `PerQueryOutput`), shared between the on-device writer and the workstation CLI reader.",
+      "tags": [
+        "serialization",
+        "data-model",
+        "json",
+        "type-definition",
+        "tested"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "config:tools/determinism_harness/pubspec.yaml",
+      "type": "config",
+      "name": "pubspec.yaml",
+      "filePath": "tools/determinism_harness/pubspec.yaml",
+      "summary": "Pubspec for the standalone determinism-harness Flutter package — declares the `determinism_harness` library and pins Flutter, integration_test, and flutter_test dev dependencies.",
+      "tags": [
+        "configuration",
+        "pubspec",
+        "flutter",
+        "dependencies"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "document:tools/determinism_harness/README.md",
+      "type": "document",
+      "name": "README.md",
+      "filePath": "tools/determinism_harness/README.md",
+      "summary": "Operator's guide for the U1 pre-flight gate and U13 CI regression: anatomy of the harness, the measure/check split, four-phase workflow (measure → pull → check → regenerate baseline), and a list of edge cases the math intentionally handles.",
+      "tags": [
+        "documentation",
+        "holdout-r2",
+        "operator-guide",
+        "ci"
+      ],
+      "complexity": "complex"
+    },
+    {
+      "id": "file:tools/determinism_harness/run.dart",
+      "type": "file",
+      "name": "run.dart",
+      "filePath": "tools/determinism_harness/run.dart",
+      "summary": "Thin shim entry point that wires `dart:io`'s real stdout/stderr to `runCli()` in `lib/cli.dart`; exists so the dispatcher itself stays free of process-level side effects.",
+      "tags": [
+        "entry-point",
+        "cli",
+        "shim"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:tools/determinism_harness/test/agreement_test.dart",
+      "type": "file",
+      "name": "agreement_test.dart",
+      "filePath": "tools/determinism_harness/test/agreement_test.dart",
+      "summary": "Pure-Dart unit tests for the harness math (`cosineSimilarity`, `topK` tie-break, `agreementRate`, fixture parsing) — the safety net guaranteeing the R2 gate calculation itself is not where bugs hide.",
+      "tags": [
+        "test",
+        "unit-test",
+        "determinism",
+        "math-coverage"
+      ],
+      "complexity": "complex"
+    },
+    {
+      "id": "file:tools/determinism_harness/test/cli_test.dart",
+      "type": "file",
+      "name": "cli_test.dart",
+      "filePath": "tools/determinism_harness/test/cli_test.dart",
+      "summary": "Behavior tests for `runCli()`: subcommand routing, exit codes 0/1/2, `--ci`/`--json` JSON line shape, and actionable error messages on missing baselines. Uses `BufferCliIO` to capture output in-isolate.",
+      "tags": [
+        "test",
+        "cli",
+        "exit-codes",
+        "integration-shape"
+      ],
+      "complexity": "complex"
+    },
+    {
+      "id": "file:tools/determinism_harness/test/output_format_test.dart",
+      "type": "file",
+      "name": "output_format_test.dart",
+      "filePath": "tools/determinism_harness/test/output_format_test.dart",
+      "summary": "Round-trip tests for `DeviceOutput` / `PerQueryOutput` JSON encoding and decoding, pinning the wire format the on-device writer and the CLI reader share.",
+      "tags": [
+        "test",
+        "serialization",
+        "round-trip"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "document:tools/holdout_34/README.md",
+      "type": "document",
+      "name": "README.md",
+      "filePath": "tools/holdout_34/README.md",
+      "summary": "Operator's guide for Holdouts 3 + 4 (sync idempotence and bidirectional merge): what gets verified, how to run the manual checklist, the snapshot shape, and where this holdout sits in the SEED.md cut order.",
+      "tags": [
+        "documentation",
+        "holdout-r3",
+        "holdout-r4",
+        "operator-guide"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "file:tools/holdout_34/runner.sh",
+      "type": "file",
+      "name": "runner.sh",
+      "filePath": "tools/holdout_34/runner.sh",
+      "summary": "Manual-checklist bash runner that walks a human demonstrator through the six-phase R3+R4 protocol (preflight → pre-snapshots → meet → post-snapshots → re-meet → post-re-meet → verdict), staging snapshot JSONs into a run directory and invoking the verdict CLI.",
+      "tags": [
+        "script",
+        "shell",
+        "holdout-r3",
+        "holdout-r4",
+        "manual-checklist"
+      ],
+      "complexity": "complex",
+      "languageNotes": "Uses `set -euo pipefail` and `read -r -p` prompts; the script is intentionally a checklist orchestrator rather than a full Maestro/XCTest harness."
+    },
+    {
+      "id": "function:tools/holdout_34/runner.sh:step",
+      "type": "function",
+      "name": "step",
+      "filePath": "tools/holdout_34/runner.sh",
+      "lineRange": [
+        37,
+        42
+      ],
+      "summary": "Prints a labelled phase banner separating the six runner phases in the operator's terminal.",
+      "tags": [
+        "utility",
+        "shell",
+        "logging"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:tools/holdout_34/runner.sh:prompt",
+      "type": "function",
+      "name": "prompt",
+      "filePath": "tools/holdout_34/runner.sh",
+      "lineRange": [
+        44,
+        53
+      ],
+      "summary": "Pauses the runner until the demonstrator confirms a checkpoint; treats `q` as a graceful abort returning exit code 130.",
+      "tags": [
+        "utility",
+        "shell",
+        "user-input"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:tools/holdout_34/runner.sh:capture_path",
+      "type": "function",
+      "name": "capture_path",
+      "filePath": "tools/holdout_34/runner.sh",
+      "lineRange": [
+        55,
+        65
+      ],
+      "summary": "Prompts the demonstrator for a snapshot file path, validates existence, and copies it into the run directory under a canonical filename.",
+      "tags": [
+        "utility",
+        "shell",
+        "file-io"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:tools/holdout_34/verdict.dart",
+      "type": "file",
+      "name": "verdict.dart",
+      "filePath": "tools/holdout_34/verdict.dart",
+      "summary": "Pure-Dart CLI that consumes five (or six) snapshot JSONs captured during the holdout_34 runner and emits a PASS/FAIL verdict on R3 (sync idempotence) and R4 (bidirectional merge) via `IdempotenceCheck`.",
+      "tags": [
+        "entry-point",
+        "cli",
+        "holdout-r3",
+        "holdout-r4",
+        "verdict"
+      ],
+      "complexity": "complex",
+      "languageNotes": "Exit codes mirror the determinism harness (0/1/2) so the same CI parser can be reused."
+    },
+    {
+      "id": "document:tools/holdout_7/offline_witness.md",
+      "type": "document",
+      "name": "offline_witness.md",
+      "filePath": "tools/holdout_7/offline_witness.md",
+      "summary": "Pre-demo witness checklist for Holdout 7 (end-to-end offline) — the holdout that is NEVER cut: per-phone airplane-mode/WAN-off verification steps, what the witness does and does not prove, common failure modes, and a sign-off section.",
+      "tags": [
+        "documentation",
+        "holdout-r7",
+        "operator-guide",
+        "offline"
+      ],
+      "complexity": "moderate"
+    }
+  ],
+  "edges": [
+    {
+      "source": "document:_docs/IDEA-A.md",
+      "target": "document:_docs/SEED.md",
+      "type": "documents",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "document:_docs/SEED.md",
+      "target": "document:_docs/IDEA-A.md",
+      "type": "depends_on",
+      "direction": "forward",
+      "weight": 0.6
+    },
+    {
+      "source": "document:_docs/SEED.md",
+      "target": "document:_docs/RESEARCH-BRIEF.md",
+      "type": "documents",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "document:_docs/RESEARCH-BRIEF.md",
+      "target": "document:_docs/SEED.md",
+      "type": "depends_on",
+      "direction": "forward",
+      "weight": 0.6
+    },
+    {
+      "source": "document:_docs/plans/001-feat-mesh-rag-demo.md",
+      "target": "document:_docs/SEED.md",
+      "type": "depends_on",
+      "direction": "forward",
+      "weight": 0.6
+    },
+    {
+      "source": "document:_docs/plans/001-feat-mesh-rag-demo.md",
+      "target": "document:_docs/IDEA-A.md",
+      "type": "depends_on",
+      "direction": "forward",
+      "weight": 0.6
+    },
+    {
+      "source": "document:_docs/plans/001-feat-mesh-rag-demo.md",
+      "target": "document:_docs/research/index/README.md",
+      "type": "depends_on",
+      "direction": "forward",
+      "weight": 0.6
+    },
+    {
+      "source": "document:_docs/demo-script.md",
+      "target": "document:_docs/plans/001-feat-mesh-rag-demo.md",
+      "type": "depends_on",
+      "direction": "forward",
+      "weight": 0.6
+    },
+    {
+      "source": "document:_docs/demo-script.md",
+      "target": "document:_docs/SEED.md",
+      "type": "depends_on",
+      "direction": "forward",
+      "weight": 0.6
+    },
+    {
+      "source": "document:_docs/r5-pre-baked-embeddings.md",
+      "target": "document:_docs/plans/001-feat-mesh-rag-demo.md",
+      "type": "depends_on",
+      "direction": "forward",
+      "weight": 0.6
+    },
+    {
+      "source": "document:_docs/r5-pre-baked-embeddings.md",
+      "target": "document:_docs/SEED.md",
+      "type": "depends_on",
+      "direction": "forward",
+      "weight": 0.6
+    },
+    {
+      "source": "document:_docs/notes/thesis-framings.md",
+      "target": "document:_docs/SEED.md",
+      "type": "depends_on",
+      "direction": "forward",
+      "weight": 0.6
+    },
+    {
+      "source": "document:_docs/notes/thesis-framings.md",
+      "target": "document:_docs/IDEA-A.md",
+      "type": "depends_on",
+      "direction": "forward",
+      "weight": 0.6
+    },
+    {
+      "source": "document:_docs/notes/cactus-sdk-quirks.md",
+      "target": "document:_docs/notes/model-quirks.md",
+      "type": "related",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "document:_docs/notes/model-quirks.md",
+      "target": "document:_docs/notes/cactus-sdk-quirks.md",
+      "type": "related",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "document:_docs/research/index/README.md",
+      "target": "document:_docs/research/index/top-N.md",
+      "type": "documents",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "document:_docs/research/index/README.md",
+      "target": "document:_docs/research/index/clusters.md",
+      "type": "documents",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "document:_docs/research/index/README.md",
+      "target": "document:_docs/research/index/by-topic.md",
+      "type": "documents",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "document:_docs/research/index/README.md",
+      "target": "document:_docs/research/index/by-tag.md",
+      "type": "documents",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "document:_docs/research/index/README.md",
+      "target": "document:_docs/research/index/cross-references.md",
+      "type": "documents",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "document:_docs/research/index/README.md",
+      "target": "document:_docs/research/index/open-questions.md",
+      "type": "documents",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "document:_docs/research/index/clusters.md",
+      "target": "document:_docs/research/index/by-topic.md",
+      "type": "related",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "document:_docs/research/index/by-topic.md",
+      "target": "document:_docs/research/index/by-tag.md",
+      "type": "related",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "document:_docs/research/index/open-questions.md",
+      "target": "document:_docs/research/index/top-N.md",
+      "type": "related",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "document:_docs/research/index/open-questions.md",
+      "target": "document:_docs/research/index/clusters.md",
+      "type": "related",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "document:_docs/research/index/top-N.md",
+      "target": "document:_docs/research/index/by-topic.md",
+      "type": "related",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "document:_docs/research/index/top-N.md",
+      "target": "document:_docs/research/index/clusters.md",
+      "type": "related",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "document:_docs/research/claude.md",
+      "target": "document:_docs/RESEARCH-BRIEF.md",
+      "type": "depends_on",
+      "direction": "forward",
+      "weight": 0.6
+    },
+    {
+      "source": "document:_docs/research/codex.md",
+      "target": "document:_docs/RESEARCH-BRIEF.md",
+      "type": "depends_on",
+      "direction": "forward",
+      "weight": 0.6
+    },
+    {
+      "source": "document:_docs/research/gemini.md",
+      "target": "document:_docs/RESEARCH-BRIEF.md",
+      "type": "depends_on",
+      "direction": "forward",
+      "weight": 0.6
+    },
+    {
+      "source": "document:_docs/research/claude-deep-research.md",
+      "target": "document:_docs/RESEARCH-BRIEF.md",
+      "type": "depends_on",
+      "direction": "forward",
+      "weight": 0.6
+    },
+    {
+      "source": "document:_docs/research/chatgpt-deep-research.md",
+      "target": "document:_docs/RESEARCH-BRIEF.md",
+      "type": "depends_on",
+      "direction": "forward",
+      "weight": 0.6
+    },
+    {
+      "source": "document:_docs/research/gemini-deep-research.md",
+      "target": "document:_docs/RESEARCH-BRIEF.md",
+      "type": "depends_on",
+      "direction": "forward",
+      "weight": 0.6
+    },
+    {
+      "source": "document:_docs/research/index/README.md",
+      "target": "document:_docs/research/claude.md",
+      "type": "depends_on",
+      "direction": "forward",
+      "weight": 0.6
+    },
+    {
+      "source": "document:_docs/research/index/README.md",
+      "target": "document:_docs/research/codex.md",
+      "type": "depends_on",
+      "direction": "forward",
+      "weight": 0.6
+    },
+    {
+      "source": "document:_docs/research/index/README.md",
+      "target": "document:_docs/research/gemini.md",
+      "type": "depends_on",
+      "direction": "forward",
+      "weight": 0.6
+    },
+    {
+      "source": "document:_docs/research/index/README.md",
+      "target": "document:_docs/research/claude-deep-research.md",
+      "type": "depends_on",
+      "direction": "forward",
+      "weight": 0.6
+    },
+    {
+      "source": "document:_docs/research/index/README.md",
+      "target": "document:_docs/research/chatgpt-deep-research.md",
+      "type": "depends_on",
+      "direction": "forward",
+      "weight": 0.6
+    },
+    {
+      "source": "document:_docs/research/index/README.md",
+      "target": "document:_docs/research/gemini-deep-research.md",
+      "type": "depends_on",
+      "direction": "forward",
+      "weight": 0.6
+    },
+    {
+      "source": "config:_docs/research/downloads.yaml",
+      "target": "document:_docs/research/claude.md",
+      "type": "documents",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "config:_docs/research/downloads.yaml",
+      "target": "document:_docs/research/codex.md",
+      "type": "documents",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "config:_docs/research/downloads.yaml",
+      "target": "document:_docs/research/gemini.md",
+      "type": "documents",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "document:_docs/notes/model-quirks.md",
+      "target": "document:_docs/plans/001-feat-mesh-rag-demo.md",
+      "type": "related",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "document:_docs/notes/cactus-sdk-quirks.md",
+      "target": "document:_docs/plans/001-feat-mesh-rag-demo.md",
+      "type": "related",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "pipeline:.github/workflows/ci.yml",
+      "target": "config:analysis_options.yaml",
+      "type": "triggers",
+      "direction": "forward",
+      "weight": 0.6
+    },
+    {
+      "source": "config:analysis_options.yaml",
+      "target": "file:android/app/src/main/kotlin/com/dittoxcactus/mesh_rag/MainActivity.kt",
+      "type": "configures",
+      "direction": "forward",
+      "weight": 0.6
+    },
+    {
+      "source": "file:android/settings.gradle.kts",
+      "target": "file:android/app/build.gradle.kts",
+      "type": "depends_on",
+      "direction": "forward",
+      "weight": 0.6
+    },
+    {
+      "source": "file:android/build.gradle.kts",
+      "target": "file:android/app/build.gradle.kts",
+      "type": "depends_on",
+      "direction": "forward",
+      "weight": 0.6
+    },
+    {
+      "source": "file:android/gradle.properties",
+      "target": "file:android/app/build.gradle.kts",
+      "type": "configures",
+      "direction": "forward",
+      "weight": 0.6
+    },
+    {
+      "source": "file:android/gradle/wrapper/gradle-wrapper.properties",
+      "target": "file:android/build.gradle.kts",
+      "type": "configures",
+      "direction": "forward",
+      "weight": 0.6
+    },
+    {
+      "source": "file:android/app/build.gradle.kts",
+      "target": "config:android/app/src/main/AndroidManifest.xml",
+      "type": "depends_on",
+      "direction": "forward",
+      "weight": 0.6
+    },
+    {
+      "source": "file:android/app/build.gradle.kts",
+      "target": "file:android/app/src/main/kotlin/com/dittoxcactus/mesh_rag/MainActivity.kt",
+      "type": "deploys",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "config:android/app/src/main/AndroidManifest.xml",
+      "target": "file:android/app/src/main/kotlin/com/dittoxcactus/mesh_rag/MainActivity.kt",
+      "type": "configures",
+      "direction": "forward",
+      "weight": 0.6
+    },
+    {
+      "source": "config:android/app/src/main/AndroidManifest.xml",
+      "target": "config:android/app/src/main/res/values/styles.xml",
+      "type": "depends_on",
+      "direction": "forward",
+      "weight": 0.6
+    },
+    {
+      "source": "config:android/app/src/main/AndroidManifest.xml",
+      "target": "config:android/app/src/main/res/values-night/styles.xml",
+      "type": "depends_on",
+      "direction": "forward",
+      "weight": 0.6
+    },
+    {
+      "source": "config:android/app/src/main/res/values/styles.xml",
+      "target": "config:android/app/src/main/res/drawable/launch_background.xml",
+      "type": "depends_on",
+      "direction": "forward",
+      "weight": 0.6
+    },
+    {
+      "source": "config:android/app/src/main/res/values-night/styles.xml",
+      "target": "config:android/app/src/main/res/drawable-v21/launch_background.xml",
+      "type": "depends_on",
+      "direction": "forward",
+      "weight": 0.6
+    },
+    {
+      "source": "config:android/app/src/debug/AndroidManifest.xml",
+      "target": "config:android/app/src/main/AndroidManifest.xml",
+      "type": "depends_on",
+      "direction": "forward",
+      "weight": 0.6
+    },
+    {
+      "source": "config:android/app/src/profile/AndroidManifest.xml",
+      "target": "config:android/app/src/main/AndroidManifest.xml",
+      "type": "depends_on",
+      "direction": "forward",
+      "weight": 0.6
+    },
+    {
+      "source": "document:assets/README.md",
+      "target": "config:assets/seed_notes_a.json",
+      "type": "documents",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "document:assets/README.md",
+      "target": "config:assets/seed_notes_b.json",
+      "type": "documents",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "document:CLAUDE.md",
+      "target": "resource:docs/c4/model.c4",
+      "type": "documents",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "document:CLAUDE.md",
+      "target": "document:docs/c4/interview.md",
+      "type": "documents",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "document:docs/c4/interview.md",
+      "target": "resource:docs/c4/model.c4",
+      "type": "related",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "document:_docs/WEB-PROMPT.md",
+      "target": "document:CLAUDE.md",
+      "type": "related",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "pipeline:.github/workflows/ci.yml",
+      "target": "file:android/app/build.gradle.kts",
+      "type": "triggers",
+      "direction": "forward",
+      "weight": 0.6
+    },
+    {
+      "source": "config:ios/Flutter/Debug.xcconfig",
+      "target": "file:ios/Runner.xcodeproj/project.pbxproj",
+      "type": "configures",
+      "direction": "forward",
+      "weight": 0.6
+    },
+    {
+      "source": "config:ios/Flutter/Release.xcconfig",
+      "target": "file:ios/Runner.xcodeproj/project.pbxproj",
+      "type": "configures",
+      "direction": "forward",
+      "weight": 0.6
+    },
+    {
+      "source": "config:ios/Flutter/AppFrameworkInfo.plist",
+      "target": "file:ios/Runner.xcodeproj/project.pbxproj",
+      "type": "configures",
+      "direction": "forward",
+      "weight": 0.6
+    },
+    {
+      "source": "file:ios/Podfile",
+      "target": "file:ios/Runner.xcodeproj/project.pbxproj",
+      "type": "depends_on",
+      "direction": "forward",
+      "weight": 0.6
+    },
+    {
+      "source": "file:ios/Runner.xcworkspace/contents.xcworkspacedata",
+      "target": "file:ios/Runner.xcodeproj/project.pbxproj",
+      "type": "depends_on",
+      "direction": "forward",
+      "weight": 0.6
+    },
+    {
+      "source": "file:ios/Runner.xcodeproj/xcshareddata/xcschemes/Runner.xcscheme",
+      "target": "file:ios/Runner.xcodeproj/project.pbxproj",
+      "type": "configures",
+      "direction": "forward",
+      "weight": 0.6
+    },
+    {
+      "source": "file:ios/Runner.xcodeproj/project.pbxproj",
+      "target": "file:ios/Runner/AppDelegate.swift",
+      "type": "depends_on",
+      "direction": "forward",
+      "weight": 0.6
+    },
+    {
+      "source": "file:ios/Runner.xcodeproj/project.pbxproj",
+      "target": "file:ios/Runner/Runner-Bridging-Header.h",
+      "type": "depends_on",
+      "direction": "forward",
+      "weight": 0.6
+    },
+    {
+      "source": "file:ios/Runner.xcodeproj/project.pbxproj",
+      "target": "config:ios/Runner/Info.plist",
+      "type": "configures",
+      "direction": "forward",
+      "weight": 0.6
+    },
+    {
+      "source": "file:ios/Runner.xcodeproj/project.pbxproj",
+      "target": "file:ios/Runner/Base.lproj/LaunchScreen.storyboard",
+      "type": "depends_on",
+      "direction": "forward",
+      "weight": 0.6
+    },
+    {
+      "source": "file:ios/Runner.xcodeproj/project.pbxproj",
+      "target": "file:ios/Runner/Base.lproj/Main.storyboard",
+      "type": "depends_on",
+      "direction": "forward",
+      "weight": 0.6
+    },
+    {
+      "source": "config:ios/Runner/Assets.xcassets/AppIcon.appiconset/Contents.json",
+      "target": "file:ios/Runner.xcodeproj/project.pbxproj",
+      "type": "configures",
+      "direction": "forward",
+      "weight": 0.6
+    },
+    {
+      "source": "config:ios/Runner/Assets.xcassets/LaunchImage.imageset/Contents.json",
+      "target": "file:ios/Runner/Base.lproj/LaunchScreen.storyboard",
+      "type": "configures",
+      "direction": "forward",
+      "weight": 0.6
+    },
+    {
+      "source": "document:ios/Runner/Assets.xcassets/LaunchImage.imageset/README.md",
+      "target": "config:ios/Runner/Assets.xcassets/LaunchImage.imageset/Contents.json",
+      "type": "documents",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "file:ios/Runner/Base.lproj/Main.storyboard",
+      "target": "file:ios/Runner/AppDelegate.swift",
+      "type": "depends_on",
+      "direction": "forward",
+      "weight": 0.6
+    },
+    {
+      "source": "file:ios/Runner/AppDelegate.swift",
+      "target": "class:ios/Runner/AppDelegate.swift:AppDelegate",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:lib/holdouts/cold_load_timer.dart",
+      "target": "class:lib/holdouts/cold_load_timer.dart:ColdLoadTimer",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:lib/holdouts/cold_load_timer.dart",
+      "target": "class:lib/holdouts/cold_load_timer.dart:ColdLoadTimer",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "service:justfile",
+      "target": "file:lib/holdouts/cold_load_timer.dart",
+      "type": "triggers",
+      "direction": "forward",
+      "weight": 0.6
+    },
+    {
+      "source": "file:lib/holdouts/idempotence_check.dart",
+      "target": "class:lib/holdouts/idempotence_check.dart:ConvergenceResult",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:lib/holdouts/idempotence_check.dart",
+      "target": "class:lib/holdouts/idempotence_check.dart:IdempotenceResult",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:lib/holdouts/idempotence_check.dart",
+      "target": "class:lib/holdouts/idempotence_check.dart:IdempotenceCheck",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:lib/holdouts/idempotence_check.dart",
+      "target": "function:lib/holdouts/idempotence_check.dart:detectConvergence",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:lib/holdouts/idempotence_check.dart",
+      "target": "function:lib/holdouts/idempotence_check.dart:detectIdempotence",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:lib/holdouts/idempotence_check.dart",
+      "target": "file:lib/models/study_note.dart",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:lib/main.dart",
+      "target": "function:lib/main.dart:main",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:lib/main.dart",
+      "target": "class:lib/main.dart:MeshRagApp",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:lib/main.dart",
+      "target": "class:lib/main.dart:BootScreen",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:lib/main.dart",
+      "target": "file:lib/holdouts/cold_load_timer.dart",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:lib/main.dart",
+      "target": "file:lib/services/cactus_service.dart",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:lib/main.dart",
+      "target": "file:lib/services/ditto_service.dart",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:lib/main.dart",
+      "target": "file:lib/services/retrieval_service.dart",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:lib/main.dart",
+      "target": "file:lib/services/seed_loader.dart",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:lib/main.dart",
+      "target": "file:lib/widgets/query_screen.dart",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:lib/models/study_note.dart",
+      "target": "class:lib/models/study_note.dart:StudyNote",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:lib/models/study_note.dart",
+      "target": "class:lib/models/study_note.dart:StudyNote",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:lib/prompts/dql_queries.dart",
+      "target": "class:lib/prompts/dql_queries.dart:NotesQueries",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:lib/prompts/flashcard_gen.dart",
+      "target": "class:lib/prompts/flashcard_gen.dart:FlashcardGenPrompt",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:lib/prompts/flashcard_gen.dart",
+      "target": "function:lib/prompts/flashcard_gen.dart:build",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:lib/prompts/flashcard_gen.dart",
+      "target": "function:lib/prompts/flashcard_gen.dart:parse",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:lib/prompts/flashcard_gen.dart",
+      "target": "file:lib/services/retrieval_service.dart",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:lib/services/cactus_service.dart",
+      "target": "class:lib/services/cactus_service.dart:CactusService",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:lib/services/cactus_service.dart",
+      "target": "function:lib/services/cactus_service.dart:initialize",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:lib/services/cactus_service.dart",
+      "target": "function:lib/services/cactus_service.dart:embed",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:lib/services/cactus_service.dart",
+      "target": "function:lib/services/cactus_service.dart:complete",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:lib/services/cactus_service.dart",
+      "target": "file:lib/holdouts/cold_load_timer.dart",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:lib/services/ditto_service.dart",
+      "target": "class:lib/services/ditto_service.dart:DittoService",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:lib/services/ditto_service.dart",
+      "target": "function:lib/services/ditto_service.dart:initialize",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:lib/services/ditto_service.dart",
+      "target": "function:lib/services/ditto_service.dart:queryAll",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:lib/services/ditto_service.dart",
+      "target": "function:lib/services/ditto_service.dart:subscribeToNotes",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:lib/services/ditto_service.dart",
+      "target": "file:lib/models/study_note.dart",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:lib/services/ditto_service.dart",
+      "target": "file:lib/prompts/dql_queries.dart",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:lib/services/retrieval_service.dart",
+      "target": "class:lib/services/retrieval_service.dart:RetrievedNote",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:lib/services/retrieval_service.dart",
+      "target": "class:lib/services/retrieval_service.dart:Flashcard",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:lib/services/retrieval_service.dart",
+      "target": "class:lib/services/retrieval_service.dart:FlashcardEvent",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:lib/services/retrieval_service.dart",
+      "target": "class:lib/services/retrieval_service.dart:RetrievalService",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:lib/services/retrieval_service.dart",
+      "target": "function:lib/services/retrieval_service.dart:mentionsEntity",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:lib/services/retrieval_service.dart",
+      "target": "function:lib/services/retrieval_service.dart:backfillCardSources",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:lib/services/retrieval_service.dart",
+      "target": "function:lib/services/retrieval_service.dart:cleanCards",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:lib/services/retrieval_service.dart",
+      "target": "function:lib/services/retrieval_service.dart:ensureEmbeddings",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:lib/services/retrieval_service.dart",
+      "target": "function:lib/services/retrieval_service.dart:topK",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:lib/services/retrieval_service.dart",
+      "target": "function:lib/services/retrieval_service.dart:rankTopK",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:lib/services/retrieval_service.dart",
+      "target": "function:lib/services/retrieval_service.dart:generateFlashcards",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:lib/services/retrieval_service.dart",
+      "target": "file:lib/models/study_note.dart",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:lib/services/retrieval_service.dart",
+      "target": "file:lib/prompts/flashcard_gen.dart",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:lib/services/retrieval_service.dart",
+      "target": "file:lib/services/cactus_service.dart",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:lib/services/retrieval_service.dart",
+      "target": "file:lib/services/ditto_service.dart",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:lib/services/seed_loader.dart",
+      "target": "class:lib/services/seed_loader.dart:SeedLoader",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:lib/services/seed_loader.dart",
+      "target": "function:lib/services/seed_loader.dart:loadAndInsert",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:lib/services/seed_loader.dart",
+      "target": "function:lib/services/seed_loader.dart:parseSeedJson",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:lib/services/seed_loader.dart",
+      "target": "file:lib/models/study_note.dart",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:lib/services/seed_loader.dart",
+      "target": "file:lib/services/ditto_service.dart",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:lib/widgets/demo_overlay.dart",
+      "target": "class:lib/widgets/demo_overlay.dart:DemoOverlay",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:lib/widgets/flashcards_tab.dart",
+      "target": "class:lib/widgets/flashcards_tab.dart:FlashcardsTab",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:lib/widgets/flashcards_tab.dart",
+      "target": "file:lib/services/retrieval_service.dart",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:lib/widgets/mesh_status_widget.dart",
+      "target": "class:lib/widgets/mesh_status_widget.dart:MeshStatusWidget",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:lib/widgets/notes_tab.dart",
+      "target": "class:lib/widgets/notes_tab.dart:NotesTab",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:lib/widgets/notes_tab.dart",
+      "target": "file:lib/models/study_note.dart",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:lib/widgets/query_screen.dart",
+      "target": "class:lib/widgets/query_screen.dart:QueryScreen",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:lib/widgets/query_screen.dart",
+      "target": "file:lib/models/study_note.dart",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:lib/widgets/query_screen.dart",
+      "target": "file:lib/services/ditto_service.dart",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:lib/widgets/query_screen.dart",
+      "target": "file:lib/services/retrieval_service.dart",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:lib/widgets/query_screen.dart",
+      "target": "file:lib/services/seed_loader.dart",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:lib/widgets/query_screen.dart",
+      "target": "file:lib/widgets/demo_overlay.dart",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:lib/widgets/query_screen.dart",
+      "target": "file:lib/widgets/flashcards_tab.dart",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:lib/widgets/query_screen.dart",
+      "target": "file:lib/widgets/mesh_status_widget.dart",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:lib/widgets/query_screen.dart",
+      "target": "file:lib/widgets/notes_tab.dart",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "config:pubspec.yaml",
+      "target": "file:lib/main.dart",
+      "type": "configures",
+      "direction": "forward",
+      "weight": 0.6
+    },
+    {
+      "source": "document:README.md",
+      "target": "file:lib/main.dart",
+      "type": "documents",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "document:README.md",
+      "target": "file:lib/services/ditto_service.dart",
+      "type": "documents",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "document:README.md",
+      "target": "file:lib/services/cactus_service.dart",
+      "type": "documents",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "document:README.md",
+      "target": "file:lib/services/retrieval_service.dart",
+      "type": "documents",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "file:test/boot_screen_test.dart",
+      "target": "file:lib/main.dart",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:test/flashcard_gen_test.dart",
+      "target": "file:lib/models/study_note.dart",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:test/flashcard_gen_test.dart",
+      "target": "file:lib/prompts/flashcard_gen.dart",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:test/flashcard_gen_test.dart",
+      "target": "file:lib/services/retrieval_service.dart",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:test/holdouts/cold_load_timer_test.dart",
+      "target": "file:lib/holdouts/cold_load_timer.dart",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:test/holdouts/idempotence_check_test.dart",
+      "target": "file:lib/holdouts/idempotence_check.dart",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:test/holdouts/idempotence_check_test.dart",
+      "target": "file:lib/models/study_note.dart",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:test/retrieval_service_test.dart",
+      "target": "file:lib/models/study_note.dart",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:test/retrieval_service_test.dart",
+      "target": "file:lib/services/retrieval_service.dart",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:test/seed_loader_test.dart",
+      "target": "file:lib/services/seed_loader.dart",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:test/study_note_test.dart",
+      "target": "file:lib/models/study_note.dart",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:test/widgets/demo_overlay_test.dart",
+      "target": "file:lib/widgets/demo_overlay.dart",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:test/widgets/flashcards_tab_test.dart",
+      "target": "file:lib/models/study_note.dart",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:test/widgets/flashcards_tab_test.dart",
+      "target": "file:lib/services/retrieval_service.dart",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:test/widgets/flashcards_tab_test.dart",
+      "target": "file:lib/widgets/flashcards_tab.dart",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:test/widgets/flashcards_tab_test.dart",
+      "target": "class:test/widgets/flashcards_tab_test.dart:_FakeGenerator",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:test/widgets/mesh_status_widget_test.dart",
+      "target": "file:lib/widgets/mesh_status_widget.dart",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:test/widgets/notes_tab_test.dart",
+      "target": "file:lib/models/study_note.dart",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:test/widgets/notes_tab_test.dart",
+      "target": "file:lib/widgets/notes_tab.dart",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "config:tools/determinism_harness/analysis_options.yaml",
+      "target": "file:tools/determinism_harness/android/app/build.gradle.kts",
+      "type": "configures",
+      "direction": "forward",
+      "weight": 0.6
+    },
+    {
+      "source": "config:tools/determinism_harness/android/app/src/main/AndroidManifest.xml",
+      "target": "file:tools/determinism_harness/android/app/src/main/kotlin/com/dittoxcactus/determinism_harness/MainActivity.kt",
+      "type": "configures",
+      "direction": "forward",
+      "weight": 0.6
+    },
+    {
+      "source": "config:tools/determinism_harness/android/app/src/debug/AndroidManifest.xml",
+      "target": "file:tools/determinism_harness/android/app/src/main/kotlin/com/dittoxcactus/determinism_harness/MainActivity.kt",
+      "type": "configures",
+      "direction": "forward",
+      "weight": 0.6
+    },
+    {
+      "source": "config:tools/determinism_harness/android/app/src/profile/AndroidManifest.xml",
+      "target": "file:tools/determinism_harness/android/app/src/main/kotlin/com/dittoxcactus/determinism_harness/MainActivity.kt",
+      "type": "configures",
+      "direction": "forward",
+      "weight": 0.6
+    },
+    {
+      "source": "config:tools/determinism_harness/android/app/src/main/res/values/styles.xml",
+      "target": "config:tools/determinism_harness/android/app/src/main/AndroidManifest.xml",
+      "type": "configures",
+      "direction": "forward",
+      "weight": 0.6
+    },
+    {
+      "source": "config:tools/determinism_harness/android/app/src/main/res/values-night/styles.xml",
+      "target": "config:tools/determinism_harness/android/app/src/main/AndroidManifest.xml",
+      "type": "configures",
+      "direction": "forward",
+      "weight": 0.6
+    },
+    {
+      "source": "config:tools/determinism_harness/android/app/src/main/res/drawable/launch_background.xml",
+      "target": "config:tools/determinism_harness/android/app/src/main/res/values/styles.xml",
+      "type": "configures",
+      "direction": "forward",
+      "weight": 0.6
+    },
+    {
+      "source": "config:tools/determinism_harness/android/app/src/main/res/drawable-v21/launch_background.xml",
+      "target": "config:tools/determinism_harness/android/app/src/main/res/values/styles.xml",
+      "type": "configures",
+      "direction": "forward",
+      "weight": 0.6
+    },
+    {
+      "source": "file:tools/determinism_harness/android/settings.gradle.kts",
+      "target": "file:tools/determinism_harness/android/app/build.gradle.kts",
+      "type": "depends_on",
+      "direction": "forward",
+      "weight": 0.6
+    },
+    {
+      "source": "file:tools/determinism_harness/android/build.gradle.kts",
+      "target": "file:tools/determinism_harness/android/app/build.gradle.kts",
+      "type": "depends_on",
+      "direction": "forward",
+      "weight": 0.6
+    },
+    {
+      "source": "file:tools/determinism_harness/android/gradle.properties",
+      "target": "file:tools/determinism_harness/android/build.gradle.kts",
+      "type": "configures",
+      "direction": "forward",
+      "weight": 0.6
+    },
+    {
+      "source": "file:tools/determinism_harness/android/gradle/wrapper/gradle-wrapper.properties",
+      "target": "file:tools/determinism_harness/android/build.gradle.kts",
+      "type": "configures",
+      "direction": "forward",
+      "weight": 0.6
+    },
+    {
+      "source": "document:tools/determinism_harness/baselines/2026-05-23/README.md",
+      "target": "config:tools/determinism_harness/baselines/2026-05-23/iphone.json",
+      "type": "documents",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "document:tools/determinism_harness/baselines/2026-05-23/README.md",
+      "target": "config:tools/determinism_harness/baselines/2026-05-23/pixel-a.json",
+      "type": "documents",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "document:tools/determinism_harness/baselines/2026-05-23/README.md",
+      "target": "config:tools/determinism_harness/baselines/2026-05-23/pixel-b.json",
+      "type": "documents",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "config:tools/determinism_harness/baselines/latest/iphone.json",
+      "target": "config:tools/determinism_harness/baselines/2026-05-23/iphone.json",
+      "type": "related",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "file:tools/determinism_harness/integration_test/measure_test.dart",
+      "target": "function:tools/determinism_harness/integration_test/measure_test.dart:main",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "document:tools/determinism_harness/baselines/latest/README.md",
+      "target": "config:tools/determinism_harness/baselines/latest/pixel-a.json",
+      "type": "documents",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "document:tools/determinism_harness/baselines/latest/README.md",
+      "target": "config:tools/determinism_harness/baselines/latest/pixel-b.json",
+      "type": "documents",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "document:tools/determinism_harness/baselines/latest/README.md",
+      "target": "config:tools/determinism_harness/fixtures/queries.json",
+      "type": "documents",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "file:tools/determinism_harness/integration_test/measure_test.dart",
+      "target": "config:tools/determinism_harness/fixtures/queries.json",
+      "type": "depends_on",
+      "direction": "forward",
+      "weight": 0.6
+    },
+    {
+      "source": "config:tools/determinism_harness/baselines/latest/pixel-a.json",
+      "target": "file:tools/determinism_harness/integration_test/measure_test.dart",
+      "type": "related",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "config:tools/determinism_harness/baselines/latest/pixel-b.json",
+      "target": "file:tools/determinism_harness/integration_test/measure_test.dart",
+      "type": "related",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "file:tools/determinism_harness/ios/Podfile",
+      "target": "file:tools/determinism_harness/ios/Runner.xcodeproj/project.pbxproj",
+      "type": "depends_on",
+      "direction": "forward",
+      "weight": 0.6
+    },
+    {
+      "source": "config:tools/determinism_harness/ios/Flutter/Debug.xcconfig",
+      "target": "file:tools/determinism_harness/ios/Runner.xcodeproj/project.pbxproj",
+      "type": "configures",
+      "direction": "forward",
+      "weight": 0.6
+    },
+    {
+      "source": "config:tools/determinism_harness/ios/Flutter/Release.xcconfig",
+      "target": "file:tools/determinism_harness/ios/Runner.xcodeproj/project.pbxproj",
+      "type": "configures",
+      "direction": "forward",
+      "weight": 0.6
+    },
+    {
+      "source": "config:tools/determinism_harness/ios/Flutter/AppFrameworkInfo.plist",
+      "target": "file:tools/determinism_harness/ios/Runner.xcodeproj/project.pbxproj",
+      "type": "configures",
+      "direction": "forward",
+      "weight": 0.6
+    },
+    {
+      "source": "file:tools/determinism_harness/ios/Runner.xcworkspace/contents.xcworkspacedata",
+      "target": "file:tools/determinism_harness/ios/Runner.xcodeproj/project.pbxproj",
+      "type": "depends_on",
+      "direction": "forward",
+      "weight": 0.6
+    },
+    {
+      "source": "file:tools/determinism_harness/ios/Runner.xcodeproj/project.xcworkspace/contents.xcworkspacedata",
+      "target": "file:tools/determinism_harness/ios/Runner.xcodeproj/project.pbxproj",
+      "type": "depends_on",
+      "direction": "forward",
+      "weight": 0.6
+    },
+    {
+      "source": "file:tools/determinism_harness/ios/Runner.xcodeproj/xcshareddata/xcschemes/Runner.xcscheme",
+      "target": "file:tools/determinism_harness/ios/Runner.xcodeproj/project.pbxproj",
+      "type": "configures",
+      "direction": "forward",
+      "weight": 0.6
+    },
+    {
+      "source": "file:tools/determinism_harness/ios/Runner.xcodeproj/project.pbxproj",
+      "target": "file:tools/determinism_harness/ios/Runner/AppDelegate.swift",
+      "type": "deploys",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:tools/determinism_harness/ios/Runner.xcodeproj/project.pbxproj",
+      "target": "file:tools/determinism_harness/ios/Runner/Base.lproj/LaunchScreen.storyboard",
+      "type": "depends_on",
+      "direction": "forward",
+      "weight": 0.6
+    },
+    {
+      "source": "file:tools/determinism_harness/ios/Runner.xcodeproj/project.pbxproj",
+      "target": "file:tools/determinism_harness/ios/Runner/Base.lproj/Main.storyboard",
+      "type": "depends_on",
+      "direction": "forward",
+      "weight": 0.6
+    },
+    {
+      "source": "file:tools/determinism_harness/ios/Runner.xcodeproj/project.pbxproj",
+      "target": "config:tools/determinism_harness/ios/Runner/Assets.xcassets/AppIcon.appiconset/Contents.json",
+      "type": "depends_on",
+      "direction": "forward",
+      "weight": 0.6
+    },
+    {
+      "source": "file:tools/determinism_harness/ios/Runner.xcodeproj/project.pbxproj",
+      "target": "config:tools/determinism_harness/ios/Runner/Assets.xcassets/LaunchImage.imageset/Contents.json",
+      "type": "depends_on",
+      "direction": "forward",
+      "weight": 0.6
+    },
+    {
+      "source": "document:tools/determinism_harness/ios/Runner/Assets.xcassets/LaunchImage.imageset/README.md",
+      "target": "config:tools/determinism_harness/ios/Runner/Assets.xcassets/LaunchImage.imageset/Contents.json",
+      "type": "documents",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "config:tools/determinism_harness/ios/Runner/Assets.xcassets/AppIcon.appiconset/Contents.json",
+      "target": "file:tools/determinism_harness/ios/Runner/AppDelegate.swift",
+      "type": "related",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "file:tools/determinism_harness/lib/cli.dart",
+      "target": "file:tools/determinism_harness/lib/agreement.dart",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:tools/determinism_harness/lib/cli.dart",
+      "target": "file:tools/determinism_harness/lib/output_format.dart",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:tools/holdout_34/verdict.dart",
+      "target": "file:lib/holdouts/idempotence_check.dart",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:tools/holdout_34/verdict.dart",
+      "target": "file:lib/models/study_note.dart",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:tools/holdout_34/runner.sh",
+      "target": "function:tools/holdout_34/runner.sh:step",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:tools/holdout_34/runner.sh",
+      "target": "function:tools/holdout_34/runner.sh:prompt",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:tools/holdout_34/runner.sh",
+      "target": "function:tools/holdout_34/runner.sh:capture_path",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:tools/determinism_harness/run.dart",
+      "target": "file:tools/determinism_harness/lib/cli.dart",
+      "type": "depends_on",
+      "direction": "forward",
+      "weight": 0.6
+    },
+    {
+      "source": "file:tools/holdout_34/runner.sh",
+      "target": "file:tools/holdout_34/verdict.dart",
+      "type": "depends_on",
+      "direction": "forward",
+      "weight": 0.6
+    },
+    {
+      "source": "config:tools/determinism_harness/pubspec.yaml",
+      "target": "file:tools/determinism_harness/lib/main.dart",
+      "type": "configures",
+      "direction": "forward",
+      "weight": 0.6
+    },
+    {
+      "source": "config:tools/determinism_harness/pubspec.yaml",
+      "target": "file:tools/determinism_harness/lib/cli.dart",
+      "type": "configures",
+      "direction": "forward",
+      "weight": 0.6
+    },
+    {
+      "source": "config:tools/determinism_harness/ios/Runner/Info.plist",
+      "target": "file:tools/determinism_harness/lib/main.dart",
+      "type": "configures",
+      "direction": "forward",
+      "weight": 0.6
+    },
+    {
+      "source": "document:tools/determinism_harness/README.md",
+      "target": "file:tools/determinism_harness/lib/cli.dart",
+      "type": "documents",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "document:tools/determinism_harness/README.md",
+      "target": "file:tools/determinism_harness/lib/agreement.dart",
+      "type": "documents",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "document:tools/determinism_harness/README.md",
+      "target": "file:tools/determinism_harness/run.dart",
+      "type": "documents",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "document:tools/holdout_34/README.md",
+      "target": "file:tools/holdout_34/runner.sh",
+      "type": "documents",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "document:tools/holdout_34/README.md",
+      "target": "file:tools/holdout_34/verdict.dart",
+      "type": "documents",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "file:lib/main.dart",
+      "target": "file:test/boot_screen_test.dart",
+      "type": "tested_by",
+      "direction": "forward",
+      "weight": 0.7,
+      "description": "Dart prod→test pairing (recovered by reviewer; .dart not in merge script test-pattern table)"
+    },
+    {
+      "source": "file:lib/prompts/flashcard_gen.dart",
+      "target": "file:test/flashcard_gen_test.dart",
+      "type": "tested_by",
+      "direction": "forward",
+      "weight": 0.7,
+      "description": "Dart prod→test pairing (recovered by reviewer; .dart not in merge script test-pattern table)"
+    },
+    {
+      "source": "file:lib/holdouts/cold_load_timer.dart",
+      "target": "file:test/holdouts/cold_load_timer_test.dart",
+      "type": "tested_by",
+      "direction": "forward",
+      "weight": 0.7,
+      "description": "Dart prod→test pairing (recovered by reviewer; .dart not in merge script test-pattern table)"
+    },
+    {
+      "source": "file:lib/holdouts/idempotence_check.dart",
+      "target": "file:test/holdouts/idempotence_check_test.dart",
+      "type": "tested_by",
+      "direction": "forward",
+      "weight": 0.7,
+      "description": "Dart prod→test pairing (recovered by reviewer; .dart not in merge script test-pattern table)"
+    },
+    {
+      "source": "file:lib/services/retrieval_service.dart",
+      "target": "file:test/retrieval_service_test.dart",
+      "type": "tested_by",
+      "direction": "forward",
+      "weight": 0.7,
+      "description": "Dart prod→test pairing (recovered by reviewer; .dart not in merge script test-pattern table)"
+    },
+    {
+      "source": "file:lib/services/seed_loader.dart",
+      "target": "file:test/seed_loader_test.dart",
+      "type": "tested_by",
+      "direction": "forward",
+      "weight": 0.7,
+      "description": "Dart prod→test pairing (recovered by reviewer; .dart not in merge script test-pattern table)"
+    },
+    {
+      "source": "file:lib/models/study_note.dart",
+      "target": "file:test/study_note_test.dart",
+      "type": "tested_by",
+      "direction": "forward",
+      "weight": 0.7,
+      "description": "Dart prod→test pairing (recovered by reviewer; .dart not in merge script test-pattern table)"
+    },
+    {
+      "source": "file:lib/widgets/demo_overlay.dart",
+      "target": "file:test/widgets/demo_overlay_test.dart",
+      "type": "tested_by",
+      "direction": "forward",
+      "weight": 0.7,
+      "description": "Dart prod→test pairing (recovered by reviewer; .dart not in merge script test-pattern table)"
+    },
+    {
+      "source": "file:lib/widgets/flashcards_tab.dart",
+      "target": "file:test/widgets/flashcards_tab_test.dart",
+      "type": "tested_by",
+      "direction": "forward",
+      "weight": 0.7,
+      "description": "Dart prod→test pairing (recovered by reviewer; .dart not in merge script test-pattern table)"
+    },
+    {
+      "source": "file:lib/widgets/mesh_status_widget.dart",
+      "target": "file:test/widgets/mesh_status_widget_test.dart",
+      "type": "tested_by",
+      "direction": "forward",
+      "weight": 0.7,
+      "description": "Dart prod→test pairing (recovered by reviewer; .dart not in merge script test-pattern table)"
+    },
+    {
+      "source": "file:lib/widgets/notes_tab.dart",
+      "target": "file:test/widgets/notes_tab_test.dart",
+      "type": "tested_by",
+      "direction": "forward",
+      "weight": 0.7,
+      "description": "Dart prod→test pairing (recovered by reviewer; .dart not in merge script test-pattern table)"
+    },
+    {
+      "source": "file:tools/determinism_harness/lib/agreement.dart",
+      "target": "file:tools/determinism_harness/test/agreement_test.dart",
+      "type": "tested_by",
+      "direction": "forward",
+      "weight": 0.7,
+      "description": "Dart prod→test pairing (recovered by reviewer; .dart not in merge script test-pattern table)"
+    },
+    {
+      "source": "file:tools/determinism_harness/lib/cli.dart",
+      "target": "file:tools/determinism_harness/test/cli_test.dart",
+      "type": "tested_by",
+      "direction": "forward",
+      "weight": 0.7,
+      "description": "Dart prod→test pairing (recovered by reviewer; .dart not in merge script test-pattern table)"
+    },
+    {
+      "source": "file:tools/determinism_harness/lib/output_format.dart",
+      "target": "file:tools/determinism_harness/test/cli_test.dart",
+      "type": "tested_by",
+      "direction": "forward",
+      "weight": 0.7,
+      "description": "Dart prod→test pairing (recovered by reviewer; .dart not in merge script test-pattern table)"
+    },
+    {
+      "source": "file:tools/determinism_harness/lib/output_format.dart",
+      "target": "file:tools/determinism_harness/test/output_format_test.dart",
+      "type": "tested_by",
+      "direction": "forward",
+      "weight": 0.7,
+      "description": "Dart prod→test pairing (recovered by reviewer; .dart not in merge script test-pattern table)"
+    }
+  ],
+  "layers": [
+    {
+      "id": "layer:application-boot-ui",
+      "name": "Application Boot & UI",
+      "description": "Flutter app entry point and Material-UI widgets that compose the demo surfaces — boot screen, mesh status overlay, notes/flashcards/query tabs.",
+      "nodeIds": [
+        "file:lib/main.dart",
+        "file:lib/widgets/demo_overlay.dart",
+        "file:lib/widgets/flashcards_tab.dart",
+        "file:lib/widgets/mesh_status_widget.dart",
+        "file:lib/widgets/notes_tab.dart",
+        "file:lib/widgets/query_screen.dart"
+      ]
+    },
+    {
+      "id": "layer:domain-models",
+      "name": "Domain Models",
+      "description": "StudyNote shape, DQL query constants, and prompt scaffolding that define the corpus and query vocabulary shared by every service and widget.",
+      "nodeIds": [
+        "file:lib/models/study_note.dart",
+        "file:lib/prompts/dql_queries.dart"
+      ]
+    },
+    {
+      "id": "layer:sync-persistence",
+      "name": "Sync & Persistence",
+      "description": "Ditto CRDT store binding and seed-loader bootstrap — the layer that makes the vector index merge over BLE/Wi-Fi between phone A and phone B.",
+      "nodeIds": [
+        "file:lib/services/ditto_service.dart",
+        "file:lib/services/seed_loader.dart"
+      ]
+    },
+    {
+      "id": "layer:on-device-ai",
+      "name": "On-Device AI Runtime",
+      "description": "Cactus 1.3 binding for the local Qwen 2.5 1.7B model — embedding + generation calls that must stay on-device with no cloud fallback.",
+      "nodeIds": [
+        "file:lib/services/cactus_service.dart"
+      ]
+    },
+    {
+      "id": "layer:retrieval-generation",
+      "name": "Retrieval & Generation",
+      "description": "Cosine-thresholded retrieval over the merged Ditto vector index plus the grounded flashcard-generation prompt that backs Stage 1 output.",
+      "nodeIds": [
+        "file:lib/prompts/flashcard_gen.dart",
+        "file:lib/services/retrieval_service.dart"
+      ]
+    },
+    {
+      "id": "layer:holdouts-validation",
+      "name": "Holdouts & Validation",
+      "description": "Holdout R1–R11 instruments and harnesses — in-app cold-load and idempotence checks, the cross-platform determinism harness, and the offline / Holdout 3-4 runners.",
+      "nodeIds": [
+        "file:lib/holdouts/cold_load_timer.dart",
+        "file:lib/holdouts/idempotence_check.dart",
+        "file:tools/determinism_harness/integration_test/measure_test.dart",
+        "file:tools/determinism_harness/lib/agreement.dart",
+        "file:tools/determinism_harness/lib/cli.dart",
+        "file:tools/determinism_harness/lib/main.dart",
+        "file:tools/determinism_harness/lib/output_format.dart",
+        "file:tools/determinism_harness/run.dart",
+        "document:tools/holdout_34/README.md",
+        "file:tools/holdout_34/runner.sh",
+        "file:tools/holdout_34/verdict.dart",
+        "document:tools/holdout_7/offline_witness.md"
+      ]
+    },
+    {
+      "id": "layer:tests",
+      "name": "Tests",
+      "description": "Flutter widget, service, holdout, and determinism-harness unit tests that gate the validation chain before each demo rehearsal.",
+      "nodeIds": [
+        "file:test/boot_screen_test.dart",
+        "file:test/flashcard_gen_test.dart",
+        "file:test/holdouts/cold_load_timer_test.dart",
+        "file:test/holdouts/idempotence_check_test.dart",
+        "file:test/retrieval_service_test.dart",
+        "file:test/seed_loader_test.dart",
+        "file:test/study_note_test.dart",
+        "file:test/widgets/demo_overlay_test.dart",
+        "file:test/widgets/flashcards_tab_test.dart",
+        "file:test/widgets/mesh_status_widget_test.dart",
+        "file:test/widgets/notes_tab_test.dart",
+        "file:tools/determinism_harness/test/agreement_test.dart",
+        "file:tools/determinism_harness/test/cli_test.dart",
+        "file:tools/determinism_harness/test/output_format_test.dart"
+      ]
+    },
+    {
+      "id": "layer:data-fixtures-baselines",
+      "name": "Data Fixtures & Baselines",
+      "description": "Seed-note corpus slices for phones A and B, determinism-harness query fixtures, and dated baseline cosine outputs that gate Holdout 2 parity.",
+      "nodeIds": [
+        "config:assets/seed_notes_a.json",
+        "config:assets/seed_notes_b.json",
+        "config:tools/determinism_harness/baselines/2026-05-23/iphone.json",
+        "config:tools/determinism_harness/baselines/2026-05-23/pixel-a.json",
+        "config:tools/determinism_harness/baselines/2026-05-23/pixel-b.json",
+        "document:tools/determinism_harness/baselines/2026-05-23/README.md",
+        "config:tools/determinism_harness/baselines/latest/iphone.json",
+        "config:tools/determinism_harness/baselines/latest/pixel-a.json",
+        "config:tools/determinism_harness/baselines/latest/pixel-b.json",
+        "document:tools/determinism_harness/baselines/latest/README.md",
+        "config:tools/determinism_harness/fixtures/queries.json"
+      ]
+    },
+    {
+      "id": "layer:documentation-plan",
+      "name": "Documentation & Plan",
+      "description": "The authorship chain from README and CLAUDE.md through SEED, IDEA-A, the implementation plan, the C4 model, and the 6 deep-research passes that ground every decision.",
+      "nodeIds": [
+        "document:_docs/demo-script.md",
+        "document:_docs/IDEA-A.md",
+        "document:_docs/notes/cactus-sdk-quirks.md",
+        "document:_docs/notes/model-quirks.md",
+        "document:_docs/notes/thesis-framings.md",
+        "document:_docs/plans/001-feat-mesh-rag-demo.md",
+        "document:_docs/r5-pre-baked-embeddings.md",
+        "document:_docs/RESEARCH-BRIEF.md",
+        "document:_docs/research/chatgpt-deep-research.md",
+        "document:_docs/research/claude-deep-research.md",
+        "document:_docs/research/claude.md",
+        "document:_docs/research/codex.md",
+        "config:_docs/research/downloads.yaml",
+        "document:_docs/research/gemini-deep-research.md",
+        "document:_docs/research/gemini.md",
+        "document:_docs/research/index/by-tag.md",
+        "document:_docs/research/index/by-topic.md",
+        "document:_docs/research/index/clusters.md",
+        "document:_docs/research/index/cross-references.md",
+        "document:_docs/research/index/open-questions.md",
+        "document:_docs/research/index/README.md",
+        "document:_docs/research/index/top-N.md",
+        "document:_docs/SEED.md",
+        "document:_docs/WEB-PROMPT.md",
+        "document:assets/README.md",
+        "document:CLAUDE.md",
+        "document:docs/c4/interview.md",
+        "resource:docs/c4/model.c4",
+        "document:ios/Runner/Assets.xcassets/LaunchImage.imageset/README.md",
+        "document:README.md",
+        "document:tools/determinism_harness/ios/Runner/Assets.xcassets/LaunchImage.imageset/README.md",
+        "document:tools/determinism_harness/README.md"
+      ]
+    },
+    {
+      "id": "layer:build-ci-platform",
+      "name": "Build, CI & Platform Shells",
+      "description": "Flutter iOS + Android platform shells, Gradle/Xcode/Podfile build wiring, pubspec dependencies, justfile recipes, analysis_options, the GitHub Actions CI pipeline, and the .understandignore.",
+      "nodeIds": [
+        "pipeline:.github/workflows/ci.yml",
+        "file:.understand-anything/.understandignore",
+        "config:analysis_options.yaml",
+        "file:android/app/build.gradle.kts",
+        "config:android/app/src/debug/AndroidManifest.xml",
+        "config:android/app/src/main/AndroidManifest.xml",
+        "file:android/app/src/main/kotlin/com/dittoxcactus/mesh_rag/MainActivity.kt",
+        "config:android/app/src/main/res/drawable-v21/launch_background.xml",
+        "config:android/app/src/main/res/drawable/launch_background.xml",
+        "config:android/app/src/main/res/values-night/styles.xml",
+        "config:android/app/src/main/res/values/styles.xml",
+        "config:android/app/src/profile/AndroidManifest.xml",
+        "file:android/build.gradle.kts",
+        "file:android/gradle.properties",
+        "file:android/gradle/wrapper/gradle-wrapper.properties",
+        "file:android/settings.gradle.kts",
+        "config:ios/Flutter/AppFrameworkInfo.plist",
+        "config:ios/Flutter/Debug.xcconfig",
+        "config:ios/Flutter/Release.xcconfig",
+        "file:ios/Podfile",
+        "file:ios/Runner.xcodeproj/project.pbxproj",
+        "file:ios/Runner.xcodeproj/project.xcworkspace/contents.xcworkspacedata",
+        "config:ios/Runner.xcodeproj/project.xcworkspace/xcshareddata/IDEWorkspaceChecks.plist",
+        "file:ios/Runner.xcodeproj/project.xcworkspace/xcshareddata/WorkspaceSettings.xcsettings",
+        "file:ios/Runner.xcodeproj/xcshareddata/xcschemes/Runner.xcscheme",
+        "file:ios/Runner.xcworkspace/contents.xcworkspacedata",
+        "config:ios/Runner.xcworkspace/xcshareddata/IDEWorkspaceChecks.plist",
+        "file:ios/Runner.xcworkspace/xcshareddata/WorkspaceSettings.xcsettings",
+        "file:ios/Runner/AppDelegate.swift",
+        "config:ios/Runner/Assets.xcassets/AppIcon.appiconset/Contents.json",
+        "config:ios/Runner/Assets.xcassets/LaunchImage.imageset/Contents.json",
+        "file:ios/Runner/Base.lproj/LaunchScreen.storyboard",
+        "file:ios/Runner/Base.lproj/Main.storyboard",
+        "config:ios/Runner/Info.plist",
+        "file:ios/Runner/Runner-Bridging-Header.h",
+        "file:ios/RunnerTests/RunnerTests.swift",
+        "service:justfile",
+        "config:pubspec.yaml",
+        "config:tools/determinism_harness/analysis_options.yaml",
+        "file:tools/determinism_harness/android/app/build.gradle.kts",
+        "config:tools/determinism_harness/android/app/src/debug/AndroidManifest.xml",
+        "config:tools/determinism_harness/android/app/src/main/AndroidManifest.xml",
+        "file:tools/determinism_harness/android/app/src/main/kotlin/com/dittoxcactus/determinism_harness/MainActivity.kt",
+        "config:tools/determinism_harness/android/app/src/main/res/drawable-v21/launch_background.xml",
+        "config:tools/determinism_harness/android/app/src/main/res/drawable/launch_background.xml",
+        "config:tools/determinism_harness/android/app/src/main/res/values-night/styles.xml",
+        "config:tools/determinism_harness/android/app/src/main/res/values/styles.xml",
+        "config:tools/determinism_harness/android/app/src/profile/AndroidManifest.xml",
+        "file:tools/determinism_harness/android/build.gradle.kts",
+        "file:tools/determinism_harness/android/gradle.properties",
+        "file:tools/determinism_harness/android/gradle/wrapper/gradle-wrapper.properties",
+        "file:tools/determinism_harness/android/settings.gradle.kts",
+        "config:tools/determinism_harness/ios/Flutter/AppFrameworkInfo.plist",
+        "config:tools/determinism_harness/ios/Flutter/Debug.xcconfig",
+        "config:tools/determinism_harness/ios/Flutter/Release.xcconfig",
+        "file:tools/determinism_harness/ios/Podfile",
+        "file:tools/determinism_harness/ios/Runner.xcodeproj/project.pbxproj",
+        "file:tools/determinism_harness/ios/Runner.xcodeproj/project.xcworkspace/contents.xcworkspacedata",
+        "config:tools/determinism_harness/ios/Runner.xcodeproj/project.xcworkspace/xcshareddata/IDEWorkspaceChecks.plist",
+        "file:tools/determinism_harness/ios/Runner.xcodeproj/project.xcworkspace/xcshareddata/WorkspaceSettings.xcsettings",
+        "file:tools/determinism_harness/ios/Runner.xcodeproj/xcshareddata/xcschemes/Runner.xcscheme",
+        "file:tools/determinism_harness/ios/Runner.xcworkspace/contents.xcworkspacedata",
+        "config:tools/determinism_harness/ios/Runner.xcworkspace/xcshareddata/IDEWorkspaceChecks.plist",
+        "file:tools/determinism_harness/ios/Runner.xcworkspace/xcshareddata/WorkspaceSettings.xcsettings",
+        "file:tools/determinism_harness/ios/Runner/AppDelegate.swift",
+        "config:tools/determinism_harness/ios/Runner/Assets.xcassets/AppIcon.appiconset/Contents.json",
+        "config:tools/determinism_harness/ios/Runner/Assets.xcassets/LaunchImage.imageset/Contents.json",
+        "file:tools/determinism_harness/ios/Runner/Base.lproj/LaunchScreen.storyboard",
+        "file:tools/determinism_harness/ios/Runner/Base.lproj/Main.storyboard",
+        "config:tools/determinism_harness/ios/Runner/Info.plist",
+        "file:tools/determinism_harness/ios/Runner/Runner-Bridging-Header.h",
+        "file:tools/determinism_harness/ios/RunnerTests/RunnerTests.swift",
+        "config:tools/determinism_harness/pubspec.yaml"
+      ]
+    }
+  ],
+  "tour": [
+    {
+      "order": 1,
+      "title": "The Thesis: Mesh RAG",
+      "description": "Start at the README, which frames the project: two phones each hold a slice of a study-notes corpus, meet over BLE/Wi-Fi, and merge their vector indexes as a CRDT so a query on phone A draws on phone B's notes after handshake — with WAN off. CLAUDE.md sits alongside it as the agent-facing playbook and pins the thesis-bearing constraints (cloud is not in the trust boundary, iOS + Android both required, Holdout 7 never cut, determinism is the pre-flight gate). Reading these two together gives you the project's purpose and its red lines before you touch any code.",
+      "nodeIds": [
+        "document:README.md",
+        "document:CLAUDE.md"
+      ]
+    },
+    {
+      "order": 2,
+      "title": "Idea and Validation Harness",
+      "description": "IDEA-A.md is the load-bearing argument — 'Your knowledge base wants to be a CRDT' — and pins Mesh RAG as the chosen framing out of the four brainstorm options. SEED.md is its operational counterpart: it defines holdouts R1 through R11 (the named scenarios the demo must pass), the cut order under pressure, and the threat-model bound. The thesis-framings memo (a stress test of the candidate framings) shows how the team picked which story to lead with. These three documents establish the vocabulary — R-numbers, holdout cut order, thesis arc — that every later step will reference.",
+      "nodeIds": [
+        "document:_docs/IDEA-A.md",
+        "document:_docs/SEED.md",
+        "document:_docs/notes/thesis-framings.md"
+      ]
+    },
+    {
+      "order": 3,
+      "title": "The Implementation Plan and Architecture Model",
+      "description": "The plan at `_docs/plans/001-feat-mesh-rag-demo.md` is the authoritative implementation document — it defines U1..U14 implementation units, maps each to the holdouts it covers, and cites the 281-source research index by per-source ID. The Likec4 model at `docs/c4/model.c4` is its visual sibling: it declares the four containers (phone_app, cactus_models, ditto_store, determinism_harness) and the component-level relationships you will encounter as code in the next steps. Reading these now means every file you open later has a place to land in the U-numbered plan and the C4 hierarchy.",
+      "nodeIds": [
+        "document:_docs/plans/001-feat-mesh-rag-demo.md",
+        "resource:docs/c4/model.c4"
+      ]
+    },
+    {
+      "order": 4,
+      "title": "Application Boot Path",
+      "description": "`lib/main.dart` is the entry point — and the highest-fan-out file in the lib/ tree. It runs cold-load instrumentation, requests mesh permissions, and drives the BootScreen state machine through four named phases: Ditto initialize, SeedLoader parse, Cactus initialize, and embedding backfill — then swaps in QueryScreen. This file is the bird's-eye view: every service you meet in the next four steps gets wired up here in the order the demo needs them.",
+      "nodeIds": [
+        "file:lib/main.dart"
+      ],
+      "languageLesson": "Dart's `async`/`await` reads sequentially but does not block the UI isolate. The BootScreen uses a state-machine pattern (an enum of phases plus setState) rather than chained Futures so the UI can report progress at named boundaries — important when a model download phase can take tens of seconds on a cold device."
+    },
+    {
+      "order": 5,
+      "title": "Domain Model: The CRDT Row",
+      "description": "`lib/models/study_note.dart` defines StudyNote — the canonical row synced by Ditto. It uses content-addressed UUIDv5 ids (so two phones that ingest the same content produce the same key) and an application-layer OR-Set for `acceptedBy`, layered on top of Ditto's grow-only G-Set semantics. Alongside it, `lib/prompts/dql_queries.dart` is the small but central file of DQL string constants — subscription, selectAll/byId, upsert with ON ID CONFLICT, and per-row setEmbedding — that every higher layer reuses. StudyNote is the highest fan-in node in the codebase (13 dependents), so understanding its shape unlocks every later step.",
+      "nodeIds": [
+        "file:lib/models/study_note.dart",
+        "file:lib/prompts/dql_queries.dart"
+      ],
+      "languageLesson": "Content-addressed UUIDv5 ids let two devices independently produce the same id for the same content, which is what makes the union of two corpora idempotent. Combined with Ditto's grow-only set semantics, this is what lets the vector index merge correctly without coordination — the core CRDT-shaped move the whole writeup hinges on."
+    },
+    {
+      "order": 6,
+      "title": "Sync Layer: Ditto over BLE / LAN",
+      "description": "`lib/services/ditto_service.dart` is the singleton that owns the Ditto instance — it wires up BLE + LAN + AWDL transports in small-peers-only mode, exposes typed CRUD over StudyNote, and broadcasts the remote-peer count that drives the mesh-status pill in Step 9. `lib/services/seed_loader.dart` is its boot-time partner: it reads the per-role `seed_notes_<role>.json` asset (audience-submitted study notes, not recipes) and idempotently upserts each entry via DittoService, passing pre-baked embeddings through verbatim to skip the cold-load backfill. Together they implement the 'phones meet over BLE' half of the thesis from Step 1.",
+      "nodeIds": [
+        "file:lib/services/ditto_service.dart",
+        "file:lib/services/seed_loader.dart"
+      ]
+    },
+    {
+      "order": 7,
+      "title": "On-Device AI Runtime",
+      "description": "`lib/services/cactus_service.dart` wraps two CactusLM instances — qwen3-1.7 for completion and qwen3-0.6 for embedding — and handles their staged download and initialize with progress callbacks. This is the layer that has to stay on-device with no cloud fallback (the thesis-bearing constraint from Step 1). The companion document `_docs/notes/cactus-sdk-quirks.md` catalogues the Cactus 1.3.0 Flutter SDK behaviors the demo had to work around, most famously a Supabase telemetry call that pierced airplane mode — engineering evidence for why grounding has to be structural and not just configured.",
+      "nodeIds": [
+        "file:lib/services/cactus_service.dart",
+        "document:_docs/notes/cactus-sdk-quirks.md"
+      ]
+    },
+    {
+      "order": 8,
+      "title": "Retrieval and Generation Hot Path",
+      "description": "`lib/services/retrieval_service.dart` is where the math from Step 5 meets the model from Step 7: it owns the embedding-backfill, the cosine top-k with deterministic tie-break, the entity-mention grounding gate, and the `generateFlashcards` event stream that the UI consumes. `lib/prompts/flashcard_gen.dart` builds the Q/A/SOURCE prompt and tolerantly parses streaming output back into Flashcards — absorbing Qwen 2.5 quirks like markdown emphasis, `<think>` blocks, fullwidth punctuation, and mid-stream truncation. This pair is the project's core feature: retrieve from the merged corpus, then generate grounded flashcards.",
+      "nodeIds": [
+        "file:lib/services/retrieval_service.dart",
+        "file:lib/prompts/flashcard_gen.dart"
+      ],
+      "languageLesson": "Dart `Stream<FlashcardEvent>` lets the service emit incremental events as the on-device LLM streams tokens, so the UI can show partial cards as they arrive. The grounding gate runs before generation rather than detecting bad output after the fact — a structural service-layer gate, not a stream-watching heuristic, which is the project's lesson learned about small-model behavior."
+    },
+    {
+      "order": 9,
+      "title": "UI Surfaces: Query, Notes, Flashcards, Mesh Pill",
+      "description": "`lib/widgets/query_screen.dart` is the two-tab Scaffold (Notes + Flashcards in an IndexedStack) and the only place that reaches into the singleton DittoService and RetrievalService from Steps 6 and 8. `flashcards_tab.dart` consumes the `Stream<FlashcardEvent>` from Step 8 and renders the swipeable card stack; `notes_tab.dart` shows a live ListView grouped by contributor and supports long-press accept-peer-note (writing through the OR-Set on StudyNote from Step 5); `mesh_status_widget.dart` is the AppBar pill that flips gray-to-green when peers appear — the visible audience signal that the mesh is alive.",
+      "nodeIds": [
+        "file:lib/widgets/query_screen.dart",
+        "file:lib/widgets/flashcards_tab.dart",
+        "file:lib/widgets/notes_tab.dart",
+        "file:lib/widgets/mesh_status_widget.dart"
+      ]
+    },
+    {
+      "order": 10,
+      "title": "Holdouts: The Validation Instruments",
+      "description": "These are the in-app and out-of-app instruments that prove the holdouts from Step 2 actually hold. `cold_load_timer.dart` (R5) records elapsed milliseconds at named boot-phase boundaries and emits a JSON report against the 10-second app-launch budget. `idempotence_check.dart` is the pure-function snapshot diff for R3 (sync idempotence) and R4 (bidirectional CRDT merge), and `tools/holdout_34/verdict.dart` is the Dart CLI that consumes those snapshots and emits a PASS/FAIL verdict. The determinism harness at `tools/determinism_harness/integration_test/measure_test.dart` is the R2 pre-flight gate — it embeds fixture queries on iOS and Android and writes per-device JSON so cross-platform cosine parity can be checked exactly.",
+      "nodeIds": [
+        "file:lib/holdouts/cold_load_timer.dart",
+        "file:lib/holdouts/idempotence_check.dart",
+        "file:tools/holdout_34/verdict.dart",
+        "file:tools/determinism_harness/integration_test/measure_test.dart"
+      ]
+    },
+    {
+      "order": 11,
+      "title": "Tests That Pin the Math and the Quirks",
+      "description": "`test/retrieval_service_test.dart` is the large suite that pins the pure math of RetrievalService — normalize, dot, rankTopK — plus the grounding gates, SOURCE backfill, and the cleanCards pipeline. `test/flashcard_gen_test.dart` pins the prompt verbatim and exercises every documented small-model quirk against the parser. `_docs/notes/model-quirks.md` is the prose companion: a running catalogue of Qwen 2.5 1.7B behaviors (bilingual chain-of-thought drift, fabrication, grounding-prompt rationalization) that the parser had to absorb — and that the writeup uses as evidence for the specialists-vs-generalists thread.",
+      "nodeIds": [
+        "file:test/retrieval_service_test.dart",
+        "file:test/flashcard_gen_test.dart",
+        "document:_docs/notes/model-quirks.md"
+      ]
+    },
+    {
+      "order": 12,
+      "title": "Build, CI, and Demo Day",
+      "description": "`justfile` is the task-runner manifest centralizing every repo workflow — C4 dashboard build, determinism harness, mesh_rag app runs per phone role, holdout 3/4/7 runners, Ditto wipe, demo-overlay flags, and the seed-embedding bake/pull cycle. `.github/workflows/ci.yml` runs `just ci` (flutter analyze + test) on push and PR, pinning Flutter 3.32.0 so CI-green and local-green are the same set of checks. `pubspec.yaml` pins the cactus + ditto_live + permission_handler dependencies and the seed asset bundle. `_docs/demo-script.md` closes the loop: a rehearsable beat-by-beat narration for the Holdout 1 airplane-mode demo — the moment all of the above gets shown to a live audience.",
+      "nodeIds": [
+        "service:justfile",
+        "pipeline:.github/workflows/ci.yml",
+        "config:pubspec.yaml",
+        "document:_docs/demo-script.md"
+      ],
+      "languageLesson": "A justfile (just is the task runner) plays the role a Makefile would in a C project but without tab-sensitivity and with `set dotenv-load` for environment ergonomics. Pairing it with a GitHub Actions workflow that just calls `just ci` keeps the CI green path and the local green path bitwise the same — no drift between what runs on your laptop and what runs on the runner."
+    }
+  ]
+}

@@ -1,0 +1,130 @@
+# Build the Understand-Anything knowledge-graph dashboard against this
+# repo's checked-in graph and publish it to GitHub Pages.
+#
+# The dashboard source lives in the Understand-Anything plugin
+# (github.com/Lum1104/Understand-Anything, packages/dashboard/). We
+# clone the plugin at a pinned version, build its dashboard in
+# "demo mode" (which fetches a static knowledge-graph.json instead
+# of going through the token-gated dev-server middleware), drop our
+# committed knowledge-graph.json into the build output, and deploy.
+#
+# How to view: https://alycda.github.io/DittoXCactus/
+#
+# How to refresh: re-run `/understand` in Claude Code on this repo,
+# commit the new `.understand-anything/knowledge-graph.json`, push.
+
+name: Deploy knowledge-graph dashboard to GitHub Pages
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - ".understand-anything/knowledge-graph.json"
+      - ".github/workflows/pages.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: pages
+  cancel-in-progress: false
+
+env:
+  # Pin to the same plugin version `/understand` ran against locally.
+  # Bump after re-running with a newer plugin and verifying the graph
+  # still validates.
+  UA_PLUGIN_REF: v2.7.4
+  # GitHub Pages serves a project repo at <user>.github.io/<repo>/.
+  # Match the casing of the repo name exactly — the dashboard's
+  # absolute asset URLs depend on this.
+  BASE_PATH: /DittoXCactus/
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repo (with knowledge-graph.json)
+        uses: actions/checkout@v4
+
+      - name: Sanity-check the graph is present
+        run: |
+          if [ ! -f .understand-anything/knowledge-graph.json ]; then
+            echo "::error::No knowledge-graph.json found. Run /understand locally and commit it."
+            exit 1
+          fi
+          echo "Graph size: $(wc -c < .understand-anything/knowledge-graph.json) bytes"
+
+      - name: Clone Understand-Anything plugin (pinned)
+        run: |
+          git clone --depth=1 --branch ${{ env.UA_PLUGIN_REF }} \
+            https://github.com/Lum1104/Understand-Anything.git /tmp/ua-plugin
+          ls /tmp/ua-plugin/understand-anything-plugin/packages/
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+
+      - name: Set up pnpm
+        uses: pnpm/action-setup@v4
+        with:
+          version: 10
+
+      - name: Install plugin deps (workspace)
+        working-directory: /tmp/ua-plugin/understand-anything-plugin
+        run: pnpm install --frozen-lockfile
+
+      - name: Build @understand-anything/core
+        working-directory: /tmp/ua-plugin/understand-anything-plugin
+        run: pnpm --filter @understand-anything/core build
+
+      - name: Build dashboard in demo mode with this repo's base path
+        working-directory: /tmp/ua-plugin/understand-anything-plugin/packages/dashboard
+        env:
+          # In demo mode, App.tsx reads VITE_GRAPH_URL etc. and fetches
+          # the static JSON files relative to the deploy. Drop them
+          # alongside the bundle below.
+          VITE_GRAPH_URL: ${{ env.BASE_PATH }}knowledge-graph.json
+        run: pnpm run build:demo -- --base="${{ env.BASE_PATH }}"
+
+      - name: Stage knowledge graph beside the built bundle
+        run: |
+          DIST=/tmp/ua-plugin/understand-anything-plugin/packages/dashboard/dist
+          # build:demo writes the bundle under dist/demo/ because the
+          # demo vite config pins base="/demo/" — passing --base on the
+          # CLI overrides it to our env BASE_PATH but the output dir
+          # name is still "demo" by default. Detect either layout.
+          if [ -d "$DIST/demo" ]; then
+            DIST="$DIST/demo"
+          fi
+          echo "Final dist dir: $DIST"
+          ls -la "$DIST" | head -20
+          cp $GITHUB_WORKSPACE/.understand-anything/knowledge-graph.json "$DIST/knowledge-graph.json"
+          # The dashboard also tries meta.json + config.json; they're
+          # optional (App.tsx tolerates 404s) but harmless to ship.
+          if [ -f "$GITHUB_WORKSPACE/.understand-anything/meta.json" ]; then
+            cp "$GITHUB_WORKSPACE/.understand-anything/meta.json" "$DIST/meta.json"
+          fi
+          echo "{\"autoUpdate\":false,\"outputLanguage\":\"en\"}" > "$DIST/config.json"
+          echo "Final dist contents:"
+          ls -la "$DIST"
+          echo "DIST_DIR=$DIST" >> $GITHUB_ENV
+
+      - name: Upload Pages artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: ${{ env.DIST_DIR }}
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4
