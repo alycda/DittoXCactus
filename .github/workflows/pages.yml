@@ -33,10 +33,12 @@ concurrency:
   cancel-in-progress: false
 
 env:
-  # Pin to the same plugin version `/understand` ran against locally.
-  # Bump after re-running with a newer plugin and verifying the graph
-  # still validates.
-  UA_PLUGIN_REF: v2.7.4
+  # Pin to a published plugin tag. Local plugin cache showed 2.7.4 but
+  # upstream only tags through v2.7.3 — the dashboard's static-build
+  # surface is stable across these point releases. Bump after the
+  # upstream cuts a new tag AND you've re-run /understand against it
+  # locally without graph-schema drift.
+  UA_PLUGIN_REF: v2.7.3
   # GitHub Pages serves a project repo at <user>.github.io/<repo>/.
   # Match the casing of the repo name exactly — the dashboard's
   # absolute asset URLs depend on this.
