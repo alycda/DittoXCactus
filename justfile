@@ -150,12 +150,52 @@ bake-seeds-b DEVICE:
 
 # Pull the baked seed JSON off Android and overwrite the asset. Uses
 # `run-as` so it works without root on debuggable builds.
+#
+# Resolves `adb` from $PATH first, then falls back to the macOS Android
+# Studio default install location. If neither hits, prints a clear
+# error pointing at the setup the dev needs to do once.
 bake-seeds-pull-a:
-    adb exec-out run-as com.dittoxcactus.mesh_rag \
-      cat files/seed_notes_a_baked.json > assets/seed_notes_a.json
-    @echo "✓ assets/seed_notes_a.json updated. Diff with git diff."
+    #!/usr/bin/env bash
+    set -euo pipefail
+    ADB="$(command -v adb 2>/dev/null || echo "$HOME/Library/Android/sdk/platform-tools/adb")"
+    if [ ! -x "$ADB" ]; then
+      echo "error: adb not found in PATH or at $ADB." >&2
+      echo "Add Android SDK platform-tools to PATH, e.g. in ~/.zshrc:" >&2
+      echo "  export PATH=\"\$HOME/Library/Android/sdk/platform-tools:\$PATH\"" >&2
+      exit 1
+    fi
+    REMOTE_PATH="app_flutter/seed_notes_a_baked.json"
+    # Write to a temp file first so a failed pull doesn't truncate the
+    # asset. mv only runs if the cat succeeded and produced bytes.
+    TMP="$(mktemp)"
+    trap 'rm -f "$TMP"' EXIT
+    "$ADB" exec-out run-as com.dittoxcactus.mesh_rag cat "$REMOTE_PATH" > "$TMP"
+    if [ ! -s "$TMP" ]; then
+      echo "error: pulled file is empty. Did the bake step run? Check the device:" >&2
+      echo "  $ADB shell run-as com.dittoxcactus.mesh_rag ls $REMOTE_PATH" >&2
+      exit 1
+    fi
+    mv "$TMP" assets/seed_notes_a.json
+    echo "✓ assets/seed_notes_a.json updated. Diff with git diff."
 
 bake-seeds-pull-b:
-    adb exec-out run-as com.dittoxcactus.mesh_rag \
-      cat files/seed_notes_b_baked.json > assets/seed_notes_b.json
-    @echo "✓ assets/seed_notes_b.json updated. Diff with git diff."
+    #!/usr/bin/env bash
+    set -euo pipefail
+    ADB="$(command -v adb 2>/dev/null || echo "$HOME/Library/Android/sdk/platform-tools/adb")"
+    if [ ! -x "$ADB" ]; then
+      echo "error: adb not found in PATH or at $ADB." >&2
+      echo "Add Android SDK platform-tools to PATH, e.g. in ~/.zshrc:" >&2
+      echo "  export PATH=\"\$HOME/Library/Android/sdk/platform-tools:\$PATH\"" >&2
+      exit 1
+    fi
+    REMOTE_PATH="app_flutter/seed_notes_b_baked.json"
+    TMP="$(mktemp)"
+    trap 'rm -f "$TMP"' EXIT
+    "$ADB" exec-out run-as com.dittoxcactus.mesh_rag cat "$REMOTE_PATH" > "$TMP"
+    if [ ! -s "$TMP" ]; then
+      echo "error: pulled file is empty. Did the bake step run? Check the device:" >&2
+      echo "  $ADB shell run-as com.dittoxcactus.mesh_rag ls $REMOTE_PATH" >&2
+      exit 1
+    fi
+    mv "$TMP" assets/seed_notes_b.json
+    echo "✓ assets/seed_notes_b.json updated. Diff with git diff."

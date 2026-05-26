@@ -256,7 +256,12 @@ class _BootScreenState extends State<BootScreen> {
     // ship as no-ops anyway); export everything from this device.
     final allEmbedded = await DittoService.instance.queryWithEmbedding();
     final selfEmbedded =
-        allEmbedded.where((n) => n.contributor == selfContributor).toList();
+        allEmbedded.where((n) => n.contributor == selfContributor).toList()
+          // Sort by createdAt so re-bakes produce stable, narrative-
+          // ordered diffs (Ditto returns by _id which is UUIDv5 — not
+          // the order a reader expects). Seed JSONs use ascending
+          // createdAt as the narrative spine.
+          ..sort((a, b) => a.createdAt.compareTo(b.createdAt));
     final asJsonList = selfEmbedded
         .map((n) => {
               'topic': n.topic,
@@ -278,9 +283,10 @@ class _BootScreenState extends State<BootScreen> {
     debugPrint('[BakeEmbeddings] wrote ${selfEmbedded.length} note(s) '
         'with embeddings to:\n  $outPath');
     debugPrint('[BakeEmbeddings] pull via:\n'
-        '  adb exec-out run-as com.dittoxcactus.mesh_rag cat '
-        'files/seed_notes_${kPhoneRole}_baked.json '
-        '> assets/seed_notes_$kPhoneRole.json');
+        '  just bake-seeds-pull-$kPhoneRole\n'
+        '(or manually: adb exec-out run-as com.dittoxcactus.mesh_rag cat '
+        'app_flutter/seed_notes_${kPhoneRole}_baked.json '
+        '> assets/seed_notes_$kPhoneRole.json)');
   }
 
   @override
