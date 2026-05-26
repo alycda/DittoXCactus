@@ -78,10 +78,14 @@ void main() {
       expect(
         user,
         endsWith(
-          'Now output N flashcards in the Q: / A: / SOURCE: format, each '
-          'about "the Sun". Start with "Q:" on its own line. No reasoning, '
+          'Now output exactly 3 flashcards in the Q: / A: / SOURCE: format, '
+          'each about "the Sun". Start with "Q:" on its own line. No reasoning, '
           'no preamble.',
         ),
+        reason:
+            'Closing imperative substitutes the literal count (and pluralizes) '
+            'rather than using the abstract "N" — small models sometimes '
+            'reason about the variable name itself.',
       );
     }));
 

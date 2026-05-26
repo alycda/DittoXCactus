@@ -208,27 +208,37 @@ class RetrievalService {
   // a SOURCE: line. A small model can produce drafts that don't match
   // that contract — duplicated cards across multiple "Final Answer"
   // sections, uncited claims inside reasoning prose, verbose drift
-  // past N, and off-topic facts when retrieval is thin (1 note about
-  // Mars retrieved for topic="moons", model dutifully makes cards
-  // about Olympus Mons and Valles Marineris too).
+  // past N, off-topic facts when retrieval is thin, AND answers that
+  // leak reasoning into the A field ("Mars has two smallest moons;
+  // Phoebus (or Phoebus)... Wait but original note says 'Phobos'...").
   //
-  // cleanCards is the post-parse cleanup pipeline. Four stages, run in
+  // cleanCards is the post-parse cleanup pipeline. Six stages, run in
   // this order:
   //   1. On-topic — card's Q or A must mention `topic` as a substring
   //      (case-insensitive). Drops the off-topic fact-padding case.
-  //   2. Citations required. Cards without `SOURCE` are dropped —
+  //   2. Reasoning-leak — drop cards whose A contains markers like
+  //      "Wait,", "Hmm,", "Actually,", "Let me check", "perhaps i",
+  //      "but maybe". These are dead giveaways the model is reasoning
+  //      in the answer field instead of stating an answer.
+  //   3. Answer-length — drop cards whose A is longer than
+  //      [_kMaxAnswerChars]. Real flashcard answers are one sentence
+  //      (~30 words). A long A is the model rambling — usually
+  //      hallucinated, frequently still under-cited.
+  //   4. Citations required. Cards without `SOURCE` are dropped —
   //      uncited factual sentences are the model's most likely
   //      fabrication path; the cited subset is verifiable.
-  //   3. Unique questions. Same Q across multiple draft passes
+  //   5. Unique questions. Same Q across multiple draft passes
   //      collapses to one card; the user-perceived UI is a stack of
   //      distinct facts, not the same fact thrice.
-  //   4. Cap at N. Verbose drift past the requested count is dropped
+  //   6. Cap at N. Verbose drift past the requested count is dropped
   //      after dedupe + cite-filter, so we never show more than
   //      asked.
   //
-  // Order matters in two places:
+  // Order matters in three places:
   //   - On-topic runs first because the cheapest filter should run
-  //     first (no need to dedupe cards that are about to be dropped).
+  //     first (no need to validate answers we're about to drop).
+  //   - Reasoning-leak + length checks run before cite-filter so a
+  //     rambling but cited card still drops.
   //   - Cite-filter runs before dedupe: if the model writes an
   //     uncited Q1 followed by the same Q1 with a SOURCE, dedupe-
   //     first would pick the uncited one (first occurrence) and
@@ -237,6 +247,45 @@ class RetrievalService {
   // Empty `topic` skips the on-topic stage — defer to upstream
   // (`generateFlashcards` already refuses an empty-topic call before
   // ever invoking this pipeline; this is just the degenerate guard).
+
+  /// Maximum chars allowed in a card's answer. Above this, the model
+  /// is rambling — not answering. Real flashcard answers are one
+  /// sentence (~30 words ≈ 200 chars); 300 leaves headroom for
+  /// dense scientific definitions without admitting reasoning rambles.
+  static const int _kMaxAnswerChars = 300;
+
+  /// Substrings (lowercase) that mark the model leaked reasoning into
+  /// the answer field. Pinned by tests so additions are deliberate.
+  /// Tuned against the on-device 2026-05-25 Mars-moons leak; expand
+  /// when new failure shapes surface.
+  static const Set<String> _reasoningMarkers = {
+    'wait, ',
+    'wait but ',
+    ', wait ',
+    'wait,',
+    'let me check',
+    'let me think',
+    'hmm,',
+    ' hmm ',
+    'actually,',
+    'but maybe',
+    'perhaps i ',
+    'i think ',
+    'i believe ',
+    'however, in reality',
+  };
+
+  /// True iff `answer` contains a reasoning-prose marker, suggesting
+  /// the model is thinking in the answer field instead of stating a
+  /// fact.
+  @visibleForTesting
+  static bool answerLooksLikeReasoning(String answer) {
+    final lower = answer.toLowerCase();
+    for (final marker in _reasoningMarkers) {
+      if (lower.contains(marker)) return true;
+    }
+    return false;
+  }
 
   /// When retrieval returned exactly one note and the model emitted a
   /// card without a SOURCE line (truncated mid-stream, or the model
@@ -284,12 +333,22 @@ class RetrievalService {
     final out = <Flashcard>[];
     final seenQuestions = <String>{};
     for (final card in cards) {
+      // 1. On-topic — Q or A must mention topic.
       if (needle.isNotEmpty) {
         final hayQ = card.question.toLowerCase();
         final hayA = card.answer.toLowerCase();
         if (!hayQ.contains(needle) && !hayA.contains(needle)) continue;
       }
+      // 2. Reasoning-leak — drop cards whose A reads like the model is
+      //    thinking instead of answering.
+      if (answerLooksLikeReasoning(card.answer)) continue;
+      // 3. Answer-length — drop cards whose A overflows what a real
+      //    flashcard answer should be.
+      if (card.answer.length > _kMaxAnswerChars) continue;
+      // 4. Citations required.
       if (card.sourceNoteIds.isEmpty) continue;
+      // 5. Dedupe by normalized question (case-insensitive,
+      //    whitespace-collapsed).
       final key = card.question
           .toLowerCase()
           .replaceAll(RegExp(r'\s+'), ' ')
@@ -298,6 +357,7 @@ class RetrievalService {
       if (seenQuestions.contains(key)) continue;
       seenQuestions.add(key);
       out.add(card);
+      // 6. Cap at n.
       if (out.length >= n) break;
     }
     return out;
@@ -574,8 +634,8 @@ class RetrievalService {
       if (rawCards.length != cards.length) {
         debugPrint(
           '[generateFlashcards] parsed ${rawCards.length} raw card(s); '
-          'kept ${cards.length} after on-topic + drop-uncited + dedupe '
-          '+ cap(n=$effectiveN)',
+          'kept ${cards.length} after on-topic + reasoning-leak + '
+          'answer-length + drop-uncited + dedupe + cap(n=$effectiveN)',
         );
       } else {
         debugPrint('[generateFlashcards] parsed ${cards.length} card(s)');

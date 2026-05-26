@@ -725,6 +725,109 @@ void main() {
       expect(out.length, 1);
       expect(out.single.question, 'Mars moons?');
     });
+
+    // ─── Reasoning-leak detection ────────────────────────────────────
+
+    test('drops cards whose A contains reasoning markers (the on-device '
+        '"Phoebus" leak)', () {
+      // Exact A: shape from the 2026-05-25 dry-run: model started OK,
+      // then leaked its own second-guessing into the answer field.
+      final raw = [
+        card('Mars moons?',
+            'Mars has two smallest moons; Phoebus is a small moon... '
+            'Wait, but original note says Phobos.'),
+      ];
+      final out = RetrievalService.cleanCards(raw, 3, 'moons');
+      expect(out, isEmpty);
+    });
+
+    test('drops cards with "Hmm,", "Actually,", "Let me check", "perhaps i", '
+        '"I think", "but maybe"', () {
+      final markers = {
+        'Mars moons?': 'Hmm, well, two satellites of Mars are something.',
+        'Mars rotation?': 'Actually, the rotation period is around 24 hours.',
+        'Mars moons names?': 'Let me check, Mars has Phobos and Deimos.',
+        'Mars day length?': 'Perhaps I should say about 24 hours.',
+        'Mars composition?': 'I think Mars is mostly iron oxide and basalt.',
+        'Mars satellites?': 'But maybe there are two small satellites.',
+      };
+      for (final entry in markers.entries) {
+        final raw = [card(entry.key, entry.value)];
+        final out = RetrievalService.cleanCards(raw, 3, 'Mars');
+        expect(out, isEmpty,
+            reason: 'Should drop card with reasoning marker in: '
+                '"${entry.value}"');
+      }
+    });
+
+    test('keeps factual answers that happen to contain reasoning-adjacent '
+        'words far from reasoning use', () {
+      // Not every "but" or "however" signals reasoning. Substring matches
+      // are anchored to specific phrases so legitimate answers survive.
+      final raw = [
+        card('What is gravity?',
+            'A force that attracts mass, however small, toward other mass.'),
+      ];
+      final out = RetrievalService.cleanCards(raw, 3, 'gravity');
+      // "however," without "in reality" trailing is fine.
+      expect(out.length, 1);
+    });
+
+    // ─── Answer-length cap ───────────────────────────────────────────
+
+    test('drops cards whose A is longer than the cap (~300 chars)', () {
+      // Models that ramble produce multi-clause answers. Real flashcard
+      // answers are one sentence — overflow is the model talking, not
+      // answering.
+      final longA = 'a' * 350;
+      final raw = [card('Q with long A about Mars?', longA)];
+      final out = RetrievalService.cleanCards(raw, 3, 'Mars');
+      expect(out, isEmpty);
+    });
+
+    test('answers right at the cap pass; one char over fails', () {
+      // Boundary check — the cap is 300 chars; tests pin both sides
+      // so a tuning change in the constant lights up here.
+      final atCap = 'mars ${'a' * 295}'; // 300 chars exactly
+      final overCap = 'mars ${'a' * 296}'; // 301 chars
+      expect(RetrievalService.cleanCards(
+          [card('Q?', atCap)], 3, 'mars').length, 1);
+      expect(RetrievalService.cleanCards(
+          [card('Q?', overCap)], 3, 'mars'), isEmpty);
+    });
+
+    // ─── answerLooksLikeReasoning helper ─────────────────────────────
+
+    test('answerLooksLikeReasoning: positive markers', () {
+      for (final s in const [
+        'Wait, but original note says Phobos',
+        'wait, but original note says phobos', // case-insensitive
+        'Hmm, well that\'s tricky',
+        'Actually, the answer is something else',
+        'Let me check the source',
+        'Perhaps I should reconsider',
+        'I think this is right',
+        'I believe so',
+        'However, in reality there is no such thing',
+        'Mars has moons. But maybe more exist.',
+      ]) {
+        expect(RetrievalService.answerLooksLikeReasoning(s), isTrue,
+            reason: 'Should flag: "$s"');
+      }
+    });
+
+    test('answerLooksLikeReasoning: negative cases (legitimate answers)', () {
+      for (final s in const [
+        'Phobos and Deimos, both captured asteroids.',
+        'The fourth planet from the Sun.',
+        'A force that attracts mass, however small, toward other mass.',
+        '24 hours, 37 minutes.',
+        '', // empty
+      ]) {
+        expect(RetrievalService.answerLooksLikeReasoning(s), isFalse,
+            reason: 'Should NOT flag: "$s"');
+      }
+    });
   });
 
   group('RetrievalService.backfillSingleRetrievalSource', () {

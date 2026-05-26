@@ -80,7 +80,7 @@ Output rules:
 - Output ONLY flashcards. No reasoning, no preamble.
 - Each card has three lines in this exact format:
   Q: <a clear question>
-  A: <a short answer, one sentence>
+  A: <a short answer, one sentence — under 30 words>
   SOURCE: <one or more note ids, comma-separated>
 - The note ids are the bracketed strings at the start of each note line
   (for example, `[400ba2af-...]`). Use them verbatim in SOURCE. Never
@@ -88,6 +88,9 @@ Output rules:
 - No markdown emphasis (no **Q:**, no italics). No JSON. No bullets. No numbering.
 - No LaTeX (no \\boxed, no \\begin{aligned}, no math-display blocks).
 - No <think> blocks. No chain-of-thought.
+- The answer must be a direct factual statement. No words like "Wait,"
+  "Hmm,", "Actually,", "Let me check", "perhaps", or "I think" — those
+  are reasoning, not an answer.
 - Every card must be about the Topic. Skip facts in the notes that are
   off-topic, even if they are interesting.
 - Do not make up facts. If the notes do not support a claim, do not make the claim.
@@ -97,9 +100,7 @@ Example:
 
 Q: What is escape velocity?
 A: The minimum speed needed to break free of a body's gravity without further propulsion.
-SOURCE: 400ba2af-8714-5fbb-ae78-b7858c60eaf7
-
-Output exactly N flashcards, each on-topic.''';
+SOURCE: 400ba2af-8714-5fbb-ae78-b7858c60eaf7''';
 
   static String _buildUserMessage({
     required String topic,
@@ -138,9 +139,14 @@ Output exactly N flashcards, each on-topic.''';
       buf.writeln('[${r.note.id}] ${r.note.body}');
     }
     buf.writeln();
+    // Substitute the literal count rather than "N" — small models (Qwen 2.5
+    // observed on 2026-05-25) sometimes reason about the variable name itself
+    // when forced to substitute mentally. Pluralize the noun so "1 flashcard"
+    // reads naturally.
+    final flashcardWord = n == 1 ? 'flashcard' : 'flashcards';
     buf.write(
-      'Now output N flashcards in the Q: / A: / SOURCE: format, each '
-      'about "$topic". Start with "Q:" on its own line. No reasoning, '
+      'Now output exactly $n $flashcardWord in the Q: / A: / SOURCE: format, '
+      'each about "$topic". Start with "Q:" on its own line. No reasoning, '
       'no preamble.',
     );
     return buf.toString();
