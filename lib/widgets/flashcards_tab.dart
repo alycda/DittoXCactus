@@ -83,6 +83,13 @@ class _FlashcardsTabState extends State<FlashcardsTab> {
   /// inversion. XOR'd with the per-card `_flippedIndices` flip state so
   /// the tap-to-flip affordance still works orthogonally. Off by
   /// default; cosmetic only — no model or retrieval changes.
+  ///
+  /// TODO(jeopardy-multiplayer): the single-device toggle is the visual
+  /// stepping stone for a Jeopardy-Together mode where two BLE-paired
+  /// phones collaborate on a shared clue stack (one shows the answer
+  /// to the audience, the other shows the question to the answerer).
+  /// See memory entry `project_multiplayer_brainstorm` for the
+  /// "why do players have to be near each other" framing.
   bool _jeopardyMode = false;
 
   @override
@@ -717,6 +724,13 @@ class _FlashcardView extends StatelessWidget {
     final showAnswer = flipped != jeopardyMode; // boolean XOR
     final face = showAnswer ? card.answer : card.question;
     final faceLabel = showAnswer ? 'A' : 'Q';
+    // TODO(jeopardy-phrasing): when jeopardyMode is on, the front
+    // (answer-as-clue) reads naturally, but the back (question-as-
+    // response) should be prepended with "What is …" / "Who is …" /
+    // "What are …" to match gameshow phrasing. Requires a small
+    // entity-type classifier — could be a heuristic on the first noun
+    // of card.answer, or a second model call at generation time.
+    // Currently the back just shows the raw question text.
     return GestureDetector(
       onTap: onFlip,
       behavior: HitTestBehavior.opaque,
