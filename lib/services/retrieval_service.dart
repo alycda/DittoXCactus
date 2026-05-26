@@ -146,6 +146,62 @@ class RetrievalService {
   /// point; bump up if Saturn-on-phone-a still gets through.
   static const double defaultMinScore = 0.3;
 
+  // ───── Entity-overlap grounding (paired with the cosine threshold) ───
+  //
+  // Cosine is the topical filter (drops weak retrievals).
+  // Entity overlap is the hallucination backstop (catches the case where
+  // cosine lies — e.g. Jupiter notes scoring high for a Saturn query
+  // because the embedding model thinks "outer planet" is close enough).
+  //
+  // The two gates fail in different ways, so running them in series
+  // catches strictly more than either alone:
+  //
+  //   topK applies cosine (semantic similarity)
+  //   filterByEntityMention then drops anything that doesn't actually
+  //   mention the topic anywhere in topic/body/tags
+  //
+  // The check is intentionally a lowercase substring scan, not full NER.
+  // Stage 0/1 demo queries are single-topic ("Saturn", "Jupiter") so the
+  // free-tier match works directly on the structured `topic` field
+  // before any LLM is involved. For compositional queries ("compare
+  // Saturn and Jupiter") a future revision would want token-level NER +
+  // per-entity coverage; flag with a TODO if that surface ever lands.
+
+  /// True iff `topic` appears (case-insensitively) anywhere in this
+  /// note's structured surface: `topic`, `body`, or any `tag`.
+  ///
+  /// Used as the grounding-gate-side companion to [defaultMinScore]:
+  /// `topK` first drops weak cosines, then `filterByEntityMention`
+  /// drops semantically-similar-but-wrong-entity matches.
+  ///
+  /// Empty `topic` returns true — defer to cosine alone for the
+  /// degenerate "no query" case rather than refusing everything.
+  @visibleForTesting
+  static bool mentionsEntity(StudyNote note, String topic) {
+    if (topic.isEmpty) return true;
+    final needle = topic.toLowerCase();
+    if (note.topic.toLowerCase().contains(needle)) return true;
+    if (note.body.toLowerCase().contains(needle)) return true;
+    for (final tag in note.tags) {
+      if (tag.toLowerCase().contains(needle)) return true;
+    }
+    return false;
+  }
+
+  /// Returns the input list filtered to retrievals whose underlying note
+  /// passes [mentionsEntity] for `topic`. Order is preserved so the
+  /// caller still gets cosine-rank ordering.
+  ///
+  /// Empty `topic` returns the input unchanged (see [mentionsEntity]).
+  @visibleForTesting
+  static List<RetrievedNote> filterByEntityMention(
+    List<RetrievedNote> retrieved,
+    String topic,
+  ) {
+    if (topic.isEmpty) return retrieved;
+    return retrieved.where((r) => mentionsEntity(r.note, topic)).toList();
+  }
+
   // ───── ensureEmbeddings (U8's phase-2) ────────────────────────────────
 
   /// Backfill embeddings for every note with `embedding.isEmpty`. Returns
@@ -304,16 +360,33 @@ class RetrievalService {
     int n = defaultN,
     List<Flashcard> savedExamples = const [],
   }) async* {
-    final retrieved = await topK(topic, k: k);
+    final cosineRetrieved = await topK(topic, k: k);
+    // Second grounding layer (CLAUDE.md `feedback_structural_gates`):
+    // cosine alone lets through semantically-adjacent-but-wrong-entity
+    // matches (Jupiter notes scoring high for "Saturn"). The substring
+    // entity check on topic/body/tags catches that exact failure mode
+    // before the LLM is called. Cosine = topical filter; entity check =
+    // hallucination backstop; they fail in different ways.
+    final retrieved = filterByEntityMention(cosineRetrieved, topic);
+    if (kDebugMode && retrieved.length < cosineRetrieved.length) {
+      debugPrint(
+        '[generateFlashcards] entity-filter dropped '
+        '${cosineRetrieved.length - retrieved.length} of '
+        '${cosineRetrieved.length} cosine-ranked note(s) that did not '
+        'mention "$topic" in topic/body/tags',
+      );
+    }
     yield FlashcardEventRetrieved(retrieved);
 
     // Gate-on-empty (CLAUDE.md `feedback_llm_grounding`): if retrieval
-    // returned nothing, do NOT call the LLM. A 1.5B model under-honors
-    // the "(no notes available — output nothing)" instruction in the
-    // prompt and confabulates cards from training data, which tanks
-    // the demo's grounding claim. Short-circuit to an empty result;
-    // the UI surfaces a "no notes match this topic" message keyed
-    // off `retrieved.isEmpty` in the generation block.
+    // returned nothing — either cosine dropped everything below
+    // defaultMinScore, or the entity filter dropped what remained — do
+    // NOT call the LLM. A 1.5B model under-honors the "(no notes
+    // available — output nothing)" instruction in the prompt and
+    // confabulates cards from training data, which tanks the demo's
+    // grounding claim. Short-circuit to an empty result; the UI
+    // surfaces a "no notes match this topic" message keyed off
+    // `retrieved.isEmpty` in the generation block.
     if (retrieved.isEmpty) {
       if (kDebugMode) {
         debugPrint(

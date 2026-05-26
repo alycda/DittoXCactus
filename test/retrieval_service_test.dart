@@ -353,4 +353,183 @@ void main() {
       expect(RetrievalService.defaultN, 3);
     });
   });
+
+  group('RetrievalService.mentionsEntity', () {
+    // Entity-overlap is the hallucination backstop on top of the cosine
+    // threshold. Pure substring scan over topic/body/tags — Stage 0/1
+    // queries are single-topic so this is sufficient. The cases below
+    // pin the on-device failure mode (Saturn-on-phone-a, Jupiter notes
+    // ranking high) we built this for.
+
+    StudyNote note({
+      String topic = 'Saturn',
+      String body = 'The sixth planet.',
+      List<String> tags = const [],
+    }) {
+      return StudyNote(
+        id: 'note-test',
+        topic: topic,
+        contributor: 'phone-a',
+        body: body,
+        tags: List<String>.unmodifiable(tags),
+        embedding: const [],
+        createdAt: DateTime.utc(2026, 5, 25),
+      );
+    }
+
+    test('matches when topic appears in the note topic (case-insensitive)', () {
+      expect(
+          RetrievalService.mentionsEntity(note(topic: 'Saturn'), 'saturn'),
+          isTrue);
+      expect(
+          RetrievalService.mentionsEntity(note(topic: 'saturn'), 'Saturn'),
+          isTrue);
+    });
+
+    test('matches when topic appears in the note body', () {
+      final n = note(
+          topic: 'planets',
+          body: 'Saturn has the most pronounced ring system.');
+      expect(RetrievalService.mentionsEntity(n, 'Saturn'), isTrue);
+    });
+
+    test('matches when topic appears in any tag', () {
+      final n = note(topic: 'planets', body: 'orbital mechanics', tags: const [
+        'gas-giant',
+        'saturn',
+        'cassini',
+      ]);
+      expect(RetrievalService.mentionsEntity(n, 'Saturn'), isTrue);
+    });
+
+    test('substring match — "Earth" hits "Earth\'s atmosphere"', () {
+      // Single-token query as a substring of a longer phrase is fine.
+      // This is the property that makes cheap matching work on the
+      // Stage 1 corpus.
+      final n = note(topic: "Earth's atmosphere", body: 'layers and gases');
+      expect(RetrievalService.mentionsEntity(n, 'Earth'), isTrue);
+    });
+
+    test('refuses when neither topic nor body nor any tag mentions it '
+        '(the Saturn-on-phone-a failure mode)', () {
+      // The exact dry-run scenario: phone-a corpus = inner planets;
+      // query = "Saturn"; cosine returns 5 notes (Mercury / Venus /
+      // Earth / Mars / Moon) at low scores. The entity check refuses
+      // each one before any of them reaches the LLM.
+      final mercury = note(
+          topic: 'Mercury',
+          body: 'The closest planet to the Sun.',
+          tags: const ['inner-planet']);
+      final venus = note(
+          topic: 'Venus',
+          body: 'Hottest planet; dense CO2 atmosphere.',
+          tags: const ['inner-planet']);
+      final earth = note(
+          topic: 'Earth',
+          body: 'Third from the Sun; only known life-bearing.',
+          tags: const ['inner-planet', 'home']);
+      expect(RetrievalService.mentionsEntity(mercury, 'Saturn'), isFalse);
+      expect(RetrievalService.mentionsEntity(venus, 'Saturn'), isFalse);
+      expect(RetrievalService.mentionsEntity(earth, 'Saturn'), isFalse);
+    });
+
+    test('empty topic returns true (defer to cosine alone)', () {
+      // Degenerate "no query" case — refusing everything would break
+      // any caller that didn't expect a hard refuse on empty input;
+      // cosine handles it (topK returns [] on empty topic).
+      expect(RetrievalService.mentionsEntity(note(), ''), isTrue);
+    });
+
+    test('multi-word topic substring still works when the phrase appears '
+        'verbatim', () {
+      final n = note(
+          topic: "Earth's Moon", body: 'tidally locked; ~3,475 km diameter');
+      expect(RetrievalService.mentionsEntity(n, "Earth's Moon"), isTrue);
+    });
+
+    test('multi-word topic refused when no single chunk of text contains '
+        'the whole phrase (documented caveat)', () {
+      // If query phrasing reorders the words from the note's phrasing,
+      // substring match misses. This is the boundary the other-Claude
+      // note flagged: token-level NER would catch it, but Stage 0/1
+      // queries are single-topic so we accept the limitation.
+      final n = note(
+          topic: 'lunar exploration',
+          body: 'The Moon orbits the Earth at ~384,000 km.');
+      // "Earth's Moon" never appears as a substring even though both
+      // tokens are present individually.
+      expect(RetrievalService.mentionsEntity(n, "Earth's Moon"), isFalse);
+    });
+  });
+
+  group('RetrievalService.filterByEntityMention', () {
+    StudyNote n(String topic) => StudyNote(
+          id: 'note-$topic',
+          topic: topic,
+          contributor: 'phone-a',
+          body: 'body of $topic note',
+          tags: const [],
+          embedding: const [],
+          createdAt: DateTime.utc(2026, 5, 25),
+        );
+
+    test('drops notes that do not mention the topic; keeps those that do', () {
+      final retrieved = [
+        RetrievedNote(note: n('Mercury'), score: 0.25),
+        RetrievedNote(note: n('Saturn'), score: 0.21),
+        RetrievedNote(note: n('Venus'), score: 0.18),
+      ];
+      final out =
+          RetrievalService.filterByEntityMention(retrieved, 'Saturn');
+      expect(out.length, 1);
+      expect(out.single.note.topic, 'Saturn');
+    });
+
+    test('preserves cosine-rank order on the surviving subset', () {
+      // Caller already sorted by descending cosine; the filter is a
+      // where-stable operation, so any retained subset keeps that order.
+      final retrieved = [
+        RetrievedNote(note: n('Saturn'), score: 0.9),
+        RetrievedNote(note: n('Mercury'), score: 0.5),
+        RetrievedNote(note: n('saturnine moods'), score: 0.3),
+      ];
+      final out =
+          RetrievalService.filterByEntityMention(retrieved, 'Saturn');
+      expect(out.map((r) => r.note.topic).toList(),
+          ['Saturn', 'saturnine moods']);
+      expect(out.first.score, greaterThan(out.last.score));
+    });
+
+    test('empty input → empty output', () {
+      expect(
+          RetrievalService.filterByEntityMention(const [], 'Saturn'), isEmpty);
+    });
+
+    test('empty topic returns input unchanged (defer to cosine alone)', () {
+      final retrieved = [
+        RetrievedNote(note: n('Mercury'), score: 0.5),
+        RetrievedNote(note: n('Venus'), score: 0.4),
+      ];
+      final out = RetrievalService.filterByEntityMention(retrieved, '');
+      expect(out, equals(retrieved));
+    });
+
+    test(
+        'all retrievals filtered out → empty list (grounding gate '
+        'fires upstream in generateFlashcards)', () {
+      // The exact path that catches the on-device failure mode: cosine
+      // returned 5 notes about inner planets, none mention "Saturn",
+      // entity filter returns []; generateFlashcards sees
+      // retrieved.isEmpty and skips the LLM call.
+      final retrieved = [
+        RetrievedNote(note: n('Mercury'), score: 0.25),
+        RetrievedNote(note: n('Venus'), score: 0.21),
+        RetrievedNote(note: n('Earth'), score: 0.18),
+        RetrievedNote(note: n('Mars'), score: 0.15),
+        RetrievedNote(note: n('Jupiter'), score: 0.12),
+      ];
+      expect(
+          RetrievalService.filterByEntityMention(retrieved, 'Saturn'), isEmpty);
+    });
+  });
 }
