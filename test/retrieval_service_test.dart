@@ -349,7 +349,11 @@ void main() {
 
   group('RetrievalService.defaultK / defaultN', () {
     test('plan-locked defaults', () {
-      expect(RetrievalService.defaultK, 5);
+      // defaultK=10 (Stage 0 merged corpus = 5+5). Sized to cover the
+      // full corpus so the entity-overlap filter downstream sees every
+      // candidate, not just the cosine top-5 (the 2026-05-25 mesh dry-run
+      // bug where A's inner-planet notes outranked B's Saturn note).
+      expect(RetrievalService.defaultK, 10);
       expect(RetrievalService.defaultN, 3);
     });
   });

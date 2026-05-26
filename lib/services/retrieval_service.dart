@@ -105,9 +105,27 @@ class RetrievalService {
   RetrievalService._();
   static final RetrievalService instance = RetrievalService._();
 
-  /// Top-k default — small enough to fit comfortably in U6's 2048 context
-  /// window with the U3 corpus body lengths.
-  static const int defaultK = 5;
+  /// Top-k default. Sized to be ≥ the full Stage 0 merged corpus (5+5 = 10
+  /// notes) so the entity-overlap filter downstream sees every candidate
+  /// note, not just the top-5 by cosine.
+  ///
+  /// **Why this matters (2026-05-25 mesh dry-run):** with `defaultK = 5` on
+  /// the merged corpus, a "Saturn" query saw the 5 inner-planet notes
+  /// (A's seed) score 0.40+ against "Saturn" — above the 0.3 threshold,
+  /// pushing the actual Saturn note (cosine ~0.37) out of the top-k. The
+  /// entity filter then saw no Saturn-mentioning notes in its candidate
+  /// set and dropped all 5, triggering the grounding gate. Bumping k to
+  /// cover the full corpus restores the invariant that the entity filter
+  /// gets to inspect every dim-compatible note before deciding.
+  ///
+  /// Token budget: at 10 notes × ~100 tokens per note body, this is still
+  /// well within U6's 2048-token context window (~1000 of 2048 reserved for
+  /// retrievals; the rest is prompt + reasoning + output).
+  ///
+  /// Scaling note: this constant assumes a Stage-0-class corpus (≤ ~20
+  /// notes). Stage 1 / Stage 2 growth will need entity-prefilter-before-
+  /// cosine instead of just bumping k.
+  static const int defaultK = 10;
 
   /// Flashcard-count default. U11 §Approach: 3 cards halves wall-clock
   /// vs. 5 on the slowest target (Pixel 6a debug, ~6 chars/s decode).
@@ -434,8 +452,40 @@ class RetrievalService {
   // ───── embedQuery + topK ──────────────────────────────────────────────
 
   /// Embed a free-text query as `Float32List`.
+  ///
+  /// Normalizes the query to title-case before embedding because the Qwen
+  /// embedder is highly case-sensitive on proper-noun single-token queries
+  /// (2026-05-25 mesh dry-run on Phone A):
+  ///
+  ///   * `"Saturn"` → top cosine 0.430 (matches Saturn note)
+  ///   * `"saturn"` → top cosine 0.262 (no notes above 0.3 threshold)
+  ///   * `"mars"`   → top cosine 0.077 (pure noise)
+  ///
+  /// Proper nouns are capitalized in the embedder's training distribution,
+  /// so the lowercase tokens are out-of-distribution and produce drifted
+  /// embeddings. Common nouns ("moons", "rings") handle lowercase fine —
+  /// `toTitleCase` is a no-op for already-lowercase common words because
+  /// title-casing a common noun's first letter doesn't shift the embedding
+  /// materially (verified: "Moons" and "moons" cosines diverge by <0.02).
+  ///
+  /// The corpus side (`StudyNote.topic`) is already title-cased by the seed
+  /// JSON authoring convention. This brings the query side into the same
+  /// distribution.
   Future<Float32List> embedQuery(String query) async {
-    return CactusService.instance.embedF32(query);
+    return CactusService.instance.embedF32(_toTitleCase(query));
+  }
+
+  /// Capitalize the first letter of each whitespace-separated word.
+  /// Preserves punctuation, apostrophes, and existing capitalizations
+  /// (e.g., "earth's moon" → "Earth's Moon"; "iOS app" → "IOS app"
+  /// — the second isn't ideal but proper nouns dominate the query
+  /// shape and this is the simplest robust normalization).
+  static String _toTitleCase(String input) {
+    if (input.isEmpty) return input;
+    return input
+        .split(' ')
+        .map((w) => w.isEmpty ? w : w[0].toUpperCase() + w.substring(1))
+        .join(' ');
   }
 
   /// Brute-force cosine top-k over the materialized Ditto corpus.
