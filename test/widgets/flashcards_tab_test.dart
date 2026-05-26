@@ -389,6 +389,41 @@ void main() {
       expect(find.byTooltip('Keep this style'), findsOneWidget);
     });
 
+    testWidgets('initialTopic pre-fills the topic input on first build',
+        (tester) async {
+      final fake = _FakeGenerator();
+      await tester.pumpWidget(_wrap(FlashcardsTab(
+        generate: fake.generate,
+        initialTopic: 'Saturn',
+      )));
+      final field = tester.widget<TextField>(find.byType(TextField));
+      expect(field.controller!.text, 'Saturn');
+    });
+
+    testWidgets('onLatency fires with elapsed ms on stream done',
+        (tester) async {
+      int? captured;
+      final fake = _FakeGenerator()
+        ..cardsPerCall = const [
+          [
+            Flashcard(question: 'Q?', answer: 'A.', sourceNoteIds: ['id-1']),
+          ],
+        ];
+
+      await tester.pumpWidget(_wrap(FlashcardsTab(
+        generate: fake.generate,
+        onLatency: (ms) => captured = ms,
+      )));
+      await tester.enterText(find.byType(TextField), 'topic');
+      await tester.tap(find.text('Generate'));
+      await tester.pump();
+      await tester.pump();
+      await tester.pump();
+
+      expect(captured, isNotNull);
+      expect(captured, greaterThanOrEqualTo(0));
+    });
+
     testWidgets('0 retrieved + 0 cards renders empty-generation marker',
         (tester) async {
       final fake = _FakeGenerator()

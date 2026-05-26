@@ -39,6 +39,8 @@ class FlashcardsTab extends StatefulWidget {
     super.key,
     required this.generate,
     this.selfContributor,
+    this.initialTopic,
+    this.onLatency,
   });
 
   final GenerateFlashcardsFn generate;
@@ -46,6 +48,18 @@ class FlashcardsTab extends StatefulWidget {
   /// `phone-a` or `phone-b`. When set, used to count "from peers" in the
   /// per-generation footer. Left nullable so tests don't need to know.
   final String? selfContributor;
+
+  /// Pre-fill the topic input on first build. U12 demo-script uses this
+  /// to start every dry-run from the same on-stage state (type-then-tap
+  /// becomes a single tap). Left nullable so production launches without
+  /// a pre-filled topic.
+  final String? initialTopic;
+
+  /// Called with the elapsed milliseconds from "Generate tapped" to
+  /// "FlashcardEventDone" so the U12 [DemoOverlay] can surface
+  /// last-query latency. Left nullable — production paths without an
+  /// overlay just don't subscribe.
+  final void Function(int ms)? onLatency;
 
   @override
   State<FlashcardsTab> createState() => _FlashcardsTabState();
@@ -62,6 +76,15 @@ class _FlashcardsTabState extends State<FlashcardsTab> {
   String? _error;
   List<RetrievedNote> _stagedRetrieved = const [];
   String _stagedTopic = '';
+  Stopwatch? _latencyClock;
+
+  @override
+  void initState() {
+    super.initState();
+    if (widget.initialTopic != null) {
+      _topicController.text = widget.initialTopic!;
+    }
+  }
 
   @override
   void dispose() {
@@ -82,6 +105,7 @@ class _FlashcardsTabState extends State<FlashcardsTab> {
     final topic = _topicController.text.trim();
     if (topic.isEmpty) return; // Edge case: empty topic — no-op.
     _activeSub?.cancel();
+    _latencyClock = Stopwatch()..start();
     setState(() {
       _isGenerating = true;
       _partialBuffer = '';
@@ -92,6 +116,14 @@ class _FlashcardsTabState extends State<FlashcardsTab> {
     _activeSub = widget
         .generate(topic, savedExamples: _fewShotExemplars)
         .listen(_onEvent, onError: _onStreamError, onDone: _onStreamDone);
+  }
+
+  void _reportLatency() {
+    final clock = _latencyClock;
+    if (clock == null) return;
+    clock.stop();
+    widget.onLatency?.call(clock.elapsedMilliseconds);
+    _latencyClock = null;
   }
 
   void _onEvent(FlashcardEvent event) {
@@ -119,6 +151,7 @@ class _FlashcardsTabState extends State<FlashcardsTab> {
 
   void _onStreamError(Object error) {
     if (!mounted) return;
+    _reportLatency();
     setState(() {
       _error = error.toString();
       _isGenerating = false;
@@ -127,6 +160,7 @@ class _FlashcardsTabState extends State<FlashcardsTab> {
 
   void _onStreamDone() {
     if (!mounted) return;
+    _reportLatency();
     setState(() => _isGenerating = false);
   }
 

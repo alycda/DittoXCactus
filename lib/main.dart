@@ -33,6 +33,12 @@ import 'widgets/query_screen.dart';
 /// boot time is a fatal config error and BootScreen surfaces it.
 const String kPhoneRole = String.fromEnvironment('PHONE_ROLE');
 
+/// `--dart-define=INITIAL_TOPIC=Saturn` (U12) pre-fills the FlashcardsTab
+/// topic on first build so the demo-day run is a single-tap from
+/// BootScreen-ready to Generate. Empty → no pre-fill, production launch
+/// is the default.
+const String kInitialTopic = String.fromEnvironment('INITIAL_TOPIC');
+
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await _requestMeshPermissions();
@@ -195,7 +201,9 @@ class _BootScreenState extends State<BootScreen> {
   @override
   Widget build(BuildContext context) {
     if (_phase == _BootPhase.ready) {
-      return const QueryScreen();
+      return QueryScreen(
+        initialTopic: kInitialTopic.isEmpty ? null : kInitialTopic,
+      );
     }
     return Scaffold(
       body: SafeArea(
