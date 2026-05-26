@@ -296,4 +296,77 @@ void main() {
       expect(RetrievalService.defaultN, 3);
     });
   });
+
+  group('RetrievalService.stuckInThinkBlock', () {
+    // The watchdog inside generateFlashcards aborts the stream when this
+    // returns true past kStuckWatchdogChars. The detector itself is the
+    // load-bearing piece — testing the full streaming abort would
+    // require mocking CactusService, which isn't worth it for the
+    // amount of logic involved.
+
+    test('unclosed <think> with no Q: outside → stuck', () {
+      const raw = '''
+<think>
+Okay, let me think about this. The user wants flashcards on Saturn.
+First I need to recall some facts about Saturn. It's a gas giant.
+But wait, maybe I should structure this as Q: ... A: ... inside my
+thinking before committing. Let me draft: Q: What is Saturn? A: A
+gas giant. SOURCE: note-001. Now let me also consider...
+''';
+      expect(RetrievalService.stuckInThinkBlock(raw), isTrue);
+    });
+
+    test('closed </think> followed by real Q: outside → not stuck', () {
+      const raw = '''
+<think>
+Reasoning about Saturn briefly.
+</think>
+
+Q: What is Saturn?
+A: A gas giant in the outer solar system.
+SOURCE: note-001
+''';
+      expect(RetrievalService.stuckInThinkBlock(raw), isFalse);
+    });
+
+    test('Q: only inside <think> block → still stuck '
+        '(model has not committed)', () {
+      // This is the case that matters most. The user-pasted log showed
+      // the model writing "Maybe I should structure as Q: ... A: ..."
+      // inside <think> while never emitting cards. A naive contains
+      // check would think there's a Q: line; the strip-think-first
+      // approach correctly identifies this as still-reasoning.
+      const raw = '''
+<think>
+Let me draft what I might emit later.
+Maybe Q: What is Saturn? A: A gas giant. But I'm not sure.
+Continuing to think...
+''';
+      expect(RetrievalService.stuckInThinkBlock(raw), isTrue);
+    });
+
+    test('no <think> tags at all, but no Q: either → stuck '
+        '(preamble drone)', () {
+      const raw = '''
+Okay, let me think about this. I should consider the topic carefully.
+The user wants flashcards. Let me work through what makes a good
+flashcard for Saturn...
+''';
+      expect(RetrievalService.stuckInThinkBlock(raw), isTrue);
+    });
+
+    test('fullwidth Q：line outside think → not stuck '
+        '(Qwen CJK drift)', () {
+      const raw = '''
+<think>
+reasoning
+</think>
+
+Q：What is Saturn?
+A：A gas giant.
+SOURCE：note-001
+''';
+      expect(RetrievalService.stuckInThinkBlock(raw), isFalse);
+    });
+  });
 }

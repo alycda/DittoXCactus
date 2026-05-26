@@ -124,6 +124,38 @@ class RetrievalService {
   /// blank-line separator the model emits between cards.
   static const int _kMaxTokensPerCard = 160;
 
+  /// Watchdog: if the buffer exceeds this many chars and we still
+  /// haven't seen a Q-line outside any `<think>` block, abort the
+  /// stream. The model is clearly stuck reasoning. Tuned against the
+  /// on-device U12 dry-run that ran 4068 chars of pure chain-of-
+  /// thought and produced zero parseable cards — at 800 chars the
+  /// abort fires after roughly the first quarter of that budget, so
+  /// the user gets a fast "no cards — try regenerating" instead of a
+  /// 30-60s stall.
+  static const int _kStuckWatchdogChars = 800;
+
+  /// True iff the buffer is past the watchdog threshold but no Q-line
+  /// has appeared outside any `<think>...</think>` block. Stripping
+  /// closed think-blocks first means we don't count the model's
+  /// reasoning-about-Q's as actual Q emissions. An unclosed `<think>`
+  /// at the tail (model still inside the block) is the most common
+  /// stuck case; the strip leaves it in place so the check naturally
+  /// returns true.
+  @visibleForTesting
+  static bool stuckInThinkBlock(String raw) => _stuckInThinkBlock(raw);
+
+  static bool _stuckInThinkBlock(String raw) {
+    final stripped = raw.replaceAll(
+      RegExp(r'<think\b[^>]*>.*?</think>', dotAll: true),
+      '',
+    );
+    if (stripped.contains('<think')) return true;
+    return !(stripped.contains('\nQ:') ||
+        stripped.contains('\nQ：') ||
+        stripped.startsWith('Q:') ||
+        stripped.startsWith('Q：'));
+  }
+
   // ───── ensureEmbeddings (U8's phase-2) ────────────────────────────────
 
   /// Backfill embeddings for every note with `embedding.isEmpty`. Returns
@@ -292,6 +324,7 @@ class RetrievalService {
     // newline, then flush the whole line at once — one logcat entry per
     // actual line of model output.
     final lineBuffer = StringBuffer();
+    bool aborted = false;
     if (kDebugMode) {
       debugPrint(
         '[generateFlashcards] topic="$topic" k=$k n=$n '
@@ -319,13 +352,33 @@ class RetrievalService {
             ..write(parts.last);
         }
       }
+      // Watchdog: bail out if the model has clearly burned the budget
+      // reasoning instead of emitting cards. The on-device U12 dry-run
+      // surfaced a Qwen output where the entire 992-token budget got
+      // spent inside <think> with zero parseable Q: lines — a ~30-60s
+      // wait that produced nothing. The user-facing action when this
+      // happens is Regenerate; making them wait for the full budget
+      // first is wasted time.
+      if (buffer.length > _kStuckWatchdogChars &&
+          _stuckInThinkBlock(buffer.toString())) {
+        if (kDebugMode) {
+          debugPrint(
+            '[generateFlashcards] aborting: ${buffer.length} chars '
+            'with no Q: line outside <think> — model is stuck reasoning',
+          );
+        }
+        aborted = true;
+        break;
+      }
     }
     if (kDebugMode) {
       if (lineBuffer.isNotEmpty) {
         debugPrint('  | ${lineBuffer.toString()}', wrapWidth: 1024);
       }
-      debugPrint('[generateFlashcards] --- raw stream end '
-          '(${buffer.length} chars) ---');
+      debugPrint(
+        '[generateFlashcards] --- raw stream end '
+        '(${buffer.length} chars${aborted ? ', aborted' : ''}) ---',
+      );
     }
 
     final cards = FlashcardGenPrompt.parse(buffer.toString());
