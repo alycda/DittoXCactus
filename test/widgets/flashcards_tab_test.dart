@@ -424,21 +424,57 @@ void main() {
       expect(captured, greaterThanOrEqualTo(0));
     });
 
-    testWidgets('0 retrieved + 0 cards renders empty-generation marker',
-        (tester) async {
+    testWidgets(
+        'empty retrieval shows the "no notes match this topic" message '
+        '(grounding gate UI)', (tester) async {
+      // Service-side gate (RetrievalService.generateFlashcards) skips the
+      // LLM call when retrieved.isEmpty and emits FlashcardEventCards([]).
+      // The UI keys the empty-state message off retrieved.isEmpty so the
+      // demonstrator can distinguish "topic doesn't match the corpus"
+      // (this case) from "model didn't produce cards" (next test).
       final fake = _FakeGenerator()
         ..cardsPerCall = [const []]
         ..retrievedPerCall = [const []];
 
       await tester.pumpWidget(_wrap(FlashcardsTab(generate: fake.generate)));
-      await tester.enterText(find.byType(TextField), 'topic');
+      await tester.enterText(find.byType(TextField), 'Saturn');
       await tester.tap(find.text('Generate'));
       await tester.pump();
       await tester.pump();
       await tester.pump();
 
-      expect(find.text('(no cards in this generation)'), findsOneWidget);
+      expect(find.textContaining('No notes match "Saturn"'), findsOneWidget);
       expect(find.text('drew on 0 notes (0 from peers)'), findsOneWidget);
+    });
+
+    testWidgets(
+        'retrieval found notes but model produced no cards → '
+        '"try regenerating" hint', (tester) async {
+      // Differentiates the "model misbehaved" case from the "topic
+      // off-corpus" case above. If retrieval is non-empty but the parser
+      // returned zero (e.g. <think> ate the whole token budget), the
+      // user's correct action is Regenerate — not "try a different
+      // topic."
+      final note = _noteFor(
+        contributor: 'phone-a',
+        topic: 'gravity',
+        createdAt: DateTime.utc(2026, 5, 24),
+      );
+      final fake = _FakeGenerator()
+        ..cardsPerCall = [const []]
+        ..retrievedPerCall = [
+          [RetrievedNote(note: note, score: 0.9)],
+        ];
+
+      await tester.pumpWidget(_wrap(FlashcardsTab(generate: fake.generate)));
+      await tester.enterText(find.byType(TextField), 'gravity');
+      await tester.tap(find.text('Generate'));
+      await tester.pump();
+      await tester.pump();
+      await tester.pump();
+
+      expect(find.textContaining('try regenerating'), findsOneWidget);
+      expect(find.text('drew on 1 note (0 from peers)'), findsOneWidget);
     });
   });
 }

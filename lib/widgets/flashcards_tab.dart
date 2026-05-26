@@ -594,11 +594,24 @@ class _GenerationBlockState extends State<_GenerationBlock> {
               ),
             ),
             if (generation.cards.isEmpty)
-              const Padding(
-                padding: EdgeInsets.all(12),
+              Padding(
+                padding: const EdgeInsets.all(12),
                 child: Text(
-                  '(no cards in this generation)',
-                  style: TextStyle(fontSize: 12, color: Colors.black45),
+                  generation.retrieved.isEmpty
+                      // Service short-circuits when retrieval misses
+                      // (grounding gate) — see RetrievalService
+                      // .generateFlashcards. This is the message the
+                      // demonstrator hits when the topic is off-corpus
+                      // OR a pre-meet beat in U12's airplane-mode flow.
+                      ? 'No notes match "${generation.topic}" yet.\n'
+                          'Try another topic, or wait for a peer to sync.'
+                      // Retrieval found notes but the model didn't
+                      // produce parseable cards — usually <think> ate
+                      // the whole token budget. Regenerate is the user
+                      // action; if persistent, the fix is bumping
+                      // kMaxTokensPerCard or kThinkBudget.
+                      : '(model produced no parseable cards — try regenerating)',
+                  style: const TextStyle(fontSize: 12, color: Colors.black45),
                 ),
               )
             else

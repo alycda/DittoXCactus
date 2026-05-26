@@ -258,6 +258,25 @@ class RetrievalService {
     final retrieved = await topK(topic, k: k);
     yield FlashcardEventRetrieved(retrieved);
 
+    // Gate-on-empty (CLAUDE.md `feedback_llm_grounding`): if retrieval
+    // returned nothing, do NOT call the LLM. A 1.5B model under-honors
+    // the "(no notes available — output nothing)" instruction in the
+    // prompt and confabulates cards from training data, which tanks
+    // the demo's grounding claim. Short-circuit to an empty result;
+    // the UI surfaces a "no notes match this topic" message keyed
+    // off `retrieved.isEmpty` in the generation block.
+    if (retrieved.isEmpty) {
+      if (kDebugMode) {
+        debugPrint(
+          '[generateFlashcards] topic="$topic" retrieved=0 — '
+          'skipping LLM call (grounding gate)',
+        );
+      }
+      yield const FlashcardEventCards([]);
+      yield const FlashcardEventDone();
+      return;
+    }
+
     final messages = FlashcardGenPrompt.build(
       topic: topic,
       n: n,
