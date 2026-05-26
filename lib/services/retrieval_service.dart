@@ -202,6 +202,56 @@ class RetrievalService {
     return retrieved.where((r) => mentionsEntity(r.note, topic)).toList();
   }
 
+  // ───── Generation-side contract enforcement ──────────────────────────
+  //
+  // The prompt asks for exactly N flashcards, each with a SOURCE: line.
+  // A small model under leaked-`<think>` conditions can produce drafts
+  // that don't match that contract — duplicated cards across multiple
+  // "Final Answer" sections, uncited claims inside reasoning prose,
+  // verbose drift past N. The 2026-05-25 dry-run captured a 9-cards-for-
+  // a-topic-of-3 case (model never closed `<think>`, parser couldn't
+  // tell reasoning from commit).
+  //
+  // cleanCards is the post-parse cleanup pipeline. It enforces three
+  // properties the prompt already requested:
+  //   1. Citations required. Cards without `SOURCE` are dropped —
+  //      uncited factual sentences are the model's most likely
+  //      fabrication path, and the cited subset is verifiable.
+  //   2. Unique questions. Same Q across multiple draft passes
+  //      collapses to one card; the user-perceived UI is a stack of
+  //      distinct facts, not the same fact thrice.
+  //   3. Cap at N. Verbose drift past the requested count is dropped
+  //      after dedupe + cite-filter, so we never show more than
+  //      asked.
+  //
+  // Order matters: cite-filter must run before dedupe, because if the
+  // model writes an uncited Q1 followed by the same Q1 with a SOURCE,
+  // dedupe-first would pick the uncited one (first occurrence) and
+  // throw away the cited duplicate.
+
+  /// Post-parse cleanup for cards emitted by [generateFlashcards].
+  /// Drops uncited cards, deduplicates by normalized question, and
+  /// caps at `n`. See the section comment above for the rationale.
+  @visibleForTesting
+  static List<Flashcard> cleanCards(List<Flashcard> cards, int n) {
+    if (n <= 0) return const [];
+    final out = <Flashcard>[];
+    final seenQuestions = <String>{};
+    for (final card in cards) {
+      if (card.sourceNoteIds.isEmpty) continue;
+      final key = card.question
+          .toLowerCase()
+          .replaceAll(RegExp(r'\s+'), ' ')
+          .trim();
+      if (key.isEmpty) continue;
+      if (seenQuestions.contains(key)) continue;
+      seenQuestions.add(key);
+      out.add(card);
+      if (out.length >= n) break;
+    }
+    return out;
+  }
+
   // ───── ensureEmbeddings (U8's phase-2) ────────────────────────────────
 
   /// Backfill embeddings for every note with `embedding.isEmpty`. Returns
@@ -450,9 +500,17 @@ class RetrievalService {
           '(${buffer.length} chars) ---');
     }
 
-    final cards = FlashcardGenPrompt.parse(buffer.toString());
+    final rawCards = FlashcardGenPrompt.parse(buffer.toString());
+    final cards = cleanCards(rawCards, n);
     if (kDebugMode) {
-      debugPrint('[generateFlashcards] parsed ${cards.length} card(s)');
+      if (rawCards.length != cards.length) {
+        debugPrint(
+          '[generateFlashcards] parsed ${rawCards.length} raw card(s); '
+          'kept ${cards.length} after drop-uncited + dedupe + cap(n=$n)',
+        );
+      } else {
+        debugPrint('[generateFlashcards] parsed ${cards.length} card(s)');
+      }
     }
     yield FlashcardEventCards(cards);
     yield const FlashcardEventDone();

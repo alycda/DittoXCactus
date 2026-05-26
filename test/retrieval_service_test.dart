@@ -532,4 +532,133 @@ void main() {
           RetrievalService.filterByEntityMention(retrieved, 'Saturn'), isEmpty);
     });
   });
+
+  group('RetrievalService.cleanCards', () {
+    // Generation-side contract enforcement: cite-filter → dedupe → cap.
+    // The on-device 2026-05-25 dry-run with topic="moons" captured the
+    // failure these tests pin: Qwen never closed <think>, drafted three
+    // cards three separate times inside the unclosed reasoning, and the
+    // parser emitted 9 cards. cleanCards collapses that to 3.
+
+    Flashcard card(String q, String a, {List<String> sources = const ['n1']}) =>
+        Flashcard(question: q, answer: a, sourceNoteIds: sources);
+
+    test('happy path: 3 unique cited cards passed through unchanged', () {
+      final raw = [
+        card('What is Mars?', 'The fourth planet.'),
+        card('What are Mars moons?', 'Phobos and Deimos.'),
+        card('How long is a Martian day?', '24 hours 37 minutes.'),
+      ];
+      final out = RetrievalService.cleanCards(raw, 3);
+      expect(out.length, 3);
+      expect(out, equals(raw));
+    });
+
+    test('drops cards with empty sourceNoteIds (cite-required)', () {
+      final raw = [
+        card('Q1', 'A1', sources: const []),
+        card('Q2', 'A2'),
+        card('Q3', 'A3', sources: const []),
+      ];
+      final out = RetrievalService.cleanCards(raw, 3);
+      expect(out.length, 1);
+      expect(out.single.question, 'Q2');
+    });
+
+    test('dedupes by question (case-insensitive, whitespace-normalized)', () {
+      final raw = [
+        card('What is Mars?', 'first answer'),
+        card('what  is\tmars?', 'duplicate variant'), // dup
+        card('WHAT IS MARS?', 'another duplicate'), // dup
+        card('What is Earth?', 'distinct'),
+      ];
+      final out = RetrievalService.cleanCards(raw, 5);
+      expect(out.length, 2);
+      expect(out.first.answer, 'first answer'); // first occurrence wins
+      expect(out.last.question, 'What is Earth?');
+    });
+
+    test('caps at n after dedupe and cite-filter', () {
+      final raw = [
+        for (var i = 1; i <= 6; i++) card('Q$i', 'A$i'),
+      ];
+      final out = RetrievalService.cleanCards(raw, 3);
+      expect(out.length, 3);
+      expect(out.map((c) => c.question).toList(), ['Q1', 'Q2', 'Q3']);
+    });
+
+    test('cite-filter runs before dedupe so uncited duplicates do not '
+        'shadow the cited copy', () {
+      // If the model writes Q1 uncited (inside <think>) and then Q1
+      // cited (in the final answer), we want to keep the cited one.
+      final raw = [
+        card('What is Mars?', 'reasoning version', sources: const []),
+        card('What is Mars?', 'final cited version'),
+      ];
+      final out = RetrievalService.cleanCards(raw, 3);
+      expect(out.length, 1);
+      expect(out.single.answer, 'final cited version');
+    });
+
+    test('the on-device 9-cards-for-3 case collapses to 3', () {
+      // Exact shape from the 2026-05-25 dry-run with topic="moons":
+      // Qwen drafted 3 cards three times (initial think, "**Final
+      // Answer**" repeat, boxed/repeat-again partial). All cited the
+      // same note. Parser returned 9 cards; cleanCards must collapse
+      // to 3.
+      final raw = <Flashcard>[];
+      const passes = 3;
+      const qs = [
+        'What is the name of Mars\' largest canyon system?',
+        'Which two moons does Mars have?',
+        'How long is a Martian day in hours?',
+      ];
+      const as = [
+        'Valles Marineris.',
+        'Phobos and Deimos.',
+        'About 24 hours 37 minutes.',
+      ];
+      for (var pass = 0; pass < passes; pass++) {
+        for (var i = 0; i < qs.length; i++) {
+          raw.add(card(qs[i], as[i]));
+        }
+      }
+      expect(raw.length, 9);
+      final out = RetrievalService.cleanCards(raw, 3);
+      expect(out.length, 3);
+      expect(out.map((c) => c.question).toList(), qs);
+    });
+
+    test('empty input → empty output', () {
+      expect(RetrievalService.cleanCards(const [], 3), isEmpty);
+    });
+
+    test('all-uncited input → empty output (no fallback to uncited cards)',
+        () {
+      final raw = [
+        for (var i = 1; i <= 3; i++)
+          card('Q$i', 'A$i', sources: const []),
+      ];
+      expect(RetrievalService.cleanCards(raw, 3), isEmpty);
+    });
+
+    test('n=0 returns empty regardless of input', () {
+      final raw = [card('Q1', 'A1')];
+      expect(RetrievalService.cleanCards(raw, 0), isEmpty);
+    });
+
+    test('empty / whitespace-only question is dropped before dedupe', () {
+      // A card whose question parses to "" (or just whitespace) can't
+      // be a useful card — and would otherwise occupy the empty-string
+      // dedupe key and shadow any later genuinely-empty card.
+      final raw = [
+        card('', 'orphan answer'),
+        card('   ', 'another orphan'),
+        card('Q1', 'A1'),
+      ];
+      final out = RetrievalService.cleanCards(raw, 3);
+      expect(out.length, 1);
+      expect(out.single.question, 'Q1');
+    });
+  });
 }
