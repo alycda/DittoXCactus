@@ -80,7 +80,7 @@ Output rules:
 - Output ONLY flashcards. No reasoning, no preamble.
 - Each card has three lines in this exact format:
   Q: <a clear question>
-  A: <a short answer, one sentence — under 30 words>
+  A: <a short answer, one sentence — under 20 words>
   SOURCE: <one or more note ids, comma-separated>
 - The note ids are the bracketed strings at the start of each note line
   (for example, `[400ba2af-...]`). Use them verbatim in SOURCE. Never
@@ -91,6 +91,8 @@ Output rules:
 - The answer must be a direct factual statement. No words like "Wait,"
   "Hmm,", "Actually,", "Let me check", "perhaps", or "I think" — those
   are reasoning, not an answer.
+- The answer must be ONE clause. No semicolons, no "which", no "and so".
+  Pick the most important fact from the note and state it.
 - Every card must be about the Topic. Skip facts in the notes that are
   off-topic, even if they are interesting.
 - Do not make up facts. If the notes do not support a claim, do not make the claim.
