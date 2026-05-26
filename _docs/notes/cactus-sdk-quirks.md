@@ -120,6 +120,37 @@ compound.
 
 ---
 
+## Filed upstream (2026-05-26)
+
+Three issues opened against
+[cactus-compute/cactus-flutter](https://github.com/cactus-compute/cactus-flutter)
+covering the two seams above plus a third that explains why we ship a
+chat-tuned model in the embedder slot:
+
+- [**#33**](https://github.com/cactus-compute/cactus-flutter/issues/33)
+  — `isTelemetryEnabled` is ignored by `getModel` / `fetchModels` /
+  `fetchVoiceModels`. The flag honors `sendLogRecord` and
+  `registerDevice` but not the model-catalog functions. Clean 3-line
+  fix; security-relevant. *The seam this doc's first section
+  describes.*
+- [**#34**](https://github.com/cactus-compute/cactus-flutter/issues/34)
+  — chat-tuned slugs (`qwen3-1.7`, `qwen3-0.6`) accept `embed()` and
+  fail at runtime with cryptic code `-2` instead of refusing at
+  registration. *The bug that forced this app into a two-model
+  architecture — see [discussion #7](https://github.com/alycda/DittoXCactus/discussions/7).*
+- [**#35**](https://github.com/cactus-compute/cactus-flutter/issues/35)
+  — the purpose-built `qwen3-embedding-0.6` slug can't be resolved by
+  the Flutter SDK 1.3.0 catalog despite being in the engine README.
+  *Pair-cause with #34: explains why the embedder slot ended up
+  holding a chat-tuned `qwen3-0.6` rather than the similarity-tuned
+  slug.*
+
+If #33 lands, the witness checklist's host-side-capture caveat goes
+away. If #34 or #35 land, much of the cosine-distribution tuning the
+retrieval pipeline absorbs may relax.
+
+---
+
 ## What this list is NOT
 
 Quirks of the Cactus SDK, not of the model. For model-side quirks
