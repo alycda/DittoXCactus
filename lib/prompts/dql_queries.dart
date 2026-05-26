@@ -23,10 +23,14 @@ abstract final class NotesQueries {
   /// Single-row read by `_id`. Argument: `:id` (string).
   static const String selectById = 'SELECT * FROM notes WHERE _id = :id';
 
-  /// Returns rows whose embedding has not yet been backfilled. Used by
-  /// [RetrievalService.ensureEmbeddings] (U8 second pass) to find work.
-  static const String selectMissingEmbedding =
-      'SELECT * FROM notes WHERE embedding IS NULL';
+  // `selectMissingEmbedding` was once a DQL predicate
+  // `WHERE embedding IS NULL`. It silently matched zero rows on
+  // fresh-seeded notes (which insert `embedding: []`, not NULL), causing
+  // `ensureEmbeddings` to backfill nothing. `DittoService.queryMissingEmbedding`
+  // now materializes the full corpus and filters in Dart on
+  // `!n.hasEmbedding`, same workaround `queryWithEmbedding` already
+  // uses for the inverse predicate. The DQL string is intentionally
+  // not preserved here so a future reader doesn't try to reach for it.
 
   /// Insert-or-update. Argument: `:doc` (Map<String, dynamic>; the document
   /// itself, including `_id`).

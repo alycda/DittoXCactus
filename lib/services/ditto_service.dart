@@ -164,15 +164,21 @@ class DittoService {
   }
 
   /// Companion to [setEmbedding]: notes whose embedding column is still
-  /// NULL/empty. U8's `ensureEmbeddings` iterates this list to backfill
-  /// the corpus once Cactus is loaded.
+  /// empty. U8's `ensureEmbeddings` iterates this list to backfill the
+  /// corpus once Cactus is loaded.
+  ///
+  /// Filtered in Dart (mirroring [queryWithEmbedding]'s approach)
+  /// because Ditto v5's `WHERE embedding IS NULL` predicate doesn't
+  /// match notes whose embedding column was inserted as an empty array
+  /// `[]` — which is exactly what `StudyNote.toDittoDoc()` produces
+  /// before backfill. On-device U12 dry-run surfaced this: SeedLoader
+  /// inserted 5 notes, `ensureEmbeddings` reported `backfilled 0`,
+  /// retrieval saw `totalEmbedded=0` permanently. Filtering in Dart
+  /// against the materialized corpus is the same workaround
+  /// `queryWithEmbedding` already uses for the inverse predicate.
   Future<List<StudyNote>> queryMissingEmbedding() async {
-    final ditto = _requireDitto();
-    final result =
-        await ditto.store.execute(NotesQueries.selectMissingEmbedding);
-    return result.items
-        .map((item) => StudyNote.fromDittoValue(item.value))
-        .toList(growable: false);
+    final all = await queryAll();
+    return all.where((n) => !n.hasEmbedding).toList(growable: false);
   }
 
   /// Write `embedding` for a single existing row. Used by the U8 backfill
