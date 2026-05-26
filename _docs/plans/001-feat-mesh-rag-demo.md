@@ -124,7 +124,7 @@ External research already lives in `_docs/research/{claude,codex,gemini,claude-d
 ### Deferred to Implementation
 
 - **Q4 thesis-framing durability.** Per SEED, this must be resolved BEFORE the loop starts. U2 holds it. Four candidates: data sovereignty / consent-scoped sharing; offline-by-default; "Bluetooth pairing for ideas"; opportunistic composition in bandwidth-denied environments. Stress-tested at 250 words each against the strongest skeptic before locking.
-- **Q6 demo artifact form.** Recorded video, working repo, or both? Affects code-polish scope (U17). Default assumption in this plan: both — the recorded artifact is the exit gate, the public repo follows once R1–R7 are green.
+- **Q6 demo artifact form.** Recorded video, working repo, or both? Affects code-polish scope (U18). Default assumption in this plan: both — the recorded artifact is the exit gate, the public repo follows once R1–R7 are green.
 - **Specific iOS + Android hardware pair (SEED Q2).** Picked at U1 time based on what's physically available + which pair gives the cleanest determinism signal.
 - **Exact disjoint-pair construction algorithm for R1.** Depends on the picked corpus theme. U12 owns it.
 
@@ -137,8 +137,8 @@ External research already lives in `_docs/research/{claude,codex,gemini,claude-d
     │   └── 001-feat-mesh-rag-demo.md       # this file
     ├── thesis-framings.md                  # U2
     ├── demo-script.md                      # U12
-    ├── rehearsed-queries.md                # U16
-    └── recording-checklist.md              # U17
+    ├── rehearsed-queries.md                # U17
+    └── recording-checklist.md              # U18
 
     lib/
     ├── main.dart                       # MeshRagApp + BootScreen splash/init flow
@@ -161,20 +161,20 @@ External research already lives in `_docs/research/{claude,codex,gemini,claude-d
     └── holdouts/
         ├── cold_load_timer.dart        # U14 — phase-marked timing report
         ├── idempotence_check.dart      # U15a — convergence + idempotence detection
-        └── coherence_dryrun.dart       # U16 — R6a capture runner
+        └── coherence_dryrun.dart       # U17 — R6a capture runner
 
     assets/
     ├── seed_notes_a.json                  # device A's preload (PHONE_ROLE=a)
     └── seed_notes_b.json                  # device B's preload (PHONE_ROLE=b)
 
     ios/
-    ├── Podfile                            # U18 — `platform :ios, '15.0'` floor for Ditto v5 + objectbox
+    ├── Podfile                            # U19 — `platform :ios, '15.0'` floor for Ditto v5 + objectbox
     └── Runner/Info.plist                  # NSBluetoothAlwaysUsageDescription, NSBluetoothPeripheralUsageDescription,
                                            # NSLocalNetworkUsageDescription, NSBonjourServices = [_http-alt._tcp.]
 
     android/app/
-    ├── build.gradle.kts                   # U18 — proguardFiles wiring for release builds
-    ├── proguard-rules.pro                 # U18 — live.ditto.** + com.ditto.** + rustls + KMP closure keeps
+    ├── build.gradle.kts                   # U19 — proguardFiles wiring for release builds
+    ├── proguard-rules.pro                 # U19 — live.ditto.** + com.ditto.** + rustls + KMP closure keeps
     └── src/main/AndroidManifest.xml       # BLE_CONNECT/ADVERTISE/SCAN, NEARBY_WIFI_DEVICES, location-floor permissions
 
     tools/
@@ -188,12 +188,12 @@ External research already lives in `_docs/research/{claude,codex,gemini,claude-d
     ├── holdout_34/
     │   └── runner.sh                      # U15a — two-device R3+R4 orchestration
     └── holdout_357/
-        └── runner.sh                      # U16 — chains R3/R4/R7 then R6a capture
+        └── runner.sh                      # U17 — chains R3/R4/R7 then R6a capture
 
     slides/
-    ├── deck.md                            # U19 — Presenterm Markdown source (8 slides)
-    ├── notes.md                           # U19 — speaker notes per slide
-    └── media/                             # U17, U19 — recorded artifact, screenshots, Mermaid PNGs
+    ├── deck.md                            # U20 — Presenterm Markdown source (8 slides)
+    ├── notes.md                           # U20 — speaker notes per slide
+    └── media/                             # U18, U20 — recorded artifact, screenshots, Mermaid PNGs
 
     test/
     ├── study_note_test.dart               # UUIDv5 determinism + Ditto round-trip + OR-Set semantics
@@ -398,7 +398,7 @@ function agreement_rate(per_query_topk_A: Map[QueryId, List[PassageId]],
 **Approach:**
 - Theme = audience-submitted study notes (topic "the solar system", ~5 notes per device, 10 post-sync). The earlier recipe theme from SEED.md was tested and dropped — the merge-by-co-occurrence story did not survive skeptic stress; study notes land harder for R6a (the audience-as-contributor moment). The corpus and per-note metadata live directly in `assets/seed_notes_<role>.json` — no standalone `_docs/corpus-theme.md` is needed.
 - Per-note shape is `{ topic, contributor, createdAt, tags, body }`; the `_id` is derived deterministically by `StudyNote.seed` (UUIDv5 over `'<contributor>|<topic>|<createdAt-iso8601>'`) so re-running the seed loader is a no-op.
-- Choose entries so that at least 5 R1-style queries have zero hits in A and ≥1 hit in B (and vice versa). Document each query → expected-source mapping in `_docs/rehearsed-queries.md` (U16) so the disjoint property is provable, not asserted.
+- Choose entries so that at least 5 R1-style queries have zero hits in A and ≥1 hit in B (and vice versa). Document each query → expected-source mapping in `_docs/rehearsed-queries.md` (U17) so the disjoint property is provable, not asserted.
 - Pre-screen every plausible audience query against the combined corpus per SEED's "Real Environment" rule — no unintended content lands on the big screen.
 
 **Test scenarios:**
@@ -408,7 +408,7 @@ function agreement_rate(per_query_topk_A: Map[QueryId, List[PassageId]],
 
 **Verification:**
 - `assets/seed_notes_a.json` + `assets/seed_notes_b.json` exist, are well-formed JSON arrays, and the seeded UUIDv5 `_id`s are disjoint across the two files (by virtue of differing `contributor` inputs).
-- The R6a rehearsed topics are captured in `_docs/rehearsed-queries.md` (U16).
+- The R6a rehearsed topics are captured in `_docs/rehearsed-queries.md` (U17).
 
 ---
 
@@ -844,7 +844,7 @@ The playbook is ordered cheapest-to-most-disruptive — do not jump steps. Which
 - Modify (optionally): `lib/holdouts/idempotence_check.dart` — surface "network traffic observed" boolean for any platform-level network-monitor capture, if a host-side capture is feasible. If not, the witness checklist is sufficient.
 
 **Approach:**
-- The witness step runs immediately before U17's recorded artifact. It's a checked-off pre-demo gate.
+- The witness step runs immediately before U18's recorded artifact. It's a checked-off pre-demo gate.
 - If a host-side network monitor (Charles/Proxyman on a macOS host watching the device pair through a controlled hotspot) is feasible, capture the "no non-Ditto traffic" assertion as a recording-side artifact (this is what verifies U6's `CactusConfig.isTelemetryEnabled = false` pin is actually holding under load). Otherwise, the device-side network indicator + the absence of internet (airplane mode toggle visible on camera per R1) is the canonical evidence.
 
 **Test scenarios:**
@@ -852,17 +852,76 @@ The playbook is ordered cheapest-to-most-disruptive — do not jump steps. Which
 - Diagnostic: if a host-side capture is set up, the capture log contains zero non-Ditto request URLs during the recording window.
 
 **Verification:**
-- R7 evidence is part of the recorded artifact in U17. The witness checklist is checked in to `tools/holdout_7/`.
+- R7 evidence is part of the recorded artifact in U18. The witness checklist is checked in to `tools/holdout_7/`.
 
 ---
 
-### U16. Holdouts 6a + 6b — rehearsed coherence dry-run capture + audience-stretch capture
+### U16. Alternate-model evaluation gate — host-side Ollama harness
+
+**Goal:** Before U17's coherence rehearsal commits to a model, evaluate 3–5 candidate small open-weight models on the host (Ollama on M4) against the rehearsed-queries corpus. Pick the model that maximizes R6a coherence and minimizes the Qwen 2.5 1.7B quirks the demo has been wrestling with (format-collapse at n≥3, LaTeX `\boxed` drift, bilingual `<think>` drift, reasoning-leak in the A field). Output: a model-comparison artifact that informs the U17 corpus pre-screen pass and updates §Key Technical Decisions' Cactus completion-slug pin.
+
+**Requirements:** R6a (rehearsed coherence — the gate this unit protects).
+
+**Dependencies:** U3 (rehearsed corpus authored), U9 (retrieval pipeline stable so the input to the LLM stage is held constant across models — `defaultK=10`, title-case normalization, cosine-threshold-gated retrievals), U11 (the prompt template + few-shot format the harness reuses verbatim), and the structural model-layer gates that landed alongside this unit (stop sequences for `\boxed` / `\begin{aligned}` / `\text{` in [`lib/services/cactus_service.dart`](../../lib/services/cactus_service.dart)).
+
+**Cut-order tier:** Sits between SEED cut-order items 4 and 5 — cut U16 before cutting R6a itself. If U16 is dropped under time pressure, the demo runs on the current Qwen 2.5 1.7B and the writeup discloses the model-variability findings as evidence for the specialists-thread arc. If U16 runs but no candidate clears R6a, the next cut is item 5 (ship Stage 0 only). The hard-fallback path is U18's recorded artifact — captured manually with retries until a clean take lands, even if no single rehearsed-topic run is reliably reproducible on demand.
+
+**Files:**
+- Create: `tools/eval_completion/` — host-side eval harness:
+  - `run.dart` — takes a model name (Ollama slug or OpenAI-compatible endpoint URL), the 5 rehearsed topics from U17's `_docs/rehearsed-queries.md`, and the current `FlashcardGenPrompt` template. Calls the model per topic, captures raw stream + parsed cards + cleanCards drop reasons, writes a per-model JSON to `runs/<model>/<date>.json`.
+  - `report.dart` — aggregates per-model results into a Markdown comparison table (one row per topic, columns: parsed N, kept N, drift events, manual-coherence verdict, latency).
+  - `README.md` — semantics + how to add a model + how to score.
+- Create: `_docs/eval-results/model-comparison-<date>.md` — the final comparison-table artifact, with the chosen model named and its rationale.
+- Modify (after a winner is named): `lib/services/cactus_service.dart` `preferredCompletionSlug` AND plan §Key Technical Decisions (completion-slug entry) — pinning the chosen model.
+
+**Approach:**
+- Use Ollama on M4 for fast iteration. Candidate slate (initial — expand on demand):
+  - `qwen2.5:1.5b` — current Qwen 2.5 1.7B's smaller sibling; control variable for "is it the family or the size?"
+  - `llama3.2:3b` — Meta's small instruction model; no `<think>` baked in.
+  - `phi3.5:mini-instruct` — Microsoft's small reasoner.
+  - `gemma2:2b` — Google's tight small model.
+  - `granite3-moe:3b` — IBM's MoE small model.
+  Each is ~1–4 GB on disk; M4 can hold all of them simultaneously.
+- Reuse the existing `FlashcardGenPrompt._systemMessage` + user-message builder verbatim. The eval harness's only model-specific code is the API call (Ollama's `/api/chat` is the same shape as OpenAI's chat completions). Do NOT custom-tune the prompt per model in this gate — the question is "which model adheres to OUR prompt best," not "which model performs best with bespoke per-model prompts."
+- Score each model per topic across these axes:
+  - **Format adherence**: did the parser extract N cards? (N=1 case + N=3 case both run.)
+  - **Cleanliness**: did all parsed cards survive cleanCards, or did the model trigger drop-by-quirk?
+  - **Coherence**: manual review by the demonstrator — the same R6a bar ("would I be embarrassed to show this on stage?").
+  - **Latency**: wall-clock end-to-end on the M4 (informational only; on-device latency is bigger and the U14 cold-load timer owns that).
+  - **Drift events**: count of `\boxed`, `<think>` (open OR closed), bilingual-CoT, format-collapse-to-prose, fullwidth-punctuation. Logged per topic.
+- **Quirks-portable check (required before pin):** the winning model from the host harness must run through the on-device port and clear the same 5/5 R6a bar there. A model that scores great on host but degrades on-device is not a valid winner — the writeup's thesis hinges on on-device generation, not host generation.
+- **What's portable across models, what's model-specific** (carried out of the 2026-05-26 finding):
+  - **Portable**: `defaultK=10`, retrieval-side title-casing, the entity-overlap grounding gate, the CRDT/sync layer.
+  - **Model-specific tuning that may need recalibration per-model**: `defaultMinScore = 0.3` (cosine score distributions differ across embedders — if we swap the embedder too, the threshold needs re-fit); `_kThinkBudget = 512` (non-CoT models can drop to 0); the reasoning-leak markers in `_reasoningMarkers` (those are Qwen/DeepSeek-shaped).
+  - The harness should report each axis so re-tuning is data-driven, not vibes-driven.
+
+**Scope boundaries (carried as a guard against scope creep here):**
+- This unit does NOT propose changing the embedder. Embedding determinism is U1/U13's gate and has its own cross-platform invariants. Completion-model swaps and embedding-model swaps are independent levers; this unit moves only one.
+- This unit does NOT add an online-fallback path during the demo — see Future direction below.
+
+**Test scenarios:**
+- Happy path: harness completes the 5-topic × 5-model matrix; report.dart emits a comparison table; a winner is named.
+- Edge case: model produces unparseable output → harness records `parsed=0, kept=0` with the raw stream for inspection; the winning model must be one that did NOT hit this case on any rehearsed topic.
+- Edge case: all 5 candidate models fail R6a → harness output is the input to the writeup's "Stage 0 ship + specialists-thread future work" framing; the demo ships Stage 0 only per SEED cut-order item 5.
+
+**Verification:**
+- `_docs/eval-results/model-comparison-<date>.md` exists with a winner named.
+- The winner clears R6a's 5/5 bar on the host harness AND on the on-device port (the quirks-portable check).
+- §Key Technical Decisions in this plan is updated with the new completion-slug pin (or the explicit decision to keep `qwen3-1.7` and disclose the variability in the writeup).
+- If no model clears the bar, U18's recorded artifact production becomes "capture-take-until-clean" with the documented variability disclosure — the writeup names this as the specialists-thread evidence.
+
+**Future direction (writeup, not this unit):**
+- **Online-fallback model orchestration.** A larger online model (Claude / GPT / Gemini) curates and weights for the offline small model: pre-generating few-shot exemplars on the connected side, scoring candidate cards, even rewriting prompts per topic before the mesh-RAG loop runs. The offline small model remains the demo-day generator (so R7 holds), but the *exemplar pool* it draws from is curated by a larger online ancestor when connectivity allows. This is the bridge between Stage 0/1 (generalist offline) and the writeup's destination (specialists). Memory entry `project_writeup_thesis_arc` carries the four-thread arc this connects to. Out of scope here because R7 forbids online paths during the demo window itself — but the *training* of the offline model's exemplar pool can happen any time before that window.
+
+---
+
+### U17. Holdouts 6a + 6b — rehearsed coherence dry-run capture + audience-stretch capture
 
 **Goal:** Capture the recorded artifact for R6a (5 of 5 rehearsed topics → coherent card stack with visible source attribution) and, if budget permits, R6b (3 of 5 audience-free topics clean). Includes the corpus pre-screen step from SEED's "Real Environment."
 
 **Requirements:** R6a, R6b stretch.
 
-**Dependencies:** U3 (the rehearsed topic set is authored alongside the corpus), U11 (generation works), U12 (demo flow is rehearsable).
+**Dependencies:** U3 (the rehearsed topic set is authored alongside the corpus), U11 (generation works), U12 (demo flow is rehearsable), U16 (the model has been chosen — rehearsal must run against the winner, not against the candidate slate).
 
 **Files:**
 - Create: `_docs/rehearsed-queries.md` — the 5 R6a topics + 5 R6b candidate audience topics + each one's pre-screened-acceptable expected card stack.
@@ -886,13 +945,13 @@ The playbook is ordered cheapest-to-most-disruptive — do not jump steps. Which
 
 ---
 
-### U17. Demo day prep — recorded artifact production + final corpus pre-screen
+### U18. Demo day prep — recorded artifact production + final corpus pre-screen
 
 **Goal:** Produce the final recorded artifact (single-take preferred; B-roll for BLE-pairing permitted with on-camera disclosure). Final corpus pre-screen sign-off. Final hardware-pair sign-off.
 
 **Requirements:** R1 + R6a + R7 captured in a coherent ≤ 5-minute video; R8 narrative-pickup setup (the writeup's screenshots come from here).
 
-**Dependencies:** U12, U13, U14, U15, U16, U18 (release builds must succeed before a recording session).
+**Dependencies:** U12, U13, U14, U15, U17, U19 (release builds must succeed before a recording session).
 
 **Files:**
 - Create: `_docs/recording-checklist.md` — the demo-day go/no-go checklist (charged phones, BT enabled, airplane-mode toggle path tested, fallback B-roll captured, network monitor armed).
@@ -913,7 +972,7 @@ The playbook is ordered cheapest-to-most-disruptive — do not jump steps. Which
 
 ---
 
-### U18. Platform configuration fixes — iOS Podfile floor + Android ProGuard keep rules
+### U19. Platform configuration fixes — iOS Podfile floor + Android ProGuard keep rules
 
 **Goal:** Capture the two platform-level build-config artifacts the Ditto Flutter SDK requires that aren't obvious from `pubspec.yaml` alone. These are real-build pain points: without them, `pod install` fails on iOS and the Ditto native classes are stripped on Android release builds (the app launches, then silently crashes when `sync.start()` calls into a stripped symbol). Documented as a unit because they're load-bearing artifacts the implementer must produce, not just transient debugging.
 
@@ -962,18 +1021,18 @@ The playbook is ordered cheapest-to-most-disruptive — do not jump steps. Which
 
 ---
 
-### U19. Presenterm slide deck — thesis, architecture, demo, future-work arc
+### U20. Presenterm slide deck — thesis, architecture, demo, future-work arc
 
-**Goal:** A Presenterm-rendered Markdown deck framing the demo for the writeup audience: thesis, architecture, latency-floor argument, before/after-sync result, four-thread future-work arc. The recorded artifact from U17 is shown as a live demo (or B-roll) inside the deck; the deck is what makes the demo legible *as a writeup* to readers who weren't in the room.
+**Goal:** A Presenterm-rendered Markdown deck framing the demo for the writeup audience: thesis, architecture, latency-floor argument, before/after-sync result, four-thread future-work arc. The recorded artifact from U18 is shown as a live demo (or B-roll) inside the deck; the deck is what makes the demo legible *as a writeup* to readers who weren't in the room.
 
 **Requirements:** R8 (narrative pickup — the deck is the surface that lets a reader unprompted articulate Ditto's role, Cactus's role, and why mesh changes the RAG story).
 
-**Dependencies:** U10 (screenshots), U12 (demo-script narration arc), U17 (final recorded artifact).
+**Dependencies:** U10 (screenshots), U12 (demo-script narration arc), U18 (final recorded artifact).
 
 **Files:**
 - Create: `slides/deck.md` — Presenterm Markdown source for the deck.
 - Create: `slides/notes.md` — speaker notes paralleling each slide.
-- Create: `slides/media/` — Mermaid architecture export (PNG), before/after-sync screenshots from U10, and the U17 recording as embedded video.
+- Create: `slides/media/` — Mermaid architecture export (PNG), before/after-sync screenshots from U10, and the U18 recording as embedded video.
 
 **Approach:**
 
@@ -984,7 +1043,7 @@ Eight-slide structure, sized for a ~10-minute walkthrough at comfortable pacing:
 3. **The latency-floor argument** — cloud RTT ≥ ~200ms physical floor vs on-device < 100ms; citation to `paper-2403.12844` (MELTing Point). The slide that makes the on-device pitch numerical, not aspirational. Latency band uses measurements from `qwen3-1.7` on the chosen hardware pair.
 4. **The CRDT insight** — vector index as grow-only set (G-Set), retrieval as pure function over the set. Citation to `paper-1106.4374` (Shapiro et al.). The slide that names the math. Schema example block uses the `StudyNote` shape (`_id, topic, contributor, body, tags, embedding, createdAt, …`).
 5. **Architecture diagram (Mermaid)** — Cactus embed + LLM at the leaves, Ditto CRDT in the middle, BLE/LAN/AWDL mesh at the bottom. Export from the High-Level Technical Design section's sequence diagram for visual continuity with the plan.
-6. **Live demo** — the U17 recorded artifact embedded, OR a live run if the venue + hardware cooperate. The "moment of magic" is the source-set expansion (attribution footer's peer count moves from 0 to M) when phone B enters BLE range. Stack-summary references `qwen3-1.7` for completion and `qwen3-0.6` for embedding.
+6. **Live demo** — the U18 recorded artifact embedded, OR a live run if the venue + hardware cooperate. The "moment of magic" is the source-set expansion (attribution footer's peer count moves from 0 to M) when phone B enters BLE range. Stack-summary references `qwen3-1.7` for completion and `qwen3-0.6` for embedding.
 7. **What this is + what it isn't** — Stage 0 scope honesty: ships CRDT vector sync + retrieval; Stage 1 ships a streaming flashcard generator; threat-model bound (no peer auth, no provenance signatures, no corpus ACL — see SEED.md). Audience leaves with a sized picture, not an oversold one.
 8. **Future-work arc + Q&A** — the four-thread writeup arc from `_docs/research/index/open-questions.md` (specialists → preference-aware merge → adversarial filtering → generational evolution). Landing line: "Family recipes through generations." Contact slide as the visual tail.
 
@@ -1012,7 +1071,7 @@ Render with Presenterm and export PDF as the shareable artifact: `presenterm sli
 - **Error propagation.** Cactus model load failure must not crash the app — the UI surfaces a "model not provisioned" state and the user can retry. Ditto sync failure must not block local-only retrieval — Stage 0 retrieval against the local corpus works without a peer. These two properties together preserve the "single phone gives a useful answer even when alone" contract.
 - **State lifecycle risks.** The materialized embedding array can lag behind Ditto's snapshot if a sync event lands mid-query — accept the staleness (next query sees the new tuple). Do NOT introduce locking; the CRDT property says re-querying eventually converges.
 - **API surface parity.** iOS and Android paths must be functionally identical (same model + quant + backend + embedding length + tuple shape). Platform-specific code is permitted only for OS permission UI and BLE foreground-state handling.
-- **Integration coverage.** Unit tests prove serialization + retrieval math. Two-device integration (U15) is what proves merge correctness. The recorded artifact (U17) is what proves the demo works on real hardware.
+- **Integration coverage.** Unit tests prove serialization + retrieval math. Two-device integration (U15) is what proves merge correctness. The recorded artifact (U18) is what proves the demo works on real hardware.
 - **Unchanged invariants.** The `_inspiration/` directory and its yaml manifest are *read-only research materials* — the build does not depend on them at runtime. The `_docs/research/index/` is a documentation artifact; the build doesn't read it either. Both stay clean.
 
 ---
@@ -1036,7 +1095,7 @@ Render with Presenterm and export PDF as the shareable artifact: `presenterm sli
 
 ## Documentation / Operational Notes
 
-- `README.md` at repo root frames the brainstorm and points at SEED.md. U17 adds a "Demo & recorded artifact" section linking to the recording + the demo script.
+- `README.md` at repo root frames the brainstorm and points at SEED.md. U18 adds a "Demo & recorded artifact" section linking to the recording + the demo script.
 - Plan exit condition: every holdout has a checked-in evidence artifact — `tools/determinism_harness/baseline.json` for R2, `_docs/rehearsed-queries.md` for R6a, `slides/media/` recording for R1+R7, `tools/holdout_7/offline_witness.md` for R7. Drop an artifact only with SEED cut-order justification logged inline.
 - The writeup post (R8) is a separate plan, NOT covered here. Open it after the recorded artifact lands.
 
