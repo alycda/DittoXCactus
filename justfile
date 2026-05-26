@@ -126,6 +126,34 @@ holdout-34-verdict:
 holdout-7-witness:
     $EDITOR tools/holdout_7/offline_witness.md
 
+# ─── Understand-Anything knowledge-graph dashboard ─────────────────────────
+
+# Start the local dashboard against this repo's
+# .understand-anything/knowledge-graph.json. Same view as the live
+# https://alycda.github.io/DittoXCactus/ site but with the source-file
+# preview tab unlocked (the static deploy can't serve source code).
+#
+# The dashboard ships inside the Understand-Anything Claude Code
+# plugin. This recipe finds it under the plugin cache and runs its
+# Vite dev server with GRAPH_DIR pointed here. Prints a one-time
+# tokenized URL on startup — open that, not the bare port.
+#
+# To refresh the graph: run `/understand` inside Claude Code, commit
+# the diff at .understand-anything/knowledge-graph.json, push.
+understand:
+    #!/usr/bin/env bash
+    set -euo pipefail
+    # Pick the highest-versioned plugin install. sort -V handles
+    # 2.7.x → 2.10.x correctly (string sort would not).
+    DASH=$(ls -d ~/.claude/plugins/cache/understand-anything/understand-anything/*/packages/dashboard 2>/dev/null | sort -V | tail -1)
+    if [ -z "$DASH" ] || [ ! -d "$DASH" ]; then
+      echo "error: Understand-Anything dashboard not found." >&2
+      echo "Install the plugin in Claude Code: /plugin install understand-anything" >&2
+      exit 1
+    fi
+    echo "Dashboard package: $DASH"
+    cd "$DASH" && GRAPH_DIR="{{justfile_directory()}}" npx vite --host 127.0.0.1
+
 # Wipe the local Ditto store on DEVICE so the next boot starts from a
 # fresh per-role seed corpus. Preserves Cactus model cache (`models/`)
 # so the next boot can run offline without re-downloading weights.
