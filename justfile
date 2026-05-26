@@ -126,6 +126,51 @@ holdout-34-verdict:
 holdout-7-witness:
     $EDITOR tools/holdout_7/offline_witness.md
 
+# Wipe the local Ditto store on DEVICE so the next boot starts from a
+# fresh per-role seed corpus. Preserves Cactus model cache (`models/`)
+# so the next boot can run offline without re-downloading weights.
+#
+# Why this exists: SeedLoader is per-note idempotent but never deletes;
+# cross-role boots accumulate state silently (memory entry
+# `project_seed_loader_no_delete`). Worse, once two devices have ever
+# paired, each holds the union of corpora locally — even relaunching
+# Phone A in airplane mode rehydrates that stale merged state, so you
+# cannot distinguish "this run's pairing" from history. Pre-holdout
+# discipline: wipe both devices, then run the recipe again as proof
+# the only thing left is `models/` + `flutter_assets/`.
+#
+# Force-stops the app first (otherwise Ditto holds file locks and the
+# rm races the open DB). Also removes stale `seed_notes_*_baked.json`
+# files left over from BAKE_EMBEDDINGS=true runs — they're dev-side
+# bake artifacts and just create confusion if a different role boots
+# the same device later.
+#
+# Usage:
+#   just wipe-ditto 23211JEGR01492        # one device
+#   just wipe-ditto 28191JEGR17016        # other device
+wipe-ditto DEVICE:
+    #!/usr/bin/env bash
+    set -euo pipefail
+    ADB="$(command -v adb 2>/dev/null || echo "$HOME/Library/Android/sdk/platform-tools/adb")"
+    if [ ! -x "$ADB" ]; then
+      echo "error: adb not found in PATH or at $ADB." >&2
+      echo "Add Android SDK platform-tools to PATH, e.g. in ~/.zshrc:" >&2
+      echo "  export PATH=\"\$HOME/Library/Android/sdk/platform-tools:\$PATH\"" >&2
+      exit 1
+    fi
+    PKG="com.dittoxcactus.mesh_rag"
+    DEV="{{DEVICE}}"
+    echo "→ Force-stopping $PKG on $DEV ..."
+    "$ADB" -s "$DEV" shell am force-stop "$PKG"
+    echo "→ Removing ditto-* directories and stale baked seeds ..."
+    # Use `sh -c` so the glob expands inside run-as (the app's
+    # uid context); shell globbing on the host won't see the
+    # app-private paths. `rm -rf` returns 0 even if nothing matched.
+    "$ADB" -s "$DEV" shell run-as "$PKG" sh -c 'rm -rf app_flutter/ditto-* app_flutter/seed_notes_*_baked.json'
+    echo "→ Remaining contents of app_flutter/ (should be models/ + flutter_assets/ only):"
+    "$ADB" -s "$DEV" shell run-as "$PKG" ls -la app_flutter/
+    echo "✓ Ditto store wiped on $DEV. Next app launch will re-seed from assets/seed_notes_<role>.json."
+
 # ─── U12 demo recipes — Holdout 1 dry-run flags ────────────────────────────
 #
 # Wraps app-run-a / app-run-b with the U12 demo flags pre-set:
