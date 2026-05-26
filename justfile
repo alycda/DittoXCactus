@@ -73,3 +73,28 @@ app-build-apk:
       --dart-define=DITTO_APP_ID="$DITTO_APP_ID" \
       --dart-define=DITTO_LICENSE="$DITTO_LICENSE" \
       --dart-define=PHONE_ROLE=a
+
+# ─── U12 demo recipes — Holdout 1 dry-run flags ────────────────────────────
+#
+# Wraps app-run-a / app-run-b with the U12 demo flags pre-set:
+#   - DEMO_OVERLAY=true        → top-right HUD (peer count, note count, latency)
+#   - INITIAL_TOPIC="Saturn"   → topic field pre-filled per _docs/demo-script.md
+#
+# Pass the rehearsed topic as the second argument to override, e.g.
+#   just app-run-a-demo <device-id> "Jupiter's moons"
+
+app-run-a-demo DEVICE TOPIC="Saturn":
+    flutter run -d {{DEVICE}} \
+      --dart-define=DITTO_APP_ID="$DITTO_APP_ID" \
+      --dart-define=DITTO_LICENSE="$DITTO_LICENSE" \
+      --dart-define=PHONE_ROLE=a \
+      --dart-define=DEMO_OVERLAY=true \
+      --dart-define=INITIAL_TOPIC="{{TOPIC}}"
+
+app-run-b-demo DEVICE TOPIC="Saturn":
+    flutter run -d {{DEVICE}} \
+      --dart-define=DITTO_APP_ID="$DITTO_APP_ID" \
+      --dart-define=DITTO_LICENSE="$DITTO_LICENSE" \
+      --dart-define=PHONE_ROLE=b \
+      --dart-define=DEMO_OVERLAY=true \
+      --dart-define=INITIAL_TOPIC="{{TOPIC}}"
