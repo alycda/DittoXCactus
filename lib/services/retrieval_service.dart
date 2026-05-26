@@ -177,7 +177,29 @@ class RetrievalService {
     final qVecRaw = await embedQuery(topic);
     final qVec = normalize(qVecRaw);
     final notes = await DittoService.instance.queryWithEmbedding();
-    return rankTopK(queryVec: qVec, notes: notes, k: k);
+    final ranked = rankTopK(queryVec: qVec, notes: notes, k: k);
+    if (kDebugMode) {
+      // Diagnostic shape so on-device weirdness ('retrieved=0 with 5 notes
+      // visible in the Notes tab') is debuggable from logcat. The
+      // dim-distribution surfaces the mid-corpus model-swap case (U9
+      // §3): notes embedded with a different model produce vectors of a
+      // different length and are silently dropped at the rankTopK
+      // dimension guard. If `noteDims` contains anything other than
+      // `queryDim`, the guard ate them.
+      final noteDims = <int, int>{};
+      for (final n in notes) {
+        noteDims[n.embedding.length] = (noteDims[n.embedding.length] ?? 0) + 1;
+      }
+      debugPrint(
+        '[topK] topic="$topic" k=$k '
+        'totalEmbedded=${notes.length} '
+        'queryDim=${qVec.length} '
+        'noteDims=$noteDims '
+        'survivedDimFilter=${notes.where((n) => n.embedding.length == qVec.length).length} '
+        'ranked=${ranked.length}',
+      );
+    }
+    return ranked;
   }
 
   /// Pure-math top-k. Testable directly — the math is the part that has
@@ -245,6 +267,12 @@ class RetrievalService {
     final maxTokens = _kThinkBudget + _kMaxTokensPerCard * n;
 
     final buffer = StringBuffer();
+    // Per-line buffer for log readability. Cactus emits one chunk per
+    // token, which makes logcat unreadable when each token is its own
+    // line ('let', "'", 's', ' see', ...). Accumulate until we see a
+    // newline, then flush the whole line at once — one logcat entry per
+    // actual line of model output.
+    final lineBuffer = StringBuffer();
     if (kDebugMode) {
       debugPrint(
         '[generateFlashcards] topic="$topic" k=$k n=$n '
@@ -257,15 +285,27 @@ class RetrievalService {
       maxTokens: maxTokens,
     )) {
       buffer.write(chunk);
-      // debugPrint with wrap:false-ish behavior — pass the chunk straight
-      // through so the logcat/DevTools console can be tail-followed and
-      // the on-stage operator can see "thinking" land in real time.
-      // Gated on kDebugMode so release builds stay quiet.
-      if (kDebugMode) debugPrint(chunk, wrapWidth: 1024);
       yield FlashcardEventPartial(chunk);
+      if (kDebugMode) {
+        lineBuffer.write(chunk);
+        if (chunk.contains('\n')) {
+          final parts = lineBuffer.toString().split('\n');
+          // Everything but the last segment is a complete line — flush.
+          // The last segment is an incomplete line — keep buffering.
+          for (var i = 0; i < parts.length - 1; i++) {
+            debugPrint('  | ${parts[i]}', wrapWidth: 1024);
+          }
+          lineBuffer
+            ..clear()
+            ..write(parts.last);
+        }
+      }
     }
     if (kDebugMode) {
-      debugPrint('\n[generateFlashcards] --- raw stream end '
+      if (lineBuffer.isNotEmpty) {
+        debugPrint('  | ${lineBuffer.toString()}', wrapWidth: 1024);
+      }
+      debugPrint('[generateFlashcards] --- raw stream end '
           '(${buffer.length} chars) ---');
     }
 
