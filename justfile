@@ -92,6 +92,40 @@ app-build-apk:
       --dart-define=DITTO_LICENSE="$DITTO_LICENSE" \
       --dart-define=PHONE_ROLE=a
 
+# ─── U15a / U15b — holdout runners + verdict (tools/holdout_3{4,7}/) ───────
+
+# U15a unit tests for the pure-Dart convergence + idempotence math (no
+# devices needed). Runs as part of `app-test` too; this recipe is the
+# focused-loop variant.
+holdout-34-test:
+    flutter test test/holdouts/idempotence_check_test.dart
+
+# U15a live-device runner — interactive bash walkthrough that captures
+# pre/post/re-meet snapshots and runs the verdict at the end. Requires
+# both phones already booted via `app-run-a` / `app-run-b`.
+holdout-34:
+    tools/holdout_34/runner.sh
+
+# U15a verdict CLI — standalone PASS/FAIL on a set of snapshot JSONs.
+# Use this when re-running the math on already-captured evidence (e.g.,
+# a post-mortem on a recorded artifact). Pass paths as a single env var
+# block; --ci toggles JSON-only output. Example:
+#   PRE_A=/tmp/a-pre.json PRE_B=/tmp/b-pre.json \
+#   POST_A=/tmp/a-post.json POST_B=/tmp/b-post.json \
+#   REMEET_A=/tmp/a-remeet.json REMEET_B=/tmp/b-remeet.json \
+#   just holdout-34-verdict
+holdout-34-verdict:
+    dart run tools/holdout_34/verdict.dart \
+      --pre-a "$PRE_A" --pre-b "$PRE_B" \
+      --post-a "$POST_A" --post-b "$POST_B" \
+      --remeet-a "$REMEET_A" --remeet-b "$REMEET_B"
+
+# U15b pre-demo offline-witness checklist — opens the markdown so the
+# demonstrator can walk it before each recording take. No-op
+# automation; the checklist is the artifact.
+holdout-7-witness:
+    $EDITOR tools/holdout_7/offline_witness.md
+
 # ─── U12 demo recipes — Holdout 1 dry-run flags ────────────────────────────
 #
 # Wraps app-run-a / app-run-b with the U12 demo flags pre-set:

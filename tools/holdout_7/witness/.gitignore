@@ -1,0 +1,5 @@
+# Per-take witness evidence (status-bar photos, optional host-side
+# capture logs). Each run drops a sibling <date>/ directory; promote
+# the final demo-day take to slides/media/ via U17.
+*
+!.gitignore

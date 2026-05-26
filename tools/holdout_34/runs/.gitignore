@@ -1,0 +1,6 @@
+# Per-run evidence directories. Each run creates a sibling timestamped
+# subdir holding snapshots + verdict + sign-off. Keep them off the repo
+# by default; the demo-day sign-off snapshot gets promoted under
+# slides/media/ via U17.
+*
+!.gitignore
