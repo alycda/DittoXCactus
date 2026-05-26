@@ -287,33 +287,56 @@ class RetrievalService {
     return false;
   }
 
-  /// When retrieval returned exactly one note and the model emitted a
-  /// card without a SOURCE line (truncated mid-stream, or the model
-  /// just forgot), the attribution is unambiguous — there's only one
-  /// possible source. Fill it in so [cleanCards]'s cite-required stage
-  /// doesn't drop a card that was actually grounded.
+  /// Backfill the SOURCE attribution on cards the model emitted without
+  /// a SOURCE line. Two cases:
   ///
-  /// For `retrieved.length != 1`, returns the input unchanged. Two-plus
-  /// notes can't be unambiguously attributed without the model picking;
-  /// zero would have been refused by the empty-gate upstream.
+  ///   - `retrieved.length == 1` — unambiguous. Attribute the uncited
+  ///     card to that single note regardless of content.
+  ///   - `retrieved.length >= 2` — disambiguate by content. For each
+  ///     uncited card, attribute to retrieved notes whose `topic`
+  ///     substring appears (case-insensitively) in the card's Q+A.
+  ///     A card that doesn't mention any retrieved note's topic is
+  ///     left uncited — [cleanCards]'s cite-required stage drops it.
   ///
-  /// Observed on 2026-05-25: Qwen produced a clean Q+A about Mars's
-  /// moons from one retrieved Mars note, then the stream ended before
-  /// it could write SOURCE. Pre-backfill the card got dropped; the demo
-  /// rendered nothing.
+  /// Both 2026-05-25 dry-runs surfaced the same shape: model produced
+  /// clean Q+A but truncated or omitted SOURCE.
+  ///   - Mars-moons: 1 retrieved Mars note → single-retrieval branch.
+  ///   - Atmosphere: 2 retrieved notes (Mercury, Venus) → content-
+  ///     matching branch attributes each card by name.
+  ///
+  /// Cards that already had a SOURCE from the model are left untouched
+  /// (no overwriting model attribution).
   @visibleForTesting
-  static List<Flashcard> backfillSingleRetrievalSource(
+  static List<Flashcard> backfillCardSources(
     List<Flashcard> cards,
     List<RetrievedNote> retrieved,
   ) {
-    if (retrieved.length != 1) return cards;
-    final onlyId = retrieved.single.note.id;
+    if (retrieved.isEmpty) return cards;
+    if (retrieved.length == 1) {
+      final onlyId = retrieved.single.note.id;
+      return cards.map((c) {
+        if (c.sourceNoteIds.isNotEmpty) return c;
+        return Flashcard(
+          question: c.question,
+          answer: c.answer,
+          sourceNoteIds: [onlyId],
+        );
+      }).toList();
+    }
     return cards.map((c) {
       if (c.sourceNoteIds.isNotEmpty) return c;
+      final cardText = '${c.question} ${c.answer}'.toLowerCase();
+      final matches = <String>[];
+      for (final r in retrieved) {
+        final topic = r.note.topic.toLowerCase();
+        if (topic.isEmpty) continue;
+        if (cardText.contains(topic)) matches.add(r.note.id);
+      }
+      if (matches.isEmpty) return c;
       return Flashcard(
         question: c.question,
         answer: c.answer,
-        sourceNoteIds: [onlyId],
+        sourceNoteIds: matches,
       );
     }).toList();
   }
@@ -619,7 +642,7 @@ class RetrievalService {
     }
 
     final rawCards = FlashcardGenPrompt.parse(buffer.toString());
-    final attributed = backfillSingleRetrievalSource(rawCards, retrieved);
+    final attributed = backfillCardSources(rawCards, retrieved);
     final cards = cleanCards(attributed, effectiveN, topic);
     if (kDebugMode) {
       final backfilledCount =
@@ -628,7 +651,8 @@ class RetrievalService {
       if (backfilledCount > 0) {
         debugPrint(
           '[generateFlashcards] backfilled SOURCE for $backfilledCount '
-          'card(s) (single retrieved note, model omitted SOURCE)',
+          'card(s) (model omitted SOURCE; attributed by '
+          '${retrieved.length == 1 ? "single retrieval" : "content matching"})',
         );
       }
       if (rawCards.length != cards.length) {

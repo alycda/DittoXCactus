@@ -830,18 +830,19 @@ void main() {
     });
   });
 
-  group('RetrievalService.backfillSingleRetrievalSource', () {
-    // The 2026-05-25 dry-run captured this exact shape: Qwen produced
-    // a clean on-topic Q+A about Mars's moons from one retrieved Mars
-    // note, then the stream ended before it could write SOURCE. The
-    // card was real and verifiably grounded — the attribution is just
-    // implicit. Backfill makes it explicit so cleanCards keeps it.
+  group('RetrievalService.backfillCardSources', () {
+    // Two dry-runs on 2026-05-25 captured the failure shape: Qwen
+    // produced clean on-topic Q+A cards but omitted SOURCE lines.
+    //   - Mars-moons (1 retrieved note) → unambiguous attribution.
+    //   - Atmosphere (2 retrieved notes: Mercury + Venus) → content-
+    //     matching: each card names the entity from its source note.
 
-    StudyNote note(String id) => StudyNote(
+    StudyNote note(String id, {String topic = 'Mars', String body = 'body'}) =>
+        StudyNote(
           id: id,
-          topic: 'Mars',
+          topic: topic,
           contributor: 'phone-a',
-          body: 'Mars has two small moons.',
+          body: body,
           tags: const [],
           embedding: const [],
           createdAt: DateTime.utc(2026, 5, 25),
@@ -850,12 +851,16 @@ void main() {
     Flashcard card(String q, String a, {List<String> sources = const []}) =>
         Flashcard(question: q, answer: a, sourceNoteIds: sources);
 
+    // ─── Single retrieval (unambiguous) ─────────────────────────────
+
     test('single retrieved note + uncited card → SOURCE backfilled with '
-        'that note id', () {
+        'that note id, no content check needed', () {
+      // The Mars-moons dry-run shape: model wrote a clean card without
+      // SOURCE. With one note, attribution is unambiguous regardless of
+      // whether the card text mentions "Mars".
       final retrieved = [RetrievedNote(note: note('mars-1'), score: 0.4)];
-      final raw = [card('Mars moons?', 'Phobos and Deimos')];
-      final out =
-          RetrievalService.backfillSingleRetrievalSource(raw, retrieved);
+      final raw = [card('What are the two moons?', 'Phobos and Deimos')];
+      final out = RetrievalService.backfillCardSources(raw, retrieved);
       expect(out.length, 1);
       expect(out.single.sourceNoteIds, ['mars-1']);
     });
@@ -864,39 +869,21 @@ void main() {
         () {
       final retrieved = [RetrievedNote(note: note('mars-1'), score: 0.4)];
       final raw = [card('Mars moons?', 'Phobos and Deimos', sources: const ['model-cited-id'])];
-      final out =
-          RetrievalService.backfillSingleRetrievalSource(raw, retrieved);
+      final out = RetrievalService.backfillCardSources(raw, retrieved);
       expect(out.single.sourceNoteIds, ['model-cited-id']);
     });
 
     test('zero retrieved notes → input unchanged (empty-gate handles this '
         'upstream anyway)', () {
       final raw = [card('Q', 'A')];
-      final out =
-          RetrievalService.backfillSingleRetrievalSource(raw, const []);
+      final out = RetrievalService.backfillCardSources(raw, const []);
       expect(out, equals(raw));
       expect(out.single.sourceNoteIds, isEmpty);
     });
 
-    test('multiple retrieved notes → input unchanged (cannot disambiguate '
-        'which one to attribute to)', () {
-      final retrieved = [
-        RetrievedNote(note: note('mars-1'), score: 0.4),
-        RetrievedNote(note: note('mars-2'), score: 0.38),
-      ];
-      final raw = [card('Mars moons?', 'Phobos and Deimos')];
-      final out =
-          RetrievalService.backfillSingleRetrievalSource(raw, retrieved);
-      expect(out.single.sourceNoteIds, isEmpty,
-          reason:
-              '>1 retrieved means attribution is ambiguous — drop-uncited '
-              'should still fire downstream rather than guessing.');
-    });
-
     test('empty input → empty output', () {
       final retrieved = [RetrievedNote(note: note('mars-1'), score: 0.4)];
-      expect(
-          RetrievalService.backfillSingleRetrievalSource(const [], retrieved),
+      expect(RetrievalService.backfillCardSources(const [], retrieved),
           isEmpty);
     });
 
@@ -908,11 +895,99 @@ void main() {
         card('Q2', 'A2'),
         card('Q3', 'A3', sources: const ['another']),
       ];
-      final out =
-          RetrievalService.backfillSingleRetrievalSource(raw, retrieved);
+      final out = RetrievalService.backfillCardSources(raw, retrieved);
       expect(out[0].sourceNoteIds, ['existing']);
       expect(out[1].sourceNoteIds, ['mars-1']);
       expect(out[2].sourceNoteIds, ['another']);
+    });
+
+    // ─── Multi-retrieval (content matching) ─────────────────────────
+
+    test('two retrieved notes + cards naming each entity → each card '
+        'attributed to its named note (the atmosphere dry-run)', () {
+      // Exact shape from 2026-05-25: topic="atmosphere", retrieved Mercury
+      // and Venus notes, model wrote 2 cards (no SOURCE), each card's Q+A
+      // names its entity.
+      final retrieved = [
+        RetrievedNote(
+            note: note('mercury-1',
+                topic: 'Mercury',
+                body: 'Mercury has almost no atmosphere; '
+                    'temperatures vary from 430°C to -180°C.'),
+            score: 0.44),
+        RetrievedNote(
+            note: note('venus-1',
+                topic: 'Venus',
+                body: 'Venus has a thick CO2 atmosphere causing runaway '
+                    'greenhouse effect; surface ~465°C.'),
+            score: 0.41),
+      ];
+      final raw = [
+        card('What is unique about Venus\'s atmosphere?',
+            'Venus has a thick atmosphere composed of 96% carbon dioxide.'),
+        card('How does Mercury\'s lack of atmosphere affect its environment?',
+            'Mercury has almost no atmosphere with extreme temperatures.'),
+      ];
+      final out = RetrievalService.backfillCardSources(raw, retrieved);
+      expect(out[0].sourceNoteIds, ['venus-1']);
+      expect(out[1].sourceNoteIds, ['mercury-1']);
+    });
+
+    test('multi-retrieval: card mentioning both entities attributes to both',
+        () {
+      // Edge case: a card that legitimately cites two notes (e.g.
+      // "Compare Mercury and Venus atmospheres") should land both ids.
+      final retrieved = [
+        RetrievedNote(note: note('mercury-1', topic: 'Mercury'), score: 0.4),
+        RetrievedNote(note: note('venus-1', topic: 'Venus'), score: 0.39),
+      ];
+      final raw = [
+        card('How do Mercury and Venus differ?',
+            'Mercury is hot in day, cold at night; Venus is hot always.'),
+      ];
+      final out = RetrievalService.backfillCardSources(raw, retrieved);
+      expect(out.single.sourceNoteIds, ['mercury-1', 'venus-1']);
+    });
+
+    test('multi-retrieval: card mentioning no retrieved entity is left '
+        'uncited (drop-uncited will catch it downstream)', () {
+      // If the card text doesn't name any retrieved note's topic, we
+      // can't honestly attribute. Leave it uncited so cleanCards drops
+      // it rather than guessing.
+      final retrieved = [
+        RetrievedNote(note: note('mercury-1', topic: 'Mercury'), score: 0.4),
+        RetrievedNote(note: note('venus-1', topic: 'Venus'), score: 0.39),
+      ];
+      final raw = [
+        card('What is an atmosphere?', 'A layer of gases around a body.'),
+      ];
+      final out = RetrievalService.backfillCardSources(raw, retrieved);
+      expect(out.single.sourceNoteIds, isEmpty);
+    });
+
+    test('multi-retrieval content match is case-insensitive', () {
+      final retrieved = [
+        RetrievedNote(note: note('venus-1', topic: 'Venus'), score: 0.4),
+        RetrievedNote(note: note('mars-1', topic: 'Mars'), score: 0.38),
+      ];
+      final raw = [
+        card('What is VENUS like?', 'Hot, with a thick atmosphere.'),
+      ];
+      final out = RetrievalService.backfillCardSources(raw, retrieved);
+      expect(out.single.sourceNoteIds, ['venus-1']);
+    });
+
+    test('multi-retrieval: model-cited cards still left untouched', () {
+      final retrieved = [
+        RetrievedNote(note: note('mercury-1', topic: 'Mercury'), score: 0.4),
+        RetrievedNote(note: note('venus-1', topic: 'Venus'), score: 0.39),
+      ];
+      final raw = [
+        card('Venus atmosphere?', 'Thick CO2.',
+            sources: const ['model-cited']),
+      ];
+      final out = RetrievalService.backfillCardSources(raw, retrieved);
+      expect(out.single.sourceNoteIds, ['model-cited']);
     });
   });
 }
