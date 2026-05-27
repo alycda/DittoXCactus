@@ -1,0 +1,110 @@
+# Single-device integration smoke tests on Firebase Test Lab (Android).
+#
+# Runs the 'no-credentials path' group from integration_test/smoke_test.dart:
+# the app is built with PHONE_ROLE=a but no Ditto credentials so the boot
+# fails gracefully at DittoService.initialize(). We verify the error UI
+# renders on real ARM hardware — no secrets are needed for this group.
+#
+# The 'full-boot path' group (which needs DITTO credentials baked into the
+# APK) is left as a workflow_dispatch variant for now. See issue #3 for the
+# setup checklist.
+#
+# Prerequisites before this job will pass:
+#   1. Create a Firebase project and link it to this repository.
+#   2. Create a GCP service account with the "Firebase Test Lab Admin" role.
+#   3. Download the SA key JSON and add it as the GCP_SA_KEY repository secret.
+#   4. Add FIREBASE_PROJECT_ID as a repository variable (not a secret).
+#   Checklist: https://github.com/alycda/DittoXCactus/issues/3
+
+name: Firebase Test Lab (Android smoke)
+
+on:
+  # Manual trigger while the Firebase project is being set up.
+  # Switch to push: { branches: [main] } once prerequisites are done.
+  workflow_dispatch:
+
+  # Uncomment once GCP_SA_KEY and FIREBASE_PROJECT_ID are configured:
+  # push:
+  #   branches: [main]
+  #   paths:
+  #     - "lib/**"
+  #     - "integration_test/**"
+  #     - "android/**"
+  #     - "pubspec.yaml"
+  #     - ".github/workflows/firebase-test-lab.yml"
+
+concurrency:
+  group: ftl-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  ftl-android:
+    name: Firebase Test Lab — Android
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Flutter
+        uses: subosito/flutter-action@v2
+        with:
+          flutter-version: '3.32.0'
+          channel: stable
+          cache: true
+
+      - name: Install dependencies
+        run: flutter pub get
+
+      # Build the debug app APK.
+      # PHONE_ROLE=a is baked in so the boot can progress past _validatePhoneRole().
+      # DITTO credentials are intentionally omitted — the 'no-credentials path'
+      # group in smoke_test.dart tests that the boot-error UI works correctly
+      # without valid credentials.
+      - name: Build debug APK (PHONE_ROLE=a, no Ditto creds)
+        run: |
+          flutter build apk --debug \
+            --dart-define=PHONE_ROLE=a
+
+      # Build the instrumented test APK that wraps integration_test/smoke_test.dart.
+      # Flutter's integration_test package hooks into Android's instrumentation
+      # runner, so Firebase Test Lab can drive it as a standard Espresso test.
+      - name: Build instrumented test APK
+        run: |
+          pushd android
+          ./gradlew app:assembleAndroidTest
+          popd
+
+      - name: Authenticate to GCP
+        uses: google-github-actions/auth@v2
+        with:
+          credentials_json: ${{ secrets.GCP_SA_KEY }}
+
+      - name: Set up gcloud CLI
+        uses: google-github-actions/setup-gcloud@v2
+
+      # Run on a Pixel 6 (Android 13). Firebase Test Lab will pick a device
+      # from the pool; --num-flaky-test-attempts 1 retries once on flake.
+      # Timeout is generous (10 min) to absorb Ditto SDK cold-init time.
+      - name: Run on Firebase Test Lab
+        run: |
+          gcloud firebase test android run \
+            --type instrumentation \
+            --app build/app/outputs/apk/debug/app-debug.apk \
+            --test build/app/outputs/apk/androidTest/debug/app-debug-androidTest.apk \
+            --device model=Pixel6,version=33,locale=en,orientation=portrait \
+            --project ${{ vars.FIREBASE_PROJECT_ID }} \
+            --timeout 10m \
+            --num-flaky-test-attempts 1 \
+            --results-dir=ftl-results/${{ github.run_id }} \
+            --format=json \
+          | tee ftl-result.json
+
+      - name: Upload FTL result artifact
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: ftl-result-${{ github.run_id }}
+          path: ftl-result.json
+          retention-days: 30
