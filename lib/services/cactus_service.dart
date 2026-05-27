@@ -13,12 +13,11 @@
 /// end-to-end. See `_docs/notes/cactus-sdk-quirks.md` § "Issue #35 retraction"
 /// and discussion #11 / issue #9 for the full trail.
 ///
-/// **U1 reminder.** Swapping the embedder slug invalidated the previous U1
-/// cross-platform baseline at `tools/determinism_harness/baselines/latest/`.
-/// Pixel baselines were regenerated against the new slug; iPhone-side
-/// regeneration requires a user-driven on-device run. Until that lands, the
-/// U1 ≥95% cross-platform gate is *partially* refreshed; do not promote a
-/// release until iPhone regen completes.
+/// **U1 result.** Baselines under
+/// `tools/determinism_harness/baselines/latest/` regenerated against this
+/// slug on 2026-05-26/27 (Pixel A + B + iPhone 14). Cross-platform R2 gate
+/// measured at **1.0000** (was 0.85 with chat-tuned head) — see that
+/// directory's README for the audit trail.
 ///
 /// `qwen3-0.6` was also tried as the completion model and produced incoherent
 /// flashcards at ~600M parameters. `qwen3-1.7` is the size class that
@@ -84,7 +83,7 @@ class CactusService {
   /// Default embedding slug — dedicated similarity-tuned embedder.
   /// Swapped from chat-tuned `qwen3-0.6` per issue #9 once the slug typo
   /// in `cactus-sdk-quirks.md` was retracted (the dedicated slug always
-  /// worked; we just had the name wrong — see commit `uxskmxyw`).
+  /// worked; we just had the name wrong).
   /// `assets/seed_notes_{a,b}.json` embeddings were regenerated against
   /// this model via `tools/regen_seed_embeddings.py`.
   static const String preferredEmbeddingSlug = 'qwen3-0.6-embed';
@@ -113,7 +112,7 @@ class CactusService {
   /// `onProgress` (if supplied) receives messages like:
   ///   - `completion (qwen3-1.7): downloading 42%` (with `progress=0.42`)
   ///   - `completion (qwen3-1.7): initializing context` (with `progress=null`)
-  ///   - `embedding (qwen3-0.6): downloading 8%`
+  ///   - `embedding (qwen3-0.6-embed): downloading 8%`
   /// `isError=true` surfaces a download failure so BootScreen can render a
   /// "connect to wifi to fetch the model" message instead of crashing.
   ///

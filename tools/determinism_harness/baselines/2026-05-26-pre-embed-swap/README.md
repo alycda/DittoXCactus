@@ -1,36 +1,20 @@
 # Pre-swap snapshot (2026-05-26)
 
-Captured the moment before issue #9 swapped the default embedder slug from
-`qwen3-0.6` (chat-tuned) to `qwen3-0.6-embed` (dedicated). The Pixel JSONs
-from this snapshot already moved to `baselines/latest/` because they were
-identical to the new run for the chat-tuned slug (Pixel↔Pixel = 1.0 anyway,
-so re-measurement was a sanity check). The iPhone JSON kept here is the
-**old chat-tuned-slug measurement** from 2026-05-23 — preserved because the
-iPhone re-measurement against the new slug is deferred (device was in
-"Preparing iPhone" state in Xcode during the swap session).
+Archives the iPhone determinism JSON captured against the **chat-tuned
+`qwen3-0.6`** slug, immediately before issue #9 swapped the demo's default
+embedder to dedicated `qwen3-0.6-embed`. The original Pixel baselines from
+2026-05-23 are preserved one level deeper at
+[`../2026-05-23/`](../2026-05-23/) — Pixel↔Pixel determinism is 1.0000
+regardless of slug (same SoC = bit-identical output), so we didn't keep a
+second Pixel copy here.
 
-## To regenerate the iPhone half
+The iPhone JSON kept here is the original 2026-05-23 measurement against
+chat-tuned `qwen3-0.6`. Cross-platform U1 rate was 0.85 with this baseline
+(3 disagreements on Q10/Q13/Q17 between iOS and Pixel). After the swap to
+`qwen3-0.6-embed` and a fresh on-device re-measurement on 2026-05-27, the
+cross-platform rate jumped to **1.0000** (0 disagreements). The new iPhone
+JSON for the dedicated slug lives in
+[`../latest/iphone.json`](../latest/iphone.json).
 
-```sh
-# In Xcode → Window → Devices and Simulators, wait for "Preparing iPhone"
-# to finish.
-
-just harness-measure 00008110-00110CEC1AEB601E
-# Then extract the DETERMINISM_JSON block from the test log into
-# baselines/latest/iphone.json:
-python3 -c "
-import re, sys
-log = open(sys.argv[1]).read()
-s = log.find('--- BEGIN DETERMINISM_JSON ---')
-e = log.find('--- END DETERMINISM_JSON ---')
-print(log[s:e].split(chr(10), 1)[1].strip())
-" /tmp/measure-iphone.log > tools/determinism_harness/baselines/latest/iphone.json
-```
-
-Then verify U1 gate:
-```sh
-just harness-check baselines/latest/iphone.json baselines/latest/pixel-a.json
-# Expect: rate >= 0.95 PASS (prior 2026-05-23 chat-tuned baseline was 0.85).
-# If lower, the dedicated embedder's cross-platform parity is worse than the
-# chat-tuned head's, and the swap should be revisited.
-```
+Keep this snapshot for the audit trail — it's the only way to verify the
+0.85 → 1.0000 improvement was a real model effect and not measurement drift.

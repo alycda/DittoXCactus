@@ -1,7 +1,8 @@
 // On-device measurement entry — the "measure" half of the U1 determinism gate.
 //
-// Loads the same Cactus slug the app will use (qwen3-0.6 per the plan's Key
-// Technical Decisions), embeds every fixture query and passage, computes top-k
+// Loads the same Cactus slug the app will use (qwen3-0.6-embed per issue #9 /
+// 2026-05-26 slug swap; was qwen3-0.6 before), embeds every fixture query and
+// passage, computes top-k
 // per query using the harness math (lib/agreement.dart), and writes a
 // per-device JSON output to the app's documents directory. The result is
 // compared offline against the other phone's output by run.dart (check mode).
