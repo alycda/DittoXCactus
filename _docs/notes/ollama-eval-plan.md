@@ -142,11 +142,74 @@ writeup so far for *specialists by training*, not specialists by architecture.
 
 ### T2 — retrieval quality (host-side, ollama)
 
-For each candidate embedder, embed the merged corpus + the same query set, score by:
-- **Top-K precision** vs. a hand-labelled gold set (~20 query/note pairs)
-- **Cross-language stability** (does case sensitivity matter the same way? Qwen3-0.6
-  is famously case-sensitive on proper nouns; title-casing fixed it for the demo —
-  see `retrieval_service.dart`)
+For each candidate embedder, embed the merged corpus + the gold query set, score by:
+- **Recall@3** vs. a hand-labelled gold set (8 query/expected-topic tuples)
+- **MRR** (reciprocal rank of first matching note)
+- **Case stability** — does the top-1 change when the query is lowercase vs.
+  title-cased? (Qwen3-0.6 is case-sensitive on proper nouns; title-casing fixed
+  it for the demo, see `retrieval_service.dart`. T2 tests whether other
+  embedders share the same brittleness.)
+
+Harness: [`tools/ollama_eval/t2.py`](../../tools/ollama_eval/t2.py).
+Raw outputs: [`t2-results.md`](t2-results.md) (auto-generated; safe to regenerate).
+
+#### T2 verdict
+
+**Qwen3-0.6 (incumbent) stays as the embedder** — but for a more interesting
+reason than the T1 verdict.
+
+| Model | Dim | Mean R@3 | Mean MRR | Case-stable / 8 |
+| --- | --- | --- | --- | --- |
+| `qwen3:0.6b` (incumbent-equivalent) | — | — | — | **HTTP 501 — ollama refused to embed** |
+| `nomic-embed-text` | 768 | 1.25 | 0.59 | 3/8 |
+| `mxbai-embed-large` | 1024 | 1.13 | 0.54 | **8/8** |
+
+**Three findings worth pinning:**
+
+1. **`qwen3:0.6b` is not embeddable through ollama's standard `/api/embed`
+   endpoint.** It returns HTTP 501. The on-device pipeline only embeds it
+   because Cactus exposes the chat-tuned model's embedding head as a separate
+   surface (`CactusLM` with the embedding initialization flag — see
+   `cactus_service.dart`). This is itself a writeup observation: **the demo
+   relies on a non-portable surface.** A purpose-built dedicated embedder is the
+   obvious alternative path *if* Cactus can load one, and per
+   `cactus-sdk-quirks.md` the dedicated `qwen3-embedding-0.6` slug doesn't load
+   in 1.3.0.
+
+2. **`nomic-embed-text` collapses every title-cased proper-noun-shaped query to
+   `Mercury` as top-1.** "Inner Planets" → Mercury. "Ice Giants" → Mercury.
+   "Atmosphere" → Mercury. "Moons" → Mercury. 5/8 queries differ between
+   lowercase and title-case, and *all* of the title-cased variants converge to
+   the same single note. Hypothesis: in nomic's training corpus, "Mercury" is
+   the most token-prominent capitalized solar-system word, so title-casing a
+   short query pushes the embedding into Mercury's neighborhood regardless of
+   the actual word. **This confirms the title-casing workaround in
+   `retrieval_service.dart` is fighting a real, model-agnostic phenomenon, not
+   a Qwen quirk.** Modern dedicated embedders inherit case-sensitivity from
+   their training data the same way chat models do.
+
+3. **`mxbai-embed-large` is the only fully case-stable embedder tested (8/8).**
+   But it pays for that stability with worse semantic retrieval on conceptual
+   queries: "inner planets" returns Jupiter/Neptune/Saturn (0/3); "the Sun"
+   doesn't put The Sun in the top 3. Case-stability without semantic recall is
+   not a win — the on-device title-casing already eats the case problem cheaply.
+
+**The deeper finding for the writeup.** Our pipeline currently uses the
+chat-tuned 0.6B model's embedding head, which carries *chat-distribution*
+world semantics — concepts like "inner planets" embed in a space where Mercury,
+Venus, Earth, and Mars are nearby because those terms co-occur in chat data.
+Purpose-built embedders are trained on (query, passage) retrieval pairs where
+the relationship is "passage relevant to query," not "concept related to
+concept." For a corpus of *named-entity-dense study notes* against
+*abstract-concept queries* ("inner planets," "gas giants"), the chat-tuned head
+is at a real semantic advantage. A retrieval-trained specialist would only
+match it if its training pairs included the same conceptual abstractions.
+
+This is *another specialists-vs-generalists* angle, but the conclusion flips
+from T1: for the embedder, the *generalist's* training distribution carries
+the world-knowledge our task needs. **A flashcard-domain retrieval specialist
+would need to be trained on (concept-name, study-note-body) pairs — not the
+standard (search-query, web-passage) pairs that drive nomic and mxbai.**
 
 ### T3 — Needle qualitative (no host harness)
 
@@ -235,11 +298,13 @@ artifacts:
 
 ## Status
 
-- [x] Candidate models pulled — `qwen2.5:0.5b`, `qwen2.5:1.5b`, `qwen3:1.7b`
-      (baseline), `gemma3:1b`, `llama3.2:1b`, `nomic-embed-text`
+- [x] Candidate models pulled — completion: `qwen3:1.7b`, `qwen2.5:1.5b`,
+      `qwen2.5:0.5b`, `gemma3:1b`, `llama3.2:1b`; embedding: `qwen3:0.6b`,
+      `nomic-embed-text`, `mxbai-embed-large`
 - [x] Needle cloned into `_inspiration/cactus-compute/needle/` (gitignored)
-- [x] Writeup observation drafted (T3 — see above)
-- [x] T1 harness wired up + run + verdict captured
-- [ ] T2 harness wired up (host-side retrieval quality)
-- [ ] CLAUDE.md model-default decision: *Qwen3-1.7B confirmed as completion
-      default per T1 verdict* — pending CLAUDE.md edit
+- [x] T3 — Needle observation drafted
+- [x] T1 — flashcard fidelity harness + run + verdict
+- [x] T2 — retrieval quality harness + run + verdict
+- [ ] CLAUDE.md model-default decision: *Qwen3-1.7B (complete) + Qwen3-0.6
+      (embed) confirmed as demo defaults per T1+T2 verdicts* — pending
+      CLAUDE.md edit
