@@ -211,6 +211,126 @@ the world-knowledge our task needs. **A flashcard-domain retrieval specialist
 would need to be trained on (concept-name, study-note-body) pairs — not the
 standard (search-query, web-passage) pairs that drive nomic and mxbai.**
 
+### T2-Cactus — same gold set, Cactus runtime, three new models
+
+After T2's ollama pass, we added the Cactus CLI (`brew install
+cactus-compute/cactus/cactus`) and re-ran the gold-set evaluation against
+three embedders the ollama harness couldn't reach. Harness:
+[`tools/ollama_eval/t2_cactus.py`](../../tools/ollama_eval/t2_cactus.py).
+Raw outputs: [`t2-cactus-results.md`](t2-cactus-results.md).
+
+| Model | Dim | Mean R@3 | Mean MRR | Case-stable / 8 |
+| --- | --- | --- | --- | --- |
+| `qwen3-0.6` (chat-tuned, INT4) — incumbent | 1024 | 0.38 | 0.30 | **0/8** |
+| `qwen3-embedding-0.6` (dedicated, INT4) | 1024 | 0.75 | 0.47 | 6/8 |
+| `nomic2-embed-300m` (v2-moe, INT4) | 768 | 0.62 | 0.34 | 1/8 |
+| *(reference)* `nomic-embed-text` v1 via ollama | 768 | 1.25 | 0.59 | 3/8 |
+| *(reference)* `mxbai-embed-large` via ollama | 1024 | 1.13 | 0.54 | 8/8 |
+
+#### Three new findings
+
+1. **The dedicated `qwen3-embedding-0.6` slug loads fine via Cactus CLI.** This
+   contradicts [cactus-sdk-quirks.md](cactus-sdk-quirks.md)'s claim that the
+   slug "doesn't load" — that note is stale or Flutter-SDK-1.3.0-specific.
+   The C++ engine + Python bindings handle the slug without issue. Worth
+   verifying whether the Flutter SDK bug is still real on 1.3.x; this might
+   unlock a real swap for the demo.
+
+2. **The chat-tuned `qwen3-0.6` produces *bizarre* embeddings at INT4.**
+   *Every* lowercase query converges its top-1 to "Pluto." *Every*
+   title-cased query converges to "Mars." All 8 queries case-unstable.
+   Mean R@3 = 0.38. This is the *incumbent embedder* in the demo — and at
+   INT4 on Mac it's barely functional.
+
+3. **All three Cactus embedders underperform ollama's nomic-embed-text v1.**
+   The best Cactus result (dedicated Qwen embedder at R@3=0.75) loses to
+   ollama's nomic at R@3=1.25.
+
+#### The INT4 caveat (load-bearing)
+
+**Default precision matters here.** Cactus CLI defaults to `--precision INT4`;
+the Flutter SDK catalog reports `quantization=8` for every model (INT8 on
+device). Our Cactus eval runs at INT4 — *not* what the demo runs. We
+attempted to reconvert at INT8 / FP16 to close the gap and hit a hard
+blocker: the local transformers can't import `Qwen3ForCausalLM`, so the
+CLI's conversion path failed for both higher-precision variants. INT4 is
+the only locally-reproducible precision today.
+
+**This invalidates direct A/B comparison between T2-ollama (full-precision
+inference) and T2-Cactus (INT4).** The story is *probably*:
+
+- The demo's on-device Qwen3-0.6 embedder runs at INT8 and produces
+  reasonable embeddings — explains why the live demo's retrieval works
+  despite our INT4 Mac numbers looking broken.
+- The "Pluto / Mars" convergence at INT4 is a quantization-collapse signal,
+  not a model-design signal.
+- We can't draw conclusions about *which* embedder is best for the demo
+  without running INT8 weights, which we can't currently produce locally.
+
+#### What the eval still establishes
+
+- The incumbent assumption — that the Flutter SDK *must* use chat-tuned
+  Qwen3-0.6 because the dedicated embedder doesn't load — is wrong. **The
+  dedicated slug works on the engine layer.** This is the actionable finding
+  worth carrying into the demo.
+- The "title-casing fixes case-sensitivity" workaround in
+  `retrieval_service.dart` was empirically grounded across multiple model
+  families and quantization precisions. It's not over-engineered.
+- Precision-dependent retrieval quality is a real seam in the on-device
+  claim. The writeup should note that *the demo's retrieval is INT8;
+  reproducibility on a Mac with the CLI gets INT4 and worse numbers* —
+  another instance of the "on-device specifics matter" thread.
+
+### T1-Cactus — same prompt, Cactus runtime, five catalog completion models
+
+Harness: [`tools/ollama_eval/t1_cactus.py`](../../tools/ollama_eval/t1_cactus.py).
+Raw outputs: [`t1-cactus-results.md`](t1-cactus-results.md). **Same INT4
+caveat as T2-Cactus** — not directly comparable to ollama T1.
+
+| Model | Off-corpus pass? | Well-formed inner/outer/Sun | Notes |
+| --- | --- | --- | --- |
+| `qwen3-1.7` (incumbent at INT4) | **✗ 3 cards** | 1/3 / 3/3 / 3/3 | Best format compliance among candidates. **At INT4 it fabricates** on off-corpus ("Constantine the Great reigned 146–149 AD" — wrong) — *worse than at full precision via ollama*. |
+| `qwen3-0.6` | ✗ 4 cards | 0/3 / 3/3 / 0/3 | Format collapse on inner planets (just repeats `**Inner Planets**` indefinitely). |
+| `lfm2-700m` | **✓ 0 cards** | 0/3 / 0/3 / 0/3 | *Only model passing off-corpus grounding at INT4.* But never emits SOURCE: line — well-formed parses to 0. On off-corpus, emits a meta-comment with the Mars UUID and "no flashcard will be created" — passes by accident but reveals the model knows what to do. |
+| `lfm2.5-1.2b` | ✗ 3 cards | 1/3 / 0/3 / 0/3 | Prompt-leakage failure: literally pastes `SOURCE: format, each about "inner planets"` — the model copied user-message text into the SOURCE field. |
+| `gemma3-1b` | ✗ 21 cards | 4/10 / 0/3 / 0/4 | **Bilingual drift** — `<end_of_turn>最后一个用户` (Chinese for "last user") leaks through. Same quirk family as Qwen 2.5's CJK drift, across a different vendor. Worst off-corpus runaway (21 cards). |
+
+#### T1-Cactus verdict (with caveats)
+
+**At INT4, no catalog model cleanly beats the incumbent on the same dimensions
+that mattered in T1-ollama.** Qwen3-1.7B at INT4 has the best format
+compliance but loses the off-corpus grounding test it won at full precision.
+LFM2-700M passes off-corpus by routinely failing to emit SOURCE (a different
+kind of failure that happens to score 0).
+
+**The precision dimension is now the writeup's headline.** Three independent
+signals point at it:
+
+1. T2-Cactus's chat-tuned qwen3-0.6 collapses to Pluto/Mars at INT4 — the
+   demo's incumbent embedder *would not work* if the demo ran at this
+   precision.
+2. T1-Cactus's qwen3-1.7 fabricates on off-corpus at INT4 — the demo's
+   incumbent completer *would fail the grounding claim* if the demo ran at
+   this precision.
+3. Gemma 3 1B at INT4 shows Chinese-language drift (`最后一个用户`) — the same
+   training-distribution-leak quirk that Qwen 2.5 shows at the smaller
+   `<think>` stages, but in the *generation* output for Gemma. Generalists
+   leak their training distribution under quantization stress, regardless
+   of vendor.
+
+**Specialists thread carry-over.** Three of the five catalog candidates failed
+in a *specifically format-related* way (LFM2's missing SOURCE, LFM2.5's
+prompt-leak into SOURCE, Gemma3's `<end_of_turn>` token spam). All would be
+solved by a specialist trained to emit `Q:/A:/SOURCE:` triples as its
+*native* output format rather than as one of many possible structures it
+was told to produce.
+
+**Practical recommendation for the demo:** keep Qwen3-1.7B + Qwen3-0.6 as
+the defaults — the on-device INT8 path produces good behavior empirically.
+But surface the precision dependence in the writeup: *the demo's quality is
+not a property of the model choice alone; it's a property of (model choice,
+precision, runtime path).*
+
 ### T3 — Needle qualitative (no host harness)
 
 Originally scoped as "run Needle locally on a study-session tool schema." After
@@ -298,13 +418,29 @@ artifacts:
 
 ## Status
 
-- [x] Candidate models pulled — completion: `qwen3:1.7b`, `qwen2.5:1.5b`,
+- [x] Candidate ollama models pulled — completion: `qwen3:1.7b`, `qwen2.5:1.5b`,
       `qwen2.5:0.5b`, `gemma3:1b`, `llama3.2:1b`; embedding: `qwen3:0.6b`,
       `nomic-embed-text`, `mxbai-embed-large`
+- [x] Cactus CLI installed via `brew tap cactus-compute/cactus && brew install …/cactus`;
+      packaging fix: symlinked `/opt/homebrew/lib/libcactus.dylib` →
+      `/opt/homebrew/lib/cactus/build/libcactus.dylib` (where the bundled
+      Python module expects it).
+- [x] Cactus weights downloaded for the catalog eval (`/opt/homebrew/Cellar/cactus/.../weights/`):
+      `qwen3-0.6b`, `qwen3-1.7b`, `qwen3-embedding-0.6b`, `nomic-embed-text-v2-moe`,
+      `lfm2-700m`, `lfm2.5-1.2b-instruct`, `gemma-3-1b-it`. All INT4.
 - [x] Needle cloned into `_inspiration/cactus-compute/needle/` (gitignored)
 - [x] T3 — Needle observation drafted
-- [x] T1 — flashcard fidelity harness + run + verdict
-- [x] T2 — retrieval quality harness + run + verdict
-- [ ] CLAUDE.md model-default decision: *Qwen3-1.7B (complete) + Qwen3-0.6
-      (embed) confirmed as demo defaults per T1+T2 verdicts* — pending
-      CLAUDE.md edit
+- [x] T1 — flashcard fidelity harness + ollama run + verdict
+- [x] T2 — retrieval quality harness + ollama run + verdict
+- [x] T2-Cactus — Cactus-runtime embedding eval + verdict (dedicated slug
+      loads; INT4 precision degrades all three)
+- [x] T1-Cactus — Cactus-runtime completion eval + verdict (Qwen3-1.7 at INT4
+      fabricates on off-corpus; Gemma 3 1B drifts bilingual; LFM2-700M passes
+      off-corpus by accident)
+- [ ] **TinyLlama / TinyDolphin via C++ route** — deferred. Recognized at the
+      engine level (`engine_model.cpp:548` maps `tinyllama` to
+      `ModelType::GEMMA4`) but not in the SDK catalog. Requires bypassing
+      `cactus download` and pointing the engine at a custom GGUF directly.
+- [ ] CLAUDE.md model-default decision — pending, see T1-Cactus verdict;
+      *no change to demo defaults; surface precision dependence in the
+      writeup instead.*
