@@ -31,7 +31,13 @@ import 'package:path_provider/path_provider.dart';
 import 'package:determinism_harness/agreement.dart';
 import 'package:determinism_harness/output_format.dart';
 
-const String _embeddingSlug = 'qwen3-0.6';
+// Swapped to dedicated embedder per issue #9 (2026-05-26). Previous slug
+// was 'qwen3-0.6' (chat-tuned, embedding-head-repurposed). The dedicated
+// 'qwen3-0.6-embed' loads via Flutter SDK 1.3.0 and produces 1024-dim
+// embeddings — confirmed on-device. Regenerating U1 baselines against
+// this slug invalidates baselines/latest/* until all three devices
+// (iPhone + both Pixels) have been re-measured.
+const String _embeddingSlug = 'qwen3-0.6-embed';
 
 /// Routes harness output through `debugPrint`, which integration_test
 /// forwards to the parent `flutter test` process. Direct `io.stdout` writes
