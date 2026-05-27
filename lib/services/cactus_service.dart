@@ -34,13 +34,11 @@ class CactusService {
   ///     purpose-built slug is listed in the cactus engine README but the
   ///     Flutter SDK 1.3.0 catalog couldn't resolve it: download failed
   ///     with "Failed to get model qwen3-embedding-0.6".
-  ///   * Swap 3 (current): embedding falls back to `qwen3-0.6` — the
-  ///     original known-working slug. It's chat-tuned but exposes the
-  ///     embedding head, and we already validated cosine on it.
-  /// First-launch download budget: `qwen3-1.7` (~1.7B) + `qwen3-0.6` (~0.6B).
-  /// TODO: call `_lm.getModels()` to dump the SDK's actual catalog and see
-  /// what embedding-only slugs (if any) the Flutter SDK can fetch.
-  static const String preferredEmbeddingSlug = 'qwen3-0.6';
+  ///   * Swap 3: embedding falls back to `qwen3-0.6` — the chat-tuned slug.
+  ///   * Swap 4 (current): `qwen3-0.6-embed` — the correct dedicated slug.
+  ///     The Swap 2 failure was a slug typo (`qwen3-embedding-0.6` vs
+  ///     `qwen3-0.6-embed`). Retracted at cactus-flutter#35.
+  static const String preferredEmbeddingSlug = 'qwen3-0.6-embed';
   static const String preferredCompletionSlug = 'qwen3-1.7';
 
   bool get isReady => _initialized;
