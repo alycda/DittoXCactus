@@ -1,0 +1,1950 @@
+version: 1
+entries:
+- url: http://distilabel.argilla.io/0.6.0/tutorials/create-evol-instruct-dataset
+  kind: other
+  title: ''
+  cited_in:
+  - gemini-deep-research
+  status: done
+  path: _inspiration/other/distilabel.argilla.io-0.6.0-tutorials-create-evol-instruct-dataset
+- url: https://aclanthology.org/2025.findings-naacl.291.pdf
+  kind: other
+  title: 2025.findings-naacl.291.pdf
+  cited_in:
+  - gemini-deep-research
+  status: done
+  path: _inspiration/other/aclanthology.org-2025.findings-naacl.291.pdf
+- url: https://aclanthology.org/2025.justnlp-main.11.pdf
+  kind: other
+  title: 2025.justnlp-main.11.pdf
+  cited_in:
+  - gemini-deep-research
+  status: done
+  path: _inspiration/other/aclanthology.org-2025.justnlp-main.11.pdf
+- url: https://ai.google.dev/edge/mediapipe/solutions/genai/llm_inference/android
+  kind: docs
+  title: MediaPipe LLM Inference Android guide
+  cited_in:
+  - industry
+  status: done
+  path: _inspiration/docs/ai.google.dev
+- url: https://ai.google.dev/gemma/terms
+  kind: other
+  title: terms
+  cited_in:
+  - chatgpt-deep-research
+  status: done
+  path: _inspiration/other/ai.google.dev-gemma-terms
+- url: https://android-developers.googleblog.com/2024/08/recorder-app-on-pixel-sees-boost-in-engagement-with-gemini-nano.html
+  kind: article
+  title: 'Android Developers: Recorder app engagement boost with Gemini Nano'
+  cited_in:
+  - industry
+  status: done
+  path: _inspiration/articles/android-developers.googleblog.com-2024-08-recorder-app-on-pixel-sees-boost-in-engagement-with-gemini-nano.html
+- url: https://app.readytensor.ai/publications/fine-tuning-qwen25-15b-for-text-to-sql-generation-kaa6DwgRemd5
+  kind: other
+  title: fine-tuning-qwen25-15b-for-text-to-sql-generation-kaa6DwgRem
+  cited_in:
+  - gemini-deep-research
+  status: done
+  path: _inspiration/other/app.readytensor.ai-publications-fine-tuning-qwen25-15b-for-text-to-sql-generation-kaa6DwgRemd5
+- url: https://arxiv.org/abs/1906.01749
+  kind: paper
+  title: 'Multi-News: Large-Scale Multi-Document Summarization Dataset and Hierarchical
+    Document Network'
+  cited_in:
+  - claude-deep-research
+  status: done
+  path: _inspiration/papers/1906.01749.pdf
+- url: https://arxiv.org/abs/2005.10070
+  kind: paper
+  title: 'WCEP: Wikipedia Current Events Portal'
+  cited_in:
+  - claude-deep-research
+  status: done
+  path: _inspiration/papers/2005.10070.pdf
+- url: https://arxiv.org/abs/2007.12626
+  kind: paper
+  title: 'SummEval: Re-evaluating Summarization Evaluation'
+  cited_in:
+  - theory
+  status: done
+  path: _inspiration/papers/2007.12626.pdf
+- url: https://arxiv.org/abs/2106.09685
+  kind: paper
+  title: 'LoRA: Low-Rank Adaptation of Large Language Models'
+  cited_in:
+  - theory
+  - chatgpt-deep-research
+  status: done
+  path: _inspiration/papers/2106.09685.pdf
+- url: https://arxiv.org/abs/2109.10650
+  kind: paper
+  title: 'MiraNews: Multi-Resource-Assisted News Summarization'
+  cited_in:
+  - claude-deep-research
+  status: done
+  path: _inspiration/papers/2109.10650.pdf
+- url: https://arxiv.org/abs/2212.10560
+  kind: paper
+  title: 'Self-Instruct: Aligning Language Models with Self-Generated Instructions'
+  cited_in:
+  - theory
+  status: done
+  path: _inspiration/papers/2212.10560.pdf
+- url: https://arxiv.org/abs/2304.12244
+  kind: paper
+  title: 'Evol-Instruct: Evolving Instruction Following Ability of Language Models
+    via Large-Scale Multitask Supervised Instruction Tuning'
+  cited_in:
+  - theory
+  status: done
+  path: _inspiration/papers/2304.12244.pdf
+- url: https://arxiv.org/abs/2305.02301
+  kind: paper
+  title: Distilling Step-by-Step! Outperforming Larger Language Models with Less Training
+    Data and Smaller Model Sizes
+  cited_in:
+  - theory
+  status: done
+  path: _inspiration/papers/2305.02301.pdf
+- url: https://arxiv.org/abs/2305.11206
+  kind: paper
+  title: 'LIMA: Less Is More for Alignment'
+  cited_in:
+  - theory
+  status: done
+  path: _inspiration/papers/2305.11206.pdf
+- url: https://arxiv.org/abs/2305.14314
+  kind: paper
+  title: 'QLoRA: Efficient Finetuning of Quantized LLMs'
+  cited_in:
+  - theory
+  status: done
+  path: _inspiration/papers/2305.14314.pdf
+- url: https://arxiv.org/abs/2305.18290
+  kind: paper
+  title: Direct Preference Optimization (DPO)
+  cited_in:
+  - theory
+  status: done
+  path: _inspiration/papers/2305.18290.pdf
+- url: https://arxiv.org/abs/2306.02707
+  kind: paper
+  title: 'Orca: Progressive Learning from Rich Semantics, Large-Scale Multitask Training,
+    and Instruction Following'
+  cited_in:
+  - theory
+  status: done
+  path: _inspiration/papers/2306.02707.pdf
+- url: https://arxiv.org/abs/2306.05685
+  kind: paper
+  title: Judging LLM-as-a-Judge with MT-Bench and Chatbot Arena
+  cited_in:
+  - theory
+  status: done
+  path: _inspiration/papers/2306.05685.pdf
+- url: https://arxiv.org/abs/2306.08543
+  kind: paper
+  title: 'MiniLLM: Distilling Large Language Models into Compact Language Models for
+    Efficient Inference'
+  cited_in:
+  - theory
+  status: done
+  path: _inspiration/papers/2306.08543.pdf
+- url: https://arxiv.org/abs/2306.13649
+  kind: paper
+  title: Generalized Knowledge Distillation for Large Language Models
+  cited_in:
+  - theory
+  status: done
+  path: _inspiration/papers/2306.13649.pdf
+- url: https://arxiv.org/abs/2308.03303
+  kind: paper
+  title: 'LoRA-FA: Forward-and-backward Attention for Efficient Fine-tuning'
+  cited_in:
+  - theory
+  status: done
+  path: _inspiration/papers/2308.03303.pdf
+- url: https://arxiv.org/abs/2309.15217
+  kind: paper
+  title: 'RAGAS: Automated Evaluation of Retrieval Augmented Generation'
+  cited_in:
+  - theory
+  status: done
+  path: _inspiration/papers/2309.15217.pdf
+- url: https://arxiv.org/abs/2310.18018
+  kind: paper
+  title: Data Contamination in Language Models
+  cited_in:
+  - industry
+  status: done
+  path: _inspiration/papers/2310.18018.pdf
+- url: https://arxiv.org/abs/2311.03285
+  kind: paper
+  title: 'S-LoRA: Serving Many LoRA Fine-tuned Models with One GPU'
+  cited_in:
+  - theory
+  status: done
+  path: _inspiration/papers/2311.03285.pdf
+- url: https://arxiv.org/abs/2311.07911
+  kind: paper
+  title: Instruction Following Evaluation for Large Language Models
+  cited_in:
+  - theory
+  status: done
+  path: _inspiration/papers/2311.07911.pdf
+- url: https://arxiv.org/abs/2401.00396
+  kind: paper
+  title: 'RAGTruth: A Hallucination Corpus for Factuality Evaluation in Retrieval-Augmented
+    Generation'
+  cited_in:
+  - theory
+  status: done
+  path: _inspiration/papers/2401.00396.pdf
+- url: https://arxiv.org/abs/2402.00841
+  kind: paper
+  title: 'Tiny Titans: Can Smaller Language Models Punch Above Their Weight on Benchmark
+    Tasks and Real-World Deployments?'
+  cited_in:
+  - theory
+  status: done
+  path: _inspiration/papers/2402.00841.pdf
+- url: https://arxiv.org/abs/2402.01306
+  kind: paper
+  title: 'KTO: Model Alignment as Prospect Theoretic Optimization'
+  cited_in:
+  - theory
+  status: done
+  path: _inspiration/papers/2402.01306.pdf
+- url: https://arxiv.org/abs/2402.03898
+  kind: paper
+  title: 'DistiLLM: Towards Streamlined Knowledge Distillation for Large Language
+    Models'
+  cited_in:
+  - theory
+  status: done
+  path: _inspiration/papers/2402.03898.pdf
+- url: https://arxiv.org/abs/2402.09353
+  kind: paper
+  title: 'DoRA: Weight-Decomposed Low-Rank Adaptation'
+  cited_in:
+  - theory
+  status: done
+  path: _inspiration/papers/2402.09353.pdf
+- url: https://arxiv.org/abs/2402.15938
+  kind: paper
+  title: On the Contamination of Large Language Models
+  cited_in:
+  - industry
+  status: done
+  path: _inspiration/papers/2402.15938.pdf
+- url: https://arxiv.org/abs/2403.07691
+  kind: paper
+  title: 'ORPO: Monolithic Preference Optimization without Reference Model'
+  cited_in:
+  - theory
+  status: done
+  path: _inspiration/papers/2403.07691.pdf
+- url: https://arxiv.org/abs/2405.00732
+  kind: paper
+  title: 'LoRA Land: 310 Fine-tuned LLMs that Rival GPT-4'
+  cited_in:
+  - theory
+  status: done
+  path: _inspiration/papers/2405.00732.pdf
+- url: https://arxiv.org/abs/2405.09673
+  kind: paper
+  title: LoRA Learns Less and Forgets Less
+  cited_in:
+  - theory
+  status: done
+  path: _inspiration/papers/2405.09673.pdf
+- url: https://arxiv.org/abs/2406.07791
+  kind: paper
+  title: 'Judging the Judges: Evaluating LLM-as-a-Judge with Bias Analysis'
+  cited_in:
+  - claude-deep-research
+  status: done
+  path: _inspiration/papers/2406.07791.pdf
+- url: https://arxiv.org/abs/2406.08464
+  kind: paper
+  title: 'Magpie: Alignment Data Synthesis from Scratch by Prompting Aligned LLMs
+    with Nothing'
+  cited_in:
+  - theory
+  - gemini-deep-research
+  status: done
+  path: _inspiration/papers/2406.08464.pdf
+- url: https://arxiv.org/abs/2411.15821
+  kind: paper
+  title: Is Training Data Quality or Quantity More Impactful to SLM Performance?
+  cited_in:
+  - claude-deep-research
+  status: done
+  path: _inspiration/papers/2411.15821.pdf
+- url: https://arxiv.org/abs/2412.13337
+  kind: paper
+  title: 'Unveiling the Secret Recipe: A Systematic Study of Instruction Engineering
+    for LLM-as-a-Judge'
+  cited_in:
+  - theory
+  status: done
+  path: _inspiration/papers/2412.13337.pdf
+- url: https://arxiv.org/abs/2501.12948
+  kind: paper
+  title: 'DeepSeek-R1: Incentivizing Reasoning Capability in LLMs via Reinforcement
+    Learning'
+  cited_in:
+  - theory
+  status: done
+  path: _inspiration/papers/2501.12948.pdf
+- url: https://arxiv.org/abs/2501.18771
+  kind: paper
+  title: Data Contamination and Synthetic Data in Fine-tuning
+  cited_in:
+  - industry
+  status: done
+  path: _inspiration/papers/2501.18771.pdf
+- url: https://arxiv.org/abs/2502.01534
+  kind: paper
+  title: Preference Leakage Unlearning for Robust Preference-Based RL
+  cited_in:
+  - theory
+  status: done
+  path: _inspiration/papers/2502.01534.pdf
+- url: https://arxiv.org/abs/2502.02737
+  kind: paper
+  title: SmolLM2 research paper
+  cited_in:
+  - theory
+  status: done
+  path: _inspiration/papers/2502.02737.pdf
+- url: https://arxiv.org/abs/2502.12143
+  kind: paper
+  title: Small Models Struggle to Learn from Strong Reasoners
+  cited_in:
+  - industry
+  status: done
+  path: _inspiration/papers/2502.12143.pdf
+- url: https://arxiv.org/abs/2502.14425
+  kind: other
+  title: 2502.14425v2
+  cited_in:
+  - gemini-deep-research
+  status: done
+  path: _inspiration/other/arxiv.org-abs-2502.14425
+- url: https://arxiv.org/abs/2505.09388
+  kind: paper
+  title: Qwen research paper
+  cited_in:
+  - theory
+  status: done
+  path: _inspiration/papers/2505.09388.pdf
+- url: https://arxiv.org/abs/2507.01438
+  kind: other
+  title: 2507.01438v1
+  cited_in:
+  - gemini-deep-research
+  status: done
+  path: _inspiration/other/arxiv.org-abs-2507.01438
+- url: https://arxiv.org/abs/2507.13575
+  kind: paper
+  title: Apple Intelligence Foundation Language Models Tech Report 2025
+  cited_in:
+  - industry
+  status: done
+  path: _inspiration/papers/2507.13575.pdf
+- url: https://arxiv.org/abs/2507.21134
+  kind: paper
+  title: 'TRIDENT-Bench: Comprehensive Evaluation of LLMs on Ethical Reasoning'
+  cited_in:
+  - industry
+  status: done
+  path: _inspiration/papers/2507.21134.pdf
+- url: https://arxiv.org/abs/2508.08343
+  kind: other
+  title: 2508.08343v2
+  cited_in:
+  - gemini-deep-research
+  status: done
+  path: _inspiration/other/arxiv.org-abs-2508.08343
+- url: https://arxiv.org/abs/2509.16965
+  kind: other
+  title: 2509.16965v1
+  cited_in:
+  - gemini-deep-research
+  status: done
+  path: _inspiration/other/arxiv.org-abs-2509.16965
+- url: https://arxiv.org/abs/2602.07673
+  kind: other
+  title: 2602.07673v1
+  cited_in:
+  - gemini-deep-research
+  status: done
+  path: _inspiration/other/arxiv.org-abs-2602.07673
+- url: https://arxiv.org/abs/2602.09383
+  kind: other
+  title: 2602.09383v1
+  cited_in:
+  - gemini-deep-research
+  status: done
+  path: _inspiration/other/arxiv.org-abs-2602.09383
+- url: https://arxiv.org/abs/2604.16790
+  kind: other
+  title: 2604.16790v1
+  cited_in:
+  - gemini-deep-research
+  status: done
+  path: _inspiration/other/arxiv.org-abs-2604.16790
+- url: https://arxiv.org/abs/2605.07111
+  kind: other
+  title: 2605.07111v2
+  cited_in:
+  - gemini-deep-research
+  status: done
+  path: _inspiration/other/arxiv.org-abs-2605.07111
+- url: https://atalupadhyay.wordpress.wordpress.com/2026/04/01/running-local-ai-mastering-llama-cpp-from-zero-to-production
+  kind: other
+  title: ''
+  cited_in:
+  - gemini-deep-research
+  status: failed
+  path: null
+  notes: 'download error: exit 60: curl: (60) SSL: no alternative certificate subject
+    name matches target host name ''atalupadhyay.wordpress.wordpress.com''
+
+    More details here: https://curl.se/docs/sslcerts.html
+
+
+    curl failed to v'
+- url: https://azure.microsoft.com/en-us/blog/announcing-phi-3-fine-tuning-new-generative-ai-models-and-other-azure-ai-updates-to-empower-organizations-to-customize-and-scale-ai-applications/
+  kind: article
+  title: 'Azure: Announcing Phi-3 Fine-Tuning'
+  cited_in:
+  - industry
+  status: done
+  path: _inspiration/articles/azure.microsoft.com-en-us-blog-announcing-phi-3-fine-tuning-new-generative-ai-models-and-other-azure-ai-updates-to-empow
+- url: https://blog.premai.io/how-to-generate-synthetic-training-data-for-llm-fine-tuning-2026-guide/
+  kind: article
+  title: 'PremAI: Synthetic Data Generation for LLM Fine-Tuning 2026 Guide'
+  cited_in:
+  - industry
+  status: failed
+  path: null
+  notes: 'download error: exit 56: curl: (56) The requested URL returned error: 404
+
+    '
+- url: https://bool.dev/blog/detail/llm-model-training
+  kind: other
+  title: llm-model-training
+  cited_in:
+  - gemini-deep-research
+  status: done
+  path: _inspiration/other/bool.dev-blog-detail-llm-model-training
+- url: https://cactuscompute.com/dashboard/models
+  kind: docs
+  title: Cactus model dashboard
+  cited_in:
+  - tooling
+  status: done
+  path: _inspiration/docs/cactuscompute.com
+- url: https://cactuscompute.com/docs/v1.7
+  kind: docs
+  title: Cactus v1.7 documentation
+  cited_in:
+  - tooling
+  status: failed
+  path: null
+  notes: 'download error: exit 3: '
+- url: https://cameronrwolfe.substack.com/p/llm-as-a-judge
+  kind: article
+  title: 'Cameron Wolfe Substack: LLM as Judge'
+  cited_in:
+  - industry
+  status: done
+  path: _inspiration/articles/cameronrwolfe.substack.com-p-llm-as-a-judge
+- url: https://colab.research.google.com/drive/1TT6NED5iFUGratZj4aHe13iOJkDTUUVT
+  kind: other
+  title: 1TT6NED5iFUGratZj4aHe13iOJkDTUUVT?usp=sharing
+  cited_in:
+  - gemini-deep-research
+  status: done
+  path: _inspiration/other/colab.research.google.com-drive-1TT6NED5iFUGratZj4aHe13iOJkDTUUVT
+- url: https://contracollective.com/blog/llama-cpp-vs-mlx-ollama-vllm-apple-silicon-2026
+  kind: other
+  title: llama-cpp-vs-mlx-ollama-vllm-apple-silicon-2026
+  cited_in:
+  - gemini-deep-research
+  status: done
+  path: _inspiration/other/contracollective.com-blog-llama-cpp-vs-mlx-ollama-vllm-apple-silicon-2026
+- url: https://deepeval.com/docs/introduction
+  kind: other
+  title: introduction
+  cited_in:
+  - gemini-deep-research
+  status: done
+  path: _inspiration/other/deepeval.com-docs-introduction
+- url: https://developer.apple.com/apple-intelligence/foundation-models-adapter/
+  kind: docs
+  title: Apple Foundation Models adapter training
+  cited_in:
+  - industry
+  status: done
+  path: _inspiration/docs/developer.apple.com
+- url: https://developer.chrome.com/blog/improved-summaries-gemini-nano
+  kind: article
+  title: 'Chrome for Developers: Enhancing Gemini Nano with LoRA'
+  cited_in:
+  - industry
+  status: done
+  path: _inspiration/articles/developer.chrome.com-blog-improved-summaries-gemini-nano
+- url: https://developer.nvidia.com/blog/seamlessly-deploying-a-swarm-of-lora-adapters-with-nvidia-nim
+  kind: other
+  title: ''
+  cited_in:
+  - gemini-deep-research
+  status: done
+  path: _inspiration/other/developer.nvidia.com-blog-seamlessly-deploying-a-swarm-of-lora-adapters-with-nvidia-nim
+- url: https://distilabel.argilla.io/latest/components-gallery/tasks/magpie/
+  kind: docs
+  title: Distilabel Magpie task
+  cited_in:
+  - tooling
+  status: done
+  path: _inspiration/docs/distilabel.argilla.io
+- url: https://docs.cactuscompute.com/v1.14/docs/cactus_engine
+  kind: other
+  title: ''
+  cited_in:
+  - gemini-deep-research
+  status: done
+  path: _inspiration/other/docs.cactuscompute.com-v1.14-docs-cactus_engine
+- url: https://docs.cactuscompute.com/v1.8
+  kind: other
+  title: ''
+  cited_in:
+  - gemini-deep-research
+  status: done
+  path: _inspiration/other/docs.cactuscompute.com-v1.8
+- url: https://docs.cactuscompute.com/v1.9
+  kind: other
+  title: ''
+  cited_in:
+  - chatgpt-deep-research
+  - gemini-deep-research
+  status: done
+  path: _inspiration/other/docs.cactuscompute.com-v1.9
+- url: https://docs.lm-kit.com/lm-kit-net/guides/glossary/synthetic-data-generation.html
+  kind: other
+  title: synthetic-data-generation.html
+  cited_in:
+  - gemini-deep-research
+  status: done
+  path: _inspiration/other/docs.lm-kit.com-lm-kit-net-guides-glossary-synthetic-data-generation.html
+- url: https://docs.oxen.ai
+  kind: docs
+  title: Oxen documentation
+  cited_in:
+  - tooling
+  status: failed
+  path: null
+  notes: 'download error: exit 3: '
+- url: https://docs.oxen.ai/examples/fine-tuning/image_generation
+  kind: article
+  title: Oxen fine-tuning examples
+  cited_in:
+  - tooling
+  status: done
+  path: _inspiration/articles/docs.oxen.ai-examples-fine-tuning-image_generation
+- url: https://docs.oxen.ai/fine-tuning-api/overview
+  kind: other
+  title: overview
+  cited_in:
+  - gemini-deep-research
+  status: done
+  path: _inspiration/other/docs.oxen.ai-fine-tuning-api-overview
+- url: https://docs.oxen.ai/getting-started/fine-tuning
+  kind: other
+  title: fine-tuning
+  cited_in:
+  - chatgpt-deep-research
+  status: done
+  path: _inspiration/other/docs.oxen.ai-getting-started-fine-tuning
+- url: https://docs.together.ai/docs/fine-tuning-pricing
+  kind: docs
+  title: Together AI fine-tuning pricing
+  cited_in:
+  - tooling
+  status: done
+  path: _inspiration/docs/docs.together.ai
+- url: https://docs.vllm.ai/en/latest/features/lora/
+  kind: docs
+  title: vLLM LoRA documentation
+  cited_in:
+  - tooling
+  status: done
+  path: _inspiration/docs/docs.vllm.ai
+- url: https://executorch.ai/
+  kind: docs
+  title: ExecuTorch documentation
+  cited_in:
+  - tooling
+  status: done
+  path: _inspiration/docs/executorch.ai
+- url: https://fireworks.ai/blog/fine-tuning-bottlenecks
+  kind: other
+  title: fine-tuning-bottlenecks
+  cited_in:
+  - gemini-deep-research
+  status: done
+  path: _inspiration/other/fireworks.ai-blog-fine-tuning-bottlenecks
+- url: https://futureagi.com/blog/best-llm-as-judge-platforms-2026
+  kind: other
+  title: ''
+  cited_in:
+  - gemini-deep-research
+  status: done
+  path: _inspiration/other/futureagi.com-blog-best-llm-as-judge-platforms-2026
+- url: https://galileo.ai/blog/llm-as-a-judge-vs-human-evaluation
+  kind: article
+  title: 'Galileo AI: LLM-as-a-Judge vs Human Evaluation'
+  cited_in:
+  - industry
+  status: done
+  path: _inspiration/articles/galileo.ai-blog-llm-as-a-judge-vs-human-evaluation
+- url: https://galtea.ai/blog/golden-datasets-for-regulated-ai-six-q-a-frameworks-tested
+  kind: other
+  title: golden-datasets-for-regulated-ai-six-q-a-frameworks-tested
+  cited_in:
+  - gemini-deep-research
+  status: done
+  path: _inspiration/other/galtea.ai-blog-golden-datasets-for-regulated-ai-six-q-a-frameworks-tested
+- url: https://ghost.oxen.ai/arxiv-dives-how-lora-fine-tuning-works
+  kind: other
+  title: ''
+  cited_in:
+  - gemini-deep-research
+  status: done
+  path: _inspiration/other/ghost.oxen.ai-arxiv-dives-how-lora-fine-tuning-works
+- url: https://ghost.oxen.ai/fine-tuning-fridays/
+  kind: article
+  title: 'Oxen: Fine-Tuning Fridays'
+  cited_in:
+  - industry
+  status: done
+  path: _inspiration/articles/ghost.oxen.ai-fine-tuning-fridays
+- url: https://ghost.oxen.ai/how-a-1-qwen3-vl-fine-tune-beat-gemini-3/
+  kind: article
+  title: 'Oxen: How a $1 Qwen3-VL Fine-Tune Beat Gemini 3'
+  cited_in:
+  - industry
+  status: done
+  path: _inspiration/articles/ghost.oxen.ai-how-a-1-qwen3-vl-fine-tune-beat-gemini-3
+- url: https://ghost.oxen.ai/how-to-fine-tune-qwen3-to-gpt-4o-level-performance/
+  kind: article
+  title: 'Oxen blog: Fine-Tuning Qwen3 for Text2SQL'
+  cited_in:
+  - tooling
+  - industry
+  status: done
+  path: _inspiration/articles/ghost.oxen.ai-how-to-fine-tune-qwen3-to-gpt-4o-level-performance
+- url: https://ghost.oxen.ai/how-to-train-a-ltx-2-character-lora-with-oxen-ai
+  kind: other
+  title: ''
+  cited_in:
+  - gemini-deep-research
+  status: done
+  path: _inspiration/other/ghost.oxen.ai-how-to-train-a-ltx-2-character-lora-with-oxen-ai
+- url: https://ghost.oxen.ai/oxens-model-report-2/
+  kind: article
+  title: Oxen model report
+  cited_in:
+  - tooling
+  status: done
+  path: _inspiration/articles/ghost.oxen.ai-oxens-model-report-2
+- url: https://ghost.oxen.ai/training-a-rust-1-5b-coder-lm-with-reinforcement-learning-grpo
+  kind: other
+  title: ''
+  cited_in:
+  - chatgpt-deep-research
+  status: done
+  path: _inspiration/other/ghost.oxen.ai-training-a-rust-1-5b-coder-lm-with-reinforcement-learning-grpo
+- url: https://ghost.oxen.ai/writing-a-fine-tuning-and-deployment-pipeline-isnt-as-easy-as-it-looks-gemma-4-version
+  kind: other
+  title: ''
+  cited_in:
+  - gemini-deep-research
+  status: done
+  path: _inspiration/other/ghost.oxen.ai-writing-a-fine-tuning-and-deployment-pipeline-isnt-as-easy-as-it-looks-gemma-4-version
+- url: https://github.com/2U1/SmolVLM-Finetune
+  kind: repo
+  title: SmolVLM fine-tuning
+  cited_in:
+  - tooling
+  status: done
+  path: _inspiration/2U1/SmolVLM-Finetune
+- url: https://github.com/Edge-Intelligence-Lab/MobileFineTuner
+  kind: repo
+  title: MobileFineTuner
+  cited_in:
+  - tooling
+  status: done
+  path: _inspiration/Edge-Intelligence-Lab/MobileFineTuner
+- url: https://github.com/EleutherAI/lm-evaluation-harness
+  kind: repo
+  title: EleutherAI LM Evaluation Harness
+  cited_in:
+  - tooling
+  status: done
+  path: _inspiration/EleutherAI/lm-evaluation-harness
+- url: https://github.com/NVIDIA/workbench-example-phi3-finetune
+  kind: repo
+  title: NVIDIA Phi-3 fine-tuning example
+  cited_in:
+  - tooling
+  status: done
+  path: _inspiration/NVIDIA/workbench-example-phi3-finetune
+- url: https://github.com/NVlabs/DoRA
+  kind: repo
+  title: "DoRA \u2014 NVIDIA implementation"
+  cited_in:
+  - theory
+  status: done
+  path: _inspiration/NVlabs/DoRA
+- url: https://github.com/Oxen-AI/Ollamox
+  kind: other
+  title: Ollamox
+  cited_in:
+  - gemini-deep-research
+  status: done
+  path: _inspiration/other/github.com-Oxen-AI-Ollamox
+- url: https://github.com/Oxen-AI/Oxen
+  kind: repo
+  title: "Oxen \u2014 data version control"
+  cited_in:
+  - tooling
+  status: done
+  path: _inspiration/Oxen-AI/Oxen
+- url: https://github.com/QwenLM/Qwen3-Embedding/issues/166
+  kind: article
+  title: Qwen3-Embedding MS-MARCO issue
+  cited_in:
+  - tooling
+  status: done
+  path: _inspiration/articles/github.com-QwenLM-Qwen3-Embedding-issues-166
+- url: https://github.com/QwenLM/Qwen3-VL/blob/main/LICENSE
+  kind: article
+  title: Qwen3-VL license
+  cited_in:
+  - tooling
+  status: done
+  path: _inspiration/articles/github.com-QwenLM-Qwen3-VL-blob-main-LICENSE
+- url: https://github.com/S-LoRA/S-LoRA
+  kind: repo
+  title: S-LoRA implementation
+  cited_in:
+  - theory
+  status: done
+  path: _inspiration/S-LoRA/S-LoRA
+- url: https://github.com/Yale-LILY/SummEval
+  kind: repo
+  title: SummEval implementation
+  cited_in:
+  - theory
+  status: done
+  path: _inspiration/Yale-LILY/SummEval
+- url: https://github.com/abetlen/llama-cpp-python/pull/1817
+  kind: article
+  title: llama-cpp-python multi-adapter PR
+  cited_in:
+  - tooling
+  status: done
+  path: _inspiration/articles/github.com-abetlen-llama-cpp-python-pull-1817
+- url: https://github.com/argilla-io/distilabel
+  kind: repo
+  title: "Distilabel \u2014 synthetic data generation"
+  cited_in:
+  - tooling
+  status: done
+  path: _inspiration/argilla-io/distilabel
+- url: https://github.com/artidoro/qlora
+  kind: repo
+  title: QLoRA implementation
+  cited_in:
+  - theory
+  status: done
+  path: _inspiration/artidoro/qlora
+- url: https://github.com/arusatech/llama-cpp
+  kind: other
+  title: llama-cpp
+  cited_in:
+  - gemini-deep-research
+  status: done
+  path: _inspiration/other/github.com-arusatech-llama-cpp
+- url: https://github.com/axolotl-ai-cloud/axolotl
+  kind: repo
+  title: "Axolotl \u2014 multi-GPU trainer"
+  cited_in:
+  - tooling
+  status: done
+  path: _inspiration/axolotl-ai-cloud/axolotl
+- url: https://github.com/cactus-compute/cactus
+  kind: repo
+  title: "Cactus \u2014 on-device inference"
+  cited_in:
+  - tooling
+  - industry
+  - gemini-deep-research
+  status: done
+  path: _inspiration/cactus-compute/cactus
+- url: https://github.com/cactus-compute/cactus/blob/main/LICENSE
+  kind: article
+  title: Cactus license
+  cited_in:
+  - tooling
+  - industry
+  status: done
+  path: _inspiration/articles/github.com-cactus-compute-cactus-blob-main-LICENSE
+- url: https://github.com/cactus-compute/cactus/blob/main/docs/cactus_engine.md
+  kind: article
+  title: Cactus engine documentation
+  cited_in:
+  - theory
+  - tooling
+  - gemini-deep-research
+  status: done
+  path: _inspiration/articles/github.com-cactus-compute-cactus-blob-main-docs-cactus_engine.md
+- url: https://github.com/cactus-compute/cactus/blob/main/docs/finetuning.md
+  kind: article
+  title: Cactus fine-tuning guide
+  cited_in:
+  - tooling
+  - industry
+  - gemini-deep-research
+  status: done
+  path: _inspiration/articles/github.com-cactus-compute-cactus-blob-main-docs-finetuning.md
+- url: https://github.com/cactus-compute/cactus/discussions/204
+  kind: other
+  title: '204'
+  cited_in:
+  - gemini-deep-research
+  status: done
+  path: _inspiration/other/github.com-cactus-compute-cactus-discussions-204
+- url: https://github.com/cactus-compute/cactus/issues
+  kind: article
+  title: Cactus GitHub issues
+  cited_in:
+  - tooling
+  - industry
+  status: done
+  path: _inspiration/articles/github.com-cactus-compute-cactus-issues
+- url: https://github.com/cactus-compute/cactus/issues/503
+  kind: other
+  title: '503'
+  cited_in:
+  - gemini-deep-research
+  status: done
+  path: _inspiration/other/github.com-cactus-compute-cactus-issues-503
+- url: https://github.com/cactus-compute/cactus/releases
+  kind: article
+  title: Cactus releases
+  cited_in:
+  - tooling
+  status: done
+  path: _inspiration/articles/github.com-cactus-compute-cactus-releases
+- url: https://github.com/confident-ai/deepeval
+  kind: repo
+  title: "DeepEval \u2014 evaluation framework"
+  cited_in:
+  - tooling
+  status: done
+  path: _inspiration/confident-ai/deepeval
+- url: https://github.com/david-franz/llm-fine-tuning-LoRa
+  kind: repo
+  title: LLM fine-tuning LoRA repo
+  cited_in:
+  - tooling
+  status: done
+  path: _inspiration/david-franz/llm-fine-tuning-LoRa
+- url: https://github.com/e-p-armstrong/augmentoolkit
+  kind: repo
+  title: "Augmentoolkit \u2014 synthetic data generation"
+  cited_in:
+  - tooling
+  status: done
+  path: _inspiration/e-p-armstrong/augmentoolkit
+- url: https://github.com/explodinggradients/ragas
+  kind: repo
+  title: RAGAS evaluation
+  cited_in:
+  - tooling
+  status: done
+  path: _inspiration/explodinggradients/ragas
+- url: https://github.com/ggml-org/ggml/blob/master/docs/gguf.md
+  kind: other
+  title: gguf.md
+  cited_in:
+  - gemini-deep-research
+  status: done
+  path: _inspiration/other/github.com-ggml-org-ggml-blob-master-docs-gguf.md
+- url: https://github.com/ggml-org/llama.cpp
+  kind: repo
+  title: "llama.cpp \u2014 LLM inference"
+  cited_in:
+  - tooling
+  - gemini-deep-research
+  status: done
+  path: _inspiration/ggml-org/llama.cpp
+- url: https://github.com/ggml-org/llama.cpp/blob/master/tools/server/README.md
+  kind: article
+  title: llama.cpp server documentation
+  cited_in:
+  - industry
+  status: done
+  path: _inspiration/articles/github.com-ggml-org-llama.cpp-blob-master-tools-server-README.md
+- url: https://github.com/ggml-org/llama.cpp/discussions/14356
+  kind: other
+  title: '14356'
+  cited_in:
+  - gemini-deep-research
+  status: done
+  path: _inspiration/other/github.com-ggml-org-llama.cpp-discussions-14356
+- url: https://github.com/ggml-org/llama.cpp/discussions/2948
+  kind: other
+  title: '2948'
+  cited_in:
+  - gemini-deep-research
+  status: done
+  path: _inspiration/other/github.com-ggml-org-llama.cpp-discussions-2948
+- url: https://github.com/ggml-org/llama.cpp/discussions/7850
+  kind: article
+  title: llama.cpp LoRA discussions
+  cited_in:
+  - industry
+  status: done
+  path: _inspiration/articles/github.com-ggml-org-llama.cpp-discussions-7850
+- url: https://github.com/ggml-org/llama.cpp/discussions/8849
+  kind: article
+  title: llama.cpp LoRA discussion
+  cited_in:
+  - tooling
+  status: done
+  path: _inspiration/articles/github.com-ggml-org-llama.cpp-discussions-8849
+- url: https://github.com/ggml-org/llama.cpp/issues/10377
+  kind: article
+  title: llama.cpp adapter loading issue
+  cited_in:
+  - tooling
+  - industry
+  status: done
+  path: _inspiration/articles/github.com-ggml-org-llama.cpp-issues-10377
+- url: https://github.com/ggml-org/llama.cpp/issues/7062
+  kind: article
+  title: llama.cpp fine-tuned quantization issue discussion
+  cited_in:
+  - theory
+  status: done
+  path: _inspiration/articles/github.com-ggml-org-llama.cpp-issues-7062
+- url: https://github.com/haydarkadioglu/Qwen3-0.6B-lora-python-expert
+  kind: repo
+  title: Qwen3-0.6B Python expert LoRA
+  cited_in:
+  - tooling
+  - industry
+  status: done
+  path: _inspiration/haydarkadioglu/Qwen3-0.6B-lora-python-expert
+- url: https://github.com/hiyouga/LLaMA-Factory
+  kind: repo
+  title: "LLaMA-Factory \u2014 unified fine-tuning framework"
+  cited_in:
+  - tooling
+  status: done
+  path: _inspiration/hiyouga/LLaMA-Factory
+- url: https://github.com/huggingface/peft
+  kind: repo
+  title: "HF PEFT \u2014 parameter-efficient fine-tuning"
+  cited_in:
+  - tooling
+  status: done
+  path: _inspiration/huggingface/peft
+- url: https://github.com/huggingface/smollm/tree/main/finetune
+  kind: repo
+  title: SmolLM fine-tuning recipes
+  cited_in:
+  - tooling
+  - industry
+  status: done
+  path: _inspiration/huggingface/smollm
+- url: https://github.com/huggingface/trl
+  kind: repo
+  title: Transformers Reinforcement Learning (TRL)
+  cited_in:
+  - tooling
+  status: done
+  path: _inspiration/huggingface/trl
+- url: https://github.com/magpie-align/magpie
+  kind: repo
+  title: "Magpie \u2014 alignment data synthesis"
+  cited_in:
+  - theory
+  - tooling
+  - gemini-deep-research
+  status: done
+  path: _inspiration/magpie-align/magpie
+- url: https://github.com/microsoft/LoRA
+  kind: repo
+  title: "LoRA \u2014 Microsoft reference implementation"
+  cited_in:
+  - theory
+  status: done
+  path: _inspiration/microsoft/LoRA
+- url: https://github.com/microsoft/PhiCookBook
+  kind: repo
+  title: Microsoft Phi cookbook
+  cited_in:
+  - tooling
+  status: done
+  path: _inspiration/microsoft/PhiCookBook
+- url: https://github.com/mlc-ai/mlc-llm
+  kind: repo
+  title: "MLC LLM \u2014 mobile inference"
+  cited_in:
+  - tooling
+  - industry
+  status: done
+  path: _inspiration/mlc-ai/mlc-llm
+- url: https://github.com/mlc-ai/mlc-llm/issues/3446
+  kind: other
+  title: '3446'
+  cited_in:
+  - gemini-deep-research
+  status: done
+  path: _inspiration/other/github.com-mlc-ai-mlc-llm-issues-3446
+- url: https://github.com/mlc-ai/mlc-llm/pull/3281
+  kind: article
+  title: MLC LLM runtime LoRA PR
+  cited_in:
+  - tooling
+  - industry
+  status: done
+  path: _inspiration/articles/github.com-mlc-ai-mlc-llm-pull-3281
+- url: https://github.com/ollama/ollama/issues/9548
+  kind: article
+  title: Ollama LoRA support issue
+  cited_in:
+  - tooling
+  status: done
+  path: _inspiration/articles/github.com-ollama-ollama-issues-9548
+- url: https://github.com/oumi-ai/oumi
+  kind: repo
+  title: "Oumi \u2014 training framework"
+  cited_in:
+  - tooling
+  status: done
+  path: _inspiration/oumi-ai/oumi
+- url: https://github.com/predibase/lora_bakeoff
+  kind: repo
+  title: "LoRA Land \u2014 310-model bake-off"
+  cited_in:
+  - theory
+  - industry
+  status: done
+  path: _inspiration/predibase/lora_bakeoff
+- url: https://github.com/promptfoo/promptfoo
+  kind: repo
+  title: "PromptFoo \u2014 LLM evaluation"
+  cited_in:
+  - tooling
+  status: done
+  path: _inspiration/promptfoo/promptfoo
+- url: https://github.com/pytorch/executorch
+  kind: repo
+  title: "ExecuTorch \u2014 PyTorch mobile runtime"
+  cited_in:
+  - tooling
+  - industry
+  status: done
+  path: _inspiration/pytorch/executorch
+- url: https://github.com/tetherto/qvac-fabric-llm.cpp
+  kind: repo
+  title: "QVAC Fabric \u2014 on-device LoRA training"
+  cited_in:
+  - tooling
+  - industry
+  status: done
+  path: _inspiration/tetherto/qvac-fabric-llm.cpp
+- url: https://github.com/tetherto/qvac-rnd-fabric-llm-finetune
+  kind: repo
+  title: QVAC R&D fine-tuning
+  cited_in:
+  - tooling
+  status: done
+  path: _inspiration/tetherto/qvac-rnd-fabric-llm-finetune
+- url: https://github.com/topics/gguf
+  kind: other
+  title: gguf?o=asc&s=stars
+  cited_in:
+  - gemini-deep-research
+  status: done
+  path: _inspiration/other/github.com-topics-gguf
+- url: https://github.com/unslothai/unsloth
+  kind: repo
+  title: "Unsloth \u2014 fast LoRA training"
+  cited_in:
+  - tooling
+  - gemini-deep-research
+  status: done
+  path: _inspiration/unslothai/unsloth
+- url: https://github.com/unslothai/unsloth/issues/976
+  kind: other
+  title: '976'
+  cited_in:
+  - gemini-deep-research
+  status: done
+  path: _inspiration/other/github.com-unslothai-unsloth-issues-976
+- url: https://github.com/yizhongw/self-instruct
+  kind: repo
+  title: Self-Instruct implementation
+  cited_in:
+  - theory
+  status: done
+  path: _inspiration/yizhongw/self-instruct
+- url: https://hamel.dev/blog/posts/evals/
+  kind: article
+  title: 'Hamel Husain: Your AI Product Needs Evals'
+  cited_in:
+  - tooling
+  - industry
+  status: done
+  path: _inspiration/articles/hamel.dev-blog-posts-evals
+- url: https://hamel.dev/blog/posts/fine_tuning_valuable.html
+  kind: article
+  title: 'Hamel Husain: Is Fine-Tuning Still Valuable?'
+  cited_in:
+  - tooling
+  - industry
+  status: done
+  path: _inspiration/articles/hamel.dev-blog-posts-fine_tuning_valuable.html
+- url: https://hamel.dev/blog/posts/llm-judge/
+  kind: article
+  title: 'Hamel Husain: Using LLM-as-a-Judge For Evaluation'
+  cited_in:
+  - industry
+  status: done
+  path: _inspiration/articles/hamel.dev-blog-posts-llm-judge
+- url: https://huggingface.co/HuggingFaceTB/SmolLM2-1.7B
+  kind: docs
+  title: SmolLM2-1.7B model card
+  cited_in:
+  - theory
+  status: failed
+  path: null
+  notes: 'download error: exit 3: '
+- url: https://huggingface.co/HuggingFaceTB/SmolLM2-360M-Instruct/discussions/2
+  kind: article
+  title: SmolLM2-360M discussion
+  cited_in:
+  - tooling
+  status: done
+  path: _inspiration/articles/huggingface.co-HuggingFaceTB-SmolLM2-360M-Instruct-discussions-2
+- url: https://huggingface.co/Qwen/Qwen3-1.7B
+  kind: docs
+  title: Qwen3-1.7B model card
+  cited_in:
+  - theory
+  status: failed
+  path: null
+  notes: 'download error: exit 8: '
+- url: https://huggingface.co/Qwen/Qwen3-1.7B-GGUF
+  kind: docs
+  title: Qwen3-1.7B-GGUF
+  cited_in:
+  - tooling
+  status: failed
+  path: null
+  notes: 'download error: exit 3: '
+- url: https://huggingface.co/Qwen/Qwen3-8B/blob/main/LICENSE
+  kind: article
+  title: Qwen3-8B license
+  cited_in:
+  - tooling
+  status: done
+  path: _inspiration/articles/huggingface.co-Qwen-Qwen3-8B-blob-main-LICENSE
+- url: https://huggingface.co/bharati2324/Qwen2.5-1.5B-Instruct-Code-LoRA-r16v2
+  kind: other
+  title: Qwen2.5-1.5B-Instruct-Code-LoRA-r16v2
+  cited_in:
+  - gemini-deep-research
+  status: done
+  path: _inspiration/other/huggingface.co-bharati2324-Qwen2.5-1.5B-Instruct-Code-LoRA-r16v2
+- url: https://huggingface.co/blog/qvac/fabric-llm-finetune
+  kind: article
+  title: QVAC Fabric LLM fine-tuning
+  cited_in:
+  - tooling
+  - industry
+  status: done
+  path: _inspiration/articles/huggingface.co-blog-qvac-fabric-llm-finetune
+- url: https://huggingface.co/blog/qvac/fabric-llm-finetune-bitnet
+  kind: article
+  title: QVAC Fabric LLM fine-tuning BitNet
+  cited_in:
+  - industry
+  status: done
+  path: _inspiration/articles/huggingface.co-blog-qvac-fabric-llm-finetune-bitnet
+- url: https://huggingface.co/blog/rshemet/cactus-on-device-inference
+  kind: article
+  title: 'HuggingFace: Cactus on-device inference'
+  cited_in:
+  - industry
+  status: done
+  path: _inspiration/articles/huggingface.co-blog-rshemet-cactus-on-device-inference
+- url: https://huggingface.co/datasets/Magpie-Align/Magpie-Air-300K-Filtered
+  kind: docs
+  title: Magpie-Air dataset
+  cited_in:
+  - theory
+  status: failed
+  path: null
+  notes: 'download error: exit 8: '
+- url: https://huggingface.co/datasets/Magpie-Align/Magpie-Pro-300K-Filtered
+  kind: docs
+  title: Magpie-Pro dataset
+  cited_in:
+  - theory
+  status: failed
+  path: null
+  notes: 'download error: exit 8: '
+- url: https://huggingface.co/datasets/d0rj/wikisum
+  kind: docs
+  title: WikiSum dataset
+  cited_in:
+  - theory
+  status: failed
+  path: null
+  notes: 'download error: exit 8: '
+- url: https://huggingface.co/datasets/google/IFEval
+  kind: docs
+  title: IFEval dataset
+  cited_in:
+  - theory
+  status: failed
+  path: null
+  notes: 'download error: exit 8: '
+- url: https://huggingface.co/datasets/multi_news
+  kind: docs
+  title: MultiNews dataset
+  cited_in:
+  - theory
+  status: failed
+  path: null
+  notes: 'download error: exit 8: '
+- url: https://huggingface.co/datasets/teknium/OpenHermes-2.5
+  kind: docs
+  title: OpenHermes-2.5 dataset
+  cited_in:
+  - theory
+  status: failed
+  path: null
+  notes: 'download error: exit 8: '
+- url: https://huggingface.co/deepseek-ai/DeepSeek-R1-Distill-Qwen-1.5B
+  kind: docs
+  title: DeepSeek-R1-Distill-Qwen-1.5B model card
+  cited_in:
+  - theory
+  - tooling
+  - industry
+  - gemini-deep-research
+  status: failed
+  path: null
+  notes: 'download error: exit 8: '
+- url: https://huggingface.co/qvac/fabric-llm-finetune
+  kind: docs
+  title: QVAC fine-tuning model card
+  cited_in:
+  - tooling
+  status: failed
+  path: null
+  notes: 'download error: exit 8: '
+- url: https://huggingface.co/unsloth/Qwen3-0.6B-GGUF
+  kind: docs
+  title: Unsloth Qwen3-0.6B-GGUF
+  cited_in:
+  - tooling
+  status: failed
+  path: null
+  notes: 'download error: exit 8: '
+- url: https://huggingface.co/unsloth/Qwen3-1.7B-GGUF
+  kind: docs
+  title: Unsloth Qwen3-1.7B-GGUF
+  cited_in:
+  - tooling
+  status: failed
+  path: null
+  notes: 'download error: exit 8: '
+- url: https://inference.net/content/llm-evaluation-tools-comparison
+  kind: other
+  title: ''
+  cited_in:
+  - gemini-deep-research
+  status: done
+  path: _inspiration/other/inference.net-content-llm-evaluation-tools-comparison
+- url: https://julsimon.medium.com/what-to-buy-for-local-llms-april-2026-a4946a381a6a
+  kind: other
+  title: what-to-buy-for-local-llms-april-2026-a4946a381a6a
+  cited_in:
+  - gemini-deep-research
+  status: failed
+  path: null
+  notes: 'download error: exit 56: curl: (56) The requested URL returned error: 403
+
+    '
+- url: https://kilo.ai/open-source-models
+  kind: other
+  title: open-source-models
+  cited_in:
+  - gemini-deep-research
+  status: done
+  path: _inspiration/other/kilo.ai-open-source-models
+- url: https://law.asia/openai-deepseek-ai-distillation/
+  kind: article
+  title: OpenAI vs DeepSeek AI distillation legal analysis
+  cited_in:
+  - industry
+  status: done
+  path: _inspiration/articles/law.asia-openai-deepseek-ai-distillation
+- url: https://llm.mlc.ai/
+  kind: docs
+  title: MLC LLM documentation
+  cited_in:
+  - tooling
+  status: failed
+  path: null
+  notes: 'download error: exit 3: '
+- url: https://llmbase.ai/compare/deepseek-r1-distill-qwen-1-5b,deepseek-v4-flash-non-reasoning
+  kind: other
+  title: ''
+  cited_in:
+  - gemini-deep-research
+  status: failed
+  path: null
+  notes: 'download error: exit 56: curl: (56) The requested URL returned error: 403
+
+    '
+- url: https://machinelearning.apple.com/research/apple-foundation-models-tech-report-2025
+  kind: article
+  title: Apple Foundation Models Tech Report 2025
+  cited_in:
+  - industry
+  status: done
+  path: _inspiration/articles/machinelearning.apple.com-research-apple-foundation-models-tech-report-2025
+- url: https://machinelearning.apple.com/research/introducing-apple-foundation-models
+  kind: article
+  title: 'Apple: Introducing Apple Foundation Models'
+  cited_in:
+  - industry
+  status: done
+  path: _inspiration/articles/machinelearning.apple.com-research-introducing-apple-foundation-models
+- url: https://machinelearningplus.com/gen-ai/unsloth-fine-tuning
+  kind: other
+  title: ''
+  cited_in:
+  - gemini-deep-research
+  status: done
+  path: _inspiration/other/machinelearningplus.com-gen-ai-unsloth-fine-tuning
+- url: https://magpie-align.github.io
+  kind: other
+  title: ''
+  cited_in:
+  - gemini-deep-research
+  status: done
+  path: _inspiration/other/magpie-align.github.io
+- url: https://mbrenndoerfer.com/writing/position-bias-in-llm-judges
+  kind: article
+  title: Position Bias in LLM Judges
+  cited_in:
+  - industry
+  status: done
+  path: _inspiration/articles/mbrenndoerfer.com-writing-position-bias-in-llm-judges
+- url: https://medium.com/@baicenxiao/avoiding-amnesia-some-practical-guides-to-mitigate-catastrophic-forgetting-in-llms-post-training-6a23e4f064cb
+  kind: article
+  title: 'Avoiding Amnesia: Mitigating Catastrophic Forgetting in LLMs'
+  cited_in:
+  - industry
+  status: failed
+  path: null
+  notes: 'download error: exit 56: curl: (56) The requested URL returned error: 403
+
+    '
+- url: https://medium.com/@mukulranjan/serving-thousands-of-concurrent-lora-adapters-6b407e8df516
+  kind: other
+  title: serving-thousands-of-concurrent-lora-adapters-6b407e8df516
+  cited_in:
+  - gemini-deep-research
+  status: failed
+  path: null
+  notes: 'download error: exit 56: curl: (56) The requested URL returned error: 403
+
+    '
+- url: https://medium.com/@resta.alessandro.3ai/fine-tuning-a-mini-giant-teaching-qwen2-5-1-5b-to-speak-sql-62e960b7e907
+  kind: other
+  title: fine-tuning-a-mini-giant-teaching-qwen2-5-1-5b-to-speak-sql-
+  cited_in:
+  - gemini-deep-research
+  status: failed
+  path: null
+  notes: 'download error: exit 56: curl: (56) The requested URL returned error: 403
+
+    '
+- url: https://medium.com/google-developer-experts/fine-tuning-gemma-with-lora-for-on-device-inference-android-ios-web-with-separate-lora-weights-f05d1db30d86
+  kind: article
+  title: Fine-Tuning Gemma with LoRA for On-Device Inference
+  cited_in:
+  - industry
+  status: failed
+  path: null
+  notes: 'download error: exit 56: curl: (56) The requested URL returned error: 403
+
+    '
+- url: https://mobile-artificial-intelligence.com/maid/guides/llama-cpp
+  kind: other
+  title: llama-cpp
+  cited_in:
+  - gemini-deep-research
+  status: done
+  path: _inspiration/other/mobile-artificial-intelligence.com-maid-guides-llama-cpp
+- url: https://modal.com/docs/guide/llm-finetuning
+  kind: docs
+  title: Modal LLM fine-tuning guide
+  cited_in:
+  - tooling
+  status: failed
+  path: null
+  notes: 'download error: exit 8: '
+- url: https://modal.com/pricing
+  kind: docs
+  title: Modal pricing
+  cited_in:
+  - tooling
+  status: failed
+  path: null
+  notes: 'download error: exit 3: '
+- url: https://news.ycombinator.com/item?id=40843848
+  kind: article
+  title: 'Hacker News: OpenPipe fine-tuning discussion'
+  cited_in:
+  - industry
+  status: done
+  path: _inspiration/articles/news.ycombinator.com-item
+- url: https://news.ycombinator.com/item?id=44524544
+  kind: article
+  title: 'Hacker News: Cactus Show HN'
+  cited_in:
+  - industry
+  status: done
+  path: _inspiration/articles/news.ycombinator.com-item
+- url: https://news.ycombinator.com/item?id=45291024
+  kind: article
+  title: 'Hacker News: Cactus launch'
+  cited_in:
+  - industry
+  status: done
+  path: _inspiration/articles/news.ycombinator.com-item
+- url: https://ollama.com/library/deepseek-r1:1.5b-qwen-distill-q4_K_M
+  kind: other
+  title: deepseek-r1:1.5b-qwen-distill-q4_K_M
+  cited_in:
+  - gemini-deep-research
+  status: done
+  path: _inspiration/other/ollama.com-library-deepseek-r11.5b-qwen-distill-q4_K_M
+- url: https://openai.com/policies/row-terms-of-use
+  kind: other
+  title: ''
+  cited_in:
+  - chatgpt-deep-research
+  status: failed
+  path: null
+  notes: 'download error: exit 56: curl: (56) The requested URL returned error: 403
+
+    '
+- url: https://openai.com/policies/services-agreement/
+  kind: docs
+  title: OpenAI Terms of Service
+  cited_in:
+  - industry
+  status: failed
+  path: null
+  notes: 'download error: exit 8: '
+- url: https://openpipe.ai/blog
+  kind: article
+  title: OpenPipe blog
+  cited_in:
+  - tooling
+  - industry
+  status: done
+  path: _inspiration/articles/openpipe.ai-blog
+- url: https://openpipe.ai/blog/a-non-technical-explanation-of-fine-tuning
+  kind: article
+  title: OpenPipe fine-tuning explanation
+  cited_in:
+  - tooling
+  status: done
+  path: _inspiration/articles/openpipe.ai-blog-a-non-technical-explanation-of-fine-tuning
+- url: https://openreview.net/forum
+  kind: other
+  title: forum?id=3GTtZFiajM
+  cited_in:
+  - gemini-deep-research
+  status: done
+  path: _inspiration/other/openreview.net-forum
+- url: https://openrouter.ai/deepseek/deepseek-r1-distill-qwen-1.5b
+  kind: other
+  title: deepseek-r1-distill-qwen-1.5b
+  cited_in:
+  - gemini-deep-research
+  status: done
+  path: _inspiration/other/openrouter.ai-deepseek-deepseek-r1-distill-qwen-1.5b
+- url: https://oxen.ai/blog/how-to-fine-tune-qwen3-to-gpt-4o-level-performance
+  kind: other
+  title: how-to-fine-tune-qwen3-to-gpt-4o-level-performance
+  cited_in:
+  - chatgpt-deep-research
+  status: done
+  path: _inspiration/other/oxen.ai-blog-how-to-fine-tune-qwen3-to-gpt-4o-level-performance
+- url: https://oxen.ai/blog/training-a-rust-1-5b-coder-lm-with-reinforcement-learning-grpo
+  kind: other
+  title: training-a-rust-1-5b-coder-lm-with-reinforcement-learning-gr
+  cited_in:
+  - chatgpt-deep-research
+  status: done
+  path: _inspiration/other/oxen.ai-blog-training-a-rust-1-5b-coder-lm-with-reinforcement-learning-grpo
+- url: https://paddo.dev/blog/ai-roundup-april-2026
+  kind: other
+  title: ''
+  cited_in:
+  - gemini-deep-research
+  status: done
+  path: _inspiration/other/paddo.dev-blog-ai-roundup-april-2026
+- url: https://pmc.ncbi.nlm.nih.gov/articles/PMC12457693
+  kind: other
+  title: ''
+  cited_in:
+  - gemini-deep-research
+  status: done
+  path: _inspiration/other/pmc.ncbi.nlm.nih.gov-articles-PMC12457693
+- url: https://pmc.ncbi.nlm.nih.gov/articles/PMC8276128
+  kind: other
+  title: ''
+  cited_in:
+  - gemini-deep-research
+  status: done
+  path: _inspiration/other/pmc.ncbi.nlm.nih.gov-articles-PMC8276128
+- url: https://predibase.com/blog/lora-exchange-lorax-serve-100s-of-fine-tuned-llms-for-the-cost-of-one
+  kind: article
+  title: "Predibase: LoRA Exchange \u2014 Serve 100+ Fine-Tuned LLMs"
+  cited_in:
+  - industry
+  status: failed
+  path: null
+  notes: 'download error: exit 60: curl: (60) SSL certificate problem: certificate
+    has expired
+
+    More details here: https://curl.se/docs/sslcerts.html
+
+
+    curl failed to verify the legitimacy of the server and therefore could not
+
+    e'
+- url: https://predibase.com/blog/lora-land-fine-tuned-open-source-llms-that-outperform-gpt-4
+  kind: article
+  title: "Predibase: LoRA Land \u2014 Fine-Tuned Open-Source LLMs"
+  cited_in:
+  - industry
+  status: failed
+  path: null
+  notes: 'download error: exit 60: curl: (60) SSL certificate problem: certificate
+    has expired
+
+    More details here: https://curl.se/docs/sslcerts.html
+
+
+    curl failed to verify the legitimacy of the server and therefore could not
+
+    e'
+- url: https://predibase.com/fine-tuning-index
+  kind: article
+  title: Predibase fine-tuning index
+  cited_in:
+  - industry
+  status: failed
+  path: null
+  notes: 'download error: exit 60: curl: (60) SSL certificate problem: certificate
+    has expired
+
+    More details here: https://curl.se/docs/sslcerts.html
+
+
+    curl failed to verify the legitimacy of the server and therefore could not
+
+    e'
+- url: https://privacy.claude.com/en/articles/10023580-is-my-data-used-for-model-training
+  kind: other
+  title: 10023580-is-my-data-used-for-model-training
+  cited_in:
+  - gemini-deep-research
+  status: done
+  path: _inspiration/other/privacy.claude.com-en-articles-10023580-is-my-data-used-for-model-training
+- url: https://privacy.claude.com/en/articles/7996868-is-my-data-used-for-model-training
+  kind: other
+  title: 7996868-is-my-data-used-for-model-training
+  cited_in:
+  - gemini-deep-research
+  status: done
+  path: _inspiration/other/privacy.claude.com-en-articles-7996868-is-my-data-used-for-model-training
+- url: https://pub.dev/packages/cactus
+  kind: other
+  title: cactus
+  cited_in:
+  - gemini-deep-research
+  status: done
+  path: _inspiration/other/pub.dev-packages-cactus
+- url: https://pub.towardsai.net/llm-eval-workflow-how-to-build-reliable-ai-quality-gates-without-vibes-16da6c4be942
+  kind: other
+  title: llm-eval-workflow-how-to-build-reliable-ai-quality-gates-wit
+  cited_in:
+  - gemini-deep-research
+  status: failed
+  path: null
+  notes: 'download error: exit 56: curl: (56) The requested URL returned error: 403
+
+    '
+- url: https://pub.towardsai.net/the-architectural-paradigm-of-multi-adapter-inference-a-technical-analysis-of-lorax-567c2f4851f0
+  kind: other
+  title: the-architectural-paradigm-of-multi-adapter-inference-a-tech
+  cited_in:
+  - gemini-deep-research
+  status: failed
+  path: null
+  notes: 'download error: exit 56: curl: (56) The requested URL returned error: 403
+
+    '
+- url: https://qwen.ai/blog
+  kind: other
+  title: blog?id=qwen3.6
+  cited_in:
+  - gemini-deep-research
+  status: done
+  path: _inspiration/other/qwen.ai-blog
+- url: https://small-model-gap.github.io/
+  kind: article
+  title: Small Model Learnability Gap
+  cited_in:
+  - industry
+  status: done
+  path: _inspiration/articles/small-model-gap.github.io
+- url: https://sulbhajain.medium.com/evaluating-the-quality-of-synthetic-data-efe4ad11f8d7
+  kind: other
+  title: evaluating-the-quality-of-synthetic-data-efe4ad11f8d7
+  cited_in:
+  - gemini-deep-research
+  status: failed
+  path: null
+  notes: 'download error: exit 56: curl: (56) The requested URL returned error: 403
+
+    '
+- url: https://techsy.io/en/blog/best-llm-fine-tuning-tools
+  kind: other
+  title: best-llm-fine-tuning-tools
+  cited_in:
+  - gemini-deep-research
+  status: done
+  path: _inspiration/other/techsy.io-en-blog-best-llm-fine-tuning-tools
+- url: https://thinkingmachines.ai/blog/defeating-nondeterminism-in-llm-inference/
+  kind: article
+  title: Defeating Nondeterminism in LLM Inference
+  cited_in:
+  - theory
+  status: done
+  path: _inspiration/articles/thinkingmachines.ai-blog-defeating-nondeterminism-in-llm-inference
+- url: https://towardsdatascience.com/i-fine-tuned-the-tiny-llama-3-2-1b-to-replace-gpt-4o-7ce1e5619f3d/
+  kind: article
+  title: 'TowardsDataScience: Fine-tuned Llama 3.2 1B replaces GPT-4o'
+  cited_in:
+  - industry
+  status: done
+  path: _inspiration/articles/towardsdatascience.com-i-fine-tuned-the-tiny-llama-3-2-1b-to-replace-gpt-4o-7ce1e5619f3d
+- url: https://unsloth.ai/docs/basics/deploy-llms-phone
+  kind: docs
+  title: Unsloth mobile deployment guide
+  cited_in:
+  - tooling
+  status: failed
+  path: null
+  notes: 'download error: exit 3: '
+- url: https://unsloth.ai/docs/basics/inference-and-deployment/vllm-guide/lora-hot-swapping-guide
+  kind: docs
+  title: Unsloth LoRA hot-swapping guide
+  cited_in:
+  - tooling
+  status: failed
+  path: null
+  notes: 'download error: exit 8: '
+- url: https://unsloth.ai/docs/models/tutorials/qwen3-how-to-run-and-fine-tune
+  kind: docs
+  title: Unsloth Qwen3 fine-tuning tutorial
+  cited_in:
+  - tooling
+  status: failed
+  path: null
+  notes: 'download error: exit 3: '
+- url: https://vadim.blog/llm-as-judge
+  kind: article
+  title: 'Vadim''s blog: LLM as Judge'
+  cited_in:
+  - industry
+  status: done
+  path: _inspiration/articles/vadim.blog-llm-as-judge
+- url: https://venturebeat.com/technology/google-releases-gemma-4-under-apache-2-0-and-that-license-change-may-matter
+  kind: article
+  title: 'VentureBeat: Google Releases Gemma 4 under Apache 2.0'
+  cited_in:
+  - industry
+  status: failed
+  path: null
+  notes: 'download error: exit 56: curl: (56) The requested URL returned error: 429
+
+    '
+- url: https://wandb.ai/site/articles/exploring-llm-as-a-judge/
+  kind: article
+  title: 'Weights & Biases: Exploring LLM-as-a-Judge'
+  cited_in:
+  - industry
+  status: done
+  path: _inspiration/articles/wandb.ai-site-articles-exploring-llm-as-a-judge
+- url: https://wcr.legal/google-gemma-license-risks/
+  kind: article
+  title: Google Gemma License Risks
+  cited_in:
+  - industry
+  status: done
+  path: _inspiration/articles/wcr.legal-google-gemma-license-risks
+- url: https://www.anthropic.com/news/claude-new-constitution
+  kind: other
+  title: claude-new-constitution
+  cited_in:
+  - gemini-deep-research
+  status: done
+  path: _inspiration/other/www.anthropic.com-news-claude-new-constitution
+- url: https://www.anthropic.com/news/trainium2-and-distillation
+  kind: article
+  title: 'Anthropic: Trainium2 and Distillation'
+  cited_in:
+  - industry
+  status: done
+  path: _inspiration/articles/www.anthropic.com-news-trainium2-and-distillation
+- url: https://www.anthropic.com/transparency
+  kind: other
+  title: transparency
+  cited_in:
+  - gemini-deep-research
+  status: done
+  path: _inspiration/other/www.anthropic.com-transparency
+- url: https://www.baseten.co/resources/customers/from-datasets-to-deployed-models-how-oxen-ai-builds-on-baseten/
+  kind: article
+  title: 'Baseten case study: Oxen.ai'
+  cited_in:
+  - industry
+  status: done
+  path: _inspiration/articles/www.baseten.co-resources-customers-from-datasets-to-deployed-models-how-oxen-ai-builds-on-baseten
+- url: https://www.bentoml.com/blog/the-complete-guide-to-deepseek-models-from-v3-to-r1-and-beyond
+  kind: other
+  title: the-complete-guide-to-deepseek-models-from-v3-to-r1-and-beyo
+  cited_in:
+  - gemini-deep-research
+  status: done
+  path: _inspiration/other/www.bentoml.com-blog-the-complete-guide-to-deepseek-models-from-v3-to-r1-and-beyond
+- url: https://www.clarifai.com/blog/dpo-vs-ppo
+  kind: other
+  title: dpo-vs-ppo
+  cited_in:
+  - gemini-deep-research
+  status: done
+  path: _inspiration/other/www.clarifai.com-blog-dpo-vs-ppo
+- url: https://www.clarifai.com/blog/how-to-choose-the-right-open-source-llm-for-production
+  kind: other
+  title: how-to-choose-the-right-open-source-llm-for-production
+  cited_in:
+  - gemini-deep-research
+  status: done
+  path: _inspiration/other/www.clarifai.com-blog-how-to-choose-the-right-open-source-llm-for-production
+- url: https://www.clarifai.com/blog/ilama.cpp
+  kind: other
+  title: ilama.cpp
+  cited_in:
+  - gemini-deep-research
+  status: done
+  path: _inspiration/other/www.clarifai.com-blog-ilama.cpp
+- url: https://www.evidentlyai.com/llm-guide/llm-test-dataset-synthetic-data
+  kind: other
+  title: llm-test-dataset-synthetic-data
+  cited_in:
+  - gemini-deep-research
+  status: done
+  path: _inspiration/other/www.evidentlyai.com-llm-guide-llm-test-dataset-synthetic-data
+- url: https://www.infoq.com/news/2025/12/cactus-on-device-inference/
+  kind: article
+  title: 'InfoQ: Cactus on-device inference'
+  cited_in:
+  - tooling
+  - industry
+  status: done
+  path: _inspiration/articles/www.infoq.com-news-2025-12-cactus-on-device-inference
+- url: https://www.llama.com/faq/
+  kind: docs
+  title: Llama FAQ
+  cited_in:
+  - industry
+  status: done
+  path: _inspiration/docs/www.llama.com
+- url: https://www.llama.com/llama4/license/
+  kind: docs
+  title: Llama 4 license
+  cited_in:
+  - industry
+  status: done
+  path: _inspiration/docs/www.llama.com
+- url: https://www.mindstudio.ai/blog/gemma-4-apache-2-license-commercial-use
+  kind: article
+  title: 'MindStudio: Gemma 4 Apache 2 License Commercial Use'
+  cited_in:
+  - industry
+  status: done
+  path: _inspiration/articles/www.mindstudio.ai-blog-gemma-4-apache-2-license-commercial-use
+- url: https://www.ncbi.nlm.nih.gov/pmc/articles/PMC11187169/
+  kind: article
+  title: 'OpenMedLM: Open Medical LLM for Medical Experts and Patients'
+  cited_in:
+  - industry
+  status: done
+  path: _inspiration/articles/www.ncbi.nlm.nih.gov-pmc-articles-PMC11187169
+- url: https://www.ncbi.nlm.nih.gov/pmc/articles/PMC11339514/
+  kind: article
+  title: HOSPITAL, MedAlpaca, and Meditron Comparison
+  cited_in:
+  - industry
+  status: done
+  path: _inspiration/articles/www.ncbi.nlm.nih.gov-pmc-articles-PMC11339514
+- url: https://www.oxen.ai
+  kind: docs
+  title: Oxen.ai platform
+  cited_in:
+  - tooling
+  - industry
+  status: failed
+  path: null
+  notes: 'download error: exit 3: '
+- url: https://www.oxen.ai/pricing
+  kind: docs
+  title: Oxen pricing
+  cited_in:
+  - tooling
+  - industry
+  - chatgpt-deep-research
+  status: failed
+  path: null
+  notes: 'download error: exit 3: '
+- url: https://www.ranger.net/post/top-tools-ai-test-data-versioning
+  kind: other
+  title: top-tools-ai-test-data-versioning
+  cited_in:
+  - chatgpt-deep-research
+  status: done
+  path: _inspiration/other/www.ranger.net-post-top-tools-ai-test-data-versioning
+- url: https://www.reddit.com/r/LocalLLM/comments/1saktik/gemma4_someone_at_google_just_merged_a_pr_titled
+  kind: other
+  title: ''
+  cited_in:
+  - gemini-deep-research
+  status: done
+  path: _inspiration/other/www.reddit.com-r-LocalLLM-comments-1saktik-gemma4_someone_at_google_just_merged_a_pr_titled
+- url: https://www.reddit.com/r/LocalLLM/comments/1tl67iq/visual_finetuning_to_gguf_ondevice_deployment
+  kind: other
+  title: ''
+  cited_in:
+  - gemini-deep-research
+  status: done
+  path: _inspiration/other/www.reddit.com-r-LocalLLM-comments-1tl67iq-visual_finetuning_to_gguf_ondevice_deployment
+- url: https://www.reddit.com/r/LocalLLaMA/comments/1lvek0j/difficulty_in_fine_tuning_llora
+  kind: other
+  title: ''
+  cited_in:
+  - gemini-deep-research
+  status: done
+  path: _inspiration/other/www.reddit.com-r-LocalLLaMA-comments-1lvek0j-difficulty_in_fine_tuning_llora
+- url: https://www.reddit.com/r/LocalLLaMA/comments/1q2xbjc/experimental_temporal_lora_a_dynamic_adapter
+  kind: other
+  title: ''
+  cited_in:
+  - gemini-deep-research
+  status: done
+  path: _inspiration/other/www.reddit.com-r-LocalLLaMA-comments-1q2xbjc-experimental_temporal_lora_a_dynamic_adapter
+- url: https://www.reddit.com/r/LocalLLaMA/comments/1snjafe/anthropic_admitted_they_used_other_models_data
+  kind: other
+  title: ''
+  cited_in:
+  - gemini-deep-research
+  status: done
+  path: _inspiration/other/www.reddit.com-r-LocalLLaMA-comments-1snjafe-anthropic_admitted_they_used_other_models_data
+- url: https://www.spheron.network/blog/dpo-fine-tuning-gpu-cloud
+  kind: other
+  title: ''
+  cited_in:
+  - gemini-deep-research
+  status: done
+  path: _inspiration/other/www.spheron.network-blog-dpo-fine-tuning-gpu-cloud
+- url: https://www.together.ai/blog/finetuning
+  kind: article
+  title: Together AI fine-tuning blog
+  cited_in:
+  - industry
+  status: done
+  path: _inspiration/articles/www.together.ai-blog-finetuning
+- url: https://www.together.ai/blog/serverless-multi-lora-fine-tune-and-deploy-hundreds-of-adapters-for-model-customization-at-scale
+  kind: article
+  title: Together AI multi-LoRA serving blog
+  cited_in:
+  - tooling
+  status: done
+  path: _inspiration/articles/www.together.ai-blog-serverless-multi-lora-fine-tune-and-deploy-hundreds-of-adapters-for-model-customization-at-scale
+- url: https://www.together.ai/fine-tuning
+  kind: docs
+  title: Together AI fine-tuning
+  cited_in:
+  - tooling
+  status: failed
+  path: null
+  notes: 'download error: exit 3: '
+- url: https://www.together.ai/pricing
+  kind: docs
+  title: Together AI pricing
+  cited_in:
+  - tooling
+  status: failed
+  path: null
+  notes: 'download error: exit 3: '
+- url: https://www.truefoundry.com/blog/lora-fine-tuning
+  kind: other
+  title: lora-fine-tuning
+  cited_in:
+  - gemini-deep-research
+  status: done
+  path: _inspiration/other/www.truefoundry.com-blog-lora-fine-tuning
+- url: https://www.zenml.io/llmops-database/multi-lora-serving-for-agent-performance-analysis-at-scale
+  kind: article
+  title: 'ZenML: Multi-LoRA Serving for Agent Performance Analysis at Scale'
+  cited_in:
+  - industry
+  status: done
+  path: _inspiration/articles/www.zenml.io-llmops-database-multi-lora-serving-for-agent-performance-analysis-at-scale
