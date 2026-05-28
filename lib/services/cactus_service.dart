@@ -86,6 +86,10 @@ class CactusService {
   /// worked; we just had the name wrong).
   /// `assets/seed_notes_{a,b}.json` embeddings were regenerated against
   /// this model via `tools/regen_seed_embeddings.py`.
+  ///
+  /// Changing this requires regenerating
+  /// assets/seed_notes_{a,b}.json (via tools/regen_seed_embeddings.py)
+  /// and tools/determinism_harness/baselines/latest/{iphone,pixel-*}.json.
   static const String preferredEmbeddingSlug = 'qwen3-0.6-embed';
 
   final CactusLM _completionLm = CactusLM();
