@@ -37,6 +37,15 @@ The Likec4 dashboard at `docs/c4/dashboard/` is a build artifact (gitignored). R
 
 Version control is **jj-first** (this is a colocated jj+git repo: both `.jj/` and `.git/` exist). The repo-local memory entries on jj are load-bearing — never `jj edit <ancestor>`, use the `jj new --insert-after/before` + `jj restore --from @ --to <new>` pattern for retroactive edits. Plain `git` commands are safe for read operations (`git log`, `git status`) but mutations should go through jj. See user memory `feedback_jj_*` entries.
 
+## Flutter agent tooling (strongly recommended)
+
+When working on Flutter code in this repo, agents should reach for Flutter's first-party AI tooling before improvising:
+
+- **Flutter MCP server** — [docs.flutter.dev/ai/mcp-server](https://docs.flutter.dev/ai/mcp-server). Gives agents a structured surface over `pub`, `flutter`, and `dart` toolchain operations (package search, version resolution, project diagnostics, widget tree inspection). Strongly preferred over scraping `flutter --help` or guessing package versions. Install per the Flutter docs; once configured, the MCP tools surface in `/mcp`.
+- **Flutter skills** — [github.com/flutter/skills](https://github.com/flutter/skills). Curated, task-shaped agent skills authored by the Flutter team (widget tests, integration tests, layout fixes, localization, responsive layouts, etc.). Several of these are already loaded in this session under `flutter-*` skill names. When the task matches a published Flutter skill, invoke it via the harness rather than reinventing the recipe. Treat the upstream repo as canonical — the loaded skills track what's there.
+
+Both are Flutter-team-authored and version-aware; agents that bypass them and improvise Flutter recipes tend to drift from current best practice fast (Flutter releases are fast-moving). When a task is Flutter-shaped, **check these first.**
+
 ## Code architecture
 
 The app boots in [lib/main.dart](lib/main.dart) (`BootScreen._boot`) and brings up four singletons in this order:
