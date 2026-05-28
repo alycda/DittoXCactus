@@ -1,0 +1,71 @@
+# Training config for the note-merging specialist.
+#
+# Hyperparameters pinned per recipe section (b) of
+# _docs/plans/002-feat-specialist-training.md (U4) — these match the
+# Cactus + Unsloth Qwen3 defaults and the Oxen text-to-SQL recipe shape.
+#
+# Loaded by train.py. The Oxen Marimo notebook reads the same file when
+# running on remote A10G.
+
+base_model: Qwen/Qwen3-1.7B           # Apache-2.0 — license-clean per R3
+# Backup base if Pixel-7 latency on 1.7B is unacceptable (recipe Backup C):
+#   Qwen/Qwen3-0.6B          (same family, same Cactus first-class support)
+#   google/gemma-3-1b-it     (verify Cactus support before swap)
+
+# ─── LoRA / QLoRA ────────────────────────────────────────────────────────
+lora:
+  r: 16                               # recipe-pinned sweet spot per Apple FM tech report
+  alpha: 32                           # 2× rank — Unsloth/Cactus default
+  dropout: 0.0                        # full-precision matmul; no need
+  target_modules:                     # all linear modules per Unsloth Qwen3 recipe
+    - q_proj
+    - k_proj
+    - v_proj
+    - o_proj
+    - gate_proj
+    - up_proj
+    - down_proj
+  bias: none                          # Unsloth default
+  task_type: CAUSAL_LM
+
+# Quantize the FROZEN base to 4-bit during training (QLoRA). At Qwen 3 1.7B
+# the bf16 base fits any 24 GB+ card so this is optional, but it lets the
+# Colab T4 (16 GB) shape work without changes. Set to false on A10G+.
+load_in_4bit: true
+
+# ─── Optimizer / schedule ────────────────────────────────────────────────
+training:
+  num_train_epochs: 3
+  learning_rate: 1.0e-4
+  lr_scheduler_type: cosine
+  warmup_ratio: 0.0
+  per_device_train_batch_size: 2
+  gradient_accumulation_steps: 4      # effective batch 8
+  optim: paged_adamw_8bit             # 8-bit AdamW, paged for QLoRA memory
+  weight_decay: 0.0
+  max_grad_norm: 0.3                  # Unsloth default
+  max_seq_length: 1024                # input notes + merged + chat template fits
+  seed: 42
+
+# ─── Data / I-O ──────────────────────────────────────────────────────────
+data:
+  train_path: data/synthetic_filtered.jsonl
+  eval_path: data/holdout_200.jsonl   # used only for periodic loss tracking
+  eval_subset_size: 20                # 20-pair seed eval for fast feedback
+  text_field: text                    # produced by the chat-template formatter
+
+output:
+  adapter_dir: adapter                # where train.py saves the PEFT adapter
+  logging_steps: 10
+  save_strategy: epoch                # save at end of each epoch
+  eval_strategy: epoch
+  report_to: null                     # set to "wandb" if WANDB_API_KEY is set
+
+# ─── Smoke-test gate ─────────────────────────────────────────────────────
+# After each epoch, train.py runs inference on `eval_subset_size` holdout
+# rows and reports a judge-accuracy proxy (BLEU vs ground-truth merged).
+# Recipe Day-1 step 4: ≥15-point uplift over base on the 20-pair seed eval
+# is the gate to continue to the full 1500-row run.
+smoke_test:
+  metric: bleu_vs_ground_truth
+  required_uplift_points: 15
