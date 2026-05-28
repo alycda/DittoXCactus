@@ -67,6 +67,15 @@ app-analyze:
 
 ci: app-analyze app-test
 
+# Regenerate pre-computed seed embeddings in assets/seed_notes_{a,b}.json
+# against a Cactus embedder model. Used after an embedder slug swap (e.g.,
+# issue #9) so cached vectors live in the same space as runtime embeddings.
+# WEIGHTS_DIR is the local Cactus weights directory name under brew's symlink
+# path — NOT the Flutter SDK catalog slug. See the script header for the
+# distinction.
+regen-seed-embeddings WEIGHTS_DIR="qwen3-embedding-0.6b":
+    python3 tools/regen_seed_embeddings.py --weights-dir {{WEIGHTS_DIR}}
+
 # Run mesh_rag on DEVICE as phone-a. Reads DITTO_APP_ID + DITTO_LICENSE
 # from .env. Stage 0: debug mode (release mode has a known ditto_live 5.0.0
 # Android crash — see memory feedback_ditto_release_mode_bug).

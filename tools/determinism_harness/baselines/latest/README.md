@@ -5,19 +5,29 @@ output** for the locked Cactus slug. `run.dart check-baseline` compares fresh
 device measurements against these files; any drift signals an intentional or
 accidental pin change.
 
-| File | Device label | Hardware | Originally captured |
-|---|---|---|---|
-| [`iphone.json`](iphone.json) | `ios` | iPhone 14 Pro | 2026-05-23 |
-| [`pixel-a.json`](pixel-a.json) | `android` | Pixel 6a (`23211JEGR01492`) | 2026-05-23 |
-| [`pixel-b.json`](pixel-b.json) | `android` | Pixel 6a (`28191JEGR17016`) | 2026-05-23 |
+**2026-05-26/27 — slug swap landed (issue #9).** Default embedder swapped
+from chat-tuned `qwen3-0.6` to dedicated similarity-tuned `qwen3-0.6-embed`.
+All three device baselines regenerated; U1 cross-platform gate jumped from
+**0.85 (chat-tuned, 3 disagreements)** to **1.0000 (dedicated, 0 disagreements)**.
+Previous chat-tuned baselines archived to
+[`../2026-05-26-pre-embed-swap/`](../2026-05-26-pre-embed-swap/) +
+[`../2026-05-23/`](../2026-05-23/).
 
-The originals live under [`../2026-05-23/`](../2026-05-23/) with the full
-findings narrative. This directory is the always-current alias; promoting a
-new pin overwrites these files (the old ones stay in `../<date>/`).
+| File | Device label | Hardware | Captured | Slug |
+|---|---|---|---|---|
+| [`iphone.json`](iphone.json) | `ios` | iPhone 14 | 2026-05-27 | `qwen3-0.6-embed` |
+| [`pixel-a.json`](pixel-a.json) | `android` | Pixel 6a (`23211JEGR01492`) | 2026-05-26 | `qwen3-0.6-embed` |
+| [`pixel-b.json`](pixel-b.json) | `android` | Pixel 6a (`28191JEGR17016`) | 2026-05-26 | `qwen3-0.6-embed` |
+
+The originals live under [`../2026-05-23/`](../2026-05-23/) (chat-tuned slug,
+the demo's previous default) with the full findings narrative. This directory
+is the always-current alias; promoting a new pin overwrites these files (the
+old ones stay in `../<date>/`).
 
 ## Pin parameters
 
-- Model: `qwen3-0.6` (Cactus embedding head)
+- Model: `qwen3-0.6-embed` (Cactus *dedicated* similarity-tuned embedder,
+  swapped from chat-tuned `qwen3-0.6` per issue #9 on 2026-05-26)
 - Dimension: 1024
 - k: 5
 - Fixture: [`../../fixtures/queries.json`](../../fixtures/queries.json) (20×20, 5 clusters)

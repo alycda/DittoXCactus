@@ -1,16 +1,23 @@
 /// Singleton wrapper around the two `CactusLM` instances the app uses —
-/// one for completion (`qwen3-1.7`) and one for embedding (`qwen3-0.6`).
+/// one for completion (`qwen3-1.7`) and one for embedding (`qwen3-0.6-embed`).
 ///
 /// ### Slug rationale (pinned by U6; surfaces here so the next reader doesn't
 /// have to dig through the plan):
 ///
-/// EmbeddingGemma 300M was the original embedding pick. Cactus Flutter 1.3.0's
-/// catalog cannot fetch the dedicated `qwen3-embedding-0.6` slug
-/// (`Failed to get model qwen3-embedding-0.6`), and the embedding-only slugs
-/// the engine docs reference aren't yet resolvable by the Flutter SDK.
-/// `qwen3-0.6` is the chat-tuned fallback that exposes the embedding head
-/// and clears the U1 cosine-parity gate on the rehearsed fixtures
-/// (iOS↔Android = 0.85 — diagnostic band, not pivot).
+/// EmbeddingGemma 300M was the original embedding pick. We initially shipped
+/// the chat-tuned `qwen3-0.6` because we believed the dedicated
+/// `qwen3-embedding-0.6` slug "didn't load" — a claim that turned out to be a
+/// slug typo on our side. The actual dedicated slug is **`qwen3-0.6-embed`**
+/// (suffix style), and on-device retest on 2026-05-26 confirmed it loads
+/// + initializes + produces 1024-dim embeddings via Flutter SDK 1.3.0
+/// end-to-end. See `_docs/notes/cactus-sdk-quirks.md` § "Issue #35 retraction"
+/// and discussion #11 / issue #9 for the full trail.
+///
+/// **U1 result.** Baselines under
+/// `tools/determinism_harness/baselines/latest/` regenerated against this
+/// slug on 2026-05-26/27 (Pixel A + B + iPhone 14). Cross-platform R2 gate
+/// measured at **1.0000** (was 0.85 with chat-tuned head) — see that
+/// directory's README for the audit trail.
 ///
 /// `qwen3-0.6` was also tried as the completion model and produced incoherent
 /// flashcards at ~600M parameters. `qwen3-1.7` is the size class that
@@ -73,8 +80,17 @@ class CactusService {
   /// changing it invalidates U13's regression check.
   static const String preferredCompletionSlug = 'qwen3-1.7';
 
-  /// Default embedding slug — same caveats as above.
-  static const String preferredEmbeddingSlug = 'qwen3-0.6';
+  /// Default embedding slug — dedicated similarity-tuned embedder.
+  /// Swapped from chat-tuned `qwen3-0.6` per issue #9 once the slug typo
+  /// in `cactus-sdk-quirks.md` was retracted (the dedicated slug always
+  /// worked; we just had the name wrong).
+  /// `assets/seed_notes_{a,b}.json` embeddings were regenerated against
+  /// this model via `tools/regen_seed_embeddings.py`.
+  ///
+  /// Changing this requires regenerating
+  /// assets/seed_notes_{a,b}.json (via tools/regen_seed_embeddings.py)
+  /// and tools/determinism_harness/baselines/latest/{iphone,pixel-*}.json.
+  static const String preferredEmbeddingSlug = 'qwen3-0.6-embed';
 
   final CactusLM _completionLm = CactusLM();
   final CactusLM _embeddingLm = CactusLM();
@@ -100,7 +116,7 @@ class CactusService {
   /// `onProgress` (if supplied) receives messages like:
   ///   - `completion (qwen3-1.7): downloading 42%` (with `progress=0.42`)
   ///   - `completion (qwen3-1.7): initializing context` (with `progress=null`)
-  ///   - `embedding (qwen3-0.6): downloading 8%`
+  ///   - `embedding (qwen3-0.6-embed): downloading 8%`
   /// `isError=true` surfaces a download failure so BootScreen can render a
   /// "connect to wifi to fetch the model" message instead of crashing.
   ///

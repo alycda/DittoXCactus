@@ -1,7 +1,8 @@
 // On-device measurement entry — the "measure" half of the U1 determinism gate.
 //
-// Loads the same Cactus slug the app will use (qwen3-0.6 per the plan's Key
-// Technical Decisions), embeds every fixture query and passage, computes top-k
+// Loads the same Cactus slug the app will use (qwen3-0.6-embed per issue #9 /
+// 2026-05-26 slug swap; was qwen3-0.6 before), embeds every fixture query and
+// passage, computes top-k
 // per query using the harness math (lib/agreement.dart), and writes a
 // per-device JSON output to the app's documents directory. The result is
 // compared offline against the other phone's output by run.dart (check mode).
@@ -31,7 +32,13 @@ import 'package:path_provider/path_provider.dart';
 import 'package:determinism_harness/agreement.dart';
 import 'package:determinism_harness/output_format.dart';
 
-const String _embeddingSlug = 'qwen3-0.6';
+// Swapped to dedicated embedder per issue #9 (2026-05-26). Previous slug
+// was 'qwen3-0.6' (chat-tuned, embedding-head-repurposed). The dedicated
+// 'qwen3-0.6-embed' loads via Flutter SDK 1.3.0 and produces 1024-dim
+// embeddings — confirmed on-device. Regenerating U1 baselines against
+// this slug invalidates baselines/latest/* until all three devices
+// (iPhone + both Pixels) have been re-measured.
+const String _embeddingSlug = 'qwen3-0.6-embed';
 
 /// Routes harness output through `debugPrint`, which integration_test
 /// forwards to the parent `flutter test` process. Direct `io.stdout` writes

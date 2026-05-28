@@ -139,15 +139,70 @@ chat-tuned model in the embedder slot:
   registration. *The bug that forced this app into a two-model
   architecture — see [discussion #7](https://github.com/alycda/DittoXCactus/discussions/7).*
 - [**#35**](https://github.com/cactus-compute/cactus-flutter/issues/35)
-  — the purpose-built `qwen3-embedding-0.6` slug can't be resolved by
-  the Flutter SDK 1.3.0 catalog despite being in the engine README.
-  *Pair-cause with #34: explains why the embedder slot ended up
-  holding a chat-tuned `qwen3-0.6` rather than the similarity-tuned
-  slug.*
+  — *originally filed as: "purpose-built `qwen3-embedding-0.6` slug
+  can't be resolved by the Flutter SDK 1.3.0 catalog."*
+  **Retracted 2026-05-26** — the slug we filed against does not exist;
+  the actual dedicated embedder slug is **`qwen3-0.6-embed`** (suffix
+  style), and on-device retest confirmed it loads + initializes
+  end-to-end via Flutter SDK 1.3.0. The demo's default embedder was
+  swapped to it per [issue #9](https://github.com/alycda/DittoXCactus/issues/9).
+  See "Issue #35 retraction" section below.
 
 If #33 lands, the witness checklist's host-side-capture caveat goes
-away. If #34 or #35 land, much of the cosine-distribution tuning the
-retrieval pipeline absorbs may relax.
+away. If #34 lands, the chat-tuned slug accepting `embed()` no longer
+matters because we no longer use it. #35 is closed as not-a-bug.
+
+---
+
+## Issue #35 retraction (2026-05-26)
+
+The original quirk filed under #35 ("dedicated embedder slug doesn't load")
+was wrong on two counts. Recording the truth so future readers don't re-file
+the same bug.
+
+**What we filed.** Issue #35 against `cactus-compute/cactus-flutter` claimed
+the Flutter SDK 1.3.0 catalog couldn't resolve the slug
+`qwen3-embedding-0.6` — that `CactusLM.downloadModel('qwen3-embedding-0.6')`
+returned `Failed to get model qwen3-embedding-0.6`.
+
+**What was actually happening.**
+
+1. **The slug we used does not exist.** The Cactus catalog returns
+   `{"error":"Model not found or is not live"}` for `qwen3-embedding-0.6`
+   and a valid `CactusModel` object for **`qwen3-0.6-embed`** (suffix
+   style, not prefix). The SDK was correctly reporting an unresolvable
+   slug.
+2. **The SDK's "Failed to get model" error also covers transient DNS
+   failures.** First on-device retest produced exactly that error when
+   `supabase.co` lookup briefly failed mid-boot. So one error string
+   covers at least three failure modes — slug doesn't exist, network
+   failed, or storage URL 404s (observed for some `*-pro` slugs).
+
+**On-device retest (Pixel 6a, Flutter SDK 1.3.0)** with the corrected
+slug `qwen3-0.6-embed`:
+
+```
+Downloading file from .../cactus-models/qwen3-0.6-embed.zip
+Download completed successfully ... 61440ms
+Initializing context with model: …/qwen3-0.6-embed, contextSize: 2048
+[ColdLoadTimer] boot complete: { total_ms: 62440, … cactus_initialized: 62345 }
+Generating embedding for text: Saturn
+Received embedding result code: 1024
+[topK] preThresholdScores=[0.417, 0.406, 0.388, 0.358, 0.353] ranked=5
+```
+
+End-to-end works: download (~60s for 394MB), extract, initialize, embed
+(1024-dim), cosine ranking. Upstream PR comment added at
+[#35-issuecomment-4551731987](https://github.com/cactus-compute/cactus-flutter/issues/35#issuecomment-4551731987).
+
+**Demo state after retraction.** The default embedder slug in
+`lib/services/cactus_service.dart` was swapped to `qwen3-0.6-embed` per
+[issue #9](https://github.com/alycda/DittoXCactus/issues/9). Pre-computed
+seed embeddings in `assets/seed_notes_*.json` were regenerated against
+the new model via
+[`tools/regen_seed_embeddings.py`](../../tools/regen_seed_embeddings.py).
+U1 cross-platform baseline at `tools/determinism_harness/baselines/latest/`
+was regenerated against the new slug.
 
 ---
 
