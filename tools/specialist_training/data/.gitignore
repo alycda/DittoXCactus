@@ -1,0 +1,6 @@
+# Ignore everything under data/ except this .gitignore and the committed
+# load-bearing holdout. Synthetic data (~1,500 rows) lives here at runtime
+# but never lands in git.
+*
+!.gitignore
+!holdout_200.jsonl

@@ -1,0 +1,8 @@
+# Merged .cact specialist artifacts are large (~1.0-1.5 GB at Q4) — never
+# committed. They're produced by tools/specialist_training/convert.sh and
+# bundled at app install via pubspec.yaml's `assets:` declaration.
+#
+# Keep this stub committed so the directory exists for fresh checkouts; the
+# build pipeline populates the artifacts.
+*
+!.gitignore
