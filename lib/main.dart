@@ -56,6 +56,19 @@ const String kInitialTopic = String.fromEnvironment('INITIAL_TOPIC');
 const bool kBakeEmbeddings =
     bool.fromEnvironment('BAKE_EMBEDDINGS', defaultValue: false);
 
+/// `--dart-define=USE_SPECIALIST=true` swaps the completion model from the
+/// generalist `qwen3-1.7` slug to the merged specialist .cact bundled at
+/// `assets/models/qwen3-1.7-merger.cact` (produced by
+/// `tools/specialist_training/convert.sh`). The embedding model is
+/// unchanged — note-merging is a completion-side specialty, embeddings
+/// still use `qwen3-0.6-embed` so existing R2 baselines and seed
+/// embeddings stay valid.
+///
+/// Justfile recipe: `just app-run-a-specialist <device-id>`.
+/// Plan: `_docs/plans/002-feat-specialist-training.md` (U7).
+const bool kUseSpecialist =
+    bool.fromEnvironment('USE_SPECIALIST', defaultValue: false);
+
 Future<void> main() async {
   // U14 / R5: start cold-load instrumentation as early as possible. The
   // BLE permission prompt below blocks for user interaction so its time
@@ -172,6 +185,7 @@ class _BootScreenState extends State<BootScreen> {
       // generic spinner during the cold-load minute.
       _advance(_BootPhase.initCactus);
       await CactusService.instance.initialize(
+        useSpecialist: kUseSpecialist,
         onProgress: (progress, status, isError) {
           if (!mounted) return;
           final pct = progress == null

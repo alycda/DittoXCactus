@@ -29,11 +29,31 @@
 library mesh_rag.services.cactus_service;
 
 import 'dart:async';
+import 'dart:io';
 import 'dart:typed_data';
 
 import 'package:cactus/cactus.dart';
+import 'package:flutter/foundation.dart' show FlutterError;
+import 'package:flutter/services.dart' show rootBundle;
+import 'package:path_provider/path_provider.dart';
 
 import '../holdouts/cold_load_timer.dart';
+
+/// Thrown when [CactusService.initialize] is called with `useSpecialist: true`
+/// but the bundled `.cact` asset is missing from the build. Distinct from
+/// generic init failures so BootScreen can render specialist-specific guidance
+/// (`run convert.sh` / `disable USE_SPECIALIST`) instead of "model failed to
+/// load."
+class MissingSpecialistAssetException implements Exception {
+  MissingSpecialistAssetException(this.assetPath);
+  final String assetPath;
+  @override
+  String toString() =>
+      'MissingSpecialistAssetException: $assetPath. Build with USE_SPECIALIST=true '
+      'requires the merged specialist .cact at $assetPath. Run '
+      '`bash tools/specialist_training/convert.sh` to produce it, OR rebuild '
+      'without USE_SPECIALIST to use the generalist base.';
+}
 
 /// Phase label routed through [CactusService.initialize]'s `onProgress`
 /// callback. The BootScreen renders this verbatim, so phrasing should be
@@ -92,15 +112,39 @@ class CactusService {
   /// and tools/determinism_harness/baselines/latest/{iphone,pixel-*}.json.
   static const String preferredEmbeddingSlug = 'qwen3-0.6-embed';
 
+  /// Slug used when [initialize] is called with `useSpecialist: true`. The
+  /// merged `.cact` blob produced by `tools/specialist_training/convert.sh`
+  /// (U6) is copied from the Flutter asset bundle into
+  /// `<documents>/models/<specialistCompletionSlug>/` at boot so Cactus's
+  /// `initializeModel` finds it locally without invoking
+  /// `downloadModel`. The slug is otherwise unregistered in Cactus's remote
+  /// catalog — that's intentional. If Cactus's catalog ever gains a model
+  /// with this same name, rename the constant to keep them disjoint.
+  static const String specialistCompletionSlug = 'qwen3-1.7-merger';
+
+  /// Flutter asset path where the bundled specialist `.cact` lives. The
+  /// `convert.sh` wrapper writes `assets/models/qwen3-1.7-merger.cact`;
+  /// `pubspec.yaml` bundles the `assets/models/` directory. Missing-asset
+  /// behavior is governed by [MissingSpecialistAssetException].
+  static const String specialistAssetPath =
+      'assets/models/qwen3-1.7-merger.cact';
+
   final CactusLM _completionLm = CactusLM();
   final CactusLM _embeddingLm = CactusLM();
 
   bool _initialized = false;
+  bool _specialistLoaded = false;
   int _embeddingDimension = 0;
   String _activeCompletionSlug = preferredCompletionSlug;
   String _activeEmbeddingSlug = preferredEmbeddingSlug;
 
   bool get isInitialized => _initialized;
+
+  /// True when [initialize] was called with `useSpecialist: true` and the
+  /// merged specialist `.cact` was successfully staged + loaded. Driven by
+  /// boot flow + surfaced for DemoOverlay HUD inspection and for the
+  /// recorded-artifact integration tests.
+  bool get isSpecialistLoaded => _specialistLoaded;
 
   /// The dimension of the embedding head, captured on the first successful
   /// [embed] call. Useful for retrieval (U9) to detect a mid-corpus model
@@ -121,13 +165,28 @@ class CactusService {
   /// "connect to wifi to fetch the model" message instead of crashing.
   ///
   /// Idempotent: repeated calls after the first are no-ops.
+  ///
+  /// `useSpecialist=true` swaps the completion model for the merged
+  /// specialist `.cact` bundled at [specialistAssetPath]. The embedding
+  /// model is unchanged — note-merging is the completion-side specialty;
+  /// embeddings still use `qwen3-0.6-embed` so existing seed embeddings
+  /// + R2 baselines stay valid. `useSpecialist=true` is mutually exclusive
+  /// with `completionSlugOverride`; passing both throws [ArgumentError].
   Future<void> initialize({
     String? completionSlugOverride,
     String? embeddingSlugOverride,
     int contextSize = 2048,
+    bool useSpecialist = false,
     CactusProgressLabel? onProgress,
   }) async {
     if (_initialized) return;
+
+    if (useSpecialist && completionSlugOverride != null) {
+      throw ArgumentError(
+        'useSpecialist and completionSlugOverride are mutually exclusive. '
+        'Use one or the other — the specialist path bypasses the slug catalog.',
+      );
+    }
 
     // Kill telemetry BEFORE any model-download HTTP fires. SDK default is
     // true; airplane-mode demo discipline (R7) makes this behaviorally
@@ -135,18 +194,29 @@ class CactusService {
     // witness check.
     CactusConfig.isTelemetryEnabled = false;
 
-    final cSlug = completionSlugOverride ?? preferredCompletionSlug;
     final eSlug = embeddingSlugOverride ?? preferredEmbeddingSlug;
-    _activeCompletionSlug = cSlug;
     _activeEmbeddingSlug = eSlug;
 
-    // Phase 1/4 — download completion weights.
-    await _completionLm.downloadModel(
-      model: cSlug,
-      downloadProcessCallback: (p, status, isError) =>
-          onProgress?.call(p, 'completion ($cSlug): $status', isError),
-    );
-    ColdLoadTimer.instance.mark('cactus_completion_downloaded');
+    if (useSpecialist) {
+      // Specialist path — stage the bundled .cact into Cactus's
+      // documents-dir model folder so initializeModel finds it locally
+      // (skips downloadModel). Mirrors Cactus 1.3.0's on-disk layout:
+      // <documents>/models/<slug>/<slug>.cact.
+      onProgress?.call(null, 'specialist ($specialistCompletionSlug): staging asset', false);
+      await _stageSpecialistAsset(onProgress: onProgress);
+      _activeCompletionSlug = specialistCompletionSlug;
+      ColdLoadTimer.instance.mark('cactus_specialist_staged');
+    } else {
+      final cSlug = completionSlugOverride ?? preferredCompletionSlug;
+      _activeCompletionSlug = cSlug;
+      // Phase 1/4 — download completion weights.
+      await _completionLm.downloadModel(
+        model: cSlug,
+        downloadProcessCallback: (p, status, isError) =>
+            onProgress?.call(p, 'completion ($cSlug): $status', isError),
+      );
+      ColdLoadTimer.instance.mark('cactus_completion_downloaded');
+    }
 
     // Phase 2/4 — download embedding weights.
     await _embeddingLm.downloadModel(
@@ -157,9 +227,16 @@ class CactusService {
     ColdLoadTimer.instance.mark('cactus_embedding_downloaded');
 
     // Phase 3/4 — initialize completion context (mmaps weights into RAM).
-    onProgress?.call(null, 'completion ($cSlug): initializing context', false);
+    onProgress?.call(
+      null,
+      'completion ($_activeCompletionSlug): initializing context',
+      false,
+    );
     await _completionLm.initializeModel(
-      params: CactusInitParams(model: cSlug, contextSize: contextSize),
+      params: CactusInitParams(
+        model: _activeCompletionSlug,
+        contextSize: contextSize,
+      ),
     );
 
     // Phase 4/4 — initialize embedding context.
@@ -169,7 +246,67 @@ class CactusService {
     );
 
     _initialized = true;
-    onProgress?.call(1.0, 'both models ready', false);
+    _specialistLoaded = useSpecialist;
+    onProgress?.call(
+      1.0,
+      useSpecialist ? 'specialist ready' : 'both models ready',
+      false,
+    );
+  }
+
+  /// Copy the bundled specialist `.cact` from the Flutter asset bundle into
+  /// Cactus's expected on-disk layout at `<documents>/models/<slug>/`.
+  /// Idempotent — skips the copy if the destination file already exists
+  /// at the expected size. Throws [MissingSpecialistAssetException] when
+  /// the asset isn't in the bundle (build was made without producing the
+  /// `.cact` via convert.sh).
+  Future<void> _stageSpecialistAsset({
+    CactusProgressLabel? onProgress,
+  }) async {
+    final ByteData bytes;
+    try {
+      bytes = await rootBundle.load(specialistAssetPath);
+    } on FlutterError {
+      throw MissingSpecialistAssetException(specialistAssetPath);
+    }
+
+    final docsDir = await getApplicationDocumentsDirectory();
+    final modelFolder = Directory(
+      '${docsDir.path}/models/$specialistCompletionSlug',
+    );
+    await modelFolder.create(recursive: true);
+    final modelFile = File(
+      '${modelFolder.path}/$specialistCompletionSlug.cact',
+    );
+
+    final bundleSize = bytes.lengthInBytes;
+    if (await modelFile.exists()) {
+      final existing = await modelFile.length();
+      if (existing == bundleSize) {
+        // Already staged at the right size — skip the copy.
+        onProgress?.call(
+          null,
+          'specialist ($specialistCompletionSlug): cached',
+          false,
+        );
+        return;
+      }
+    }
+
+    onProgress?.call(
+      0.0,
+      'specialist ($specialistCompletionSlug): copying ${bundleSize ~/ (1024 * 1024)} MB',
+      false,
+    );
+    await modelFile.writeAsBytes(
+      bytes.buffer.asUint8List(bytes.offsetInBytes, bytes.lengthInBytes),
+      flush: true,
+    );
+    onProgress?.call(
+      1.0,
+      'specialist ($specialistCompletionSlug): staged',
+      false,
+    );
   }
 
   // ───── Embedding ───────────────────────────────────────────────────────

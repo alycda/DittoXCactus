@@ -36,3 +36,9 @@ flutter:
   assets:
     - assets/seed_notes_a.json
     - assets/seed_notes_b.json
+    # assets/models/ is declared as a directory so the specialist .cact
+    # (produced by tools/specialist_training/convert.sh per U7 of
+    # _docs/plans/002-feat-specialist-training.md) gets bundled when
+    # present. The directory ships with a README placeholder so the
+    # asset declaration succeeds even before convert.sh has run.
+    - assets/models/
