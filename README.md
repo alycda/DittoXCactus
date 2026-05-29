@@ -212,6 +212,22 @@ To rebuild after structural code changes:
 
 ---
 
+## In the spirit of the thing
+
+This started as a weekend hackathon, and it's built like one. PostHog's
+["Great companies are built in hackathons"](https://newsletter.posthog.com/p/great-companies-are-built-in-hackathons)
+names the conditions we tried to hold: protected time away from the roadmap,
+permission to chase an *ambitious, weird idea*, and a mandatory demo at the
+end — because **code wins arguments.**
+
+The weird idea here is *"your knowledge base wants to be a CRDT."* The demo is
+the proof: two phones, WAN off, the answer gets better the moment the second
+device comes into range. Everything in this repo — the holdouts, the
+determinism pre-flight gate, the rehearsed three-beat demo script — exists so
+that claim can be *shown*, live, rather than argued. R1 + R3 + R4 + R7 cleared
+on a Pixel pair on 2026-05-26; that's the arguments-settling moment the post is
+about.
+
 ## How we got here — original brainstorm (2026-05-23)
 
 The four framings that were on the table during the weekend's planning loop.

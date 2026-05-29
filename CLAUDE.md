@@ -6,6 +6,8 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 Flutter hackathon demo pursuing the **"Mesh RAG"** framing of Ditto × Cactus. Two phones each hold a slice of a study-notes corpus; they meet over BLE/Wi-Fi and the vector index merges as a CRDT, so a query on phone A draws on phone B's notes after handshake — with WAN off. Stage 0 (CRDT vector sync + retrieval) + most of Stage 1 (streaming flashcard generation) are implemented; R1 + R3 + R4 + R7 holdouts cleared live on a Pixel pair 2026-05-26. See [README.md](README.md) and [SEED.md](_docs/SEED.md) for the thesis. Other framings (B/C/D) live in [docs/c4/model.c4](docs/c4/model.c4) and the brainstorm at [README](README.md); only A is implemented.
 
+**Ethos (carry it):** this is hackathon work — the demo is the artifact and *code wins arguments* (see README's "In the spirit of the thing"). When a choice is between making the live two-phone demo land and building general infrastructure, favor the demo. Stage 2 (arbitrary file ingestion) and any cloud path stay non-goals for exactly this reason.
+
 The order of authorship — and the validation chain — is: parent brainstorm (`README.md`) → idea doc (`_docs/IDEA-A.md`) → seed (`_docs/SEED.md`) → research brief + 6 deep-research passes + 281-source index (`_docs/research/`) → implementation plan (`_docs/plans/001-feat-mesh-rag-demo.md`) → C4 architecture model (`docs/c4/`) → implementation (`lib/`, `test/`, `tools/`). Each layer cites the substrate beneath it: the plan cites the research index by per-source ID; the C4 model cites the plan; code references the plan's implementation units (U1–U20) and requirement IDs (R1–R11) in commit messages and inline comments.
 
 ## Common tasks here
