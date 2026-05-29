@@ -80,6 +80,33 @@ If a forcing function arrives mid-loop, drop in this order (first to last). Each
 5. Holdout 6a (rehearsed coherent LLM generation) → ship as Stage-0-only, demo becomes "mesh vector sync" — compromises Stage 1; the demo loses the RAG-in-mesh-RAG story but Stage 0 still demonstrates the CRDT thesis.
 6. Holdout 7 (end-to-end offline) — compromises both goals; do not drop unless every option above has been taken.
 
+### Demo-craft acceptance (presentation layer — does not change any gate)
+
+The holdouts above define *passing*. The ones that produce the recorded
+artifact — R2 (pre-flight honesty), R5 (pacing), R6a/R6b (content), R8
+(retelling) — also have to *land*, which is a separate bar from passing. The
+craft rubric for that lives in [`demo-playbook.md`](demo-playbook.md) (24-tip
+distillation of PostHog's "How to demo"), implemented beat-by-beat in
+[`demo-script.md`](demo-script.md). Sign-off layered on top of the technical
+gates, never replacing them:
+
+- **R2** — rehearse/record on a same-model pair so beat 3's "same query, better
+  answer" comparison is defensible; cross-platform parity stays an honest
+  writeup diagnostic, not an on-stage claim.
+- **R5** — models pre-warmed offstage; the 10s budget is credibility, not dead
+  air. Unavoidable waits are narrated, not silent.
+- **R6a/R6b** — each rehearsed query is chosen for an obvious before/after
+  contrast; free-text (6b) is included in the artifact only if it lands clean
+  (a fumbled live query violates the no-apologies rule and is cut silently).
+- **R8** — the closing line and the one-liner ("two phones meet, their corpora
+  compose") are written first and rehearsed verbatim, because that sentence is
+  what survives into the writeup and the reader's retelling.
+
+This layer is additive: it introduces no new exit gate, and the cut order above
+still governs — craft polish is the *first* thing dropped under time pressure,
+never the message or a thesis-bearing constraint (no cloud; R7 never cut;
+R10 iOS+Android still required).
+
 ---
 
 ## Feedback Loop

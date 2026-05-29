@@ -207,6 +207,7 @@ To rebuild after structural code changes:
 - [`_docs/notes/model-quirks.md`](_docs/notes/model-quirks.md) — full quirks catalogue (six on-device-observed Qwen 2.5 behaviors, with mitigations linked to source files).
 - [`_docs/notes/thesis-framings.md`](_docs/notes/thesis-framings.md) — the writeup's four-thread arc (specialists → preference-aware merge → adversarial filtering → generational evolution).
 - [`_docs/demo-script.md`](_docs/demo-script.md) — the rehearsed Holdout 1 three-beat sequence.
+- [`_docs/demo-playbook.md`](_docs/demo-playbook.md) — demo-craft rubric (PostHog "How to demo" distilled) mapped onto the remaining holdouts R2/R5/R6a/R6b/R8.
 - [`_docs/research/`](_docs/research/) — six deep-research passes (3 web-research, 3 hosted) with a 281-source synthesis index.
 - [`docs/c4/model.c4`](docs/c4/model.c4) — Likec4 architecture model (containers + components). `just c4-model` to serve the dashboard at `http://localhost:8000`.
 

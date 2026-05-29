@@ -2,8 +2,24 @@
 
 > Origin: U12 in [plans/001-feat-mesh-rag-demo.md](plans/001-feat-mesh-rag-demo.md).
 > Holdout 1 spec: [`SEED.md` §Holdout Scenarios row 1](SEED.md). Requirements: R1, R7, R10.
+> Demo-craft rubric this script implements: [`demo-playbook.md`](demo-playbook.md).
 
 This script is rehearsable end-to-end. The recorded artifact targets a single take; B-roll for the BLE-pairing moment is permitted **only with on-camera disclosure** per [SEED.md §Real Environment](SEED.md).
+
+## The one thing (say it, then prove it)
+
+Everything below serves a single sentence (playbook Rule "The one thing"):
+
+> **Two phones meet, their knowledge composes, and neither touched the cloud.**
+
+**Open on the shared pain, in "you" framing** — not the architecture: *"You're
+somewhere with no signal, and the answer you need is sitting on a phone in
+someone else's pocket. Watch what happens when those two phones just… meet."*
+That's the whole intro — keep context to 1–2 sentences and get to beat 1.
+
+**No apologies.** Don't open with "this is just a hackathon build" or "the
+model is small, so bear with me." The small on-device model *is* the thesis,
+not a caveat. Say what it does; never pre-lower expectations.
 
 The whole demo runs **with no internet** — Wi-Fi off, cellular off, BLE on (R7 / Holdout 7, the never-cut holdout). Each phone has loaded the app once on a real network before stage so model weights are already on disk.
 
@@ -19,6 +35,9 @@ Tick every box. Anything missed surfaces on stage as a stall.
   Why: Saturn is on phone-b only. Before BLE meet → phone-a retrieval misses entirely or returns a weak inner-planet match. After meet → Saturn's note lands top-1 with a `phone-b` SOURCE chip. The footer `0 from peers` → `1+ from peers` is the visible R1 signal.
 - [ ] Backup query if Saturn doesn't land: `planets` (mixed inner+outer; less dramatic but more robust).
 - [ ] Demo overlay enabled on at least the demonstrator's phone (phone A) via `--dart-define=DEMO_OVERLAY=true`. The overlay shows peer count + note count + last-query latency in the top-right corner. Audience can't easily read it; it's a confidence monitor for the demonstrator and the recording.
+- [ ] **Models pre-warmed (R5 pacing).** Both phones have completed one full boot → first answer *offstage* so the cold-load cost (embed + LLM init) is already paid. The 10s R5 budget is for the demo's credibility; don't spend it on camera. Stage the **slower** device as phone B (its notes sync *in*) so the warm phone A owns the interactive path.
+- [ ] **Technical setup (playbook Rule 8 / Tip 14):** notifications + Do-Not-Disturb on **both** phones and the recording machine; phones silenced; screen brightness up; any projector/capture tested at the real resolution. If screen-mirroring, bump the mirror zoom so the mesh pill and footer are camera-legible from the back of the room.
+- [ ] **Backups staged:** the rehearsal B-roll of a clean pairing moment is on the recording machine and cued (F4), and a screenshot of a good post-meet card stack is saved — so a stall never becomes dead air.
 
 ## Three beats
 
@@ -72,6 +91,17 @@ If `ensureEmbeddings` hasn't run on the synced notes by the time you regenerate 
 - Latest generation sits at the top of the history; older generations stay below — the audience can scroll down to verify it was different before.
 
 **Closing line:** *"Two phones met, their knowledge composed, and neither used the cloud."*
+
+Deliver it with **descending intonation and a beat of silence** — that's the
+signal the audience can clap (playbook Rule 7 / Tip 13). Don't trail off into
+"...so, yeah, that's basically it." Land the sentence; it's the same one-liner
+R8 (narrative pickup) is won or lost on.
+
+**Call to action (Tip 4):** immediately follow with one actionable thing —
+*"The corpora are in `assets/`, the repo's on screen, clone it and pair your
+own two phones."* A QR to the repo on the final frame does this without
+spoken words. The room should leave knowing the one sentence **and** what to do
+with it.
 
 ---
 

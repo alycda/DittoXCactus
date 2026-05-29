@@ -37,6 +37,13 @@ Carried verbatim from `_docs/SEED.md` Holdout Scenarios — each is a gate the l
 - **R10 (heterogeneous mobile).** iOS + Android both required (iOS + macOS does not satisfy the mobile-edge claim).
 - **R11 (Stage 0 ship-survivability).** Under the cut order in SEED.md, Stage 0 (CRDT vector sync + retrieval, no LLM generation) is a valid ship if the loop runs out of time before Stage 1's R6a clears. Holdout 7 (offline) must never be cut.
 
+**Demo-craft execution (R2/R5/R6a/R6b/R8).** Passing these gates and *demoing*
+them well are separate bars. The presentation-layer criteria — pacing,
+before/after framing, no-apologies delivery, the rehearsed one-liner that R8
+rides on — live in [`../demo-playbook.md`](../demo-playbook.md) and are
+implemented in [`../demo-script.md`](../demo-script.md). That layer is additive:
+it adds no exit gate and weakens no thesis-bearing constraint.
+
 **Origin actors:** demonstrator (single human running the demo); audience (passive viewer in Stage 0, query author in R6b stretch); reviewer (writeup pre-publish reader, gates R8).
 **Origin flows:** F1 = corpus authorship + preload; F2 = local query → embed → retrieve → answer (Stage 0); F3 = same + buffered LLM generation (Stage 1); F4 = airplane-mode + BLE-pair → mesh sync → combined-corpus re-query (R1); F5 = recorded artifact production.
 **Origin acceptance examples:** AE1 (covers R1, R4) = "Phone A queries 'Jupiter's moons', returns A's two notes; airplane on, BT on, B in range; A re-queries, returns A's two + B's one, citing all three IDs." AE2 (covers R2) = "identical fixture string embedded on both phones via same GGUF + Q4 + CPU backend yields top-k order match ≥95% on 20 rehearsed queries." AE3 (covers R3) = "re-meet with no edits → tuple count unchanged, top-k for fixture-query unchanged." AE4 (covers R5) = "cold start on slowest target → first answer ≤ 10s wall-clock." AE5 (covers R6a) = "rehearsed query 'what do we know about Jupiter's moons?' produces a buffered paragraph that names the note IDs A2 and B3 inline."
