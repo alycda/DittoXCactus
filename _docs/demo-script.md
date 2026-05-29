@@ -99,9 +99,11 @@ R8 (narrative pickup) is won or lost on.
 
 **Call to action (Tip 4):** immediately follow with one actionable thing —
 *"The corpora are in `assets/`, the repo's on screen, clone it and pair your
-own two phones."* A QR to the repo on the final frame does this without
-spoken words. The room should leave knowing the one sentence **and** what to do
-with it.
+own two phones."* Put the repo QR on the final frame so it works without spoken
+words — [`slides/media/repo-qr.png`](../slides/media/repo-qr.png) (camera/projector
+legible; scalable [`.svg`](../slides/media/repo-qr.svg) for the deck) encodes
+`https://github.com/alycda/DittoXCactus`. The room should leave knowing the one
+sentence **and** what to do with it.
 
 ---
 
