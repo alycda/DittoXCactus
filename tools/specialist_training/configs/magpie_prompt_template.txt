@@ -17,7 +17,7 @@ Produce ONE JSON object with these exact keys, no other text, no Markdown code f
 
 Constraints:
 - Pick the topic from any reasonable academic domain EXCEPT astronomy/planets (the demo's seed corpus already covers that — we need disjoint training data).
-- Good buckets: biology, chemistry, physics, earth science, history, geography, literature, math.
+- Good buckets: programming languages (Rust, Python, SQL, JavaScript, C, Lua, shell), CS fundamentals (algorithms, data structures, complexity), and adjacent technical topics (databases, version control, build systems, networking).
 - note_a and note_b should be DIFFERENT in phrasing and at least partly overlapping in content (otherwise there's nothing to merge).
 - The merged note must be a strict superset of unique claims, not a creative re-imagining.
 - No first-person voice ("I think", "in my opinion"). No emoji. No code blocks. No Markdown.
