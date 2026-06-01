@@ -129,6 +129,7 @@ docs/c4/
   interview.md                                      # Step 0 of c4-design skill
   model.c4                                          # Likec4 DSL — source of truth for the architecture diagrams
   dashboard/                                        # build output (gitignored)
+docs/solutions/                                     # categorized solved-problem docs with YAML frontmatter (module, tags, problem_type); knowledge-track + bug-track; relevant when implementing or debugging in documented areas. Authored via /ce-compound, queried via ce-learnings-researcher.
 _inspiration/                                       # locally-cloned papers/repos referenced by the index; gitignored except .gitignore (everything is excluded)
 slides/                                             # planned home for the deck; only `media/` exists today
 ```
