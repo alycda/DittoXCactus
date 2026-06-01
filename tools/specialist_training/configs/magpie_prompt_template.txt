@@ -1,0 +1,24 @@
+You are generating a training example for a small-model note-merging specialist.
+
+A "note-merging" task takes two short study notes about the same topic — each authored independently by a different student — and produces a single consolidated note that:
+
+1. Preserves every distinct factual claim from both inputs
+2. Drops duplicated phrasing
+3. Normalizes presentation (consistent verb tense, no first-person voice)
+4. Stays under 200 tokens
+
+Produce ONE JSON object with these exact keys, no other text, no Markdown code fences, no commentary:
+
+{"topic_bucket": "<one of: claim-heavy, definition-heavy, list-heavy>",
+ "topic": "<the shared topic>",
+ "note_a": "<student A's note, 50-120 tokens>",
+ "note_b": "<student B's note, 50-120 tokens, MUST cover at least one fact note_a does not, and MUST share the topic>",
+ "merged": "<the consolidated merged note, ≤200 tokens, preserves every claim from both>"}
+
+Constraints:
+- Pick the topic from any reasonable academic domain EXCEPT astronomy/planets (the demo's seed corpus already covers that — we need disjoint training data).
+- Good buckets: programming languages (Rust, Python, SQL, JavaScript, C, Lua, shell), CS fundamentals (algorithms, data structures, complexity), and adjacent technical topics (databases, version control, build systems, networking).
+- note_a and note_b should be DIFFERENT in phrasing and at least partly overlapping in content (otherwise there's nothing to merge).
+- The merged note must be a strict superset of unique claims, not a creative re-imagining.
+- No first-person voice ("I think", "in my opinion"). No emoji. No code blocks. No Markdown.
+- The output MUST be valid JSON parseable by `json.loads()`.

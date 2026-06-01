@@ -1,0 +1,44 @@
+# Specialist training pipeline dependencies.
+# Tested with Python 3.11+ on macOS (Apple Silicon) and Linux x86_64.
+#
+# Install in a fresh venv:
+#   python3 -m venv .venv && source .venv/bin/activate
+#   pip install -r tools/specialist_training/requirements.txt
+#
+# Training itself runs on Oxen.ai's Marimo notebook + A10G — the Unsloth
+# install on the remote host is provisioned by Oxen, not by this file.
+# These deps are for the LOCAL author/filter/eval/convert pipeline.
+
+# Synthetic data generation + filter (U2)
+openai>=1.50.0                  # used for OpenAI-compatible endpoints (Together AI exposes one)
+together>=1.3.0                 # Together AI SDK (alternative to OpenAI-compat)
+anthropic>=0.40.0               # cross-family judge for filter + eval
+tenacity>=8.5.0                 # retry/backoff for endpoint failures
+tqdm>=4.66.0                    # progress bars
+sentence-transformers>=3.0.0    # cosine-dedup over merged-note embeddings
+numpy>=1.26.0
+
+# Training local-driver shape (U4). The actual training runs on Oxen.ai;
+# this is the importable shape so the script type-checks and can be
+# smoke-tested locally on CPU before upload.
+transformers>=4.45.0
+datasets>=3.0.0
+peft>=0.13.0
+accelerate>=1.0.0
+# Unsloth is installed in the Oxen Marimo notebook, not locally.
+# Add a local install if you want to smoke-test the script on a CUDA
+# workstation (Linux only; M-series Macs use MLX instead):
+#   pip install "unsloth[colab-new] @ git+https://github.com/unslothai/unsloth.git"
+
+# Eval (U5)
+deepeval>=2.0.0                 # pytest-shaped deterministic assertions + RAGAS adapter
+ragas>=0.2.0                    # faithfulness scoring
+pytest>=8.0.0
+
+# Conversion + Cactus build (U6) — Cactus CLI itself is installed separately
+# per Cactus's own install instructions; nothing pip-installable for that.
+# Oxen CLI is also installed separately (brew install oxen or `pip install oxenai`):
+oxenai>=0.20.0                  # Python bindings to Oxen — used by convert.sh's `oxen pull` step
+
+# Optional: notebook-driven local prototyping
+ipython>=8.20.0

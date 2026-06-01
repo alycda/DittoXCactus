@@ -1,0 +1,5 @@
+# Ignore per-run eval JSONL outputs; keep summary.md (the committed
+# A/B table the writeup cites).
+*
+!.gitignore
+!summary.md

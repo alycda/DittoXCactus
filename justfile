@@ -332,3 +332,56 @@ bake-seeds-pull-b:
     fi
     mv "$TMP" assets/seed_notes_b.json
     echo "✓ assets/seed_notes_b.json updated. Diff with git diff."
+
+# ─── Specialist training pipeline (tools/specialist_training/) ─────────────
+#
+# End-to-end Apache-2.0 pipeline for the writeup's specialists thread.
+# Plan: _docs/plans/002-feat-specialist-training.md
+# Recipe: _docs/research-training/recipe.md
+# Day-0/1/2 path: tools/specialist_training/README.md
+#
+# Most recipes need API keys in .env:
+#   TOGETHER_API_KEY    (or any OpenAI-compat endpoint for the Qwen-72B teacher)
+#   ANTHROPIC_API_KEY   (cross-family judge LLM for filter + eval)
+
+# Magpie-style synthetic data generation against Qwen-72B teacher.
+# Default: 2000 candidates, written to data/synthetic_raw.jsonl.
+[working-directory: 'tools/specialist_training']
+specialist-generate LIMIT="2000":
+    python3 generate_synthetic.py --limit {{LIMIT}} --output data/synthetic_raw.jsonl
+
+# Filter raw → clean: cosine-dedup + judge-LLM completeness + length cap +
+# stratification. Reduces ~2000 → ~1500.
+[working-directory: 'tools/specialist_training']
+specialist-filter:
+    python3 filter_synthetic.py --input data/synthetic_raw.jsonl --output data/synthetic_filtered.jsonl
+
+# Stage training artifacts. The actual training runs in an Oxen Marimo
+# notebook on a remote A10G; this recipe just verifies the bundle is ready
+# to upload.
+[working-directory: 'tools/specialist_training']
+specialist-train:
+    @echo "Local stage: training runs on Oxen.ai. Verifying artifacts…"
+    @test -f train.py && test -f train_config.yaml && test -f data/synthetic_filtered.jsonl
+    @echo "✓ train.py + train_config.yaml + data/synthetic_filtered.jsonl ready."
+    @echo "Next: upload to Oxen.ai, run via Marimo notebook, then \`oxen pull\` the adapter."
+
+# Three-layer eval (deepeval + judge-LLM + cosine) on the 200-pair holdout.
+# Produces eval_results/summary.md.
+[working-directory: 'tools/specialist_training']
+specialist-eval:
+    python3 eval.py --holdout data/holdout_200.jsonl --output eval_results/summary.md
+
+# Convert + Cactus-build. Requires `cactus` CLI installed and the trained
+# adapter pulled into ./adapter/.
+[working-directory: 'tools/specialist_training']
+specialist-convert:
+    bash convert.sh
+
+# Run the demo on DEVICE with USE_SPECIALIST=true. The merged .cact is loaded
+# from assets/models/qwen3-1.7-merger.cact (bundled via pubspec.yaml).
+app-run-a-specialist DEVICE:
+    flutter run -d {{DEVICE}} \
+        --dart-define=PHONE_ROLE=a \
+        --dart-define=DEMO_OVERLAY=true \
+        --dart-define=USE_SPECIALIST=true

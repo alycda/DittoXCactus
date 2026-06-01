@@ -33,11 +33,28 @@ just harness-check-baseline <baseline-json> <device-json>
 # Architecture / observability
 just c4-model                           # prebuilt Likec4 dashboard at :8000
 just understand                         # local knowledge-graph dashboard
+
+# Specialist training pipeline (future-work, opt-in — see plan 002)
+just app-run-a-specialist <device-id>   # boot demo with USE_SPECIALIST=true
+just specialist-generate                # Magpie synthetic data from Qwen-72B teacher
+just specialist-filter                  # dedup + judge-LLM completeness + stratify
+just specialist-train                   # verify Oxen.ai upload bundle (training runs remote)
+just specialist-eval                    # three-layer A/B harness → eval_results/summary.md
+just specialist-convert                 # cactus convert --lora → assets/models/*.cact
 ```
 
 The Likec4 dashboard at `docs/c4/dashboard/` is a build artifact (gitignored). Regenerate with `npx likec4@latest build docs/c4 -o docs/c4/dashboard`; validate with `npx @likec4/cli validate docs/c4/model.c4`. The knowledge-graph dashboard is published to GitHub Pages — see "Knowledge-graph dashboard" below.
 
 Version control is **jj-first** (this is a colocated jj+git repo: both `.jj/` and `.git/` exist). The repo-local memory entries on jj are load-bearing — never `jj edit <ancestor>`, use the `jj new --insert-after/before` + `jj restore --from @ --to <new>` pattern for retroactive edits. Plain `git` commands are safe for read operations (`git log`, `git status`) but mutations should go through jj. See user memory `feedback_jj_*` entries.
+
+## Flutter agent tooling (strongly recommended)
+
+When working on Flutter code in this repo, agents should reach for Flutter's first-party AI tooling before improvising:
+
+- **Flutter MCP server** — [docs.flutter.dev/ai/mcp-server](https://docs.flutter.dev/ai/mcp-server). Gives agents a structured surface over `pub`, `flutter`, and `dart` toolchain operations (package search, version resolution, project diagnostics, widget tree inspection). Strongly preferred over scraping `flutter --help` or guessing package versions. Install per the Flutter docs; once configured, the MCP tools surface in `/mcp`.
+- **Flutter skills** — [github.com/flutter/skills](https://github.com/flutter/skills). Curated, task-shaped agent skills authored by the Flutter team (widget tests, integration tests, layout fixes, localization, responsive layouts, etc.). Several of these are already loaded in this session under `flutter-*` skill names. When the task matches a published Flutter skill, invoke it via the harness rather than reinventing the recipe. Treat the upstream repo as canonical — the loaded skills track what's there.
+
+Both are Flutter-team-authored and version-aware; agents that bypass them and improvise Flutter recipes tend to drift from current best practice fast (Flutter releases are fast-moving). When a task is Flutter-shaped, **check these first.**
 
 ## Code architecture
 
@@ -60,6 +77,21 @@ The holdouts are pure-Dart math + a thin runner:
 
 **Small-model quirks the pipeline absorbs** — every load-bearing service is wrapped in tests that pin a real failure mode. Before changing prompts, sampling params, or the parser, read [_docs/notes/model-quirks.md](_docs/notes/model-quirks.md) (Qwen 2.5 1.7B behaviors: bilingual `<think>` drift, `\boxed{}` math-mode, `<think>`-despite-ban, verbose-answer budget exhaustion, off-topic padding, SOURCE omission under tight budgets, format-collapse-to-prose at n≥3) and [_docs/notes/cactus-sdk-quirks.md](_docs/notes/cactus-sdk-quirks.md) (Cactus 1.3.0 SDK seams: `Supabase.getModel` fires regardless of telemetry flag, UTF-8 boundary errors on Chinese drift). Per user memory `feedback_structural_gates`: gate on inputs at the service layer (cosine threshold, grounding gate, title-case normalization, stop sequences), not on outputs at the stream.
 
+## Specialist training (future-work, opt-in)
+
+The writeup's specialists thread (`project_writeup_thesis_arc`, `project_specialist_small_models_thesis` user memories) ships as a buildable artifact at [tools/specialist_training/](tools/specialist_training/), separate from the demo's Stage 0/1 hot path. **Disabled by default** — `USE_SPECIALIST=false` is the documented default, and the Stage 0/1 demo runs with the generalist `qwen3-1.7` base unchanged.
+
+The pipeline implements [_docs/plans/002-feat-specialist-training.md](_docs/plans/002-feat-specialist-training.md) — itself derived from the opinionated synthesis at [_docs/research-training/recipe.md](_docs/research-training/recipe.md). Day-0/1/2 build path + holdout discipline are in [tools/specialist_training/README.md](tools/specialist_training/README.md). The 85-row eval holdout at [tools/specialist_training/data/holdout_200.jsonl](tools/specialist_training/data/holdout_200.jsonl) is derived from [ad-si/Rust-Flashcards](https://github.com/ad-si/Rust-Flashcards) (cloned to `_inspiration/ad-si/`, gitignored) and is **set-coverage verifiable** — each row's `source_cards_a / source_cards_b` are greppable in the source `cards.md` to confirm every fact lands in `merged`.
+
+Load-bearing constraints (carried verbatim from the recipe — *do not change without re-reading research-training/index/open-questions.md*):
+
+- **Cactus 1.3.0 does NOT support runtime LoRA adapter loading.** The only deploy path is `cactus convert <base> <out> --lora <adapter>` producing a merged `.cact` blob. Cactus v1 (Dec 2025) moved off GGUF and stopped wrapping llama.cpp. `lib/services/cactus_service.dart` stages the bundled `.cact` from the Flutter asset bundle into `<documents>/models/<slug>/<slug>.cact` so Cactus's `initializeModel` finds it locally without a download. (Apple Foundation Models + MediaPipe LLM DO support runtime LoRA — Cactus is structurally behind, which is the writeup's specialists-thread framing.)
+- **License posture is Apache-2.0 end-to-end.** Base (Qwen 3 1.7B), teacher (Qwen 2.5-72B-Instruct via Together AI), trainer (Unsloth), eval harness (deepeval + RAGAS), holdout corpus (Rust-Flashcards MIT). Cactus runtime is source-available with a $2M revenue gate — disclosed in the `.cact` NOTICE produced by `convert.sh`.
+- **Cross-family judge is mandatory.** Eval at `tools/specialist_training/eval.py` uses Claude 3.5 Sonnet as the judge — NEVER Qwen-as-judge (self-enhancement bias). Bidirectional ordering + verbosity-penalty rubric.
+- **`assets/models/*.cact` is gitignored.** The merged blob is ~1.0–1.5 GB at Q4; built by `convert.sh`, never committed. A README placeholder lives in `assets/models/` so the `pubspec.yaml` asset-directory declaration succeeds in fresh checkouts.
+
+Actually running the pipeline needs `TOGETHER_API_KEY` + `ANTHROPIC_API_KEY` + Oxen.ai signup + the `cactus` CLI + ~$5 spend + an A10G GPU. The code lives in `tools/specialist_training/` and is wired through the justfile; runtime is the user's call.
+
 ## Knowledge-graph dashboard
 
 The repo ships an interactive knowledge graph at [.understand-anything/knowledge-graph.json](.understand-anything/knowledge-graph.json) — 202 nodes, 246 edges, 10 architectural layers, 12-step guided tour. Published to **[alycda.github.io/DittoXCactus](https://alycda.github.io/DittoXCactus/)** via [.github/workflows/pages.yml](.github/workflows/pages.yml) on every change to the graph JSON.
@@ -75,10 +107,13 @@ _docs/
   SEED.md                          # validation harness, holdouts 1–8, cut order, threat-model bound
   WEB-PROMPT.md                    # prompt used to drive the hosted deep-research passes
   RESEARCH-BRIEF.md                # task list handed to deep-research workers
-  plans/001-feat-mesh-rag-demo.md  # implementation plan; cites research/index/ by per-source ID
+  plans/001-feat-mesh-rag-demo.md          # Stage 0/1 demo plan; cites research/index/ by per-source ID
+  plans/002-feat-specialist-training.md    # specialists future-work arc; cites research-training/recipe.md
+  RESEARCH-BRIEF-training.md               # brief handed to the small-model post-training research pass
+  WEB-PROMPT-training.md                   # hosted-DR prompt for the same brief
   research/
-    {claude,codex,gemini}.md                        # 3 Mode-B web-research worker outputs
-    {claude,chatgpt,gemini}-deep-research.md        # 3 hosted Deep Research passes
+    {claude,codex,gemini}.md                        # 3 Mode-B web-research worker outputs (Stage 0/1)
+    {claude,chatgpt,gemini}-deep-research.md        # 3 hosted Deep Research passes (Stage 0/1)
     downloads.yaml                                  # canonical manifest of downloaded materials
     index/                                          # Reduce-phase synthesis of the above
       README.md                                     # entry point for downstream agents
@@ -86,6 +121,12 @@ _docs/
       clusters.md by-topic.md by-tag.md
       cross-references.md open-questions.md
       _per_source/                                  # 281 per-source summaries (gitignored bulk; only .gitignore is tracked)
+  research-training/                                # parallel research pass for the specialists thread (plan 002)
+    {theory,tooling,industry}.md                    # 3 Claude-only inline worker outputs
+    {claude,chatgpt,gemini}-deep-research.md        # 3 hosted Deep Research passes
+    downloads.yaml                                  # 258-URL manifest
+    recipe.md                                       # opinionated end-to-end specialist build recipe
+    index/                                          # Reduce-phase synthesis (top-N, clusters, open-questions)
 docs/c4/
   interview.md                                      # Step 0 of c4-design skill
   model.c4                                          # Likec4 DSL — source of truth for the architecture diagrams
