@@ -61,6 +61,28 @@ harness-check-baseline-ci BASELINE DEVICE:
 app-test:
     flutter test
 
+# Run integration smoke tests on a connected DEVICE (single-device, issue #3).
+# Runs integration_test/smoke_test.dart with all three dart-defines so the
+# full-boot group can execute (boot completes → QueryScreen renders).
+# Requires DITTO_APP_ID + DITTO_LICENSE from .env and a device already
+# booted into a clean state (run `just wipe-ditto <device>` first).
+app-integration DEVICE:
+    flutter test integration_test/smoke_test.dart -d {{DEVICE}} \
+      --dart-define=DITTO_APP_ID="$DITTO_APP_ID" \
+      --dart-define=DITTO_LICENSE="$DITTO_LICENSE" \
+      --dart-define=PHONE_ROLE=a
+
+# Build the APK pair needed for Firebase Test Lab (issue #3).
+# Outputs:
+#   build/app/outputs/apk/debug/app-debug.apk          (main app)
+#   build/app/outputs/apk/androidTest/debug/app-debug-androidTest.apk  (test runner)
+# PHONE_ROLE=a is baked in; no Ditto credentials so the 'no-credentials
+# path' group runs. See .github/workflows/firebase-test-lab.yml for the
+# full Firebase Test Lab invocation.
+app-build-ftl-apks:
+    flutter build apk --debug --dart-define=PHONE_ROLE=a
+    cd android && ./gradlew app:assembleAndroidTest
+
 # Static analyze the main app (excludes _inspiration/ and the harness).
 app-analyze:
     flutter analyze
