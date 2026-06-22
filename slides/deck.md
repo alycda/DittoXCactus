@@ -251,6 +251,9 @@ grow-only union. That's the stepping stone, not the destination.
 **github.com/alycda/DittoXCactus**
 
 <!-- alignment: center -->
+_Build notes — how I ran this as an AI dark factory:_ hackmd.io/@alyda/r10BQw8zGg
+
+<!-- alignment: center -->
 Alyssa Evans · @She's Fast · Staff Engineer @ Ditto
 
 <!-- alignment: center -->
