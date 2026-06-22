@@ -20,9 +20,17 @@ land. It's true and it's the whole brand.)*
 things on the internet, depending how you look at it."
 
 *(Pause.)* Set the credential lightly: staff engineer at Ditto, the Rust core
-behind every SDK over C FFI — **that's the day job, not this talk.** This is a
-weekend build. I joined Ditto last year and I've been learning CRDTs in public,
-and this is me failing in public at the edge of that.
+behind every SDK over C FFI — **that's the day job, not this talk.** I joined
+Ditto last year and I've been learning CRDTs in public, and this is me failing
+in public at the edge of that.
+
+*(The dark-factory confession — say it plainly; it earns trust AND sets up the
+thesis.)* "I'll be honest about how this got made — I didn't hand-write most of
+it. An agent loop did, and wrote the tests too. I was the human in the loop for
+the one thing a cloud loop can't fake: two real phones, real Bluetooth, in the
+same room." *(Beat.)* "Which is the whole thesis — you can't simulate physical
+proximity. So here I am, holding two phones." _(Issue #3 is the "why I'm still
+the device lab" detail — only say the number if someone asks.)_
 
 *(Wait for the bullet — the one sentence.)* Read it slowly: "Two phones meet,
 their knowledge composes, and neither touched the cloud." **No apologies** — I
@@ -44,8 +52,10 @@ it for most things. The point is *context, not purity*: there are three
 specific places it can't follow you.
 
 *(Reveal the three one at a time. Point at #2 — "offline-impossible" — and make
-it concrete: "the answer you need is on a phone in someone else's pocket, two
-feet away, and the cloud is the long way around.")*
+it concrete and real: "a conference where the wifi has buckled under 300
+laptops, and the note you need is on the machine of the person sitting next to
+you. The cloud is the long way around a two-foot gap." This is the actual use
+case I want to test on real bad-network data next.)*
 
 Don't belabor #3 (privacy). Name it, move on — the room already feels it.
 *(Transition: "Let me make #1 numerical, because that's the one people fight
@@ -109,11 +119,12 @@ boxed an answer in LaTeX, padded off-topic cards when retrieval was thin. The
 lesson, said plainly: **fix the input to the model, don't bolt a detector onto
 the output stream.**
 
-*(AI-transparency aside — only if it fits the room's energy:)* "Yes, I used
-Claude for the tedious parts — test boilerplate, a parser scaffold, the
-makefile syntax I'm always rusty on — then reviewed and kept it. The glibc fix
-is written down in `CLAUDE.md` because I will absolutely forget how I fixed
-that." *(Transition: "Enough architecture. Watch it happen.")*
+*(AI-transparency aside — lean in, this is the honest part:)* "I keep saying 'I
+built this' — I mean I *directed* it. An agent loop wrote most of the code and
+the tests; I reviewed, corrected, and ran it on real hardware. The parts I
+couldn't hand off are exactly the parts a cloud loop can't reach yet — two
+phones, real Bluetooth, same room (issue #3). I'm the device lab until that's
+automated." *(Transition: "Enough architecture. Watch it happen.")*
 
 ---
 
@@ -142,20 +153,24 @@ on-camera disclosure. Never fake the state change silently.)*
 
 ## Slide 7 — What this is, and what it isn't
 
-The integrity slide. This is where I earn the rest. *(Slow down here.)*
+The integrity slide — and now it's a *win*, not a confession. *(Slow down.)*
 
-Lead with what it **is** so "isn't" doesn't read as apology. Then the three
-honest costs — and I name the determinism numbers *exactly*: 20/20 same
-hardware, 17/20 cross-platform. "I measured it; I'm not going to round 0.85 up
-to a pass." *(The competitive streak is real but this is where I'd rather be
-trusted than impressive.)*
+The determinism arc is the whole "measure, don't assume" ethic in one story:
+"Cross-platform, the embeddings drifted — 17 of 20, 0.85. I didn't wave it off
+as good-enough. I dug in: the chat-tuned model was the problem. Swapped to the
+dedicated similarity-tuned embedder — `qwen3-0.6-embed` — re-measured: 20 of 20,
+1.0000. Then locked the baseline so the next regression fails CI before it ever
+reaches a phone." *(This is the competitive streak pointed at the right target:
+I like winning, and the win was refusing to round 0.85 up.)*
 
-Threat model: say it in one breath — no auth, no signatures, no ACL, anyone in
-range is trusted. Stage 2 is a non-goal; five notes a side, curated.
+Then the genuine isn'ts, fast: threat model wide open (no auth, no signatures,
+no ACL — anyone in range is trusted). A small generalist can't merge recipes — I
+tried; it can't — which is why the demo is space facts and why slide 8's answer
+is *specialists*. Stage 2 (ingest arbitrary files) is a non-goal.
 
-*(Land the bullet:)* "Nothing is wasted when you document the messy middle."
-*(Pause. This is the value, not a throwaway. Then transition up, not down:)*
-"And the messy middle is exactly where the interesting work is."
+*(Land it:)* "Nothing is wasted when you document the messy middle." *(Pause —
+this is the value, not a throwaway. Transition up, not down:)* "And the messy
+middle is where the interesting work is."
 
 ---
 
@@ -165,6 +180,12 @@ The arc that makes a weekend build feel like a research direction. Keep the
 four threads crisp — one sentence each, don't editorialize mid-list:
 **specialists → preference-aware merge → adversarial filtering → generational
 evolution.** *(Lift verbatim; this structure is load-bearing for the writeup.)*
+
+Thread 1 has a receipt: the *original* corpus was recipes, and a small
+generalist genuinely can't merge them coherently — I validated that, then
+switched the demo to space facts. Don't bury that as a failure; it's the
+evidence *for* specialists. "The mesh doesn't want a bigger generalist. It wants
+a sous-chef model that only knows soup."
 
 The avocado example on thread 2 always gets a laugh — use it, it makes
 "preference-weighted retrieval over a grow-only CRDT" land without the jargon.
@@ -190,11 +211,15 @@ me."
   claim isn't "never use the cloud," it's "composition between proximate
   devices is a topology the cloud can't copy — the dissolution when they leave
   range *is* the point."
-- **"0.85 cross-platform — isn't that broken?"** → For a same-model demo pair,
-  no. For a heterogeneous mesh, it's the open problem — and it's literally
-  thread 3, adversarial/preference-aware merge absorbing small numerical drift.
-- **"Did you really build this in a weekend?"** → The demo, yes. The four
-  threads are the year of work it points at. *(I like winning, but I like being
-  honest about scope more.)*
+- **"Wasn't cross-platform determinism only 0.85?"** → It was — with the
+  chat-tuned embedder. Diagnosed and fixed: dedicated similarity-tuned slug,
+  now 20/20, 1.0000, with a locked CI baseline. The residual question is
+  heterogeneity *at scale* — more SoCs, more models — and that's what threads 2
+  and 3 (preference-aware + adversarial merge) are there to absorb.
+- **"Did you really build this in a weekend?"** → I *directed* it in a weekend.
+  It's a dark factory — agents wrote most of the code and the tests; I reviewed
+  and tested on real devices. The four threads aren't built; they're the
+  direction this points. *(I like winning, but I like being honest about scope
+  more.)*
 - **"Is this a Ditto product?"** → No — personal build. Ditto's the day job;
   this is me learning its problem space out loud.

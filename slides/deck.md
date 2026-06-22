@@ -21,17 +21,20 @@ joined late last year and I've been learning **CRDTs in public** ever since.
 
 <!-- pause -->
 
-This is a weekend build. It pairs Ditto with **Cactus** (on-device LLM), and
-it argues one sentence:
+This is a weekend build pairing Ditto with **Cactus** (on-device LLM). And I'll
+be honest about how it got made: it's a **dark factory** — an agent loop wrote
+most of the code *and* the tests. I was the human in the loop for the one thing
+a cloud loop can't fake yet — **two real phones meeting over Bluetooth**
+(issue #3). Which, it turns out, *is* the whole thesis:
 
 # Two phones meet, their knowledge composes, and neither touched the cloud.
 
 <!-- pause -->
 
-> Fair warning: I race motorcycles, I have a need for speed, so if I start
-> talking too fast — sorry in advance. _(This deck is a markdown file in my
-> terminal. It's `presenterm`. I liked it enough to send them a PR. Do more
-> with less.)_
+> You can't simulate physical proximity. So here I am, holding two phones.
+> _(Need-for-speed warning: I race motorcycles. If I talk too fast, sorry in
+> advance. And yes — this deck is just markdown in my terminal: `presenterm`.
+> I liked it enough to send them a PR. Do more with less.)_
 
 <!-- end_slide -->
 
@@ -49,8 +52,9 @@ sit on someone else's server. That buys you three failure modes:
 
 <!-- pause -->
 
-2. **Offline-impossible** — no signal, no answer. The thing you need is on a
-   phone in someone's pocket two feet away, and you can't reach it.
+2. **Offline-impossible** — no signal, no answer. You're at a conference, the
+   wifi is garbage, and the note you need is on the laptop of the person next to
+   you. The cloud is the long way around a two-foot gap.
 
 <!-- pause -->
 
@@ -114,7 +118,7 @@ class StudyNote {
   String   contributor; // "phone-b"
   String   body;        // the note text the audience can read
   List<String> tags;
-  List<double> embedding; // qwen3-0.6, identical model on every device
+  List<double> embedding; // qwen3-0.6-embed — identical model on every device
   DateTime createdAt;
 }
 ```
@@ -130,10 +134,9 @@ _CRDT theory: Shapiro, Preguiça, Baquero, Zawirski — `paper-1106.4374`._
    ┌────────────────┐               ┌────────────────┐
    │  Flashcards UI │               │  Flashcards UI │   Flutter
    ├────────────────┤               ├────────────────┤
-   │     Cactus     │               │     Cactus     │   on-device
-   │  qwen3-0.6     │  embed + gen  │  qwen3-0.6     │   embed + LLM
-   │  qwen3-1.7     │   (WAN off)   │  qwen3-1.7     │   (no cloud)
-   ├────────────────┤               ├────────────────┤
+   │     Cactus     │  embed + gen  │     Cactus     │   on-device LLM:
+   │  (on-device)   │   (WAN off)   │  (on-device)   │   embed: qwen3-0.6-embed
+   ├────────────────┤               ├────────────────┤   gen:   qwen3-1.7
    │   Ditto store  │               │   Ditto store  │   CRDT G-Set
    │  (Rust core,   │               │  (Rust core,   │   — my day job:
    │    C FFI)      │               │    C FFI)      │   FFI all the way down
@@ -181,24 +184,27 @@ source chip**.
 
 <!-- end_slide -->
 
-# What this is — and what it isn't
+# What I measured — and what it isn't
 
-**Is:** Stage 0 (CRDT vector sync + retrieval) **+** Stage 1 (streaming
-flashcard generation). Fully on-device. Genuinely offline.
+**Measure, don't assume.** Cross-platform, the embeddings *drifted*: iPhone ↔
+Pixel landed at **17/20 — 0.85**. I didn't round that up to a pass.
+
+- Diagnosed it: the **chat-tuned** embedding model was the culprit.
+- Swapped to the dedicated similarity-tuned slug (**`qwen3-0.6-embed`**),
+  re-measured: **20/20 — 1.0000.** Zero disagreements.
+- Locked the baseline, so the next regression **fails CI before it reaches a
+  phone.**
 
 <!-- pause -->
 
-**Isn't** — and I measured the gaps instead of hiding them:
+**What it _isn't_** — named, not hidden:
 
-- **Cross-platform determinism isn't free.** Same hardware: **20/20, cosine
-  1.0000**, bit-perfect. iPhone ↔ Pixel: **17/20 (0.85)** — a diagnostic band,
-  not a pass. Two reorderings and one top-1 swap between semantic twins. _(It's
-  not a bug. It's the future-work seam — slide 8.)_
 - **Threat model is wide open.** No peer auth, no provenance signatures, no
-  corpus ACL. Anyone in BLE range is trusted. Fine for a demo; named, not
-  hidden.
-- **Stage 2 — ingesting arbitrary files — is an explicit non-goal.** Five
-  curated notes a side. I'm not going to pretend it scales tonight.
+  corpus ACL. Anyone in BLE range is trusted.
+- **A small generalist can't merge recipes.** I tried — it can't. That's why
+  the demo is space facts, and why slide 8's answer is *specialists*.
+- **Stage 2 (ingesting arbitrary files) is a non-goal.** Five curated notes a
+  side; I'm not going to pretend it scales tonight.
 
 <!-- pause -->
 
@@ -213,9 +219,10 @@ grow-only union. That's the stepping stone, not the destination.
 
 <!-- pause -->
 
-- **1 · Specialists, not generalists.** Not one model that knows everything — a
-  *bag of small domain experts*, one per device. When phones meet, **expertise
-  composes as freely as data does.**
+- **1 · Specialists, not generalists.** Stage 0's generalist couldn't merge
+  recipes — too small. The fix isn't a *bigger* generalist; it's a *bag of small
+  domain experts*, one per device. When phones meet, **expertise composes as
+  freely as data does.**
 - **2 · Preference-aware merge.** The set stays grow-only — every contribution
   is kept — but **synthesis is weighted by who's asking.** Hate avocado? Your
   phone quietly leaves it out.
