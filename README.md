@@ -163,18 +163,26 @@ device ran it.
   [`baselines/latest/`](tools/determinism_harness/baselines/latest/) so any
   unintended model swap shows up as a CI failure (U13).
 
-First measurement on the locked `qwen3-0.6` slug:
+Result on the shipped `qwen3-0.6-embed` slug — the dedicated similarity-tuned
+embedder, swapped from the chat-tuned `qwen3-0.6` per issue #9 on 2026-05-26:
 
 | Comparison | matched | rate | gate |
 |---|---|---|---|
 | Pixel A ↔ Pixel B | 20/20 | **1.0000** | PASS |
-| iPhone ↔ Pixel | 17/20 | **0.8500** | FAIL — diagnostic band |
+| iPhone ↔ Pixel | 20/20 | **1.0000** | PASS |
 
-Same-hardware is bit-perfect; cross-platform sits in the plan's "kernel-pin
-tightening" diagnostic band. See
-[`baselines/2026-05-23/README.md`](tools/determinism_harness/baselines/2026-05-23/README.md)
-for the full result and the three disagreeing queries (Q03, Q05, Q10 — two
-within-top-k reorderings, one top-1 swap between semantic-twin passages).
+Same-hardware is bit-perfect, and cross-platform now matches it — the embedder
+swap closed the gap. The earlier chat-tuned `qwen3-0.6` slug measured 17/20
+(**0.8500**) cross-platform: three disagreements (Q03, Q05, Q10 — two
+within-top-k reorderings, one top-1 swap between semantic-twin passages),
+landing in the plan's "kernel-pin tightening" diagnostic band. Swapping to the
+dedicated embedder resolved all three (0 disagreements), and re-measurement on
+the archived slug confirmed the improvement was a real model effect, not
+measurement drift. The locked baseline is
+[`baselines/latest/`](tools/determinism_harness/baselines/latest/); the
+chat-tuned originals are archived under
+[`baselines/2026-05-23/`](tools/determinism_harness/baselines/2026-05-23/README.md)
+and [`baselines/2026-05-26-pre-embed-swap/`](tools/determinism_harness/baselines/2026-05-26-pre-embed-swap/README.md).
 
 ## Knowledge graph — interactive dashboard
 
