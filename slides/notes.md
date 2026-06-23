@@ -9,6 +9,13 @@ me permission to talk fast; don't spend it twice.
 > intonation, then a beat of silence so the room knows it can clap. Don't trail
 > off into "…so yeah, that's basically it."
 
+**Time budget (~10 min, with ~70s slack for laughter + demo).** S1 opener 75s ·
+S2 cloud-RAG 45s · S3 latency 50s · S4 CRDT 70s · S5 architecture 45s · S6 demo
+90s · S7 what-it-isn't 75s · S8 four-threads 60s · S9 CTA 20s ≈ **8:50**. Slides
+1, 4, 7 are the dense ones — if I'm behind, the cut order is: presenterm aside
+(S1) → the FFI-day-job aside (S5) → drop to a single research thread (S8). Never
+cut the demo or the close.
+
 ---
 
 ## Slide 1 — Opener
@@ -26,9 +33,10 @@ in public at the edge of that.
 
 *(The dark-factory confession — say it plainly; it earns trust AND sets up the
 thesis.)* "I'll be honest about how this got made — I didn't hand-write most of
-it. An agent loop did, and wrote the tests too. I was the human in the loop for
-the one thing a cloud loop can't fake: two real phones, real Bluetooth, in the
-same room." *(Beat.)* "Which is the whole thesis — you can't simulate physical
+it. An agent loop did, and wrote the tests too. I *directed* it: reviewed every
+diff, ran it on real hardware. I was the human in the loop for the one thing a
+cloud loop can't fake: two real phones, real Bluetooth, in the same room."
+*(Beat.)* "Which is the whole thesis — you can't simulate physical
 proximity. So here I am, holding two phones." _(Issue #3 is the "why I'm still
 the device lab" detail — only say the number if someone asks.)_
 
@@ -121,12 +129,12 @@ boxed an answer in LaTeX, padded off-topic cards when retrieval was thin. The
 lesson, said plainly: **fix the input to the model, don't bolt a detector onto
 the output stream.**
 
-*(AI-transparency aside — lean in, this is the honest part:)* "I keep saying 'I
-built this' — I mean I *directed* it. An agent loop wrote most of the code and
-the tests; I reviewed, corrected, and ran it on real hardware. The parts I
-couldn't hand off are exactly the parts a cloud loop can't reach yet — two
-phones, real Bluetooth, same room (issue #3). I'm the device lab until that's
-automated." *(Transition: "Enough architecture. Watch it happen.")*
+*(AI-transparency callback — do NOT re-tell the opener's dark-factory confession
+in full; one line, then move. Cutting the full re-tell here is deliberate — it
+was a near-verbatim repeat of slide 1 and cost ~45s.)* "Same caveat as the open:
+I directed this — the agent wrote it, I reviewed every diff and ran it on real
+hardware. The part it couldn't reach is the part you're about to watch."
+*(Transition: "Enough architecture. Watch it happen.")*
 
 ---
 
@@ -139,7 +147,10 @@ beat 1 while the stream runs. If it's the recording, still narrate over it.)*
 debug cold-start is ~30–60s: get both apps **booted, models warm, and beat-1's
 first query already embedded** before I walk on, so the only thing that happens
 live is the green flip and the regenerate. Narrating over a cold start is the
-fallback, not the plan.)*
+fallback, not the plan. **Critical: keep Phone B out of BLE range (or BT off)
+during the warm-up** — if the two phones auto-pair off-stage, beat 2's
+`alone → 1 peer` flip never happens because they're already meshed. Confirm
+Phone A reads `0 from peers` on the last pre-walk-on check.)*
 
 *(Production — the demo's entire payload is tiny on-screen text: the mesh pill,
 the `drew on N notes (M from peers)` footer, the `phone-b` source chip. Mirror
@@ -154,7 +165,7 @@ Beat 2 is the money shot. **Do not talk over the green flip.** Move B into
 range, point at the pill, shut up, let the room watch `alone` → `1 peer` and the
 notes stream in. *(Hold ~2 seconds — sync needs it, and so does the audience.)*
 
-Beat 3: regenerate, read it out — "drew on five notes, **three from a peer**,"
+Beat 3: regenerate, read it out — "drew on five notes, **three from peers**,"
 and point at the `phone-b` source chip. Then the line: "Same question, bigger
 corpus — the only thing that changed is another phone walked into the room."
 
@@ -236,3 +247,25 @@ me."
   more.)*
 - **"Is this a Ditto product?"** → No — personal build. Ditto's the day job;
   this is me learning its problem space out loud.
+
+*(Hostile / sharp-skeptic questions — the deck provokes these, so have the
+concession staged, don't improvise:)*
+- **"What happens when two phones hold *conflicting* facts?"** → Honest answer:
+  the G-Set keeps both — grow-only can't retract, only add. The demo dodges it
+  by construction (disjoint inner/outer planets never collide). Real conflict
+  resolution is thread 3 (gate *promotion* into the canonical answer, don't
+  delete the input). I'm conceding the boundary, not hiding it.
+- **"No auth — can't anyone in BLE range poison or *read* my corpus?"** → Yes,
+  both directions, and it's named on the slide. Inbound: anyone in range can
+  contribute (poisoning) — thread 3 + future provenance signatures. Outbound:
+  with no ACL, a peer in range can *receive* your notes. The privacy claim is
+  "no third-party cloud," **not** "no one nearby sees it." That's the real
+  threat-model bound.
+- **"Does this scale past five notes? brute-force cosine over the union?"** →
+  Not tonight, and I won't pretend it does — Stage 0 is brute-force over a
+  curated set. Scaling is an ANN-index problem that's well-trodden; the *thesis*
+  (composition with WAN off) doesn't change, the retrieval kernel does.
+- **"Why Cactus / Qwen specifically?"** → On-device embed *and* generate from
+  one SDK, and a dedicated similarity-tuned embedder (`qwen3-0.6-embed`) that
+  gave me the cross-platform determinism slide 7 hinges on. The thesis isn't
+  model-pinned — swap in any embedder that's identical across devices.

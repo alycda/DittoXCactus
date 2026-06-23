@@ -15,17 +15,18 @@ internet, depending how you look at it.
 
 <!-- pause -->
 
-Day job: I'm a staff engineer at **Ditto**. Our whole thing is a **Rust core
-exposed over C FFI** to a dozen platform SDKs — that's the part I work on. I
-joined late last year and I've been learning **CRDTs in public** ever since.
+Day job: staff engineer at **Ditto** — a **Rust core over C FFI** to a dozen
+platform SDKs. I joined late last year, learning **CRDTs in public** ever
+since. _That's the day job, not this talk._
 
 <!-- pause -->
 
 This is a weekend build pairing Ditto with **Cactus** (on-device LLM). And I'll
 be honest about how it got made: it's a **dark factory** — an agent loop wrote
-most of the code *and* the tests. I was the human in the loop for the one thing
-a cloud loop can't fake yet — **two real phones meeting over Bluetooth**
-(issue #3). Which, it turns out, *is* the whole thesis:
+most of the code *and* the tests; I *directed* it, reviewed every diff, and ran
+it on real hardware. I was the human in the loop for the one thing a cloud loop
+can't fake yet — **two real phones meeting over Bluetooth** (issue #3). Which,
+it turns out, *is* the whole thesis:
 
 # Two phones meet, their knowledge composes, and neither touched the cloud.
 
@@ -68,15 +69,17 @@ on the first one, because that's the one people argue with.
 
 # The latency-floor argument
 
-Measure, don't assume. Big-O lies; benchmark the actual data. So — actual
-data:
+Measure, don't assume — so let me be honest about which of these I measured and
+which is just topology. These are **orders of magnitude**, not a benchmark I'm
+asking you to trust tonight (the one number I actually measured —
+cross-platform determinism — comes later):
 
 <!-- pause -->
 
-| Path | Cost | Can you optimize it? |
+| Path | Cost (illustrative) | Can you optimize it? |
 |---|---|---|
-| Cloud round trip (WAN RTT) | **≥ ~200 ms floor** | No — that's routing + lightspeed |
-| On-device retrieval (cosine over the set) | **< 100 ms** | No network in the loop at all |
+| Cloud round trip (WAN RTT) | **~100s of ms** | No — that floor is routing + lightspeed |
+| On-device retrieval (cosine over the set) | **no network hop** | No round trip in the loop at all |
 | On-device generation (qwen3-1.7) | seconds | Yes — and it's getting cheaper monthly |
 
 <!-- pause -->
@@ -98,16 +101,18 @@ A vector index is the cleanest CRDT shape there is.
 <!-- pause -->
 
 It's a **grow-only set** (a G-Set) of `(embedding, payload)` tuples.
-Embeddings are **additive** — every one is just a point in a space, nothing
-ever needs reconciling. And relevance is a **pure function over a set**:
+**Insertions commute** — every embedding is just another point in the space, so
+nothing about *adding* a note needs reconciling. And relevance is a **pure
+function over a set**:
 
 ```
 topK(corpus_A ∪ corpus_B)  ==  topK(corpus_B ∪ corpus_A)
 ```
 
-Union is associative, commutative, idempotent — so the answer is the same no
-matter which phone runs it, or what order the notes arrived. That's the whole
-CRDT property, for free.
+Union is associative, commutative, idempotent — so the answer doesn't depend on
+*what order* the notes arrived. **That part's for free.** The answer being the
+same on *every* phone needs one more thing — an identical embedding model on
+each device — and that's the part I had to *earn* (slide 7).
 
 <!-- pause -->
 
@@ -248,7 +253,8 @@ grow-only union. That's the stepping stone, not the destination.
 **github.com/alycda/DittoXCactus**
 
 <!-- alignment: center -->
-_Build notes — how I ran this as an AI dark factory:_ hackmd.io/@alyda/r10BQw8zGg
+_Can't pair two phones right now? Read how I ran it as an AI dark factory:_
+hackmd.io/@alyda/r10BQw8zGg
 
 <!-- alignment: center -->
 Alyssa Evans · @She's Fast · Staff Engineer @ Ditto
