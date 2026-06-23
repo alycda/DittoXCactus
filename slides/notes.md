@@ -37,11 +37,13 @@ their knowledge composes, and neither touched the cloud." **No apologies** — I
 don't open with "it's just a hackathon build" or "the model is small." The
 small on-device model *is* the thesis, not a caveat.
 
-*(The motorcycle bit — this is the disarm. Deliver it fast, on purpose, then
-slow down.)* "I race motorcycles, I have a need for speed, so if I start
-talking too fast, sorry in advance." The presenterm aside is optional; use it
-only if the terminal aesthetic gets a look from the room. *(Transition: "So why
-not just use cloud RAG?")*
+*(The motorcycle bit — energy, not apology. Per persona v0.9 I've dropped the
+"sorry I talk too fast" disclaimer: keep the need-for-speed swagger, cut the
+pre-emptive apology — it lowers the room's expectations before I've shown
+anything.)* "I race motorcycles — I have a literal need for speed, so buckle
+up." Deliver it fast, on purpose, then slow down. The presenterm aside is
+optional; use it only if the terminal aesthetic gets a look from the room.
+*(Transition: "So why not just use cloud RAG?")*
 
 ---
 
@@ -131,8 +133,19 @@ automated." *(Transition: "Enough architecture. Watch it happen.")*
 ## Slide 6 — Live demo
 
 *(This is the 90 seconds the whole talk is built around. If live, narrate
-beat 1 while the stream runs — Pixel debug is ~30–60s, don't apologize for it,
-fill it. If it's the recording, still narrate over it.)*
+beat 1 while the stream runs. If it's the recording, still narrate over it.)*
+
+*(Pre-load — eliminate dead time, don't just fill it (PostHog #16). The Pixel
+debug cold-start is ~30–60s: get both apps **booted, models warm, and beat-1's
+first query already embedded** before I walk on, so the only thing that happens
+live is the green flip and the regenerate. Narrating over a cold start is the
+fallback, not the plan.)*
+
+*(Production — the demo's entire payload is tiny on-screen text: the mesh pill,
+the `drew on N notes (M from peers)` footer, the `phone-b` source chip. Mirror
+the phone to the projector and **zoom/callout those three elements** (PostHog
+#21/#22) — if the back row can't read the pill flip and the footer count, the
+magic doesn't land. Don't rely on the room seeing 12px of UI.)*
 
 Beat 1: read the footer aloud — "drew on N notes, **zero from peers**." That
 zero is the load-bearing pre-meet signal. *(Pause for effect.)*

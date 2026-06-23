@@ -32,9 +32,9 @@ a cloud loop can't fake yet — **two real phones meeting over Bluetooth**
 <!-- pause -->
 
 > You can't simulate physical proximity. So here I am, holding two phones.
-> _(Need-for-speed warning: I race motorcycles. If I talk too fast, sorry in
-> advance. And yes — this deck is just markdown in my terminal: `presenterm`.
-> I liked it enough to send them a PR. Do more with less.)_
+> _(I race motorcycles — I have a literal need for speed, so buckle up. And
+> yes — this deck is just markdown in my terminal: `presenterm`. I liked it
+> enough to send them a PR. Do more with less.)_
 
 <!-- end_slide -->
 
@@ -113,13 +113,10 @@ CRDT property, for free.
 
 ```dart
 class StudyNote {
-  String   id;          // UUIDv5 — content-addressed, mechanically disjoint
-  String   topic;       // "Saturn"
-  String   contributor; // "phone-b"
-  String   body;        // the note text the audience can read
-  List<String> tags;
+  String   id;            // UUIDv5 — content-addressed, mechanically disjoint
+  String   contributor;   // "phone-b" — this is what powers "3 from peers"
   List<double> embedding; // qwen3-0.6-embed — identical model on every device
-  DateTime createdAt;
+  // …topic, body, tags, createdAt
 }
 ```
 
