@@ -24,6 +24,8 @@ RAG today assumes a centralized vector store: every corpus is uploaded, indexed 
 
 Carried verbatim from `_docs/SEED.md` Holdout Scenarios — each is a gate the loop runs against until green:
 
+> **Status (2026-05-26):** R1, R2, R3, R4, R7 cleared (Stage 0 green). R5 (cold-load) and R6a (coherence) in progress (Stage 1). R6b/R8 deferred to the writeup; R10's full-demo-on-iOS leg still open. See `_docs/SEED.md` footer for the evidence trail.
+
 - **R1 (Holdout 1).** Airplane-mode moment of magic: Phone A answers from local corpus alone; demonstrator toggles airplane mode + re-enables BT; Phone B comes into BLE range; Phone A re-queries and returns A's answer + B's contribution, citing the retrieved note IDs from the other phone. Corpora are disjoint-by-design so at least one rehearsed query has zero hits in A and ≥1 hit in B.
 - **R2 (Holdout 2).** Cross-platform embedding determinism: for ≥95% of N rehearsed queries, same query against same combined corpus returns same top-k ordering on iOS and Android. Cosine reported as a diagnostic; ordering is the gate.
 - **R3 (Holdout 3).** Sync idempotence: re-meeting after no changes produces no duplicate tuples and no change to top-k.
@@ -36,6 +38,13 @@ Carried verbatim from `_docs/SEED.md` Holdout Scenarios — each is a gate the l
 - **R9 (thesis preservation).** "Your knowledge base wants to be a CRDT" survives end-to-end: the grow-only set semantic is observable in the demo, the retrieval pure-function-over-set property is provable in code, and nothing in the build cheats the cloud back in (no Cactus hybrid mode, no remote vector store, no internet-required path).
 - **R10 (heterogeneous mobile).** iOS + Android both required (iOS + macOS does not satisfy the mobile-edge claim).
 - **R11 (Stage 0 ship-survivability).** Under the cut order in SEED.md, Stage 0 (CRDT vector sync + retrieval, no LLM generation) is a valid ship if the loop runs out of time before Stage 1's R6a clears. Holdout 7 (offline) must never be cut.
+
+**Demo-craft execution (R2/R5/R6a/R6b/R8).** Passing these gates and *demoing*
+them well are separate bars. The presentation-layer criteria — pacing,
+before/after framing, no-apologies delivery, the rehearsed one-liner that R8
+rides on — live in [`../demo-playbook.md`](../demo-playbook.md) and are
+implemented in [`../demo-script.md`](../demo-script.md). That layer is additive:
+it adds no exit gate and weakens no thesis-bearing constraint.
 
 **Origin actors:** demonstrator (single human running the demo); audience (passive viewer in Stage 0, query author in R6b stretch); reviewer (writeup pre-publish reader, gates R8).
 **Origin flows:** F1 = corpus authorship + preload; F2 = local query → embed → retrieve → answer (Stage 0); F3 = same + buffered LLM generation (Stage 1); F4 = airplane-mode + BLE-pair → mesh sync → combined-corpus re-query (R1); F5 = recorded artifact production.

@@ -40,6 +40,8 @@ The deliverable is a working two-device demo plus a writeup that argues *retriev
 
 ### Holdout Scenarios (loop runs until these pass and stay passing)
 
+> **Loop status (2026-05-26): Stage 0 green — R1 · R2 · R3 · R4 · R7 cleared. Stage 1 in progress — R5 · R6a pending. Full status in the footer.**
+
 | # | Scenario | Platform |
 |---|----------|----------|
 | 1 | "Airplane-mode moment of magic": phone A queries its local corpus and returns answer X (visibly citing its retrieved note IDs). Demonstrator toggles airplane mode ON, then re-enables Bluetooth from Control Center (iOS disables BT when entering airplane mode). Phone B comes into BLE range. Phone A re-queries and returns answer X + Y, with Y citing a retrieved note that lives on phone B. Corpora are authored disjoint-by-design so at least one rehearsed query has zero hits in A's corpus and ≥1 hit in B's. | 2 phones (iOS+Android required) |
@@ -79,6 +81,33 @@ If a forcing function arrives mid-loop, drop in this order (first to last). Each
 4. Holdout 6b (free-text audience survival) — already a stretch; compromises neither goal.
 5. Holdout 6a (rehearsed coherent LLM generation) → ship as Stage-0-only, demo becomes "mesh vector sync" — compromises Stage 1; the demo loses the RAG-in-mesh-RAG story but Stage 0 still demonstrates the CRDT thesis.
 6. Holdout 7 (end-to-end offline) — compromises both goals; do not drop unless every option above has been taken.
+
+### Demo-craft acceptance (presentation layer — does not change any gate)
+
+The holdouts above define *passing*. The ones that produce the recorded
+artifact — R2 (pre-flight honesty), R5 (pacing), R6a/R6b (content), R8
+(retelling) — also have to *land*, which is a separate bar from passing. The
+craft rubric for that lives in [`demo-playbook.md`](demo-playbook.md) (24-tip
+distillation of PostHog's "How to demo"), implemented beat-by-beat in
+[`demo-script.md`](demo-script.md). Sign-off layered on top of the technical
+gates, never replacing them:
+
+- **R2** — rehearse/record on a same-model pair so beat 3's "same query, better
+  answer" comparison is defensible; cross-platform parity stays an honest
+  writeup diagnostic, not an on-stage claim.
+- **R5** — models pre-warmed offstage; the 10s budget is credibility, not dead
+  air. Unavoidable waits are narrated, not silent.
+- **R6a/R6b** — each rehearsed query is chosen for an obvious before/after
+  contrast; free-text (6b) is included in the artifact only if it lands clean
+  (a fumbled live query violates the no-apologies rule and is cut silently).
+- **R8** — the closing line and the one-liner ("two phones meet, their corpora
+  compose") are written first and rehearsed verbatim, because that sentence is
+  what survives into the writeup and the reader's retelling.
+
+This layer is additive: it introduces no new exit gate, and the cut order above
+still governs — craft polish is the *first* thing dropped under time pressure,
+never the message or a thesis-bearing constraint (no cloud; R7 never cut;
+R10 iOS+Android still required).
 
 ---
 
@@ -167,4 +196,10 @@ The following items are unresolved as of seed authoring. Resolutions should be f
 
 ---
 
-*Seed authored: 2026-05-21. Updated 2026-05-23 with ce-doc-review auto-resolved fixes. Loop not yet started. Holdout scenarios: not yet green.*
+*Seed authored: 2026-05-21. Updated 2026-05-23 with ce-doc-review auto-resolved fixes; 2026-05-26 holdout status recorded.*
+
+**Holdout status (2026-05-26) — Stage 0 green.**
+- **Cleared:** R1, R2, R3, R4, R7. R1/R3/R4/R7 cleared live on a Pixel pair 2026-05-26 (`just holdout-34` + the R7 offline-witness checklist). R2 (cross-platform embedding determinism) measured 20/20 = **1.0000** on both Pixel↔Pixel and iPhone↔Pixel via the determinism harness after the `qwen3-0.6-embed` swap (the iPhone↔Pixel run satisfies R2's iOS+Android requirement).
+- **In progress (Stage 1):** R5 (cold-load ≤ ~10s — instrument in place, result not yet locked) and R6a (5/5 rehearsed coherence — streaming generation mostly implemented, pass not yet captured).
+- **Deferred:** R6b (stretch), R8 (narrative pickup → writeup follow-up), R9/R11 (writeup/meta gates).
+- **Still open:** R10's full-demo-on-iOS leg — the live demo holdouts (R1/R3/R4/R7) cleared on the Android pair only; only R2's determinism harness has run on iOS so far.
