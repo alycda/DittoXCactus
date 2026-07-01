@@ -250,6 +250,81 @@ app-run-b-demo DEVICE TOPIC="Saturn":
       --dart-define=DEMO_OVERLAY=true \
       --dart-define=INITIAL_TOPIC="{{TOPIC}}"
 
+# ─── Thermal / charge prep for reproducible on-device runs ─────────────────
+#
+# WHY: holdout runs (R2 latency, R5 cold-load) pin the CPU/NPU for minutes.
+# A phone plugged into USB is fighting two heat sources at once — sustained
+# inference AND charge current — so it hits the kernel thermal governor
+# sooner and throttles clocks mid-run. That skews latency numbers and makes
+# runs non-reproducible depending on how hot the phone was when you started.
+# This was done ad-hoc during the 2026-05-26 Pixel runs and never captured;
+# see docs/solutions/conventions/device-thermal-prep-for-holdout-runs-2026-07-01.md
+#
+# TWO LEVERS, with different guarantees:
+#   1. `dumpsys battery set <src> 0` — makes the framework report the phone
+#      as NOT charging, so the battery HAL stops drawing charge current while
+#      the cable stays plugged (needed for adb + flutter run). This is a REAL
+#      heat reduction: no charge current → less waste heat.
+#   2. `cmd thermalservice override-status 0` — forces the *reported* thermal
+#      status to NONE (0). This only changes what the framework/app SEES; the
+#      kernel/HAL can still physically throttle silicon under real heat. Use
+#      it to stop framework-level thermal mitigation (e.g. skin-temp backoff),
+#      NOT as a license to ignore a genuinely hot phone.
+#
+# UNVERIFIED on the exact 2026-05-26 Pixel pair — command forms are standard
+# Android (API 29+ for thermalservice override). Re-confirm on-device before
+# trusting the numbers. ALWAYS run `thermal-reset` afterward or the phone will
+# keep reporting "not charging" until reboot.
+#
+# Usage:
+#   just thermal-status 23211JEGR01492     # read current thermal + battery temp
+#   just thermal-prep   23211JEGR01492     # before a latency/cold-load run
+#   ... run holdout ...
+#   just thermal-reset  23211JEGR01492     # ALWAYS, restores charging
+
+# Read a device's thermal status + battery temp (run before prepping — cool it if hot).
+thermal-status DEVICE:
+    #!/usr/bin/env bash
+    set -euo pipefail
+    ADB="$(command -v adb 2>/dev/null || echo "$HOME/Library/Android/sdk/platform-tools/adb")"
+    if [ ! -x "$ADB" ]; then echo "error: adb not found (PATH or $ADB)." >&2; exit 1; fi
+    DEV="{{DEVICE}}"
+    echo "→ thermalservice status on $DEV:"
+    "$ADB" -s "$DEV" shell cmd thermalservice dump 2>/dev/null | grep -iE 'status|temperature' | head -20 || true
+    echo "→ battery temperature (tenths of °C) on $DEV:"
+    "$ADB" -s "$DEV" shell dumpsys battery | grep -iE 'temperature|level|status' || true
+
+# Prep a device for a sustained-inference run: halt charge current + mask framework throttling.
+thermal-prep DEVICE:
+    #!/usr/bin/env bash
+    set -euo pipefail
+    ADB="$(command -v adb 2>/dev/null || echo "$HOME/Library/Android/sdk/platform-tools/adb")"
+    if [ ! -x "$ADB" ]; then echo "error: adb not found (PATH or $ADB)." >&2; exit 1; fi
+    DEV="{{DEVICE}}"
+    echo "→ Stopping charge current on $DEV (ac/usb/wireless → 0) ..."
+    "$ADB" -s "$DEV" shell dumpsys battery set ac 0
+    "$ADB" -s "$DEV" shell dumpsys battery set usb 0
+    "$ADB" -s "$DEV" shell dumpsys battery set wireless 0 2>/dev/null || true
+    echo "→ Forcing framework thermal status to NONE (override-status 0) ..."
+    "$ADB" -s "$DEV" shell cmd thermalservice override-status 0
+    echo "✓ $DEV is prepped. Charge current halted; framework throttling masked."
+    echo "  NOTE: the kernel can still throttle real silicon heat — watch temps."
+    echo "  RUN 'just thermal-reset $DEV' when done, or the phone reports"
+    echo "  'not charging' until you reboot it."
+
+# Restore a device to normal charging + real thermal reporting (ALWAYS run after thermal-prep).
+thermal-reset DEVICE:
+    #!/usr/bin/env bash
+    set -euo pipefail
+    ADB="$(command -v adb 2>/dev/null || echo "$HOME/Library/Android/sdk/platform-tools/adb")"
+    if [ ! -x "$ADB" ]; then echo "error: adb not found (PATH or $ADB)." >&2; exit 1; fi
+    DEV="{{DEVICE}}"
+    echo "→ Restoring battery reporting on $DEV ..."
+    "$ADB" -s "$DEV" shell dumpsys battery reset
+    echo "→ Clearing thermal status override on $DEV ..."
+    "$ADB" -s "$DEV" shell cmd thermalservice reset 2>/dev/null || true
+    echo "✓ $DEV restored: charging + real thermal reporting re-enabled."
+
 # ─── Seed-embedding bake (R5 cold-load lever) ──────────────────────────────
 #
 # Run app with BAKE_EMBEDDINGS=true. Boots normally, runs ensureEmbeddings,
