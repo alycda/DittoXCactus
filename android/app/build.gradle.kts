@@ -1,3 +1,5 @@
+import org.jetbrains.kotlin.gradle.dsl.JvmTarget
+
 plugins {
     id("com.android.application")
     id("kotlin-android")
@@ -8,8 +10,8 @@ plugins {
 android {
     namespace = "com.dittoxcactus.mesh_rag"
     // ditto_live 5.1.0's Android artifacts (com.ditto:{ditto-cinterop,util,
-    // transports,rustls}-android) all declare minCompileSdk=36, so this cannot
-    // follow flutter.compileSdkVersion — Flutter 3.32.0 pins that to 35.
+    // transports,rustls}-android) all declare a compileSdk floor of 36, so this
+    // cannot follow flutter.compileSdkVersion — Flutter 3.32.0 pins that to 35.
     // Revert to `flutter.compileSdkVersion` once the pinned Flutter ships 36.
     compileSdk = 36
     // Cactus + ditto_live + record + permission_handler all require NDK 27.
@@ -20,10 +22,6 @@ android {
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_11
         targetCompatibility = JavaVersion.VERSION_11
-    }
-
-    kotlinOptions {
-        jvmTarget = JavaVersion.VERSION_11.toString()
     }
 
     defaultConfig {
@@ -42,6 +40,14 @@ android {
             // Signing with the debug keys for now, so `flutter run --release` works.
             signingConfig = signingConfigs.getByName("debug")
         }
+    }
+}
+
+// KGP 2.3 removed the `kotlinOptions` DSL (it is a hard error, not a warning).
+// This is the replacement for `kotlinOptions { jvmTarget = ... }`.
+kotlin {
+    compilerOptions {
+        jvmTarget.set(JvmTarget.JVM_11)
     }
 }
 
