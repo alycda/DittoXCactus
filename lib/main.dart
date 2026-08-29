@@ -17,7 +17,7 @@
 // `_BootPhase` state machine.
 
 import 'dart:convert' show JsonEncoder;
-import 'dart:io' show File, Platform;
+import 'dart:io' show File, Platform, exit;
 
 import 'package:flutter/foundation.dart' show debugPrint, kDebugMode;
 import 'package:flutter/material.dart';
@@ -55,6 +55,13 @@ const String kInitialTopic = String.fromEnvironment('INITIAL_TOPIC');
 /// emit the file path on every device launch so the developer notices.
 const bool kBakeEmbeddings =
     bool.fromEnvironment('BAKE_EMBEDDINGS', defaultValue: false);
+
+/// `--dart-define=FIRST_SYNC_PROBE=true` — ditto-first-sync skill proof run.
+/// Boots only as far as Ditto sync (skips seed load, Cactus, embeddings),
+/// writes one attempt-owned probe document, prints the typed outcome, and
+/// exits 0 only on `sync-proven`. Combine with DITTO_CONNECT=server.
+const bool kFirstSyncProbe =
+    bool.fromEnvironment('FIRST_SYNC_PROBE', defaultValue: false);
 
 Future<void> main() async {
   // U14 / R5: start cold-load instrumentation as early as possible. The
@@ -151,6 +158,13 @@ class _BootScreenState extends State<BootScreen> {
       _advance(_BootPhase.startSync);
       await DittoService.instance.startSync();
       ColdLoadTimer.instance.mark('sync_started');
+
+      if (kFirstSyncProbe) {
+        final outcome = await DittoService.instance.runFirstSyncProbe();
+        debugPrint('FIRST_SYNC_OUTCOME=$outcome');
+        await DittoService.instance.shutdown();
+        exit(outcome == 'sync-proven' ? 0 : 2);
+      }
 
       // U8: SeedLoader reads assets/seed_notes_<role>.json and upserts each
       // entry without an embedding. Re-runs are no-ops by UUIDv5 +

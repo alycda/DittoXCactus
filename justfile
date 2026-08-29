@@ -92,6 +92,20 @@ app-run-b DEVICE:
       --dart-define=DITTO_LICENSE="$DITTO_LICENSE" \
       --dart-define=PHONE_ROLE=b
 
+# First-sync proof against Ditto Server (ditto-first-sync skill). Boots only
+# as far as Ditto sync on DEVICE, writes one attempt-owned probe document,
+# and exits 0 only when the server watermark in system:data_sync_info covers
+# the probe's local commit. Reads DITTO_APP_ID + DITTO_SERVER_URL +
+# DITTO_DEV_TOKEN from .env; values never enter this file.
+app-proof-server DEVICE:
+    flutter run -d {{DEVICE}} \
+      --dart-define=DITTO_APP_ID="$DITTO_APP_ID" \
+      --dart-define=DITTO_SERVER_URL="$DITTO_SERVER_URL" \
+      --dart-define=DITTO_DEV_TOKEN="$DITTO_DEV_TOKEN" \
+      --dart-define=DITTO_CONNECT=server \
+      --dart-define=FIRST_SYNC_PROBE=true \
+      --dart-define=PHONE_ROLE=a
+
 # Smoke-build the debug Android APK with .env credentials and ROLE=a. Used
 # to validate manifest merging + gradle config without installing on a
 # device. Doesn't actually run; just exits 0 on a clean build.

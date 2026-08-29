@@ -5,15 +5,16 @@
 /// holdout the demo needs without growing the Android permission surface —
 /// see plan §Key Technical Decisions ("Ditto transport config") and §U5.
 ///
-/// The Stage 0 demo is offline-only: no big-peer URL is wired and the offline
-/// license token is required — `DittoConfigConnectSmallPeersOnly` refuses to
-/// start sync without it.
+/// Default mode is offline-only small-peers with the offline license token.
+/// `DITTO_CONNECT=server` opts into a Ditto Server connection authenticated
+/// with the Portal development token (see [_validateCredentials]).
 library mesh_rag.services.ditto_service;
 
 import 'dart:async';
 
 import 'package:ditto_live/ditto_live.dart';
 import 'package:flutter/foundation.dart';
+import 'package:uuid/uuid.dart';
 
 import '../models/study_note.dart';
 import '../prompts/dql_queries.dart';
@@ -25,6 +26,19 @@ const String _envAppId = String.fromEnvironment('DITTO_APP_ID');
 /// `--dart-define=DITTO_LICENSE=…` — the offline-only license token. Required
 /// for small-peers-only mode; sync refuses to start without it.
 const String _envLicense = String.fromEnvironment('DITTO_LICENSE');
+
+/// `--dart-define=DITTO_CONNECT=server` — opt-in switch from the default
+/// small-peers-only demo wiring to a Ditto Server (cloud) connection. Any
+/// other value keeps the Stage 0 offline behavior.
+const String _envConnect = String.fromEnvironment('DITTO_CONNECT');
+
+/// `--dart-define=DITTO_SERVER_URL=…` — the URL from the Portal Connect tab.
+/// Required when DITTO_CONNECT=server.
+const String _envServerUrl = String.fromEnvironment('DITTO_SERVER_URL');
+
+/// `--dart-define=DITTO_DEV_TOKEN=…` — the Portal development token (called
+/// "playground token" in some docs). Required when DITTO_CONNECT=server.
+const String _envDevToken = String.fromEnvironment('DITTO_DEV_TOKEN');
 
 class DittoService {
   DittoService._();
@@ -57,6 +71,8 @@ class DittoService {
   String get localPeerKey =>
       _ditto?.presence.graph.localPeer.peerKey ?? '';
 
+  bool get _isServerMode => _envConnect == 'server';
+
   /// Bring up Ditto with the configured transports. Idempotent — repeated
   /// calls after the first are no-ops, so [BootScreen] hot-restarts don't
   /// double-open the database.
@@ -71,9 +87,22 @@ class DittoService {
 
     final ditto = await Ditto.open(const DittoConfig(
       databaseID: _envAppId,
-      connect: DittoConfigConnectSmallPeersOnly(),
+      connect: _envConnect == 'server'
+          ? DittoConfigConnectServer(url: _envServerUrl)
+          : DittoConfigConnectSmallPeersOnly(),
     ));
-    ditto.setOfflineOnlyLicenseToken(_envLicense);
+    if (_isServerMode) {
+      // v5 server connections refuse Sync.start without an expiration
+      // handler; authenticate with the development token on demand.
+      await ditto.auth.setExpirationHandler((d, _) async {
+        await d.auth.login(
+          token: _envDevToken,
+          provider: Authenticator.developmentProvider,
+        );
+      });
+    } else {
+      ditto.setOfflineOnlyLicenseToken(_envLicense);
+    }
 
     // Stage 0 transport policy. Explicit booleans (rather than
     // setAllPeerToPeerEnabled) so the next reader of this file can see
@@ -108,6 +137,17 @@ class DittoService {
     if (_envAppId.isEmpty) {
       throw StateError(
           'DITTO_APP_ID is empty. Pass it via --dart-define=DITTO_APP_ID=<uuid>.');
+    }
+    if (_isServerMode) {
+      if (_envServerUrl.isEmpty) {
+        throw StateError('DITTO_SERVER_URL is empty. Pass it via '
+            '--dart-define=DITTO_SERVER_URL=<portal-connect-url>.');
+      }
+      if (_envDevToken.isEmpty) {
+        throw StateError('DITTO_DEV_TOKEN is empty. Pass it via '
+            '--dart-define=DITTO_DEV_TOKEN=<development-token>.');
+      }
+      return;
     }
     if (_envLicense.isEmpty) {
       throw StateError(
@@ -219,6 +259,99 @@ class DittoService {
     }
     return d;
   }
+
+  /// First-sync proof (ditto-first-sync skill): writes one attempt-owned
+  /// probe document to the fixed `first_sync_probe` collection and accepts
+  /// only the Ditto Server watermark in `system:data_sync_info` reaching the
+  /// write's local commit ID as proof. Everything printed is secret-free —
+  /// nonces and commit IDs, never configuration values. One bounded attempt
+  /// plus at most one retry with a fresh nonce; a timeout is an incomplete
+  /// outcome, not a product-failure claim.
+  Future<String> runFirstSyncProbe({
+    Duration evidenceTimeout = const Duration(seconds: 90),
+  }) async {
+    final ditto = _requireDitto();
+    // Receiver-side readiness: the probe collection participates in sync
+    // before the write.
+    final subscription =
+        ditto.sync.registerSubscription('SELECT * FROM first_sync_probe');
+    try {
+      var outcome = await _attemptProbe(ditto, evidenceTimeout);
+      if (outcome != 'sync-proven') {
+        outcome = await _attemptProbe(ditto, evidenceTimeout);
+      }
+      return outcome;
+    } finally {
+      subscription.cancel();
+    }
+  }
+
+  Future<String> _attemptProbe(Ditto ditto, Duration evidenceTimeout) async {
+    const collection = 'first_sync_probe';
+    final nonce = const Uuid().v4();
+    final id = 'first-sync-$nonce';
+    final deadline = DateTime.now().toUtc().add(evidenceTimeout);
+    debugPrint('first-sync probe: attempt $id (nonce generated after the '
+        'probe subscription was registered)');
+
+    final written = await ditto.store.execute(
+      'INSERT INTO $collection DOCUMENTS (:doc)',
+      arguments: {
+        'doc': {'_id': id, 'nonce': nonce, 'attempt': id},
+      },
+    );
+    final commitId = written.commitID;
+    debugPrint('first-sync probe: local commit id '
+        '${commitId ?? 'unexposed — cannot bind a watermark'}');
+    if (commitId == null) {
+      await _cleanupProbe(ditto, collection, id);
+      return 'local-store-proven';
+    }
+
+    // Local readback is supporting evidence only.
+    final readback = await ditto.store.execute(
+      'SELECT * FROM $collection WHERE _id = :id',
+      arguments: {'id': id},
+    );
+    final localProven = readback.items.isNotEmpty;
+
+    while (DateTime.now().toUtc().isBefore(deadline)) {
+      final rows = await ditto.store
+          .execute('SELECT * FROM system:data_sync_info');
+      for (final row in rows.items) {
+        final watermark = row.value['synced_up_to_local_commit_id'];
+        if (watermark is int && watermark >= commitId) {
+          debugPrint('first-sync probe: server watermark $watermark covers '
+              'commit $commitId at ${DateTime.now().toUtc()}');
+          await _cleanupProbe(ditto, collection, id);
+          return 'sync-proven';
+        }
+      }
+      await Future<void>.delayed(const Duration(seconds: 2));
+    }
+
+    await _cleanupProbe(ditto, collection, id);
+    return localProven ? 'local-store-proven' : 'ran';
+  }
+
+  /// Deletes only the document created by this attempt. Cleanup failure is
+  /// reported with the remaining probe ID and does not demote proof.
+  Future<void> _cleanupProbe(
+      Ditto ditto, String collection, String id) async {
+    try {
+      await ditto.store.execute(
+        'DELETE FROM $collection WHERE _id = :id',
+        arguments: {'id': id},
+      );
+    } catch (error) {
+      debugPrint('first-sync probe: cleanup failed; remaining probe $id '
+          '(${error.runtimeType})');
+    }
+  }
+
+  /// Process-exit teardown for the first-sync proof runner (main.dart probe
+  /// mode). Shares the test teardown path.
+  Future<void> shutdown() => dispose();
 
   /// Tear-down hook. Called from `MeshRagApp.dispose` (or test teardown)
   /// to release the presence callback and stop sync. Not strictly required
