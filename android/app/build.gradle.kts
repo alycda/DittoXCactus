@@ -7,7 +7,11 @@ plugins {
 
 android {
     namespace = "com.dittoxcactus.mesh_rag"
-    compileSdk = flutter.compileSdkVersion
+    // ditto_live 5.1.0's Android artifacts (com.ditto:{ditto-cinterop,util,
+    // transports,rustls}-android) all declare minCompileSdk=36, so this cannot
+    // follow flutter.compileSdkVersion — Flutter 3.32.0 pins that to 35.
+    // Revert to `flutter.compileSdkVersion` once the pinned Flutter ships 36.
+    compileSdk = 36
     // Cactus + ditto_live + record + permission_handler all require NDK 27.
     // Same pin as tools/determinism_harness/ — discovered there first when
     // the harness's first build hit the manifest-merger error.

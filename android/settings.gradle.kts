@@ -18,7 +18,10 @@ pluginManagement {
 
 plugins {
     id("dev.flutter.flutter-plugin-loader") version "1.0.0"
-    id("com.android.application") version "8.7.3" apply false
+    // AGP 8.7.3 (Flutter 3.32.0's template default) caps compileSdk at 35;
+    // ditto_live 5.1.0 requires 36. 8.10.1 is the lowest AGP that supports
+    // compileSdk 36 while still running on the pinned Gradle 8.12.
+    id("com.android.application") version "8.10.1" apply false
     id("org.jetbrains.kotlin.android") version "2.1.0" apply false
 }
 
